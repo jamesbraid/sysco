@@ -37,6 +37,11 @@ Task-6 `0x0006` (`0xffe12526–0xffe12844`, within the general dispatcher) takes
 
 Task-6 request `0x1007` stores a host-selected event subchannel, and `0x100a` clears it (`0xffe11e18–0xffe13e6e`). No environmental worker is a task-6 request handler. The stored subchannel selects a route for conditional event delivery attempts when it is set. Registration does not start the M-Bus sampling loop, and code inspection does not establish host receipt.
 
-## Unresolved hardware claims
+## Open points and the software routes for each
 
-The selected program and the public controller manual establish byte-wide M-Bus operations, divider selection, state ordering and software timeout arguments. They do not establish the IP45 oscillator frequency, fitted monitor/expander part or revision, bus wiring, sensor conversion accuracy, ACK behavior on a real board, or whether the third logical monitor route responds. A revision-matched schematic and legible chip markings could identify fitment. A constructed host reply or console example cannot settle those electrical questions.
+The image establishes byte-wide M-Bus operations, divider selection, state ordering and software timeout arguments. It does not state the oscillator frequency, the fitted monitor or expander part, the bus wiring, or whether the third monitor route responds. Routes for each, none needing hardware:
+
+- Monitor and expander part: the register offsets the code reads and writes through the monitor wrapper at `0xffe681c0` can be tabulated and compared with the register maps of the candidate parts in [mbus-ds1780-candidate.md](mbus-ds1780-candidate.md); the IRIX-side L1 and environment host objects, whose register names are not in the L1 image, are the second route. Unknown until one table matches.
+- Whether the third monitor route can be used: trace every use of monitor index 2 (the table at `0xffe45de8`, the loop at `0xffe69958`) in this image and in the 1.48.1 package of the same layout.
+- Processor clock: unknown from this image; the timer and UART divider setup in the reset and boot code is the route (open-questions note). MAME's MCF5206E core documents which register writes set the clock-dependent dividers.
+- Sample period and debounce: the wait arguments above are task-clock units; converting them needs the task-clock source, which the timer setup in the boot path would name.

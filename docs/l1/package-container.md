@@ -1,18 +1,18 @@
 # L1 composite package and Linux inventory
 
-The held IRIX 6.5.30 `l1.bin` is a **container of seven L1 packages**, not one executable image. Its SHA-256 is `c355c542554a41b23b69dca4c201c566e8352e8f9fb870d2365c74cdd8ab0c0f`; its size is 15,988,636 bytes. The count at container offset `0x2c` is seven. Seven big-endian offset and length pairs begin at `0x30`. Recomputing their boundaries shows contiguous ranges, an `ESTF` prefix at each start, and a final end equal to the container size. These are observed package boundaries; the roles of other header fields remain unknown.
+The IRIX 6.5.30 `l1.bin` is a **container of seven L1 packages**, not one executable image. Its SHA-256 is `c355c542554a41b23b69dca4c201c566e8352e8f9fb870d2365c74cdd8ab0c0f`; its size is 15,988,636 bytes. The count at container offset `0x2c` is seven. Seven big-endian offset and length pairs begin at `0x30`. Recomputing their boundaries shows contiguous ranges, an `ESTF` prefix at each start, and a final end equal to the container size. Established: the boundaries, recomputed from the container. Unknown: the role of the other container header fields.
 
-| Range | Container offset | Length | SHA-256 of exact range | Observed family |
+| Range | Container offset | Length | SHA-256 of exact range | Label read in the image |
 | --- | ---: | ---: | --- | --- |
-| 0 | `0x000000` | `0x0efdd0` | `c391b1c9925c25fa5040d54e9adc51c8cb2ed9b5626a8734938bbc19267e4f08` | Controller package; product unassigned |
-| 1 | `0x0efdd0` | `0x0efd8c` | `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4` | Origin 300 candidate selected by independent image review |
-| 2 | `0x1dfb5c` | `0x1ac9ac` | `22e340c4657850647ce06e36173f6e671359ed8d26a6468c3c0ef6bde644540c` | Controller package; product unassigned |
-| 3 | `0x38c508` | `0x1b0c4c` | `40d905ba620ebba0c8259b12410dfe42d21d18cad06477b2873f201059af2fe4` | Controller package; product unassigned |
-| 4 | `0x53d154` | `0x3a40fc` | `cb84af5c8150913d0bd30673dc3efc39264f208fa18336cceb20c66eff4c56d6` | Legacy Linux L1 package |
-| 5 | `0x8e1250` | `0x1b2458` | `562aa31da2e8d4dfbb94274fb383b078c78c25d84b5c84c747b11ed9d481a68f` | Controller package; product unassigned |
-| 6 | `0xa936a8` | `0x4ac0f4` | `e57ab8ecd48858e39ecdd0050a23e444a491c35e87f9d8ebb48881fc25229a06` | Linux L1 package |
+| 0 | `0x000000` | `0x0efdd0` | `c391b1c9925c25fa5040d54e9adc51c8cb2ed9b5626a8734938bbc19267e4f08` | ColdFire; label `Base 1MB image` (container `0x79b38`, `0xe9b38`) |
+| 1 | `0x0efdd0` | `0x0efd8c` | `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4` | ColdFire; label `Fuel/PE/O300 1MB image` (container `0x169824`, `0x1d9824`) |
+| 2 | `0x1dfb5c` | `0x1ac9ac` | `22e340c4657850647ce06e36173f6e671359ed8d26a6468c3c0ef6bde644540c` | ColdFire; label `MIPS 2MB image` (container `0x283536`, `0x373536`) |
+| 3 | `0x38c508` | `0x1b0c4c` | `40d905ba620ebba0c8259b12410dfe42d21d18cad06477b2873f201059af2fe4` | ColdFire; label `Legacy 2MB image` (container `0x435060`, `0x525060`) |
+| 4 | `0x53d154` | `0x3a40fc` | `cb84af5c8150913d0bd30673dc3efc39264f208fa18336cceb20c66eff4c56d6` | Linux (ARM); label `Legacy Linux L1 image` |
+| 5 | `0x8e1250` | `0x1b2458` | `562aa31da2e8d4dfbb94274fb383b078c78c25d84b5c84c747b11ed9d481a68f` | ColdFire; label `2MB image` (container `0x98bce0`, `0xa7bce0`) |
+| 6 | `0xa936a8` | `0x4ac0f4` | `e57ab8ecd48858e39ecdd0050a23e444a491c35e87f9d8ebb48881fc25229a06` | Linux (ARM); label `Linux L1 image` |
 
-Range 1 contains both occurrences of the product-group label identifying the Fuel/PE/Origin 300 one-megabyte image. The literal ASCII begins at container offsets `0x169824` and `0x1d9824`, together with version `1.44.0`. The review selects this **second** package for Origin 300 format analysis, and explicitly does not clear it as a flash-ready or executable image. Neither of the Linux packages is that selected range.
+Range 1 contains both occurrences of the product-group label identifying the Fuel/PE/Origin 300 one-megabyte image. The literal ASCII begins at container offsets `0x169824` and `0x1d9824`, together with version `1.44.0`. This is the second of the seven ranges and the image every other note reads. Nothing read here shows it is flash-ready. Neither of the Linux packages is that selected range.
 
 ## Linux package evidence
 
@@ -32,43 +32,31 @@ The gzip header timestamps are June 9, 2006; they do not establish installation 
 
 ## Product and revision limits
 
-The container itself identifies ranges 4 and 6 only as Linux L1 images, with software version `1.44.0`; it does not name supported server products or hardware revisions for either package. The embedded root filesystems include hardware-support resources for multiple controller variants, but a resource's presence cannot prove that the whole package supports, was selected for, or ran on a given server. Neither manual maps this held seven-package container to a particular hardware revision. Therefore an Altix-family association is plausible but **unassigned**, and neither Linux range should be substituted for the Origin 300 selected package.
+The container identifies ranges 4 and 6 only as Linux L1 images with software version `1.44.0`; it names no server product or hardware revision for either. Both root filesystems carry FPGA bitstreams (`.rbf`) for several controller variants under `/stand/sysco/bin`, and the range 6 filesystem has more of them than range 4, but a bitstream's presence does not show that the package was built for or ran on a given server. No image names a product for either Linux package. An association with the Altix 350 and 450 generation (a published hint, not read in any image) is plausible and stays **unassigned**; neither Linux range should stand in for the Origin 300 package.
 
-A kernel banner or embedded hardware resource alone would not. The exact image hash and range hashes above allow that evidence to be matched to this composite revision.
+## Product labels of the other ColdFire packages
 
-## Bounded V-brick package-label followup
+Each ColdFire package ends with a label string. Range 0 carries `Base 1MB image` at relative offsets `0x79b38` and `0xe9b38`, with `1.44.0` at `0x7a4f3` and `0xea4f3`; range 2 `MIPS 2MB image`; range 3 `Legacy 2MB image`; range 5 `2MB image`. A short character string follows each label, and each package's metadata record points to both (for range 1 the record's words point at `0xffee9a28` for the label and `0xffee9a3f` for the string): `CIPXYN&?RG` after `Base 1MB image`, `%4A?` after `Fuel/PE/O300 1MB image`, `CIPXYN&%6780VQE9A?RG` after `MIPS 2MB image`, `5O#=?` after `Legacy 2MB image` and `O5#=?` after `2MB image`. Inferred: these are the supported-brick strings the updater tests below, from their position next to the label and the record pointing at them; the parser at `0x1000c490` was not traced to this field. The byte `0x56` (`V`) occurs only in the range 2 string.
 
-A 2026-10-24 reader reverified the complete composite and all seven range hashes above. These results establish no archive-wide absence.
-
-The reader examined the first and final 256 bytes of each package, the two already identified range-1 label windows, and the final 32 KiB of controller ranges 0, 2, 3 and 5. Range 0 contains `Base 1MB image` at relative offset `0xe9b38` and `1.44.0` at `0xea4f3`. Its exact range hash remains `c391b1c9925c25fa5040d54e9adc51c8cb2ed9b5626a8734938bbc19267e4f08`. That label does not identify a supported product or board revision. The other examined windows supplied no explicit V-brick image mapping. They do not establish that the container lacks V-brick support, particularly where contents may be compressed or labels occur elsewhere.
-
-No extraction, disassembly, download or firmware execution occurred. An incidental firmware source-path string was seen and is not transcribed. The product-selection evidence identified above is still needed.
+None of these names a server product or board revision, so no package other than range 1 is assigned. In particular no label or string in any package names a V-brick. The bytes outside the label windows were not searched for a V-brick mapping, and a compressed section or a differently worded label would escape a string search.
 
 ## Updater selection evidence
 
-The ELF is big-endian MIPS N32/MIPS-III.
-
-| File | SHA-256 |
-| --- | --- |
-| `flashsc` | `bd7652fcf584ee6063bf5f90ab147301c4bd7b122938fadcb026f7aa2dcafd82` |
-| `receipt.json` | `3ab5d76c4e4a865b7b0612e5fdb90ba8f7f69b4a65bc153a4e3cd43ce5433573` |
-| `selection-observations.json` | `2779ce0e8d7a92331af8cf4f4b2ebe14412c1b42276bbb11c2392069e9ca6016` |
-
-Complete selected paths cover parsing at `0x1000c490`, classification at `0x1000dc40`, their necessary helpers, selection at `0x1000eb40` and `0x1000ec40`, and caller `0x1000ee10`. ELF register metadata and actual GOT entries establish GP `0x10075310`. The parser accepts file-format versions through 5. The held composite's versions 3–5 reach these paths. All inspected image headers are version 4, length 48, with zero word sums. This verifies header checksums, not full payload integrity or flash qualification.
+The updater read here is `flashsc` from patch SG0007149 (`usr/sbin/flashsc`, 407,920 bytes, SHA-256 `bd7652fcf584ee6063bf5f90ab147301c4bd7b122938fadcb026f7aa2dcafd82`), a big-endian MIPS N32 (MIPS-III) executable. Its routines are named here by address. The routines read cover parsing at `0x1000c490`, classification at `0x1000dc40`, their necessary helpers, selection at `0x1000eb40` and `0x1000ec40`, and caller `0x1000ee10`. ELF register metadata and actual GOT entries establish GP `0x10075310`. The parser accepts file-format versions through 5. The held composite's versions 3–5 reach these paths. All inspected image headers are version 4, length 48, with zero word sums. This verifies header checksums, not full payload integrity or flash qualification.
 
 For L1 records, selection scans forward or backward and returns the first matching record. Its family must match. A nonzero requested brick byte must occur in a present supported-brick string. Nonzero requested and package variants must agree. The parser appends `=` when the string contains `#`. Zero byte or absent string bypasses membership checking. A non-L1 first record bypasses this selection loop.
 
-In the examined caller, normal direct integer reply argument 7 supplies the low byte at `0x1000f14c`. Replies with fewer than eleven arguments supply zero. The alternate argument-accessor path remains unexamined. The other two callers were inspected only around their calls. This is not an identification of command 3's type field or an on-wire command.
+In the caller at `0x1000ee10`, reply argument 7 (an integer read through the accessor at `0x100309b0`) supplies the low byte, stored at `0x1000f14c`. Replies with fewer than eleven arguments supply zero. The other two callers of the selection routines were read only around their calls.
 
-Pointer conversion uses bank file position plus pointer minus bank virtual address. The updater does not check those string bounds on this path. Literal `0x56` membership occurs only in range 2. That byte is not proof of V-brick identity. An explicit V-brick mapping remains unknown. No execution or flashing occurred.
+Pointer conversion uses bank file position plus pointer minus bank virtual address. The updater does not check those string bounds on this path. Literal `0x56` membership occurs only in range 2. That byte is not proof of V-brick identity. Unknown: any mapping of an image to a V-brick; no package label or string read here names one (routes tried: the label windows above, the updater's selection routines and the identity table below).
 
 ## Flash-status reply and the image-matching identity byte
 
-It is a firmware-stored runtime identity byte returned by the flash-status request, not a byte read from an image label. It is separate from the flash-layout field and from the identity cache used by the earlier query-3 analysis. This does not establish a VPro V-brick value or change any package assignment above.
+The byte the updater matches against an image's supported-brick string is a runtime identity byte that the controller stores and returns in its flash-status reply (request `0x72`), not a byte read from an image label. It is separate from the flash-layout field and from the object at `0x300008cc`. It does not change any package assignment above.
 
 ### Exact inputs and request closure
 
-The updater remains the 407,920-byte ELF and receipt identified above, SHA-256 `bd7652fcf584ee6063bf5f90ab147301c4bd7b122938fadcb026f7aa2dcafd82`. All 69,407 listed instruction words match the ELF bytes, without duplicate addresses. This is byte accounting, not whole-updater semantic coverage. The actual GP is `0x10075310`. The managed listing's automatic GOT comments use an incorrect assumed GP for this N32 executable. This reading uses the actual GOT and ELF load-segment mapping, not those automatic comments.
+The updater is the SG0007149 `flashsc` identified above. Its GP is `0x10075310` (from the register-info segment); GOT slots are resolved with that value.
 
 The normal L1-family path sets destination task 16 at `0x100088b0–0x1000890c`. The packing at `0x10009ea4–0x10009f00` combines that low-five-bit task with the selected controller class, rack and bay, then passes the destination to `0x1000ee10`. Their byte hashes are `f26f6fbe3bdf84e66409a3d18dbe85a8cdd1572979307ac5f383f6a446e2bb83` and `26577c4c0c7d61c388c67d9eda328f37d50c083f6bdc8c34a711a68ff8091c29`. The updater helper preserves that incoming destination, rather than assigning task 16 itself. The separate family-2 path sets task 8.
 
@@ -80,7 +68,7 @@ For type low bits equal to zero, the direct path reads the signed integer word. 
 
 ### Selected firmware producer
 
-Its 44-byte package header precedes the body mapped at `0xffe00000`. A total of 1,038 listing rows across the selected producer, identity initializer/accessor and descriptor assembler matched the selected body bytes, with zero mismatches. No unassigned package was disassembled.
+This is the Origin 300 package (range 1) only: its 44-byte package header precedes the body mapped at `0xffe00000`. No other package was disassembled.
 
 The task handler at `0xffe3c124` reads command `+0x22` and dispatches `0x0072` at `0xffe3c150–0xffe3c154` to `0xffe3c166`. It obtains the identity accessor result at `0xffe3c134`, retains it in a register and writes it into descriptor 7 at `0xffe3c392`. The reply schema is:
 
@@ -104,8 +92,8 @@ Reply assembly at `0xffe3c404–0xffe3c410` supplies eleven or thirteen descript
 
 Initializer `0xffe55254` chooses byte `0x300002f8` using identification records obtained through `0xffe6bc04`. If it remains the sentinel `0x3f`, `0xffe55640` reads persistent key 9 through `0xffe59590`. The accepted-value table at `0xffe55664` permits numeric `0x56`, reaching `0xffe556d2`. That path excludes special value `0x34`, then stores the other accepted persistent byte at `0xffe556e0`. A later persistent key `0x10` supplies adjacent byte `0x300002f9`, not argument 7.
 
-This establishes a runtime configured identity namespace. The selected paths contain no explicit VPro V-brick mapping. The updater's family, identity-byte membership and variant comparisons remain separate.
+Established: a runtime configured identity namespace. The selected paths contain no mapping to a V-brick. The updater's family, identity-byte membership and variant comparisons are separate checks.
 
-That table labels `0x76` as a CG-family response code. It does not establish a VPro V-brick value or identify the updater's `0x56`. Those bytes must not be assigned products by their printable letters.
+The accepted-value table spans `0x23` to `0x59`; value `0x56` (`V`) is in it, and so is every other letter in that span, so its presence says nothing about a V-brick. A persistent value of `0x34` is replaced by the sentinel `0x3f` rather than stored. Bytes must not be assigned products by their printable letters.
 
-Base package 0 remains unassigned, range 1 remains the Origin 300 candidate, and range 2 remains unassigned.
+Only range 1 is tied to a product, by its label; the other ColdFire packages carry only the size labels above.
