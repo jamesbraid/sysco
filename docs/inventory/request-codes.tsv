@@ -1,0 +1,47 @@
+image	task	code	handler	name	grade	handler_in_body	note	status	doc
+6.5.30:l1#1	3	0x0000	0xffe1ba5c	command_task_loop	established	yes	any code with one text argument; reply is the status and the output lines as text	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0001	0xffe11fe8	general_req_read_debug_switches	established	yes	reply 0 then one int, the 16-bit non-volatile switches	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0002	0xffe11ffc	general_req_rack_bay	established	yes	reply 0 then int rack<<6|bay from non-volatile settings	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0003	0xffe11ffc	general_req_rack_bay_type	established	yes	same entry as 0x0002; adds the stored brick-type character (0x34 for ip45)	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0004	0xffe122a8	general_req_brick_serial	established	yes	reply 0 then text; minus 104 when absent	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0005	0xffe122da	general_req_firmware_revision	established	yes	reply 0 then three ints parsed from the version string	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0006	0xffe12526	general_req_eeprom_read	established	yes	four ints; areas 0 to 4; minus 104, 105, 107 conditions	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0007	0xffe1236a	general_req_eeprom_format	established	yes	one int; reply describes the record kind and area sizes	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0008	0xffe12848	general_req_system_serial	established	yes	reply 0 then text; minus 104 when empty	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0009	0xffe128ca	general_req_partition_get	established	yes	reply 0 then int	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000a	0xffe128f2	general_req_port_speeds	established	yes	reply 0 then two ints from per-port speed settings	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000b	0xffe128de	general_req_two_bit_setting	established	yes	reply 0 then int; meaning of the field unknown	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000c	0xffe12090	general_req_attached_ports_1_to_4	established	yes	reply 0 then four (rack<<6|bay, type) pairs	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000d	0xffe1220c	general_req_attached_ports_5_and_10	established	yes	reply 0 then two (rack<<6|bay, type) pairs	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000e	0xffe12a4c	general_req_requesting_port	established	yes	reply 0 then int: the link index the request arrived on	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x000f	0xffe12a78	general_req_last_event_reasons	established	yes	reply 0 then two ints from the lifecycle module	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0010	0xffe12acc	general_req_processor_masks	established	yes	reply 0, word count, processor count, mask pairs; minus 108 when none	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x0011	0xffe12c3c	general_req_scan_record	established	yes	reply 0 then a 64-byte binary field, or minus 106 and a status	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1001	0xffe12dfc	general_req_write_debug_switches	established	yes	one int; writes the non-volatile switches; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1002	0xffe12e40	general_req_console_subchannel	established	yes	one int; sets the active console subchannel; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1003	0xffe12e9c	general_req_console_volunteer	established	yes	records the local module as console owner; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1004	0xffe12ec2	general_req_display_line_1	established	yes	one text; writes display line 2; minus 102 if not text	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1005	0xffe12ec2	general_req_display_line_2	established	yes	same entry as 0x1004	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1006	0xffe12f20	general_req_partition_set	established	yes	one int; non-volatile write; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1007	0xffe12fd8	general_req_event_subchannel_set	established	yes	one int; persisted in non-volatile memory; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1008	0xffe12f7e	general_req_two_bit_setting_set	established	yes	one int; writes the field read by 0x000b; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x1009	0xffe13060	general_req_panel_control	established	yes	two ints; selector 0 to 2 else minus 105; reply 0	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x100a	0xffe131b2	general_req_event_subchannel_clear	established	yes	no reply; clears and unpersists the event subchannel	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x100b	0xffe131bc	general_req_prom_version_report	established	yes	exactly three ints; no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x100c	0xffe132ca	general_req_per_processor_setting	established	yes	exactly two ints; no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2001	0xffe1335a	general_req_system_reset	established	yes	no reply on success; minus 106 and status on failure	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2002	0xffe1336c	general_req_pci_operation_a	established	yes	two ints bus and slot; board hook; no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2003	0xffe13406	general_req_pci_operation_b	established	yes	two ints bus and slot; board hook; no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2004	0xffe134bc	general_req_pci_operation_c	established	yes	two ints bus and slot; board hook; no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2005	0xffe13570	general_req_power_down	established	yes	no reply on success	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2006	0xffe1359c	general_req_lifecycle_third_action	established	yes	no reply on success; which action is not established	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2007	0xffe135de	general_req_expander_read	established	yes	no arguments; minus 108 on an Origin 300	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x2008	0xffe136bc	general_req_expander_write	established	yes	exactly two ints; minus 108 on an Origin 300	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x4000	0xffe137e8	general_req_inventory	established	yes	reply 0 then one text field per inventory record; minus 104 when empty	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	6	0x4002	0xffe13d76	general_req_controller_reboot	established	yes	no reply; logs and restarts the controller	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	16	0x0072	0xffe3c166	flash_req_status	inferred	yes	first int at most 4; reply lists the flash images	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	16	0x0073	0xffe3c4c2	flash_req_0x73	inferred	yes	flash operation, not read	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	16	0x0074	0xffe3c41e	flash_req_0x74	inferred	yes	flash operation, not read	understood	docs/l1/request-codes.tsv
+6.5.30:l1#1	19	0x0092	0xffe3f610	power_bay_flash_req_0x92	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
+6.5.30:l1#1	19	0x0093	0xffe3f7e0	power_bay_flash_req_0x93	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
+6.5.30:l1#1	19	0x0094	0xffe3f75a	power_bay_flash_req_0x94	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
