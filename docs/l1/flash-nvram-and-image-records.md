@@ -1,0 +1,70 @@
+# Origin 300 L1 1.44.0: flash, settings storage, clock, image records and the alternate USB path
+
+Read from L1 1.44.0, package 1 (`Fuel/PE/O300 1MB image`, body sha256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`, load address `0xffe00000`). Addresses are in the first program copy. The seven-package composite is tabulated in [package-container.md](package-container.md).
+
+## Flash programming contract
+
+- **Bus (established).** The flash is on `CS0` as a 16-bit port; every command and data access is a halfword (`0xffe7f7fc`, `0xffe7f8d8`). Command addresses are byte offsets from the flash base `0xffe00000` (the base is the first word of the RAM pair at `0x30000918`, initial value `0xffe00000`, second word `0xfff00000`).
+- **Command set (established, tables `0xffe708cc`-`0xffe7094c`, writers `0xffe7f7dc`-`0xffe7f9f8`).** Each sequence is a list of eight-byte entries (a byte offset from the flash base, then a long whose low halfword is written; the value is repeated in both halves, for example `0x00aa00aa`). Unlock = `0xaa` at offset `0xaaa` then `0x55` at `0x554`. Reset to read mode = unlock then `0xf0` at offset 0 (`0xffe708cc`, 3 entries, also written at the end of the autoselect routine). Program halfword = unlock, `0xa0` at `0xaaa` (`0xffe70924`), then the data halfword at its address. Sector erase = the reset sequence, then the eight-entry prefix at `0xffe708e4` (unlock, `0x80` at `0xaaa`, unlock), then `0x30` at an address inside the sector (`0xffe7f8d8`); while the erase runs the routine polls, writes `0xb0` (erase suspend, `0xffe7f8f4`), polls again, then writes `0x30` again (resume, `0xffe7f92c`) in a loop, so interrupts are serviced during an erase. Autoselect = unlock then `0x90` at `0xaaa` (`0xffe7093c`), then read the halfword at offset 0 (manufacturer) and offset 2 (device), then reset (`0xffe7f9a2`-`0xffe7f9f8`). No chip-erase sequence exists in the image. The offsets `0xaaa` and `0x554` are the common 16-bit NOR command addresses `0x555` and `0x2aa` doubled for a byte-addressed bus.
+- **Completion polling (established, `0xffe7f810`-`0xffe7f8ae`).** Each pass first services the watchdog (`0x55`, `0xaa` at `MBAR+0x43`), then reads two consecutive halfwords from the flash base and compares data bit 6 (`0x0040`). Equal means the operation has finished and the routine returns 0. Different with data bit 5 (`0x0020`) of the first read set records that fact; seeing bit 6 still toggling on a later pass after that makes it write the reset sequence and return -1 (failure). When the argument is 0 the routine does one pass and returns 1 if the bits still differ (busy); a nonzero argument makes it loop. So a model that returns plain array contents to the first read after a command completes the operation at once, while one that toggles bit 6 and raises bit 5 can exercise the failure arm.
+- **Sector map (established).** Two top-boot tables of sector end addresses relative to the base, selected by the flash-size byte `0x300002fb`, read at `0xffe55828` and holding `0` in the initialised data (its writer was not found by an absolute-address search; the table choice is therefore inferred to follow the same 1 MB or 2 MB size that the chip-select probe uses, see [the board contract](board-boot-contract.md)). For 2 MB (`0xffe70840`, 35 entries, log text "2MB flash part!!" at `0xffe70954`): `0x00ffff, 0x01ffff, ... 0x1effff` (31 sectors of 64 KB), then `0x1f7fff` (32 KB), `0x1f9fff` (8 KB), `0x1fbfff` (8 KB), `0x1fffff` (16 KB). For 1 MB (`0xffe707f4`, 19 entries): 15 sectors of 64 KB ending `0x0effff`, then `0x0f7fff`, `0x0f9fff`, `0x0fbfff`, `0x0fffff`. These are the boot-sector layouts of the 8-megabit and 16-megabit members of the common top-boot 16-bit NOR family; the image never names a part (a model should offer exactly these sector boundaries and the command set above).
+- **Not settled.** The manufacturer and device identifiers the autoselect read is meant to return: the readout routine stores both halfwords for its caller, and no comparison constant for them was found in the image.
+
+## Boot-flash layout and image records
+
+- **Image header (composite).** Each ColdFire package begins with 44 bytes (`ESTF`, `BINR`, start `0xffe00000`, end, then fields) followed by the body. The 44-byte header of package 1 reads, as big-endian words: `0x45535446`, `0x42494e52`, `0xffe00000`, `0xffeefd5f`, `0xff000000`, `0`, `0xffe00000`, `0xffeefd5f`, `0xffffffff`, `4`, `0`. Range 0's header is 104 bytes because it also carries the composite directory (seven offset and length pairs from `0x30`, count 7 at `0x2c`). An updater stripping the header gets the flat body that the flash holds from `0xffe00000`.
+- **Per-copy metadata record (established, body `0xffe7fd1c`; second copy `0xffeefd1c`).** 48 bytes, twelve big-endian words:
+
+| Word | Value in package 1 | Reading |
+|---|---|---|
+| 0 | `0x00040030` | record type 4, length `0x30` |
+| 1 | `0xffe10000` (second copy `0xffe80000`) | start of this program copy |
+| 2 | `0x00070000` | span reserved for the copy |
+| 3 | `0x0006fd4c` | used length |
+| 4 | pointer to `20060717182038` | build stamp, the string the loader compares |
+| 5 | pointer to `1.44.0` | version string |
+| 6 | `0xffe7fd4c` | end of the used area |
+| 7 | `0x58487f20` | balancing word (the 12-word sum is zero) |
+| 8 | `0xa83e0909` | 32-bit big-endian word sum of the copy from its start to this record (computed here: equal) |
+| 9 | pointer to the string `%4A?` | accepted brick letters |
+| 10 | `1` | (not decoded) |
+| 11 | pointer to `Fuel/PE/O300 1MB image` | image label |
+
+  Only the 12-word sum is verified by the loader (see [the board contract](board-boot-contract.md)). That word 8 equals the sum of the copy's bytes is established by computation; whether any updater or the `flash` task compares it was not read (the task-16 operations `0x0073`, `0x0074` and task 19's `0x0092`-`0x0094` are unread).
+- **Request `0x0072`** (flash status) lists the images (established in [protocols.tsv](protocols.tsv)): its eleven or thirteen values come from this record and from the loader's retained record, which an emulator can supply by providing the flash contents.
+
+## Settings storage in the NVRAM window
+
+The 2 KB battery-backed window at `CS1` (`0x20000000`) holds, from offset 0:
+
+- **Header (established, `0xffe5a6a8`-`0xffe5a74a`, check at `0xffe5a7de`).** 8 bytes: the low nibble of byte 0 is the header version (1 when initialised here), byte 1 is the offset of the record area in units of 8 bytes (1, so the area starts at `0x20000008`), and byte 7 makes the 8-byte sum zero. A header whose sum is nonzero, whose version nibble is 0 or whose offset byte is 0 is rebuilt: the 8 header bytes are zeroed and then the version, the offset and the checksum are written.
+- **Record area (established, `0xffe5a188`-`0xffe5a74a`, `0xffe59e94`).** From `0x20000008`, in order: a 0x70-byte settings record, its mirror (+0x70), a 0x24-byte record (+0xe0), its mirror (+0x104), a 0xb4-byte record (+0x128) and its mirror (+0x1dc); total 0x290 bytes, so the area ends at `0x20000298`. Every record's last byte makes the byte sum of the record zero (`0xffe5b3cc` is the negated sum, `0xffe5b3a4` the check). The start-up rule (`0xffe5a188`): if the primary fails its sum (or its first-byte version nibble is 0), the mirror is tried; a valid mirror is copied over the primary (`0xffe5a3ae`); with neither valid the record is zeroed, given its default version, a fresh checksum, and copied to the mirror. The first record's current version nibble is `0xa` (created that way at `0xffe5a210`); a jump table at `0xffe5a858` upgrades older version nibbles 0 to 9 in steps. The second record's first byte is its version, `3` when created; the 0x24-byte record is written by `0xffe59e94`, which also copies words at `+0xe4` to `+0xec` and `+0xf0`.
+- **Settings numbers in the first record (established, getter `0xffe59590`, jump table `0xffe595b0`, 179 entries, 47 of them reach the default arm).** Offsets are from the record start:
+
+| Setting | Location in the record |
+|---|---|
+| 1 rack | bits 23:14 of the big-endian word at +0 (10 bits) |
+| 2 bay | byte +2, bits 5:0 |
+| 3 debug switches | bits 23:8 of the word at +0x1c (bytes +0x1d and +0x1e) |
+| 5 | byte +0x20 |
+| 8, 10 | byte +0x21, two bits each at bits 2:1 and 6:5 |
+| 14 | byte +0x1f |
+| 16 | byte +0x47 |
+| 17 | byte +0x11 |
+| 18 (the two-bit field) | byte +0x14, bits 3:2 |
+| 19 (event subchannel) | byte +0x2f, bits 4:0 |
+| 44, 55 | byte +0x46 bit 3, byte +0x16 bit 2 |
+| 56, 57 | byte +0x16 bit 1, byte +0x16 bit 0 |
+| 61, 62 | byte +0x17 bits 2:1, byte +0x17 bit 0 |
+
+  The other entries reach the same record through computed offsets or multi-step paths and were not decoded one by one. The setter (`0xffe58758`, same jump structure) rewrites the field and then recomputes the record checksum and the mirror (`0xffe594de`). Which setting number is the partition id (14 in the table) rests on the request catalogue's name for that setting; the field itself is the byte shown.
+- **Clock-calendar (established, read `0xffe5e32c`, write `0xffe5e5c4`).** Registers at `0x200007f8` upward, one BCD byte each: control at `0x7f8` (bit 6 freezes the read latch, bit 7 write enable; the low six bits are the two century digits: tens in bits 5:4 and hundreds in bits 3:0), seconds `0x7f9`, minutes `0x7fa`, hours `0x7fb`, day `0x7fc`, date `0x7fd`, month `0x7fe`, year `0x7ff`. The read routine converts BCD to a year as `thousands*1000 + hundreds*100 + year`, and the write routine adds `0x76c` (1900) to a tm-style year. The layout is that of the common 2 KB battery-backed RAM with calendar at the top of its window (the existing datasheet for that part family covers its register behaviour).
+- **Settings in other records (unknown).** The contents of the 0x24- and 0xb4-byte records were not decoded.
+
+## The alternate USB path: revision `0x81` (established)
+
+The USB probe (`0xffe6db6c`) writes `0xb5` to the scratch register at offset `0x1b`, reads the revision register at `0x18` twice, and returns true only when it reads `0x81`. In that case the caller (`0xffe6dba8`) calls the pointer in RAM at `0x300006f4` with the slot number, base address, level and callback arguments, and does not run the USS-820-shaped initialiser at `0xffe70a98`. The initialised pointer value in this package is `0xffe70464`, a routine consisting of `link`, `unlk`, `rts` (`0xffe70464`): it does nothing. The neighbouring pointers at `0x300006c0`-`0x300006f0` all point at similar empty routines or at functions of the sibling drivers (`0xffe6fe00`-`0xffe6fe80`). So a controller that answers `0x81` leaves the L1's USB side inert, with no endpoint, descriptor or interrupt activity; the other revisions (`0x10`, `0x11`, `0x13` quiet, other high-nibble-1 values with a warning) take the register-driven path described in [usb-controller-registers.md](usb-controller-registers.md). Slot 0 responds at `0x40000000` (when a USB controller is counted); slot 1 at `0x60000000` only when the count is 2; their interrupt levels are the arguments 2 and 3 given to the driver (`0xffe55198`; see [the board contract](board-boot-contract.md)).
+
+## Not covered here
+
+The front-panel display text path, the LED expanders and button reads, and the JTAG master's target are not re-read in this note; see [mbus.md](mbus.md) and the parallel-port table in [io-registers.tsv](io-registers.tsv). Their remaining questions are in [../open-questions.md](../open-questions.md).

@@ -34,3 +34,12 @@ package	device	window_base	offset	width_bits	name	access	grade	evidence
 6.5.30:l1#1	MCF5206e SIM	MBAR	MBAR+0xa0	16	CS5 address (inferred name)	write	inferred	USB slot setup 0xffe55198-0xffe55252, 0x6000 at 0xffe55218, slot 1 window base 0x60000000; value written is established, the register names come from the public MCF5206E register map
 6.5.30:l1#1	MCF5206e SIM	MBAR	MBAR+0xa4	32	CS5 mask (inferred name)	write	inferred	USB slot setup 0xffe55198-0xffe55252, zero at 0xffe55222; value written is established, the register names come from the public MCF5206E register map
 6.5.30:l1#1	MCF5206e SIM	MBAR	MBAR+0xaa	16	CS5 control (inferred name)	write	inferred	USB slot setup 0xffe55198-0xffe55252, 0x0953 at 0xffe55228; value written is established, the register names come from the public MCF5206E register map
+6.5.30:l1#1	MCF5206e SIM	-	MBAR+0x041	8	SYPCR	write	established	armed once with 0xfe at 0xffe562d4: software watchdog on, reset on timeout, prescaler on, timing bits 11, bus monitor on
+6.5.30:l1#1	MCF5206e SIM	-	MBAR+0x043	8	SWSR	write	established	0x55 then 0xaa written by 0xffe5630c every 20 ticks and by task loops at 0xffe107ac, 0xffe7f810
+6.5.30:l1#1	MCF5206e SIM	-	MBAR+0x040	8	RSR	read/write	established	bit 5 read and recorded by 0xffe565b4-0xffe56652; read through the unwritten MBAR by the loader at 0xffe00ac8
+6.5.30:l1#1	MCF5206e SIM	-	MBAR+0x0ca	16	PAR	read/write	established	0x0071 at 0xffe549ca; bit 7 set during the timer routine 0xffe7f344-0xffe7f3ca
+6.5.30:l1#1	MCF5206e chip select	-	MBAR+0x064..0x0aa	16/32	CSAR/CSMR/CSCR 0 to 5	write	established	0xffe549d8-0xffe54b02 and 0xffe55198-0xffe5524c: map and timing per select
+6.5.30:l1#1	External UART (CS4)	0x50000000	0x00..0x07 + 8*channel	8	16550-style register block, four channels	read/write	established	probe 0xffe636f6-0xffe63754, initialiser 0xffe638f4-0xffe63a1a, handler 0xffe63d44-0xffe63d96; enhanced register set through line control 0xbf
+6.5.30:l1#1	Flash (CS0)	0xffe00000	0xaaa, 0x554, 0x000	16	command writes (unlock, reset, program, erase)	write	established	tables 0xffe708cc-0xffe7094c, writers 0xffe7f7dc-0xffe7f9f8
+6.5.30:l1#1	Settings window (CS1)	0x20000000	0x000..0x297	8	settings header and checksummed records	read/write	established	header and record validation at 0xffe5a188-0xffe5a74a, byte-sum check 0xffe5b3a4
+6.5.30:l1#1	Clock-calendar (CS1)	0x20000000	0x7f8-0x7ff	8	control, seconds to year (BCD)	read/write	established	read 0xffe5e32c-0xffe5e5c3, write 0xffe5e5c4
