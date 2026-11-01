@@ -203,3 +203,13 @@ package	address	kind	name	request	grade	note
 6.5.30:l1#1	ffe7d414	func	string_compare_n	-	inferred	-
 6.5.30:l1#1	ffe7d45c	func	string_copy_n	-	inferred	-
 6.5.30:l1#1	ffe7d500	func	is_printable	-	established	-
+6.5.30:l1#1	ffec8380	func	log_message_bank2	-	established	second-bank copy of the routine at ffe58380; all 984 bytes identical after addresses are relocated by 0x70000
+6.5.30:l1#1	ffeea55c	func	format_string_bank2	-	established	second-bank copy of ffe7a55c: sets up a string-output descriptor on the stack with arg 1 as the buffer, calls the initialiser ffeeb03c, the formatter ffeeb090 with the format and the address of the variable arguments, then ffeeb070 which writes a NUL at the current pointer; returns the count word of the descriptor
+6.5.30:l1#1	ffeed400	func	string_length_bank2	-	established	second-bank copy of ffe7d400: scans arg 1 to its NUL byte and returns the number of bytes before it
+6.5.30:l1#1	ffec9590	func	setting_get_bank2	-	established	second-bank copy of ffe59590; all 2308 bytes identical after relocation by 0x70000
+6.5.30:l1#1	ffec5d34	func	memory_alloc_bank2	-	established	arg 1 is the size; takes the semaphore at 0x30002020 with an infinite wait and logs severity 9 (line 0x4a) if that fails; calls ffeb04a4 with the word at 0x30000304, the address of a result slot, the size and 0; a zero status releases the semaphore (logging severity 9 line 0x62 if that fails) and returns the slot; a nonzero status releases it (line 0x53 on failure), logs severity 9 line 0x56 when the word at 0x30000308 is nonzero else severity 1 line 0x58, and returns 0
+6.5.30:l1#1	ffec8758	func	setting_set_bank2	-	established	second-bank copy of ffe58758; all 3640 bytes identical after relocation by 0x70000
+6.5.30:l1#1	ffeed2e8	func	string_append_bank2	-	established	second-bank copy of ffe7d2e8: finds the NUL of arg 1, copies arg 2 there up to and including its NUL, returns arg 1
+6.5.30:l1#1	ffecb6b4	func	error_name_bank2	-	inferred	second-bank copy of ffe5b6b4; all 252 bytes identical after relocation by 0x70000; the role is inherited from that entry
+6.5.30:l1#1	ffec57b4	func	brick_type_char_bank2	-	established	second-bank copy of ffe557b4: returns the byte at 0x300002f8
+6.5.30:l1#1	ffeea098	func	console_print_bank2	-	established	printf-style print: when the word at 0x30000024 is nonzero first calls ffee9f1c with 30 and returns minus 1 if that returns nonzero; formats arg 1 with the variable arguments onto the stream structure at 0x3000096c through ffeea538; returns 0 when 0x30000024 is zero, else the result of ffee9e74
