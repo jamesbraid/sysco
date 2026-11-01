@@ -57,7 +57,7 @@ Every package is a gzip member holding the kernel, followed by a little-endian C
 
 ## Kernel and filesystem layout
 
-Each CramFS root has the same top-level directories: `bin`, `boot`, `dev`, `etc`, `lib`, `sbin`, `stand`, `usr`, `var` and `web`. Established.
+Each CramFS root has the same top-level entries in all four packages: directories `bin`, `boot`, `dev`, `etc`, `lib`, `mnt`, `proc`, `sbin`, `stand`, `tmp`, `usr`, `var`, `web` and `work`, and two files, `.dummy` (empty) and `.rhosts` (45 bytes, mode 0600). Established from the listings. `/boot` holds `bootldr.bin`, 72,876 bytes in the legacy 1.44.0 and 1.48.1 packages and 76,080 bytes in the 2.6 pair. Established. `/work` is empty in the image; it is the flash partition the start script reads from.
 
 The start script `/etc/rc.sysinit` mounts tmpfs on `/tmp`, `/var` and `/etc` and copies the read-only `/etc` into the writable tmpfs copy. `/etc/fstab` mounts three flash partitions as YAFFS: `/dev/mtdblock1` on `/boot/image_A`, `/dev/mtdblock2` on `/boot/image_B`, and `/dev/mtdblock3` on `/work`. `/work` holds the configuration overrides the start script reads. Established from the text of the files.
 
@@ -111,15 +111,20 @@ These are the names of the programs and libraries in each filesystem, with the l
 - **L1 controller programs** in `/stand/sysco/bin`, all four: `l1` (main program), `lbi.bit`, the I/O bitstreams listed above, and the helpers `clkset`, `i2cdetect`, `i2cdump`, `i2cset`, `i2cspeed`, `i2cswitch`, `jtagport`, `spiload`, `ulisten`, `uloop`, `watchdogd`. Established from the listing. The 2.6 images add `l1log`, `resetmon`, the `cfg_diff`, `cfg_dump` and `cfg_snap` helpers, and the scan configuration files under `/stand/sysco/cfg/scan`. Established.
 - **L2 programs** in `/stand/sysco/bin`: `l2`, `l2dhcps`, `l2passwd`, `l2sim`, `l2staticip`, `l2term` and `webs` in all four, and `l2setmac`, `l2slit`, `l2tune` in the 2.6 images only. `/web` holds `home.asp` and a logo, next to `webs`. The name `webs` as a web server is inferred.
 - **Diagnostic programs** added by the 1.48.1 2.6 images: `l1cmd`, `netwatch`, `rdmem`, `rdmem8`, `rdmem16`, `wrmem`, `wrmem8`, `wrmem16`. Established.
-- **Shared libraries** for the L1 programs: `libsys.armlinux.so`, `libmain.armlinux.so`, `libapi.armlinux.so`, `libscan.armlinux.so`, `libRouter.armlinux.so`, `libIRouter.armlinux.so`. The sizes of the libraries and the L1 program differ between the 1.44.0 and 1.48.1 images. Established.
+- **Shared libraries** for the L1 programs: `libsys.armlinux.so`, `libmain.armlinux.so`, `libapi.armlinux.so`, `libscan.armlinux.so`, `libRouter.armlinux.so`, `libIRouter.armlinux.so`. In the 2.6 pair the six libraries and the L1 program differ in size between 1.44.0 and 1.48.1 (`libsys` 94,468 and 69,844 bytes; `l1` 1,925,560 and 1,976,140 bytes). In the legacy pair only `l1` differs (1,363,912 and 1,363,924 bytes). Established.
 
-Startup from `/etc/inittab` (text): `l1` runs on the console in runlevels 3 to 5, `l2` and `webs` in runlevels 4 and 5, and `watchdogd` in runlevels 1 to 5. The network daemons start in runlevels 2 to 5. Established from the text.
+Startup from `/etc/inittab` (text): `l1` runs on the console in runlevels 3 to 5, `l2` and `webs` in runlevels 4 and 5, and `watchdogd` in runlevels 1 to 5. The network daemons start in runlevels 2 to 5. These lines hold in all four packages. Established from the text.
+
+The other inittab lines differ by package. The legacy images start neither `ifplugd` nor `resetmon`. The 2.6 images of both versions start `ifplugd` in runlevels 2 to 5, to watch the network link. The 1.44.0 2.6 image has the `resetmon` line commented out; the 1.48.1 2.6 image enables it in runlevels 1 to 5, runs `netwatch` through `/bin/sh` in runlevels 4 and 5, starts `l1` with `-bg`, and gives the login shell runlevels 1 to 5 (`sh:12345`; the other three use `sh:12`). Established from the text.
+
+`/etc/rc.sysinit` is the same in the 1.44.0 and 1.48.1 2.6 packages. After mounting, it takes `/work/sysconfig` if present, sets the clock from the real-time clock, imports the boot environment with `l1 -env`, and runs `l2setmac` when `eth0` exists. Established from the text.
 
 ## Differences between the four packages
 
 - Legacy to Linux 2.6, in both versions: `gdbserver` moves from `/usr/bin` to `/bin`, `/lib/libncurses` and `/lib/libcurses` appear, the `/stand/sysco/bin` set gains `l1log`, `l2slit`, `l2tune`, `l2setmac`, `resetmon` and the `cfg_*` helpers, the scan configuration directory appears, and the bitstream list gains `1955`, `191010`, `dense_rtr`, `dorado` and `ip71` while losing `ip41`.
 - 1.44.0 to 1.48.1, Linux 2.6: adds `l1cmd`, `netwatch`, and the `rdmem` and `wrmem` families. The bitstream names do not change; the `dense_rtr` and `191010` bitstreams change size (221,853 to 224,751 bytes, and 107,584 to 107,653 bytes).
-- 1.44.0 to 1.48.1, legacy: the bitstream and program names do not change. The `l1` and `l2` binaries and some libraries differ in bytes.
+- 1.44.0 to 1.48.1, legacy: the file set is unchanged, and only `busybox`, `l1` and `l2` differ in bytes. The libraries, bitstreams and scripts are identical. Established from the hash of every file in the two packages.
+- 1.44.0 to 1.48.1, Linux 2.6, bytes: 25 files differ, the `/bin/busybox`, `/boot/bootldr.bin`, `/etc/ifcfg-eth0`, `/etc/inittab`, `l1`, `l2`, `webs`, `l2slit`, `l2term`, `l2tune`, `uloop`, `ulisten`, `resetmon`, the three `cfg_*` helpers, `/usr/bin/strace`, the `dense_rtr` and `191010` bitstreams, and the six shared libraries. Established.
 
 ## Open items
 
