@@ -31,3 +31,10 @@ image	protocol	element	value	grade	evidence	byte_check	status	doc
 6.5.30:l1#5	image	first-bank metadata record	48 bytes, type 4, length 0x30, 32-bit word sum zero	established	body 0xffeb1798 (2MB image)	ok	understood	docs/l1/protocols.tsv
 6.5.30:l1#5	image	supported-brick string	"O5#=?": brick-type characters this package accepts (label 2MB image)	established	body 0xffeaaa6e, pointed to by record word 9	ok	understood	docs/l1/protocols.tsv
 6.5.30:l1#1	image	supported-brick string	"%4A?": brick-type characters this package accepts (label Fuel/PE/O300 1MB image)	established	body 0xffe79a3f, pointed to by record word 9	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	I/O expander descriptor array (Origin 300)	17 sixteen-byte descriptors: form, segment, address, register, input bits, mask, applied value, interrupt bits, hook, name; first entry COM CONTROL at address 0x4c, segment 0	established	body 0xffe45c90, registered by 0xffe45990	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	bus-switch descriptor (Origin 300)	form 0, address 0xee, name IP45	established	body 0xffe45c88	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	bus-switch channel bytes	switch data byte for downstream channel 0 to 4: 0x00, 0x04, 0x05, 0x06, 0x07	established	body 0xffe6a922	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	monitor descriptors (Origin 300)	three type 1 monitors on bus byte 0 at addresses 0x58, 0x5a, 0x5c; register 0x47 values 0xa0, 0xa0, 0x20	established	body 0xffe45de8, registered by 0xffe45990	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	supply descriptor 0 (Origin 300)	12 V entry, enable on expander 4 mask 0x80, no monitor	established	body 0xffe45e0c	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	setting getter dispatch table	0xb3 signed 16-bit offsets from the table start, one per setting number	established	body 0xffe595b0	ok	understood	docs/l1/protocols.tsv
+6.5.30:l1#1	image	setting 9 (brick type) getter	moveq 0x20 then a shared byte read at record offset 2 plus 0x20	established	body 0xffe597f4	ok	understood	docs/l1/protocols.tsv
