@@ -11,11 +11,11 @@ What is read, by area. The tables below the markers are generated; the areas tab
 | L1 M-Bus master, board EEPROM records, environment task | read ([l1/mbus.md](l1/mbus.md)) |
 | L1 USB device side | read at the descriptor, control, bulk and lower-controller level ([l1/usb-overview.md](l1/usb-overview.md)) |
 | L1 router, node UART, RS-422 peer links | read for the Origin 300 brick type ([l1/rs422-router.md](l1/rs422-router.md)) |
-| L1 request catalogue | 46 codes for the Origin 300 image ([l1/request-codes.tsv](l1/request-codes.tsv)); other versions not compared |
+| L1 request catalogue | 46 codes for the Origin 300 image ([l1/request-codes.tsv](l1/request-codes.tsv)); general codes compared across all four sets ([version-diffs.md](version-diffs.md)); other dispatchers not compared |
 | L1 other MCF5206e peripherals (chip selects, DRAM, timers, on-chip UARTs) | not tabulated; see open questions |
 | L1 C-brick, I-brick and R-brick personalities, 2 MB images | not read |
 | L1 ARM S3C2410 Linux images | kernel and cramfs located; userland not read |
-| L2 PowerPC image | layout only |
+| L2 PowerPC image | layout and byte measurements across the four sets ([version-diffs.md](version-diffs.md)); cramfs file tree not walked |
 | Host tools | ELF function tables only |
 
 <!-- inventory:begin -->

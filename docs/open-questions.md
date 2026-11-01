@@ -4,7 +4,7 @@ Each entry lists what has been tried and the next route. Move an answered questi
 
 ## Other versions
 
-- The request catalogue, I/O register table and protocol rows are read in L1 1.44.0, package 1 (Fuel/PE/O300 1 MB) only. Routes: locate the same dispatch tables in 1.24.8, 1.32.15 and 1.48.1 by their jump-table shape (the general-request table has entries for codes 0x0000 to 0x0011) and diff the handler set. Next: 1.48.1 package 1, whose load layout is identical (same length 0xefd8c).
+- The I/O register table and protocol rows are read in L1 1.44.0, package 1 (Fuel/PE/O300 1 MB) only. The general request catalogue is compared across the sets in [version-diffs.md](version-diffs.md); the I/O and protocol rows are not. Route: run the same register scan over the 1.48.1 package, whose load layout is identical (same length 0xefd8c).
 - Which request codes does each non-Origin-300 ColdFire package add or drop? Route: the same table-shape search in packages 0, 2, 3 and 5.
 
 ## L1 hardware seen by the code
