@@ -46,7 +46,7 @@ The segment byte is not a wire address. The board registers one bus-switch descr
 | 6 to 9 | when the switch's remembered channel is nonzero (segments 2 to 5), one byte `0x00` to `0xee` first; then index 9 is written `0xf0`, `0xf1`, `0xf2` or `0xf3` for segments 6, 7, 8 and 9 (skipped when the shadow already holds that value) |
 | other | an error is logged (`Illegal IP45 brick I2C bus select`) |
 
-Segments 2 to 5 are therefore the four downstream channels of the switch (the usual enable bit `0x04` plus a two-bit channel), and segments 6 to 9 are the four DIMM identification EEPROM routes of [mbus.md](mbus.md), selected through the `BUS SELECT` expander. A repeated select of the same segment sends nothing. The firmware never reads the switch back. Established for the bytes sent; inferred that the part at `0xee` is a four-channel bus switch (no image names it).
+Segments 2 to 5 are therefore the four downstream channels of the switch (the usual enable bit `0x04` plus a two-bit channel), and segments 6 to 9 are the four DIMM identification EEPROM routes of [mbus.md](mbus.md), selected through the `BUS SELECT` expander. A repeated select of the same segment sends no switch byte, though segment 1 still rewrites the expander. The firmware never reads the switch back. Established for the bytes sent; inferred that the part at `0xee` is a four-channel bus switch (no image names it).
 
 ## The Origin 300 descriptors (established)
 
