@@ -1,0 +1,36 @@
+image	library	symbol	address	bytes	role	grade	evidence
+L2 1.44.0	libdrivers	flash_init	0x17a0	812	map the 4 MiB flash window through /dev/mem, trying 0xfc000000 then 0xfe000000, and create the access semaphore; returns 0 or -2	established	read in full; see libdrivers.md
+L2 1.44.0	libdrivers	flash_lock	0x1acc	204	take the flash semaphore (wait for zero, add one, undo on exit); -1 on semop failure; no-op without a semaphore	established	read in full
+L2 1.44.0	libdrivers	flash_unlock	0x1b98	204	release the flash semaphore (add -1); -1 on semop failure	established	read in full
+L2 1.44.0	libdrivers	flash_read_addr	0x1c64	176	host pointer for a flash address: mapping + (addr + flash_addr_offset - window base)	established	read in full
+L2 1.44.0	libdrivers	flash_read	0x1d14	168	copy len bytes from flash into a buffer under the lock; no range check; returns 0	established	read in full
+L2 1.44.0	libdrivers	flash_seq_done	0x1e50	264	poll a word until the toggle bits of both devices stop changing; 0 done, 1 busy (mode 0), -1 after an error flag	established	read in full
+L2 1.44.0	libdrivers	flash_erase_ram	0x1f58	152	issue the sector-erase command sequence to one sector and poll; 0 or -1	established	read in full; table at 0x29b8
+L2 1.44.0	libdrivers	flash_program_ram	0x1ff0	120	issue the word-program sequence, store one word and poll; 0 or -1	established	read in full; table at 0x29f8
+L2 1.44.0	libdrivers	flash_get_id	0x2068	164	run reset and identification sequences and read the manufacturer and device words	established	read in full; tables at 0x2958 and 0x2a10
+L2 1.44.0	libdrivers	flash_autoselect_test	0x210c	216	check the identification words against 0x00010001 and 0x22282228; -1 on mismatch	established	read in full
+L2 1.44.0	libdrivers	flash_erase_all	0x21e4	184	erase the whole 4 MiB window through flash_erase	established	read in full
+L2 1.44.0	libdrivers	flash_erase	0x229c	788	erase the sectors overlapping a range, skipping blank ones; -900 range, -903 erase failure	established	read in full
+L2 1.44.0	libdrivers	flash_program	0x25b0	612	program a range word by word, skipping equal words, verifying; -900 range, -901 program, -902 verify	established	read in full
+L2 1.44.0	libdrivers	sector_map	0x28bc	156	39 per-device sector end addresses: 31 of 64 KiB then eight of 8 KiB; the code doubles them	established	bytes read; doubling at 0x240c
+L2 1.44.0	libdrivers	sector_map_size	0x12ecc	4	number of sector map entries, 39	established	bytes read
+L2 1.44.0	libdrivers	flash_addr_offset	0x12ec8	4	offset added to caller addresses; set only when the window is found at a non-standard base	established	read in flash_init and every user
+L2 1.44.0	libdrivers	FI	0x12c34	44	window state: base, end, then three words not used by this library (0xfe040000, 0, 0xfe040000, 0, 0x00300000)	inferred	first two words used; the rest only seen as initial data
+L2 1.44.0	libpart	format_brick_id	0x2cd0	596	write a brick identifier as rack digits, type letter and two slot digits; ERROR for a type index above 15	established	read in full
+L2 1.44.0	libpart	parse_brick_id	0x2f24	1132	parse the brick text back to a 16-bit identifier; errors -2 to -8, -10, -11	inferred	error paths and calls read; final packing not transcribed
+L2 1.44.0	libpart	format_rack_id	0x3390	380	write a rack number as three digits	established	read in full
+L2 1.44.0	libpart	parse_rack_id	0x350c	1092	parse 1 to 3 digits to a rack field (rack shifted left 6); errors -2 to -6	established	read in full
+L2 1.44.0	libpart	unpack_mode_db	0x3950	5988	validate the header and unpack layouts, environment blobs and modes into mode records	established	read from 0x3950 to 0x5094
+L2 1.44.0	libpart	unpack_envs	0x50b4	428	split a blob of NUL-terminated strings into allocated strings with a count	established	read in full
+L2 1.44.0	libpart	get_cksum	0x5260	84	checksum of a buffer; calls chksum	established	read in full
+L2 1.44.0	libpart	create_default_db	0x52b4	192	clear the buffer and write an empty-body header, version 1	established	read in full
+L2 1.44.0	libpart	partid_for_brick	0x5374	248	partition number of a brick in a given mode; 0 unpartitioned, -1 absent	established	read in full
+L2 1.44.0	libpart	get_partid_for_brick	0x546c	92	partid_for_brick on the working mode	established	read in full
+L2 1.44.0	libpart	env_for_part	0x54c8	392	render a partition environment as NAME NUL VALUE NUL pairs plus two NULs	established	read in full
+L2 1.44.0	libpart	get_env_for_part	0x5650	92	env_for_part on the working mode	established	read in full
+L2 1.44.0	libpart	check_reboot_status	0x56ac	516	mark partitions whose brick membership differs between two modes; returns the count	established	read in full; role of the marks inferred
+L2 1.44.0	libpart	save_mode	0x58b0	72	copy the working mode to the saved mode (0x8630 bytes)	established	read in full
+L2 1.44.0	libpart	compare_modes	0x58f8	76	check_reboot_status on saved and working modes	established	read in full
+L2 1.44.0	libpart	chksum	0x5944	208	POSIX cksum CRC	established	read in full
+L2 1.44.0	libpart	__lshrdi3	0x5a14	64	compiler support: logical shift right of a 64-bit value	established	read in full
+L2 1.44.0	libpart	brick_types	0x15c90	17	table of 16 brick type letters, crikxdpn%9012345	established	bytes read
