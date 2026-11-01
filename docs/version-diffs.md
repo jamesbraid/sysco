@@ -83,6 +83,41 @@ Handler bodies, against 1.44.0 (normalized text, see the method):
 
 The request codes for other dispatchers, the command loop (code 0x0000 under task 3, for example) and the flash and peer forwarding paths, are not compared here.
 
+## L1 general request codes, every set with the Origin 300 package
+
+`scripts/l1_request_catalogue.py` runs the compare-chain interpreter of `version_diff.py` over the Fuel/PE package of each set that carries one: 6.5.22 to 6.5.30 and both patches, eleven sets in all (established). The sets 6.5.20 and 6.5.21 have a different first package and are not covered.
+
+- [version-diffs/l1-request-catalogue.tsv](version-diffs/l1-request-catalogue.tsv): every accepted code in each set, with its handler address, a hash of the handler's normalised text, its line count, and how it compares with the same code in 1.44.0.
+- [version-diffs/l1-request-changes.tsv](version-diffs/l1-request-changes.tsv): codes added or removed between consecutive sets, and codes whose handler text changes. A handler that only moved is not listed.
+
+Scope: the general request chain only (task 6 in [l1/request-codes.tsv](l1/request-codes.tsv)). The command loop, the flash and power-bay tasks and the peer forwarding paths are not in these tables. Reply sizes are not extracted per handler here; the curated 1.44.0 rows state them.
+
+The handler text is a literal comparison of the disassembly with addresses masked. A difference can be a real change or a register or frame-offset change in the same logic, and the tables do not separate the two. For 0x0001, 0x0002 and 0x0003 between 1.30.6 and 1.32.6, the first differing lines are register choices (`move.l d0,d5` against `move.l d0,d4`); the rest of those handlers is not read.
+
+| Set | Codes | Same text as 1.44.0 | Differs only in RAM operands | Text differs | Not in 1.44.0 |
+|---|---:|---:|---:|---:|---:|
+| 1.24.8 | 37 | 1 | 0 | 35 | 1 |
+| 1.26.5 | 39 | 1 | 0 | 36 | 2 |
+| 1.28.3 | 40 | 5 | 0 | 32 | 3 |
+| 1.30.6 | 38 | 2 | 0 | 36 | 0 |
+| 1.32.6 | 38 | 10 | 0 | 28 | 0 |
+| 1.32.15 | 38 | 10 | 0 | 28 | 0 |
+| 1.34.2 | 38 | 10 | 0 | 28 | 0 |
+| 1.38.4 | 39 | 37 | 2 | 0 | 0 |
+| 1.40.5 | 39 | 35 | 4 | 0 | 0 |
+| 1.44.0 | 39 | 39 | 0 | 0 | 0 |
+| 1.48.1 | 39 | 39 | 0 | 0 | 0 |
+
+Codes added and removed between consecutive sets (established, from the accepted-code runs):
+
+- 1.24.8 to 1.26.5: adds 0x0011 and 0x4001.
+- 1.26.5 to 1.28.3: adds 0x0012.
+- 1.28.3 to 1.30.6: removes 0x0012, 0x3001 and 0x4001; adds 0x100c.
+- 1.34.2 to 1.38.4: adds 0x4002.
+- The other steps add and remove nothing.
+
+Handler text changed between consecutive sets: 36 codes from 1.24.8 to 1.26.5, 36 from 1.26.5 to 1.28.3, 36 from 1.28.3 to 1.30.6, 36 from 1.30.6 to 1.32.6, 2 from 1.32.15 to 1.34.2 and 28 from 1.34.2 to 1.38.4 (all inferred; literal text, see above). RAM-only changes: 11 from 1.32.6 to 1.32.15, 9 from 1.32.15 to 1.34.2, 6 from 1.38.4 to 1.40.5 and 4 from 1.40.5 to 1.44.0. Nothing changes from 1.44.0 to 1.48.1, which matches the earlier note.
+
 ## L2 image
 
 | Set | Kernel (decompressed) | Kernel bytes | cramfs offset | cramfs size |
@@ -102,7 +137,8 @@ The cramfs trees are walked by `scripts/l2_extract.py`: every inode offset count
 ## Open
 
 - L2: fingerprint the daemon, the libraries and the kernel functions across the four sets (the trees themselves now extract).
-- Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set.
+- L2 request codes: the task-10 catalogue in [l2/request-codes.tsv](l2/request-codes.tsv) is read from 1.44.0 only. The other L2 sets are not carved for it, so their partition-task codes are not tabulated.
+- Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set. The general chain is covered for every L1 set with the Origin 300 package (above).
 - The six bytes at `0x7fd39` and `0xefd39` in 1.44.0 and 1.48.1, and their pointers.
 - The 63.7 KB fill row at `0xffe00b28` (same length in all four sets): whether any part of it is used is not read.
 - Whether the 1.24.8 handler stubs branch into shared code that is the same in other sets.
