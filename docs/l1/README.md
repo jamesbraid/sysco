@@ -21,6 +21,7 @@ Curated tables, read by `scripts/sysco_tables.py` (every row carries a grade and
 | [request-codes.tsv](request-codes.tsv) | the request catalogue by task and code |
 | [io-registers.tsv](io-registers.tsv) | memory-mapped registers and external devices the code touches |
 | [protocols.tsv](protocols.tsv) | descriptors, framing, routing and record formats, some with byte checks |
+| [packages.tsv](packages.tsv) | one layout row per Linux L1 package: kernel, CramFS and entry counts |
 
 ## Listing
 

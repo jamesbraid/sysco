@@ -41,7 +41,7 @@ Never reword an entry to change its grade. An entry written quickly and not yet 
 
 `scripts/inventory.py` (shared byte for byte with the sibling repositories) measures the host tools and checks `root/` against `scripts/inventory-root.sha256`. `scripts/sysco_tables.py` measures the firmware: images, packages, functions per package, request codes, I/O registers and protocols. Both write to [docs/inventory/](docs/inventory/README.md); regenerate in the same commit as any note that explains an item.
 
-A row is **understood** when a curated entry in `docs/l1/` (functions, request codes, I/O registers, protocols) gives it a grade, a role and a locator, and its byte checks pass. A row is **located** when its address, offset or hash is cited in a note. The repository is finished when every table reaches understood or has an unknown entry with its routes listed.
+A row is **understood** when a curated entry in `docs/l1/` (functions, request codes, I/O registers, protocols, packages) gives it a grade, a role and a locator, and its byte checks pass. A row is **located** when its address, offset or hash is cited in a note. The repository is finished when every table reaches understood or has an unknown entry with its routes listed.
 
 Curated entries that name a package are checked against the bytes on every run: a handler address outside the body, or a `check` cell that does not match, fails `scripts/sysco_tables.py`.
 

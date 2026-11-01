@@ -14,6 +14,7 @@ Inputs besides root/:
   docs/l1/request-codes.tsv  the request catalogue
   docs/l1/io-registers.tsv   register and device accesses read from the code
   docs/l1/protocols.tsv      descriptors, framing and routing, with optional byte checks
+  docs/l1/packages.tsv       one layout row per Linux L1 package, graded and located
 A curated row that names a package is checked against the bytes: handler addresses must lie in
 the body, and a `check` cell (bytes:OFFSET:HEX or sum32:OFFSET:LENGTH, body offsets) must hold.
 
@@ -455,6 +456,12 @@ def main():
     for r in pkgs:
         s, d = status_of_image({'sha256': r['sha256']})
         r['status'], r['doc'] = s, d
+    # a Linux package is understood once a curated row grades its layout
+    linux_rows = {r['package']: r for r in tsv_read(os.path.join(REPO, 'docs/l1/packages.tsv'))}
+    for r in pkgs:
+        c = linux_rows.get(r['key'])
+        if c and c['grade'] in ('established', 'inferred') and len(c['role'].split()) >= 4 and c['locator']:
+            r['status'], r['doc'] = 'understood', 'docs/l1/packages.tsv'
     bodymap = bodies(pkgs)
     reqs, ios, prots = curated(bodymap)
     tsv_write('images', ['path', 'release', 'kind', 'arch', 'version', 'bytes', 'sha256', 'copies', 'detail', 'status', 'doc'], images)
