@@ -5,7 +5,7 @@ L2 1.44.0	bin/l2	/dev/sgil1_N	0x40095304	read	9-byte record	SGIL1_READ_CFG	estab
 L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005301	none	-	SGIL1_RESET_READ	established	issued at 0x10004320; kernel prints the matching string for this request (0x9e2dc, 0x9e364)
 L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005302	none	-	SGIL1_RESET_WRITE	established	issued at 0x10004270; kernel prints the matching string (0x9e2ec, 0x9e320)
 L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005303	none	-	SGIL1_RESET_DEVICE	established	issued at 0x100042c0, 0x1000436c and 0x100043d8, after the read or write reset or after a failure of one; kernel 0x9e2c4
-L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005305	none	-	reset (unnamed)	established	issued at 0x1000424c instead of the 0x5302 and 0x5301 sequence when the driver revision is above 0; shares the write-reset kernel case (0x9e300); no name string exists
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005305	none	-	reset (unnamed)	established	issued at 0x1000424c instead of the 0x5302 and 0x5301 sequence when the driver revision is above 0, followed by 0x5303 when the caller asks for a device reset; the kernel runs the write reset and then the read reset for it (0x9e300 to 0x9e364); no name string exists
 L2 1.44.0	bin/l2gui	/dev/fb0	0x4600	read	frame-buffer variable screen info	FBIOGET_VSCREENINFO	inferred	number and use match the public Linux frame-buffer interface; argument not decoded
 L2 1.44.0	bin/l2gui	/dev/fb0	0x4602	read	frame-buffer fixed screen info	FBIOGET_FSCREENINFO	inferred	as above
 L2 1.44.0	bin/l2gui	/dev/fb0	0x4604, 0x4605	read, write	colour map	FBIOGETCMAP, FBIOPUTCMAP	inferred	as above; calls at 0x1003fd34, 0x1003fed8, 0x1003ff24

@@ -9,6 +9,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [daemon.md](daemon.md) | the `l2` daemon: options and connection modes, service ports, serial and USB links to L1 controllers, the SGI L1 driver's ioctls, flash access, NVRAM, VPD records, the display |
 | [libdrivers.md](libdrivers.md) | the flash library, routine by routine: the 4 MiB window, locking, command sequences, erase and program, return codes |
 | [libpart.md](libpart.md) | the partition library: header word, checksum, body layout, lookups, brick and rack identifiers |
+| [userspace.md](userspace.md) | the contract of the shipped programs: how to unpack each held image, every device node and ioctl with argument layouts, NVRAM, VPD and display access, what each link mode expects at the far end, the USB link as the daemon sees it, and the reply to the partition service requests |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
 | [router-packet.md](router-packet.md) | the router packet in memory: segment record, the builder, writer and free routines of `libIRouter` |
