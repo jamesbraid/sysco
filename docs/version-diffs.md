@@ -94,6 +94,8 @@ Scope: the general request chain only (task 6 in [l1/request-codes.tsv](l1/reque
 
 The handler text is a literal comparison of the disassembly with addresses masked. A difference can be a real change or a register or frame-offset change in the same logic, and the tables do not separate the two. For 0x0001, 0x0002 and 0x0003 between 1.30.6 and 1.32.6, the first differing lines are register choices (`move.l d0,d5` against `move.l d0,d4`); the rest of those handlers is not read.
 
+In every set, every handler except the 0x4000, 0x4001 and 0x4002 ones ends in an unconditional branch or jump to code that other handlers also use, and the code it reaches is not part of the compared text (established for all eleven sets, from the last instruction of each handler). The short ones only set up their parameters before the branch: in 1.44.0 the handlers of 0x0001, 0x0009, 0x000b, 0x000e, 0x1003, 0x100a, 0x2001 and 0x2005 are 14 lines or fewer, and 0x100a is two. For those, "same text" or "text changed" speaks only to the setup lines, not to what the shared code then does. 0x0001 in 1.24.8, 1.26.5 and 1.28.3 is two lines (`moveq #3` into a register, then the branch), so its change to a different register between 1.24.8 and 1.26.5 says nothing about the handler's behaviour. A change of this kind is a candidate to read, not a finding.
+
 | Set | Codes | Same text as 1.44.0 | Differs only in RAM operands | Text differs | Not in 1.44.0 |
 |---|---:|---:|---:|---:|---:|
 | 1.24.8 | 37 | 1 | 0 | 35 | 1 |
