@@ -22,3 +22,12 @@ package	protocol	element	value	grade	evidence	check
 6.5.30:l1#1	packet	descriptor layout	command 16-bit at +0x22, argument count at +0x20, eight-byte descriptors from +0x24 (type flags, chain position, payload length, value or offset); integer type 0 with value at +4, string type 1	established	host updater and L1 reply assembler 0xffe77eb4	
 6.5.30:l1#1	M-Bus	board EEPROM devices	node board 7-bit 0x54, I/O-8 board 0x52 on bus 0; four memory modules at 0x50 behind bus selections 6 to 9	established	0xffe45990-0xffe45a70, 0xffe45dcc-0xffe45e0c	
 6.5.30:l1#1	M-Bus	EEPROM read convention	at most 32 bytes per read within a 256-byte page; upper offset bits go into the slave address, the low byte is sent before the receive phase	established	0xffe6b03c-0xffe6b14c	
+6.5.30:l1#0	image	first-bank metadata record	48 bytes, type 4, length 0x30, 32-bit word sum zero	established	body 0xffe7fd24 (Base 1MB image)	sum32:0x7fd24:48
+6.5.30:l1#0	image	supported-brick string	"CIPXYN&?RG": brick-type characters this package accepts (label Base 1MB image)	established	body 0xffe79adf, pointed to by record word 9	bytes:0x79adf:43495058594e263f5247
+6.5.30:l1#2	image	first-bank metadata record	48 bytes, type 4, length 0x30, 32-bit word sum zero	established	body 0xffeaa28c (MIPS 2MB image)	sum32:0xaa28c:48
+6.5.30:l1#2	image	supported-brick string	"CIPXYN&%6780VQE9A?RG": brick-type characters this package accepts (label MIPS 2MB image)	established	body 0xffea39bd, pointed to by record word 9	bytes:0xa39bd:43495058594e26253637383056514539413f5247
+6.5.30:l1#3	image	first-bank metadata record	48 bytes, type 4, length 0x30, 32-bit word sum zero	established	body 0xffeaf75c (Legacy 2MB image)	sum32:0xaf75c:48
+6.5.30:l1#3	image	supported-brick string	"5O#=?": brick-type characters this package accepts (label Legacy 2MB image)	established	body 0xffea8b3d, pointed to by record word 9	bytes:0xa8b3d:354f233d3f
+6.5.30:l1#5	image	first-bank metadata record	48 bytes, type 4, length 0x30, 32-bit word sum zero	established	body 0xffeb1798 (2MB image)	sum32:0xb1798:48
+6.5.30:l1#5	image	supported-brick string	"O5#=?": brick-type characters this package accepts (label 2MB image)	established	body 0xffeaaa6e, pointed to by record word 9	bytes:0xaaa6e:4f35233d3f
+6.5.30:l1#1	image	supported-brick string	"%4A?": brick-type characters this package accepts (label Fuel/PE/O300 1MB image)	established	body 0xffe79a3f, pointed to by record word 9	bytes:0x79a3f:2534413f

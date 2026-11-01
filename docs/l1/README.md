@@ -9,6 +9,7 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | [mbus.md](mbus.md), [mbus-environment-task.md](mbus-environment-task.md), [environment.md](environment.md), [board-records.md](board-records.md), [env-reset-debug.md](env-reset-debug.md) | the M-Bus master, EEPROM records, the environment task and its reset countdown |
 | [usb-overview.md](usb-overview.md), [usb-control.md](usb-control.md), [usb-bulk.md](usb-bulk.md), [usb-descriptor-fields.md](usb-descriptor-fields.md), [usb-descriptors-routing.md](usb-descriptors-routing.md), [usb-controller-registers.md](usb-controller-registers.md), [usb-lower-controller.md](usb-lower-controller.md), [usb-timeouts.md](usb-timeouts.md) | the USB device side |
 | [mcf5206e-peripherals.md](mcf5206e-peripherals.md) | the on-chip peripherals and external devices the code touches besides the M-Bus and USB |
+| [personalities.md](personalities.md) | the other four ColdFire packages of 1.44.0 against the Origin 300 one: supported-brick strings, how the brick-type character is chosen, request catalogue, linked board modules |
 | [rs422-router.md](rs422-router.md) | the packet router, the node UART link and the RS-422 peer links |
 | [debug-console.md](debug-console.md), [debug-task.md](debug-task.md) | the text command task and the `debug` command |
 | [unclassified-regions.md](unclassified-regions.md), [unguarded-indexed-anchors.md](unguarded-indexed-anchors.md) | what is known about code and data the linear listing cannot place |

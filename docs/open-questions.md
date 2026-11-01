@@ -22,7 +22,9 @@ Each entry lists what has been tried and the next route. Move an answered questi
 
 ## Images not yet read
 
-- L1 packages 0, 2, 3 and 5 of every set (other brick families) and the two Linux packages: only their layout is tabulated.
+- L1 packages 0, 2, 3 and 5: [l1/personalities.md](l1/personalities.md) compares the 1.44.0 ones with the Origin 300 package (layout, personality selection, request codes, module list). Not read: the board devices each module drives (I/O addresses, expected replies), the other sets' versions of these packages, and the added request handlers other than 0x0012.
+- What is word 7 of the bank record (`0xffe7fd24` and its siblings in each package)? Tried: xor, byte sum, 16-bit and little-endian word sums, CRC-32, Adler-32 and two rotating sums over the pre-record bank, with and without the record header; none matches. Next: find the code that reads the record (the loader reads words 0 to 3 and the metadata fields) and see whether anything consumes word 7.
+- Who writes persistent setting keys 9 (brick type) and 0x10 (sub-type)? Route: follow the setter reached from the debug console and from request codes in task 6.
 - The L2 image: container, cramfs, file inventory and boot sequence are read ([l2/](l2/image-layout.md)). Unread: the boot loader (bytes 0x34 to 0x4a218 of `l2.bin`), the kernel's entry path and board setup, the L2 daemon's request handlers outside the partition task, `libscan`, the display and touch protocol in `l2gui`. The cramfs CRC field is not reproduced (routes tried: four spans, see the layout note).
 - `pbay.bin` (5,888 bytes, identical in all four sets): format not examined.
 - The host tools' command tables (`l1cmd`, `l2cmd`, `flashsc` options and the update protocol they speak to the controllers).
