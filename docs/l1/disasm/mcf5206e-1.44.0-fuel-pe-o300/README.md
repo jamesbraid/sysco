@@ -7,7 +7,7 @@ Source: `l1.bin` of the IRIX 6.5.30 `field_diags_sysco` product (sha256 `c355c54
 | `l1.lst` | linear listing of the body: address, instruction bytes, mnemonic and operands; data decodes as `.dw` or implausible instructions |
 | `l1.sum` | per-routine summary: calls, resolved references, table jumps, immediate compares |
 
-The firmware's text strings are not committed; read them from the image in `root/`.
+The listing carries no text; `l1.sum` annotates each reference with the short literal it points at. Read longer text from the image in `root/`.
 
 Decoder: a 68040-mode M68K decoder (capstone 5), which covers the ColdFire ISA_A subset the compiler emitted. Routine names used in `l1.sum` section headers are in [../../functions.tsv](../../functions.tsv).
 

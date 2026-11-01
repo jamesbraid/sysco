@@ -4,7 +4,7 @@ This note describes software paths in the selected Origin 300 L1 firmware.
 
 ## Source identity and locators
 
-The selected 982,412-byte range of the IRIX 6.5.30 composite L1 image has SHA-256 `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4`. It identifies itself as version 1.44.0, built 2006-07-17, for the Fuel/PE/Origin 300 family. The first ColdFire flash-bank copy was analysed at load address `0xffe00000`. Subtract that address from each locator below to find the bank-relative offset. The body copy used by the checked analysis has SHA-256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`. Locators come from the committed listing.
+The image is the Origin 300 L1 1.44.0 body described in [package-container.md](package-container.md) (build stamp `20060717182038`, loaded at `0xffe00000`, reset vector `0xffe00400`). Addresses are first-bank; subtract `0xffe00000` for a body offset. Locators are read from the committed listing.
 
 ## Two different serial paths
 

@@ -12,7 +12,7 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | [rs422-router.md](rs422-router.md) | the packet router, the node UART link and the RS-422 peer links |
 | [debug-console.md](debug-console.md), [debug-task.md](debug-task.md) | the text command task and the `debug` command |
 | [unclassified-regions.md](unclassified-regions.md), [unguarded-indexed-anchors.md](unguarded-indexed-anchors.md) | what is known about code and data the linear listing cannot place |
-| public evidence: [ip45-board-fitment.md](ip45-board-fitment.md), [ip45-mbus-public-fitment.md](ip45-mbus-public-fitment.md), [ip45-mbus-public-hardware.md](ip45-mbus-public-hardware.md), [mbus-ds1780-candidate.md](mbus-ds1780-candidate.md), [usb-controller-public-hardware.md](usb-controller-public-hardware.md), [usb-bus-public-evidence.md](usb-bus-public-evidence.md), [usb-l2-revision.md](usb-l2-revision.md), [usb-public-host-drivers.md](usb-public-host-drivers.md) | what published manuals, data sheets and posts say about the board; hints, not findings |
+| public evidence: [ip45-board-fitment.md](ip45-board-fitment.md), [ip45-mbus-public-fitment.md](ip45-mbus-public-fitment.md), [ip45-mbus-public-hardware.md](ip45-mbus-public-hardware.md), [mbus-ds1780-candidate.md](mbus-ds1780-candidate.md), [usb-controller-public-hardware.md](usb-controller-public-hardware.md), [usb-bus-public-evidence.md](usb-bus-public-evidence.md), [usb-l2-revision.md](usb-l2-revision.md), [usb-public-host-drivers.md](usb-public-host-drivers.md) | what published manuals, data sheets and posts say about the board; hints, not findings, each with the software route that would settle it |
 
 Curated tables, read by `scripts/sysco_tables.py` (every row carries a grade and a locator):
 
@@ -26,6 +26,6 @@ Curated tables, read by `scripts/sysco_tables.py` (every row carries a grade and
 
 ## Listing
 
-[disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/) holds the linear listing of that body (`l1.lst`: address, instruction bytes, mnemonic and operands), and a per-routine summary of calls, references and table jumps (`l1.sum`). The firmware's own text strings are not committed; read them from the image in `root/`. The decoder is a 68040-mode M68K decoder; ColdFire-only encodings and data mixed into the text decode as `.dw` words or implausible instructions. Read a listing as a map. `functions.tsv` names are descriptions in our own words, not the firmware's identifiers.
+[disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/) holds the linear listing of that body (`l1.lst`: address, instruction bytes, mnemonic and operands), and a per-routine summary of calls, references and table jumps (`l1.sum`). The listing carries no text; `l1.sum` annotates each reference with the short literal it points at. Read longer text from the image in `root/`. The decoder is a 68040-mode M68K decoder; ColdFire-only encodings and data mixed into the text decode as `.dw` words or implausible instructions. Read a listing as a map. `functions.tsv` names are descriptions in our own words, not the firmware's identifiers.
 
 Package bodies that other sets share byte for byte are listed once in the function table; the listing for other packages and versions is not generated yet.

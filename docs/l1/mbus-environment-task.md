@@ -4,8 +4,7 @@ The selected L1 1.44.0 first-bank program connects its on-chip M-Bus engine to b
 
 ## Evidence and scope
 
-Its selected 982,412-byte package at offset `0xefdd0` has SHA-256 `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4`. All `0xffe...` addresses below locate the selected first-bank program.
-
+The image is the Origin 300 L1 1.44.0 body described in [package-container.md](package-container.md) (build stamp `20060717182038`, loaded at `0xffe00000`, reset vector `0xffe00400`). Addresses are first-bank; subtract `0xffe00000` for a body offset. Locators are read from the committed listing.
 
 ## M-Bus engine and transaction result
 

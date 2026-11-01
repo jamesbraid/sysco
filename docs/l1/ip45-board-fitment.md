@@ -1,6 +1,6 @@
 # Origin 300 IP45 L1 board fitment: public evidence
 
-The published Origin 300 manuals establish the management connectors and the assembly that exposes them. They do not identify the fitted USB device controller, ColdFire part and clock, M-Bus targets, or the electrical wiring between the L1 and L2. These remain board-revision questions. A controller data sheet describes a possible component, not evidence that an IP45 uses it.
+The published Origin 300 manuals establish the management connectors and the assembly that exposes them. They do not identify the fitted USB device controller, ColdFire part and clock, M-Bus targets, or the electrical wiring between the L1 and L2. These stay open (see below). A controller data sheet describes a possible component, not evidence that an IP45 uses it.
 
 | Product and source | Established | Limit |
 | --- | --- | --- |
@@ -16,19 +16,6 @@ Public Origin 300 guides name monitored fan speed, supply state and operating te
 
 ## Search bounds
 
-External public searches then used these exact groups:
+Public searches (board photographs, service manuals, FRU and parts lists, FCC internal photographs, part numbers 030-1673-003, 030-1701-004 and 030-1779 with candidate chip names) surfaced user guides, operator logs, board-level sales and FRU listings and unrelated FCC records. None gave an IP45 schematic, a component-side photograph with readable L1 chip markings, a component-level parts list or an internal-photo exhibit that names the fitted chips. The [HPE Origin 300 service-parts listing](https://store.emprgroup.com.au/hpe-960043545-6-sgi-sr-origin300-6-1-server-q4k81a.aspx) names assemblies such as 030-1797-001 and L1 display parts, not the fitted L1 USB or sensor silicon.
 
-- `SGI Origin 300 IP45 L1 board photo USB controller ColdFire M-Bus`, `SGI
-  Origin 300 service manual IP45 motherboard IO8 L1 USB schematic`, and
-  `Origin 300 IP45 board 030-1779 L1 controller chip markings photograph`.
-- `"030-1673-003" "ColdFire"`, `"030-1701-004" USB controller`, `"IP45"
-  "M-bus" SGI`, and `"SGI Origin 300" schematic I/O-8`.
-- `"Origin 300" "field service" "L1" "IO8"`, `"Origin 300" "service
-  manual" "L1" controller`, `"Origin 300" "FRU" "L1" "IP45"`, and
-  `"Origin 300" "parts list" "L1" controller`.
-- `SGI Origin 300 FCC ID IP45 internal photos` and `"Origin 300" "FCC"
-  "internal photos"`.
-
-These searches surfaced user guides, operator logs, board-level sales/FRU listings and unrelated modern FCC records. No returned IP45-revision schematic, component-side photograph with readable L1 chip markings, component-level FRU list, or relevant FCC internal-photo exhibit identified the fitted chips. The [HPE Origin 300 service-parts listing](https://store.emprgroup.com.au/hpe-960043545-6-sgi-sr-origin300-6-1-server-q4k81a.aspx) names assemblies such as 030-1797-001 and L1 display parts, not the fitted L1 USB or sensor silicon.
-
-A revision-matched I/O-8 and IP45 schematic or component-placement drawing would settle chip fitment, bus addresses, oscillator value, USB D+ pull-up and board-to-board wiring. A legible component-side photograph of both boards with the installed assembly labels would settle part markings, but not hidden traces or address straps. USB descriptors or another product's board cannot settle electrical fitment on the named IP45 revision.
+The fitted parts are therefore settled from software: see the routes in [usb-controller-public-hardware.md](usb-controller-public-hardware.md) and [mbus-environment-task.md](mbus-environment-task.md). A published schematic would be a hint, not a finding.

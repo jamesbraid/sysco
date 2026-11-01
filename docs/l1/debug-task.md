@@ -1,12 +1,10 @@
 # Origin 300 L1 command-response fields for debug requests
 
-The selected Origin 300/IP45 L1 1.44.0 image builds a command response from the command executor's signed result and its output strings. This reading traces plain `debug`, malformed values, the `*` broadcast prefix and the `ctc` peer prefix. It is static firmware evidence.
+The selected Origin 300/IP45 L1 1.44.0 image builds a command response from the command executor's signed result and its output strings. This reading traces plain `debug`, malformed values, the `*` broadcast prefix and the `ctc` peer prefix. It is read from the listing, not from a running controller.
 
-## Checked image and public context
+## Image
 
-The selected 982,412-byte range of the IRIX 6.5.30 composite has SHA-256 `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4`. It identifies as L1 1.44.0, built 2006-07-17 for the Fuel/PE/Origin 300 family. Its ColdFire body has SHA-256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`. The checked analysis uses load address `0xffe00000` and reset vector `0xffe00400`. Its manifest SHA-256 is `c10e34893c411ff206a5e1ad87ec828cf8750d967639c34ca850ca3537b963c2`. It reports 2,982 complete functions of 2,988 found, with six failures. The command parser, executor, output builders, packet builder and response serializer cited below are complete. Instruction listings were checked where parser marker lifetime and response framing affect the conclusion.
-
-The function table, C-like output and instruction listing SHA-256 values are, respectively, `6574e20e239cdf0aa3325300e19efbf20354bfec10e6ea8d7c6edfcd4997671f`, `305455906e423e0e625c0edb0d003e01089b786268ab9d111101bcce4e726b43` and `8b265ad13b54a8cdce5131d6a6f0e0e30eb4ae65c55c55d4fe576cc92de118d5`.
+The image is the Origin 300 L1 1.44.0 body (loaded at `0xffe00000`, reset vector `0xffe00400`; see [package-container.md](package-container.md)). Every address below is read from the committed listing.
 
 ## Response encoding before optional installed filters
 
@@ -30,17 +28,10 @@ For one local target and `* debug nope`, the nested parser follows the same nonm
 
 The selected `ctc` command is an alias for the connected NI port A route (body offset `0x1c854`, handler `0xffe14fa0`). It requires that peer port to be open before forwarding the rest of `ctc debug 269`. If it is closed, the handler returns `-1` with one output line saying that the named port does not appear active. The packet then has code `-1`, count one, one tag-`0x01` text field. For the formatter's chosen port label `P`, its synthetic field is `ERROR: P doesn't appear to be active\n\0`. No local debug switch changes. If the peer is open, this L1 sends a task-3 text request and waits for its reply. A peer response with status zero and one text item yields this L1's response code zero and two text fields: `P:\n\0` and the peer's text, where `P` is the selected port/module name. A peer negative status makes the local executor return `-1` and usually combines the port name with the peer error into one text field when the peer supplies an error text item. A peer negative status with no text produces code `-1` and count zero. If an open peer never answers, the timeout branch adds one no-response text item but does not set the target-failure flag. It can therefore return code zero with count one. These error-code differences are selected-software branch inferences, not measured peer behavior. This selected local image cannot establish the L2 or other peer's response to `debug 269`, or whether that link is fitted and open.
 
-## Discriminating raw exchanges
+## Open points and the routes
 
-1. Issue plain `debug`, then `debug 269`, `debug nope` and `debug 12junk` as
-   separate task-3 text requests. Compare the four-byte codes and field
-   counts, and retain text bytes through line feed and terminating zero. The
-   static prediction is `0/1`, `0/1`, `-1200/1` and `-1200/1` respectively.
-2. Issue `* debug 269` and `* debug nope` while recording the connected
-   module list. One local target predicts `0/2` and `-1/1`. No targets predict
-   `0/0` for both. Any peer changes that hypothesis according to its reply.
-3. Issue `ctc debug 269` with the NI peer port confirmed closed and, if a
-   matching peer is available, open. Closed predicts `-1/1`. An open peer
-   task-3 request and response as well as the original reply.
+- The predicted response shapes above (`0/1`, `-1200/1`, `0/2`, `-1/1`, `0/0` and the `ctc` forms) are read from the branches cited and have not been confirmed against a second reading. Route: re-read the executor (`0xffe1b0f8`), the wildcard handler (`0xffe14acc`) and the `ctc` handler (`0xffe14fa0`) in the 1.48.1 package of the same layout and compare the branch structure; a difference marks a version-specific claim.
+- Which response filters are installed and what they rewrite is not read; the routes are the filter registrations in the boot path and the filter routines themselves.
+- Peer behaviour for `ctc` depends on the peer's own image; the other ColdFire packages in the container carry the same task-3 handler and can be read for the reply shapes.
 
-The earlier debug parser reading owns the numeric and settings branches. This note records the response packet and routing path.
+The numeric and settings branches are in [debug-console.md](debug-console.md); this note covers the response packet and routing path.

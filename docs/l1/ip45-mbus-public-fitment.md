@@ -1,6 +1,6 @@
 # Origin 300 IP45 L1 M-Bus public fitment
 
-The published MCF5206e manual establishes the M-Bus peripheral's parent interrupt path inside that chip. The examined Origin 300 publications do not establish the fitted L1 controller clock, its programmed interrupt level, or which board devices acknowledge M-Bus calls. Those values remain unknown for IP45.
+The published MCF5206e manual establishes the M-Bus peripheral's parent interrupt path inside that chip. The examined Origin 300 publications do not establish the fitted L1 controller clock, its programmed interrupt level, or which board devices acknowledge M-Bus calls. Those values stay unknown until the routes below are followed.
 
 ## Evidence and limits
 
@@ -29,4 +29,4 @@ Its chapter 13, printed pp. 13-2 and 13-7, specifies the M-Bus peripheral and di
   board-revision population remain unresolved. [SGI 007-4365-002,
   printed p. 10.](https://irix7.com/techpubs/007-4365-002.pdf)
 
-The SGI guide's board EEPROM is a candidate to investigate, not an established M-Bus target. Operator-visible temperature and fan readings likewise do not identify their electrical path. A published controller oscillator specification or measurement would settle SCL rate. A permitted record of the MCF5206e SIM interrupt setup on IP45 would settle its programmed level and autovector without changing the generic chip map.
+The SGI guide's board EEPROM is a hint. The firmware establishes that the L1 reads six EEPROM records over the M-Bus ([mbus.md](mbus.md)). Routes for the open items, from software: the interrupt level and priority are the `ICR11` write in the boot path (find the store at `MBAR+0x1e`, see the open question on on-chip peripherals); the clock is not stated in the image, so take it from the timer and UART setup, and from MAME's MCF5206E core for the register meanings.
