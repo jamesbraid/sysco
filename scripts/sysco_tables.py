@@ -111,6 +111,72 @@ def version_of(data):
     return c.most_common(1)[0][0].decode() if c else ''
 
 
+def find_cramfs(pk, start):
+    """Offset of the CramFS superblock at or after start; the signature sits 16 bytes in."""
+    for m in range(start, len(pk) - 32):
+        if pk[m:m + 4] == CRAMFS_LE and pk[m + 16:m + 32] == b'Compressed ROMFS':
+            return m
+    raise ValueError('no CramFS superblock after 0x%x' % start)
+
+
+def _cramfs_inode(img, pos):
+    mode_uid, size_gid, name_off = struct.unpack('<III', img[pos:pos + 12])
+    namelen = (name_off & 0x3f) * 4
+    return {'mode': mode_uid & 0xffff, 'size': size_gid & 0xffffff, 'offset': (name_off >> 6) * 4,
+            'name': img[pos + 12:pos + 12 + namelen].rstrip(b'\0').decode('latin-1'), 'next': pos + 12 + namelen}
+
+
+def _cramfs_file(img, base, ino):
+    """Decompressed bytes of a regular file or symlink; each block's end pointer closes it."""
+    nblk = (ino['size'] + 4095) // 4096
+    ptrs = struct.unpack('<%dI' % nblk, img[base + ino['offset']:base + ino['offset'] + 4 * nblk]) if nblk else ()
+    start, out = base + ino['offset'] + 4 * nblk, bytearray()
+    for p in ptrs:
+        end = base + (p & 0x3fffffff)
+        if p & (1 << 31):
+            out += img[start:end]
+        else:
+            out += zlib.decompressobj().decompress(img[start:end])
+        start = end
+    if len(out) < ino['size']:
+        raise ValueError('CramFS file short by %d bytes' % (ino['size'] - len(out)))
+    return bytes(out[:ino['size']])
+
+
+KINDS = {0o040000: 'dir', 0o100000: 'file', 0o120000: 'symlink', 0o020000: 'chardev', 0o060000: 'blockdev',
+         0o010000: 'fifo', 0o140000: 'socket'}
+
+
+def cramfs_entries(img, base):
+    """Every entry of the CramFS at base, as dicts with path, type, mode, bytes, sha256 and symlink target."""
+    rows = []
+
+    def visit(ino, path):
+        kind = KINDS.get(ino['mode'] & 0o170000, 'other')
+        row = {'path': path, 'type': kind, 'mode': '%o' % (ino['mode'] & 0o7777), 'bytes': ino['size'],
+               'sha256': '', 'target': ''}
+        rows.append(row)
+        if kind == 'dir':
+            pos, end = base + ino['offset'], base + ino['offset'] + ino['size']
+            while pos < end:
+                child = _cramfs_inode(img, pos)
+                visit(child, path.rstrip('/') + '/' + child['name'])
+                pos = child['next']
+        elif kind in ('file', 'symlink'):
+            data = _cramfs_file(img, base, ino)
+            row['bytes'] = len(data)
+            row['sha256'] = sha(data)
+            if kind == 'symlink':
+                row['target'] = data.rstrip(b'\0').decode('latin-1')
+        elif kind in ('chardev', 'blockdev'):
+            # the size field holds a classic 16-bit device number (major in the high byte)
+            row['bytes'] = 0
+            row['target'] = '%d:%d' % (ino['size'] >> 8, ino['size'] & 0xff)
+
+    visit(_cramfs_inode(img, base + 64), '/')
+    return rows
+
+
 def l1_packages(data):
     n = struct.unpack('>I', data[0x2c:0x30])[0]
     out = []
@@ -133,12 +199,22 @@ def l1_packages(data):
             try:
                 z = zlib.decompressobj(31)
                 k = z.decompress(pk[gz:])
+                gz_len = len(pk) - gz - len(z.unused_data)
                 e['kernel'] = '%d bytes sha256 %s' % (len(k), sha(k)[:16])
                 mm = re.search(rb'Linux version (\S+)', k)
                 e['kernel_release'] = mm.group(1).decode() if mm else ''
-            except zlib.error:
+                bm = re.search(rb'#\d+ (?:PREEMPT )?([A-Z][a-z]{2} [A-Z][a-z]{2} +\d+ [\d:]+ [A-Z]{3,4} \d{4})', k)
+                e['kernel_built'] = bm.group(1).decode() if bm else ''
+                e['gzip'] = (gz, gz_len)
+                cf = find_cramfs(pk, gz + gz_len)
+                e['cramfs'] = (cf, struct.unpack('<I', pk[cf + 4:cf + 8])[0])
+                e['files'] = cramfs_entries(pk, cf)
+                e['crc'] = '0x%08x' % struct.unpack('<I', pk[cf + 32:cf + 36])[0]
+            except (zlib.error, ValueError):
                 e['kernel'] = ''
                 e['kernel_release'] = ''
+                e['kernel_built'] = ''
+                e['files'] = []
         else:
             e['family'] = 'ColdFire MCF5206e'
             e['load'], e['last'] = struct.unpack('>II', pk[8:16])
@@ -172,7 +248,7 @@ def build():
     for r in rels:
         d = open(os.path.join(ROOT, r), 'rb').read()
         by_sha.setdefault(sha(d), {'paths': [], 'data': d})['paths'].append(r)
-    images, pkgs, funcs = [], [], []
+    images, pkgs, funcs, files = [], [], [], []
     seen_body = {}
     for h, v in by_sha.items():
         d, paths = v['data'], v['paths']
@@ -192,12 +268,16 @@ def build():
                 row = {'image': p0, 'release': rel, 'index': p['index'], 'offset': '0x%x' % p['offset'],
                        'length': p['length'], 'sha256': p['sha'], 'family': p['family'], 'label': p['label'],
                        'version': p['version'], 'build_stamp': p['stamp']}
+                key = '%s:l1#%d' % (rel, p['index'])
                 if p['linux']:
-                    row['detail'] = 'kernel %s, %s' % (p['kernel_release'], p['kernel'])
+                    row['detail'] = ('kernel %s built %s, %s; gzip at package offset 0x%x length %d; '
+                                     'CramFS at 0x%x length %d crc %s, %d entries' % (
+                                         p['kernel_release'], p['kernel_built'], p['kernel'], p['gzip'][0], p['gzip'][1],
+                                         p['cramfs'][0], p['cramfs'][1], p['crc'], len(p['files'])))
+                    files += [dict(f, package=key) for f in p['files']]
                 else:
                     row['detail'] = 'load 0x%08x last 0x%08x, reset sp/pc %s, body sha256 %s' % (
                         p['load'], p['last'], p['reset'], p['body_sha'])
-                key = '%s:l1#%d' % (rel, p['index'])
                 row['key'] = key
                 row['copies'] = ''
                 pkgs.append(row)
@@ -224,7 +304,7 @@ def build():
             rec.update(kind='other', arch='', version='', detail='')
         images.append(rec)
     # folding: identical package bodies across releases are listed once in `functions`
-    return images, pkgs, funcs
+    return images, pkgs, funcs, files
 
 
 def function_rows(key, p, rel):
@@ -369,7 +449,7 @@ def update_coverage(summary, images, pkgs):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    images, pkgs, funcs = build()
+    images, pkgs, funcs, files = build()
     for r in images:
         r['status'], r['doc'] = status_of_image(r)
     for r in pkgs:
@@ -381,6 +461,7 @@ def main():
     tsv_write('packages', ['key', 'release', 'index', 'offset', 'length', 'sha256', 'family', 'label', 'version', 'build_stamp',
                            'detail', 'status', 'doc'], pkgs)
     tsv_write('firmware-functions', ['image', 'address', 'evidence', 'name', 'grade', 'status', 'doc'], funcs)
+    tsv_write('arm-linux-files', ['package', 'path', 'type', 'mode', 'bytes', 'sha256', 'target'], files)
     tsv_write('request-codes', ['image', 'task', 'code', 'handler', 'name', 'grade', 'handler_in_body', 'note', 'status', 'doc'], reqs)
     tsv_write('io-registers', ['image', 'device', 'window_base', 'offset', 'width_bits', 'name', 'access', 'grade', 'evidence',
                                'status', 'doc'], ios)

@@ -19,6 +19,7 @@ Generated; do not edit. `scripts/inventory.py` writes the host-tool tables, `scr
 | `io-registers.tsv` | register or device offset the code touches | device, window base, offset, width, name, access, grade, evidence |
 | `protocols.tsv` | protocol element (descriptor field, framing rule, route) | protocol, element, value, grade, evidence, byte check result |
 | `firmware-summary.tsv` | table | row counts by status |
+| `arm-linux-files.tsv` | entry of each CramFS in the Linux L1 packages (directories, files, symlinks, device nodes) | package key, path, type, mode, bytes, sha256 (files and symlinks), target (symlink target, or major:minor for device nodes) |
 
 Candidate routine entries are found by byte pattern at even offsets (a `link.w a6` prologue, or the operand of an absolute `jsr`), so some are data. A candidate is a place to look, not a function count.
 
