@@ -1,0 +1,47 @@
+package	task	code	handler	name	grade	note
+6.5.30:l1#1	3	0x0000	ffe1ba5c	command_task_loop	established	any code with one text argument; reply is the status and the output lines as text
+6.5.30:l1#1	6	0x0001	ffe11fe8	general_req_read_debug_switches	established	reply 0 then one int, the 16-bit non-volatile switches
+6.5.30:l1#1	6	0x0002	ffe11ffc	general_req_rack_bay	established	reply 0 then int rack<<6|bay from non-volatile settings
+6.5.30:l1#1	6	0x0003	ffe11ffc	general_req_rack_bay_type	established	same entry as 0x0002; adds the stored brick-type character (0x34 for ip45)
+6.5.30:l1#1	6	0x0004	ffe122a8	general_req_brick_serial	established	reply 0 then text; minus 104 when absent
+6.5.30:l1#1	6	0x0005	ffe122da	general_req_firmware_revision	established	reply 0 then three ints parsed from the version string
+6.5.30:l1#1	6	0x0006	ffe12526	general_req_eeprom_read	established	four ints; areas 0 to 4; minus 104, 105, 107 conditions
+6.5.30:l1#1	6	0x0007	ffe1236a	general_req_eeprom_format	established	one int; reply describes the record kind and area sizes
+6.5.30:l1#1	6	0x0008	ffe12848	general_req_system_serial	established	reply 0 then text; minus 104 when empty
+6.5.30:l1#1	6	0x0009	ffe128ca	general_req_partition_get	established	reply 0 then int
+6.5.30:l1#1	6	0x000a	ffe128f2	general_req_port_speeds	established	reply 0 then two ints from per-port speed settings
+6.5.30:l1#1	6	0x000b	ffe128de	general_req_two_bit_setting	established	reply 0 then int; meaning of the field unknown
+6.5.30:l1#1	6	0x000c	ffe12090	general_req_attached_ports_1_to_4	established	reply 0 then four (rack<<6|bay, type) pairs
+6.5.30:l1#1	6	0x000d	ffe1220c	general_req_attached_ports_5_and_10	established	reply 0 then two (rack<<6|bay, type) pairs
+6.5.30:l1#1	6	0x000e	ffe12a4c	general_req_requesting_port	established	reply 0 then int: the link index the request arrived on
+6.5.30:l1#1	6	0x000f	ffe12a78	general_req_last_event_reasons	established	reply 0 then two ints from the lifecycle module
+6.5.30:l1#1	6	0x0010	ffe12acc	general_req_processor_masks	established	reply 0, word count, processor count, mask pairs; minus 108 when none
+6.5.30:l1#1	6	0x0011	ffe12c3c	general_req_scan_record	established	reply 0 then a 64-byte binary field, or minus 106 and a status
+6.5.30:l1#1	6	0x1001	ffe12dfc	general_req_write_debug_switches	established	one int; writes the non-volatile switches; reply 0
+6.5.30:l1#1	6	0x1002	ffe12e40	general_req_console_subchannel	established	one int; sets the active console subchannel; reply 0
+6.5.30:l1#1	6	0x1003	ffe12e9c	general_req_console_volunteer	established	records the local module as console owner; reply 0
+6.5.30:l1#1	6	0x1004	ffe12ec2	general_req_display_line_1	established	one text; writes display line 2; minus 102 if not text
+6.5.30:l1#1	6	0x1005	ffe12ec2	general_req_display_line_2	established	same entry as 0x1004
+6.5.30:l1#1	6	0x1006	ffe12f20	general_req_partition_set	established	one int; non-volatile write; reply 0
+6.5.30:l1#1	6	0x1007	ffe12fd8	general_req_event_subchannel_set	established	one int; persisted in non-volatile memory; reply 0
+6.5.30:l1#1	6	0x1008	ffe12f7e	general_req_two_bit_setting_set	established	one int; writes the field read by 0x000b; reply 0
+6.5.30:l1#1	6	0x1009	ffe13060	general_req_panel_control	established	two ints; selector 0 to 2 else minus 105; reply 0
+6.5.30:l1#1	6	0x100a	ffe131b2	general_req_event_subchannel_clear	established	no reply; clears and unpersists the event subchannel
+6.5.30:l1#1	6	0x100b	ffe131bc	general_req_prom_version_report	established	exactly three ints; no reply on success
+6.5.30:l1#1	6	0x100c	ffe132ca	general_req_per_processor_setting	established	exactly two ints; no reply on success
+6.5.30:l1#1	6	0x2001	ffe1335a	general_req_system_reset	established	no reply on success; minus 106 and status on failure
+6.5.30:l1#1	6	0x2002	ffe1336c	general_req_pci_operation_a	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	6	0x2003	ffe13406	general_req_pci_operation_b	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	6	0x2004	ffe134bc	general_req_pci_operation_c	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	6	0x2005	ffe13570	general_req_power_down	established	no reply on success
+6.5.30:l1#1	6	0x2006	ffe1359c	general_req_lifecycle_third_action	established	no reply on success; which action is not established
+6.5.30:l1#1	6	0x2007	ffe135de	general_req_expander_read	established	no arguments; minus 108 on an Origin 300
+6.5.30:l1#1	6	0x2008	ffe136bc	general_req_expander_write	established	exactly two ints; minus 108 on an Origin 300
+6.5.30:l1#1	6	0x4000	ffe137e8	general_req_inventory	established	reply 0 then one text field per inventory record; minus 104 when empty
+6.5.30:l1#1	6	0x4002	ffe13d76	general_req_controller_reboot	established	no reply; logs and restarts the controller
+6.5.30:l1#1	16	0x0072	ffe3c166	flash_req_status	inferred	first int at most 4; reply lists the flash images
+6.5.30:l1#1	16	0x0073	ffe3c4c2	flash_req_0x73	inferred	flash operation, not read
+6.5.30:l1#1	16	0x0074	ffe3c41e	flash_req_0x74	inferred	flash operation, not read
+6.5.30:l1#1	19	0x0092	ffe3f610	power_bay_flash_req_0x92	inferred	exactly one argument
+6.5.30:l1#1	19	0x0093	ffe3f7e0	power_bay_flash_req_0x93	inferred	exactly one argument
+6.5.30:l1#1	19	0x0094	ffe3f75a	power_bay_flash_req_0x94	inferred	exactly one argument

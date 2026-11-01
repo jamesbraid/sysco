@@ -1,0 +1,205 @@
+package	address	kind	name	request	grade	note
+6.5.30:l1#1	ffe00000	data	reset_vector_table	-	established	68000-family exception vectors: word 0 initial stack pointer, word 1 reset entry, 254 handlers
+6.5.30:l1#1	ffe00400	func	reset_entry	-	established	target of the reset vector
+6.5.30:l1#1	ffe11cd4	func	eeprom_component_identity	-	established	default component-to-record mapper: returns the index unchanged
+6.5.30:l1#1	ffe11ce0	func	general_task_init	-	established	registers the general dispatcher for local task 6
+6.5.30:l1#1	ffe11e18	func	general_request_dispatch	-	established	task 6: request code is argument 0; unknown code minus 101; too few arguments minus 100
+6.5.30:l1#1	ffe11f38	data	general_low_code_table	-	established	jump table for codes 0x0000 to 0x0011
+6.5.30:l1#1	ffe11f8e	data	general_mid_code_table	-	established	jump table for codes 0x1004 to 0x100c
+6.5.30:l1#1	ffe11fe8	label	general_req_read_debug_switches	6/0x0001	established	reply 0 then one int, the 16-bit non-volatile switches
+6.5.30:l1#1	ffe11ffc	label	general_req_rack_bay	6/0x0002	established	reply 0 then int rack<<6|bay from non-volatile settings
+6.5.30:l1#1	ffe11ffc	label	general_req_rack_bay_type	6/0x0003	established	same entry as 0x0002; adds the stored brick-type character (0x34 for ip45)
+6.5.30:l1#1	ffe122a8	label	general_req_brick_serial	6/0x0004	established	reply 0 then text; minus 104 when absent
+6.5.30:l1#1	ffe122da	label	general_req_firmware_revision	6/0x0005	established	reply 0 then three ints parsed from the version string
+6.5.30:l1#1	ffe12526	label	general_req_eeprom_read	6/0x0006	established	four ints; areas 0 to 4; minus 104, 105, 107 conditions
+6.5.30:l1#1	ffe1236a	label	general_req_eeprom_format	6/0x0007	established	one int; reply describes the record kind and area sizes
+6.5.30:l1#1	ffe12848	label	general_req_system_serial	6/0x0008	established	reply 0 then text; minus 104 when empty
+6.5.30:l1#1	ffe128ca	label	general_req_partition_get	6/0x0009	established	reply 0 then int
+6.5.30:l1#1	ffe128f2	label	general_req_port_speeds	6/0x000a	established	reply 0 then two ints from per-port speed settings
+6.5.30:l1#1	ffe128de	label	general_req_two_bit_setting	6/0x000b	established	reply 0 then int; meaning of the field unknown
+6.5.30:l1#1	ffe12090	label	general_req_attached_ports_1_to_4	6/0x000c	established	reply 0 then four (rack<<6|bay, type) pairs
+6.5.30:l1#1	ffe1220c	label	general_req_attached_ports_5_and_10	6/0x000d	established	reply 0 then two (rack<<6|bay, type) pairs
+6.5.30:l1#1	ffe12a4c	label	general_req_requesting_port	6/0x000e	established	reply 0 then int: the link index the request arrived on
+6.5.30:l1#1	ffe12a78	label	general_req_last_event_reasons	6/0x000f	established	reply 0 then two ints from the lifecycle module
+6.5.30:l1#1	ffe12acc	label	general_req_processor_masks	6/0x0010	established	reply 0, word count, processor count, mask pairs; minus 108 when none
+6.5.30:l1#1	ffe12c3c	label	general_req_scan_record	6/0x0011	established	reply 0 then a 64-byte binary field, or minus 106 and a status
+6.5.30:l1#1	ffe12dfc	label	general_req_write_debug_switches	6/0x1001	established	one int; writes the non-volatile switches; reply 0
+6.5.30:l1#1	ffe12e40	label	general_req_console_subchannel	6/0x1002	established	one int; sets the active console subchannel; reply 0
+6.5.30:l1#1	ffe12e9c	label	general_req_console_volunteer	6/0x1003	established	records the local module as console owner; reply 0
+6.5.30:l1#1	ffe12ec2	label	general_req_display_line_1	6/0x1004	established	one text; writes display line 2; minus 102 if not text
+6.5.30:l1#1	ffe12ec2	label	general_req_display_line_2	6/0x1005	established	same entry as 0x1004
+6.5.30:l1#1	ffe12f20	label	general_req_partition_set	6/0x1006	established	one int; non-volatile write; reply 0
+6.5.30:l1#1	ffe12fd8	label	general_req_event_subchannel_set	6/0x1007	established	one int; persisted in non-volatile memory; reply 0
+6.5.30:l1#1	ffe12f7e	label	general_req_two_bit_setting_set	6/0x1008	established	one int; writes the field read by 0x000b; reply 0
+6.5.30:l1#1	ffe13060	label	general_req_panel_control	6/0x1009	established	two ints; selector 0 to 2 else minus 105; reply 0
+6.5.30:l1#1	ffe131b2	label	general_req_event_subchannel_clear	6/0x100a	established	no reply; clears and unpersists the event subchannel
+6.5.30:l1#1	ffe131bc	label	general_req_prom_version_report	6/0x100b	established	exactly three ints; no reply on success
+6.5.30:l1#1	ffe132ca	label	general_req_per_processor_setting	6/0x100c	established	exactly two ints; no reply on success
+6.5.30:l1#1	ffe1335a	label	general_req_system_reset	6/0x2001	established	no reply on success; minus 106 and status on failure
+6.5.30:l1#1	ffe1336c	label	general_req_pci_operation_a	6/0x2002	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	ffe13406	label	general_req_pci_operation_b	6/0x2003	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	ffe134bc	label	general_req_pci_operation_c	6/0x2004	established	two ints bus and slot; board hook; no reply on success
+6.5.30:l1#1	ffe13570	label	general_req_power_down	6/0x2005	established	no reply on success
+6.5.30:l1#1	ffe1359c	label	general_req_lifecycle_third_action	6/0x2006	established	no reply on success; which action is not established
+6.5.30:l1#1	ffe135de	label	general_req_expander_read	6/0x2007	established	no arguments; minus 108 on an Origin 300
+6.5.30:l1#1	ffe136bc	label	general_req_expander_write	6/0x2008	established	exactly two ints; minus 108 on an Origin 300
+6.5.30:l1#1	ffe137e8	label	general_req_inventory	6/0x4000	established	reply 0 then one text field per inventory record; minus 104 when empty
+6.5.30:l1#1	ffe13d76	label	general_req_controller_reboot	6/0x4002	established	no reply; logs and restarts the controller
+6.5.30:l1#1	ffe13d98	label	general_unknown_code	-	established	board hook if installed, else minus 101
+6.5.30:l1#1	ffe13dbc	label	general_error_reply	-	established	builds a reply with the code in d4 and no fields
+6.5.30:l1#1	ffe13dd0	label	general_reply_send	-	established	sends the built list; sends nothing when the list is empty
+6.5.30:l1#1	ffe13ef0	string	version_string	-	established	1.44.0
+6.5.30:l1#1	ffe1aefc	func	command_task_init	-	established	task 3: request and response queues
+6.5.30:l1#1	ffe1b0f8	func	command_execute	-	established	parses the target prefix, runs locally or forwards to peers, collects output lines
+6.5.30:l1#1	ffe1ba5c	func	command_task_loop	3/0x0000	established	any code with one text argument; reply is the status and the output lines as text
+6.5.30:l1#1	ffe2dba4	func	peer_link_init	-	established	RS-422 peer links; registers the catch-all for non-local destinations
+6.5.30:l1#1	ffe2e88c	func	peer_port_is_open	-	inferred	true when the port has read and write tasks
+6.5.30:l1#1	ffe2e8e4	func	peer_port_for_destination	-	inferred	chooses a port or sends a routing-error reply
+6.5.30:l1#1	ffe2ea3c	func	peer_forward_request	-	established	queues to a port or replies minus 1 with detail 8 or 10
+6.5.30:l1#1	ffe2eadc	func	peer_forward_response	-	inferred	response counterpart of peer_forward_request
+6.5.30:l1#1	ffe2edfc	func	nonlocal_packet_handler	-	established	catch-all: type 3 rewritten to 0, type 6 to 3, type 4 unchanged
+6.5.30:l1#1	ffe2f478	func	peer_link_read	-	inferred	reads one PPP frame from a peer port
+6.5.30:l1#1	ffe3132c	func	config_exchange_init	-	established	task 14 endpoint
+6.5.30:l1#1	ffe325ec	func	config_exchange_request	-	inferred	handles configuration-exchange requests
+6.5.30:l1#1	ffe33ce4	func	config_exchange_handler	-	established	task 14: requests to config_exchange_request, responses dispatched on codes 0 to 15
+6.5.30:l1#1	ffe30be4	func	module_name_format	-	inferred	prints a module address as rack, type and slot
+6.5.30:l1#1	ffe31f00	func	module_info_by_port	-	inferred	per-port record: rack, bay, type character
+6.5.30:l1#1	ffe34378	func	tag_port_by_type	-	established	link port from a 7-bit source tag, brick-type dependent
+6.5.30:l1#1	ffe343c0	func	tag_subchannel_by_type	-	established	subchannel from a 7-bit source tag
+6.5.30:l1#1	ffe34414	func	tag_make_by_type	-	established	default tag is port*32 + subchannel
+6.5.30:l1#1	ffe34490	func	link_debug_enabled	-	inferred	tests a link debugging mask
+6.5.30:l1#1	ffe344d4	func	link_debug_dump	-	inferred	hex dump for link debugging
+6.5.30:l1#1	ffe34598	func	link_port_name_set	-	inferred	names a link port by brick type
+6.5.30:l1#1	ffe34774	func	bedrock_link_init	-	established	task 5 endpoint, write queue and write task
+6.5.30:l1#1	ffe34970	func	tag_port	-	established	wrapper over tag_port_by_type with the local brick type
+6.5.30:l1#1	ffe3498c	func	tag_subchannel	-	established	wrapper over tag_subchannel_by_type
+6.5.30:l1#1	ffe349a8	func	tag_make	-	established	wrapper over tag_make_by_type
+6.5.30:l1#1	ffe349c8	func	inbound_raw_bytes	-	inferred	raw-mode bytes from the processor UART
+6.5.30:l1#1	ffe34aa4	func	inbound_console_event	-	established	type-2 frames from the processor: console output forwarded as an event
+6.5.30:l1#1	ffe34c08	func	outbound_console_char	-	established	request-type frame to the processor carrying one console character
+6.5.30:l1#1	ffe34e84	func	outbound_event_frame	-	established	events from task 4 only, on the set event subchannel
+6.5.30:l1#1	ffe3517c	func	event_subchannel_clear	-	established	sets no event subchannel and clears the persisted value
+6.5.30:l1#1	ffe3519c	func	chunk_assembler	-	established	pseudo-codes 0x3001 to 0x3003; errors reply minus 1 with details 23 to 26
+6.5.30:l1#1	ffe35634	func	request_frame_parse	-	established	address, code as argument 0, count only when the frame has 8 or more bytes, arguments unchecked
+6.5.30:l1#1	ffe35864	func	frame_classify	-	established	header bits 7:5: 0 request, 2 console event, 1 and 3 ignored
+6.5.30:l1#1	ffe358cc	func	bedrock_link_read_loop	-	established	reads frames with a 256-byte body limit and hands them to frame_classify
+6.5.30:l1#1	ffe35a18	func	outbound_chunked_response	-	established	task 21 responses in chunks
+6.5.30:l1#1	ffe35c08	func	response_frame_serialize	-	established	subchannel|0x20, code, count, fields; 127-byte limit; dropped fields still counted
+6.5.30:l1#1	ffe35f60	func	bedrock_link_write_task	-	established	drains the task 5 and 21 queue, the console queue and the event queue
+6.5.30:l1#1	ffe36178	func	link_port_read	-	inferred	UART read callback
+6.5.30:l1#1	ffe3621c	func	link_port_write	-	inferred	UART write callback
+6.5.30:l1#1	ffe3681c	func	console_subchannel_set	-	inferred	sets the active console subchannel
+6.5.30:l1#1	ffe36948	func	console_owner_set	-	inferred	records the console-hosting module
+6.5.30:l1#1	ffe36f74	func	management_port_init	-	established	task 2 request and response queues
+6.5.30:l1#1	ffe37de4	func	management_port_task	-	inferred	one text argument; replies status and text
+6.5.30:l1#1	ffe398e4	func	loopback_task_init	-	established	task 18 endpoint
+6.5.30:l1#1	ffe39988	func	loopback_handler	-	established	echoes up to four arguments as a response
+6.5.30:l1#1	ffe3bff8	func	flash_task_init	-	established	task 16 endpoint and queue
+6.5.30:l1#1	ffe3c124	func	flash_request_dispatch	-	established	codes 0x0072 to 0x0074 from the request's code field
+6.5.30:l1#1	ffe3c166	label	flash_req_status	16/0x0072	inferred	first int at most 4; reply lists the flash images
+6.5.30:l1#1	ffe3c4c2	label	flash_req_0x73	16/0x0073	inferred	flash operation, not read
+6.5.30:l1#1	ffe3c41e	label	flash_req_0x74	16/0x0074	inferred	flash operation, not read
+6.5.30:l1#1	ffe3c56c	label	flash_unknown_code	-	established	logs the unknown code
+6.5.30:l1#1	ffe3f480	func	power_bay_flash_task	-	established	task 19 queue and dispatch on codes 0x0092 to 0x0094
+6.5.30:l1#1	ffe3f610	label	power_bay_flash_req_0x92	19/0x0092	inferred	exactly one argument
+6.5.30:l1#1	ffe3f7e0	label	power_bay_flash_req_0x93	19/0x0093	inferred	exactly one argument
+6.5.30:l1#1	ffe3f75a	label	power_bay_flash_req_0x94	19/0x0094	inferred	exactly one argument
+6.5.30:l1#1	ffe4368c	func	semaphore_take	-	established	second argument is the wait
+6.5.30:l1#1	ffe436e0	func	semaphore_give	-	established	-
+6.5.30:l1#1	ffe42c74	func	queue_send	-	established	returns minus 50 or minus 46 when full or timed out
+6.5.30:l1#1	ffe44ff4	func	ip45_init	-	established	Origin 300 board module entry
+6.5.30:l1#1	ffe451fc	func	ip45_eeprom_read	-	established	reads the node EEPROM and checks the product name
+6.5.30:l1#1	ffe45990	func	ip45_devices_register	-	established	registers the board's device tables, EEPROM records and sensors
+6.5.30:l1#1	ffe45da0	data	ip45_eeprom_table	-	established	six records in order: node, IO-8, DIMM 0, DIMM 2, DIMM 1, DIMM 3; kinds 1,1,2,2,2,2
+6.5.30:l1#1	ffe46408	func	xbridge_init	-	established	installs the PCI request hooks
+6.5.30:l1#1	ffe115b0	func	pci_hooks_install	-	established	stores the three PCI slot operations in the general task's hook table
+6.5.30:l1#1	ffe48188	func	pci_slot_operation_a	-	established	bus and slot bytes, 0xff for all; hook for request 0x2002
+6.5.30:l1#1	ffe48108	func	pci_slot_operation_b	-	established	hook for request 0x2003
+6.5.30:l1#1	ffe48058	func	pci_slot_operation_c	-	established	hook for request 0x2004
+6.5.30:l1#1	ffe4c554	func	power_down	-	established	logs power down (reason)
+6.5.30:l1#1	ffe4ce84	func	lifecycle_third_action	-	inferred	used by request 0x2006; power up, soft reset or NMI not established
+6.5.30:l1#1	ffe4ec84	func	last_event_reasons	-	inferred	copies two lifecycle state words
+6.5.30:l1#1	ffe4eca0	func	reason_name	-	established	1 COMMAND, 2 PANEL, 3 OS, 4 ENVIRONMENTAL, 5 DON'T CARE
+6.5.30:l1#1	ffe4ecf4	func	nmi_action	-	inferred	logs NMI (reason)
+6.5.30:l1#1	ffe4ed3c	func	soft_reset_action	-	inferred	logs soft reset (reason)
+6.5.30:l1#1	ffe4ef74	func	system_reset	-	established	logs reset (reason)
+6.5.30:l1#1	ffe4f070	data	reason_names	-	established	COMMAND, PANEL, OS, ENVIRONMENTAL, DON'T CARE, unknown
+6.5.30:l1#1	ffe5117c	func	display_text_write	-	established	first argument 0x31 line 1, 0x32 line 2; pads and sanitises
+6.5.30:l1#1	ffe546d4	func	runtime_slot_set	-	established	sets a runtime value slot
+6.5.30:l1#1	ffe547d0	func	runtime_slot_get	-	established	reads a runtime value slot (0x2a plus port: PROM version)
+6.5.30:l1#1	ffe55834	func	node_serial_text	-	inferred	per-node serial for two-node brick types
+6.5.30:l1#1	ffe55958	func	brick_serial_text	-	established	brick serial from the board EEPROM, or null
+6.5.30:l1#1	ffe557b4	func	brick_type_char	-	established	the stored brick-type character
+6.5.30:l1#1	ffe557c4	func	brick_type_char_set	-	established	-
+6.5.30:l1#1	ffe557d8	func	brick_pseudo_type_char	-	established	second type character for two-node types
+6.5.30:l1#1	ffe55800	func	brick_subtype_byte	-	inferred	-
+6.5.30:l1#1	ffe55d34	func	memory_alloc	-	established	-
+6.5.30:l1#1	ffe55e6c	func	memory_free	-	established	-
+6.5.30:l1#1	ffe55f24	func	memory_realloc	-	established	-
+6.5.30:l1#1	ffe56654	func	controller_reboot	-	inferred	used by request 0x4002
+6.5.30:l1#1	ffe57fbc	func	task_create	-	established	-
+6.5.30:l1#1	ffe58118	func	semaphore_create	-	established	-
+6.5.30:l1#1	ffe5818c	func	queue_create_raw	-	inferred	-
+6.5.30:l1#1	ffe58380	func	log_message	-	established	severity, source file, line, format
+6.5.30:l1#1	ffe58758	func	setting_set	-	established	writes a non-volatile setting by number
+6.5.30:l1#1	ffe59590	func	setting_get	-	established	1 rack, 2 bay, 3 debug switches, 0xd system serial, 0xe partition, 0x12 two-bit field, 0x13 event subchannel
+6.5.30:l1#1	ffe595b0	data	setting_jump_table	-	established	dispatch table for setting_get, 0xb3 entries
+6.5.30:l1#1	ffe59f00	func	log_line	-	inferred	appends a line to the L1 log
+6.5.30:l1#1	ffe5aed8	func	console_printf	-	established	prints on the L1 console
+6.5.30:l1#1	ffe5b6b4	func	error_name	-	inferred	text for an internal status
+6.5.30:l1#1	ffe60428	func	buffer_alloc	-	established	-
+6.5.30:l1#1	ffe604d4	func	buffer_free	-	established	-
+6.5.30:l1#1	ffe60518	func	buffer_realloc	-	established	-
+6.5.30:l1#1	ffe60b7c	label	brick_type_name_parse	-	established	ip35 to 0x43, ip37 to 0x33, ip45 to 0x34
+6.5.30:l1#1	ffe60d6a	label	brick_type_name_print	-	established	0x43 prints C (IP35), 0x34 prints C (IP45)
+6.5.30:l1#1	ffe615f4	func	command_register	-	inferred	registers an operator command table
+6.5.30:l1#1	ffe61bd0	func	command_parse_and_run	-	inferred	target parser and local executor
+6.5.30:l1#1	ffe621e4	func	fcs_update	-	established	frame check over a byte range
+6.5.30:l1#1	ffe6227c	func	fcs_byte	-	established	one-byte frame check step
+6.5.30:l1#1	ffe622bc	func	ppp_error_report	-	inferred	logs a framing error with a dump
+6.5.30:l1#1	ffe62308	func	ppp_context_init_a	-	inferred	-
+6.5.30:l1#1	ffe62330	func	ppp_context_init	-	inferred	-
+6.5.30:l1#1	ffe623b4	func	ppp_frame_send	-	established	flags, escapes and the check sequence
+6.5.30:l1#1	ffe6259c	func	ppp_frame_receive	-	established	256-byte body limit, drops short frames, checks 0xf0b8
+6.5.30:l1#1	ffe62a4c	data	fcs_table	-	established	reflected CRC-CCITT table
+6.5.30:l1#1	ffe6ac90	func	eeprom_records_register	-	established	appends a table of records in order
+6.5.30:l1#1	ffe6aed0	func	eeprom_record_count	-	established	-
+6.5.30:l1#1	ffe6aee8	func	eeprom_record_present	-	established	presence byte per record index
+6.5.30:l1#1	ffe6af14	func	eeprom_area_name	-	inferred	-
+6.5.30:l1#1	ffe775b0	func	packet_refcount_add	-	inferred	-
+6.5.30:l1#1	ffe77664	func	endpoint_register	-	established	request or response slot for an address: local task table, remote list or catch-all
+6.5.30:l1#1	ffe77960	func	endpoint_register_callback	-	established	-
+6.5.30:l1#1	ffe779c0	func	endpoint_register_queue	-	established	-
+6.5.30:l1#1	ffe77a24	func	event_subscribe	-	inferred	subscription list for events
+6.5.30:l1#1	ffe77c40	func	endpoint_unregister	-	inferred	-
+6.5.30:l1#1	ffe77e10	func	packet_buffer_alloc	-	established	-
+6.5.30:l1#1	ffe77eb4	func	packet_build	-	established	at most 64 arguments
+6.5.30:l1#1	ffe782a4	func	endpoint_init	-	established	local identity plus a task number
+6.5.30:l1#1	ffe78314	func	router_init	-	established	stores the local identity
+6.5.30:l1#1	ffe783c8	func	queue_create	-	established	-
+6.5.30:l1#1	ffe783f0	func	queue_receive	-	inferred	-
+6.5.30:l1#1	ffe78424	func	packet_free	-	established	-
+6.5.30:l1#1	ffe78718	func	packet_deliver	-	established	local slot by task 1 to 24, remote list or catch-all; no slot means an error and no reply
+6.5.30:l1#1	ffe78a6c	func	event_deliver	-	established	-
+6.5.30:l1#1	ffe78c7c	func	packet_enqueue_to	-	inferred	-
+6.5.30:l1#1	ffe78d6c	func	request_build_and_deliver	-	established	used by request_frame_parse
+6.5.30:l1#1	ffe78e0c	func	response_send	-	established	a nonzero code parameter makes a routing-error reply of minus 1 with a detail byte
+6.5.30:l1#1	ffe78eb8	func	packet_receive_entry	-	established	entry for packets from peer links
+6.5.30:l1#1	ffe78f34	func	event_send	-	established	-
+6.5.30:l1#1	ffe79048	func	packet_build_wrapper	-	inferred	-
+6.5.30:l1#1	ffe790a8	func	packet_stream_receive	-	inferred	-
+6.5.30:l1#1	ffe792a8	func	packet_stream_send	-	inferred	-
+6.5.30:l1#1	ffe79344	func	argument_value	-	established	argument n: integer value, or a pointer to text or binary data
+6.5.30:l1#1	ffe794e8	func	address_format	-	established	prints an address as type, rack, bay, port, task
+6.5.30:l1#1	ffe79694	func	packet_format	-	inferred	-
+6.5.30:l1#1	ffe7a55c	func	format_string	-	established	sprintf
+6.5.30:l1#1	ffe7cd0c	func	string_to_number	-	established	strtol
+6.5.30:l1#1	ffe7d1e8	func	mem_copy	-	established	-
+6.5.30:l1#1	ffe7d268	func	mem_set	-	established	-
+6.5.30:l1#1	ffe7d2e8	func	string_append	-	established	-
+6.5.30:l1#1	ffe7d32c	func	string_compare	-	established	-
+6.5.30:l1#1	ffe7d390	func	string_copy	-	established	-
+6.5.30:l1#1	ffe7d400	func	string_length	-	established	-
+6.5.30:l1#1	ffe7d414	func	string_compare_n	-	inferred	-
+6.5.30:l1#1	ffe7d45c	func	string_copy_n	-	inferred	-
+6.5.30:l1#1	ffe7d500	func	is_printable	-	established	-

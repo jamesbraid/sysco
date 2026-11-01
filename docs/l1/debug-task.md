@@ -1,0 +1,46 @@
+# Origin 300 L1 command-response fields for debug requests
+
+The selected Origin 300/IP45 L1 1.44.0 image builds a command response from the command executor's signed result and its output strings. This reading traces plain `debug`, malformed values, the `*` broadcast prefix and the `ctc` peer prefix. It is static firmware evidence.
+
+## Checked image and public context
+
+The selected 982,412-byte range of the IRIX 6.5.30 composite has SHA-256 `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4`. It identifies as L1 1.44.0, built 2006-07-17 for the Fuel/PE/Origin 300 family. Its ColdFire body has SHA-256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`. The checked analysis uses load address `0xffe00000` and reset vector `0xffe00400`. Its manifest SHA-256 is `c10e34893c411ff206a5e1ad87ec828cf8750d967639c34ca850ca3537b963c2`. It reports 2,982 complete functions of 2,988 found, with six failures. The command parser, executor, output builders, packet builder and response serializer cited below are complete. Instruction listings were checked where parser marker lifetime and response framing affect the conclusion.
+
+The function table, C-like output and instruction listing SHA-256 values are, respectively, `6574e20e239cdf0aa3325300e19efbf20354bfec10e6ea8d7c6edfcd4997671f`, `305455906e423e0e625c0edb0d003e01089b786268ab9d111101bcce4e726b43` and `8b265ad13b54a8cdce5131d6a6f0e0e30eb4ae65c55c55d4fe576cc92de118d5`.
+
+## Response encoding before optional installed filters
+
+The task-3 loop (`0xffe1ba5c`) receives a request, extracts its first text argument and sends it to the command executor (`0xffe1b0f8`). It creates an internal integer for the executor's signed result and appends each non-null output string as a separate text item (`0xffe388c8`, `0xffe389dc`). An allocated empty string can become a text field containing only its terminating zero; the checked branch does not require a positive string length. The response sender (`0xffe78e0c`) packages those items. The Bedrock response serializer (`0xffe35c08`) takes the first integer as the four-byte signed response code. It writes a one-byte count of the remaining fields, each text field as tag `0x01`, its bytes, and a terminating zero. A line feed inside a field precedes that terminating zero. The response header keeps the request's subchannel (`0x20` response type). This trace confirms that the executor's error result is a packet code, rather than another typed output field.
+
+For the commands below, the selected task loop passes zero as the separate transport-error input to the response builder. Successful execution yields response code `0x00000000`. The common parser's nonempty failure yields `-1200` (`0xfffffb50` on the wire), and a routed command with at least one failed target yields `-1` (`0xffffffff`). The executor may instead return zero with a no-response error text after a target timeout. Two optional installed response filters could rewrite the packet just before send. The shapes below describe the unmodified response path.
+
+## Plain local `debug`
+
+Both selected `debug` records (body offsets `0x1cafc` and `0x1cb40`) use the same handler (`0xffe15214`). Their brick guard (`0xffe140d4`) accepts IP45's stored type character `4` through the command-class alias at `0xffe21014`. On that path, a no-value request reads the current 16-bit word. A one-value request writes the low 16 bits and then reads it. The handler's one output line says the switches are set to a `0x`-prefixed lowercase hexadecimal word with four digits and a trailing line feed. The unqualified executor route adds no brick-name field. Thus a plain task-3 `debug` response has code zero, count one and one tag-`0x01` text field. Its word depends on current settings. It cannot be fixed by the static image. For a deliberately set value of 269, the expected field is the synthetic example `debug switches set to 0x010d\n\0`.
+
+The parser at `0xffe61bd0` returns code `-1200` for a nonempty line for which no command record runs. For `debug nope` and `debug 12junk`, the `debug` one-value record first recognizes the command token, then fails whole-token numeric conversion. Crucially, the parser clears its partial-match marker for every later command candidate (`0xffe61cd0`–`0xffe61cd2`). The last normal command candidate in the selected first table is unrelated to `debug` (body offset `0x20eb8`). The only other direct registration found in this selected image, when PCI hooks are installed, also ends in a nonmatching `pci` candidate (body offset `0x11920`). The parser's final error branch (`0xffe61ff6`–`0xffe62030`) therefore selects the generic command-not-found text, despite the earlier partial match. Its predicted task-3 shape for either malformed value is code `-1200`, count one, one tag-`0x01` text field containing `ERROR: command not found.\n\0`. The debug-setting handler is not reached. This differs from the handler's own wrong-selector error, which the common parser can render as an invalid-arguments line in another path.
+
+## `*` and `ctc` prefixes
+
+The `*` command record at body offset `0x1c0a0` consumes the rest of the line, then enumerates connected module records and sends the remainder to their task-3 addresses (`0xffe14acc`). It deduplicates matching rack and bay addresses. If its target list is empty, the executor returns code zero with no text fields. A successful wildcard parse alone does not prove any debug word was updated. The selected image does not fix how many connected modules are installed on a fitted Origin 300.
+
+For one target whose rack and bay resolve to this L1, the executor parses `debug 269` again locally (`0xffe1b3ae`). On success it puts the formatted module name and `:\n` in one text item and the debug line in the next. The task-3 response is code zero, count two, with two tag-`0x01` text fields: `M:\n\0` and `debug switches set to 0x010d\n\0`, where `M` is the name computed from the connected module identity. A successful peer target can produce the same two-field pattern only if its response supplies one debug output item. With multiple targets, the count and field sequence depend on their replies, and any failed target makes the executor return `-1`.
+
+For one local target and `* debug nope`, the nested parser follows the same nonmatching final-candidate branch as the plain malformed request. The route combines the module name, a space and that error line into one output item. Its predicted task-3 response is code `-1`, count one and one tag-`0x01` field `M ERROR: command not found.\n\0`. If `*` finds no connected module, the response is instead code zero, count zero. Remote targets, queue errors or a timeout can produce different text and field counts. The routed executor selects zero or `-1` after all targets from whether any target failed (`0xffe1ba42`–`0xffe1ba50`).
+
+The selected `ctc` command is an alias for the connected NI port A route (body offset `0x1c854`, handler `0xffe14fa0`). It requires that peer port to be open before forwarding the rest of `ctc debug 269`. If it is closed, the handler returns `-1` with one output line saying that the named port does not appear active. The packet then has code `-1`, count one, one tag-`0x01` text field. For the formatter's chosen port label `P`, its synthetic field is `ERROR: P doesn't appear to be active\n\0`. No local debug switch changes. If the peer is open, this L1 sends a task-3 text request and waits for its reply. A peer response with status zero and one text item yields this L1's response code zero and two text fields: `P:\n\0` and the peer's text, where `P` is the selected port/module name. A peer negative status makes the local executor return `-1` and usually combines the port name with the peer error into one text field when the peer supplies an error text item. A peer negative status with no text produces code `-1` and count zero. If an open peer never answers, the timeout branch adds one no-response text item but does not set the target-failure flag. It can therefore return code zero with count one. These error-code differences are selected-software branch inferences, not measured peer behavior. This selected local image cannot establish the L2 or other peer's response to `debug 269`, or whether that link is fitted and open.
+
+## Discriminating raw exchanges
+
+1. Issue plain `debug`, then `debug 269`, `debug nope` and `debug 12junk` as
+   separate task-3 text requests. Compare the four-byte codes and field
+   counts, and retain text bytes through line feed and terminating zero. The
+   static prediction is `0/1`, `0/1`, `-1200/1` and `-1200/1` respectively.
+2. Issue `* debug 269` and `* debug nope` while recording the connected
+   module list. One local target predicts `0/2` and `-1/1`. No targets predict
+   `0/0` for both. Any peer changes that hypothesis according to its reply.
+3. Issue `ctc debug 269` with the NI peer port confirmed closed and, if a
+   matching peer is available, open. Closed predicts `-1/1`. An open peer
+   task-3 request and response as well as the original reply.
+
+The earlier debug parser reading owns the numeric and settings branches. This note records the response packet and routing path.

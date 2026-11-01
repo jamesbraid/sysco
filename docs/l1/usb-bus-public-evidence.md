@@ -1,0 +1,15 @@
+# Origin 300 L1 USB and bus names in public manuals
+
+The Origin 300 rear panel has three USB connectors with different jobs. The connector labelled **USB L1 port** links the chassis L1 system controller to an optional L2 controller. The other two USB connectors serve ordinary peripherals. The first-party Origin 300 guide identifies the L1 connector as USB type B and the two peripheral connectors as USB type A. Its I/O-8 description places all three at that assembly's bulkhead. These are connector and intended-use facts, not a circuit-level routing claim. The source is 007-4365-002, printed pages 8–9, 12 and 67.
+
+The earlier L1/L2 Controller Software User's Guide explicitly covers Origin 300 and Origin 300 with NUMAlink. It describes the L1's upstream connection as a USB slave port, shows the L2 addressing attached bricks by USB port and L1 index, and says an engineer can access an L1 through the USB L1 port without an L2. Its `network usb` command selects USB for the controller network and disables autodetection. `network 422` selects RS-422 instead. This establishes the role and software-facing link choice, but the guides do not specify the USB device class, endpoint protocol, descriptor bytes, electrical path, or L2 host controller. The source is 007-3938-001, printed pages 1, 3, 7, 64 and 81.
+
+M-Bus has a different source and meaning. The MCF5206e user's manual, `MCF5206EUM/D` revision 1 (Motorola, 1998), names the chip's I²C-compatible two-wire block **Motorola Bus (M-Bus)**. It identifies SCL and SDA as the module's signals. This is a literal chip-maker name, not a first-party SGI name for an Origin 300 board link. None of the SGI manuals checked below uses `M-Bus`. The MCF5206e manual does not establish that an Origin 300 has that specific chip, enables this module, or connects its SCL/SDA pins to any named L1 peripheral. The source is MCF5206EUM/D rev. 1, printed pages 1-16, 2-16 and 13-1 to 13-2.
+
+The SGI guide calls another path **junkbus**. Its `junkbus` command reports the L1-to-junkbus protocol as PPP, meaning point-to-point protocol. Its `uart` and `usb` commands display separate port status. The manual does not call the USB L1 link `junkbus` or `M-Bus`. [007-3938-001, printed pages 58 and 81.]
+
+## Bounds and unresolved questions
+
+Reading the chip's M-Bus chapter as proof of its use on IP45 would therefore overstate the evidence.
+
+An IP45/IO-8 schematic or board specification naming the L1 part and tracing its SCL/SDA pins would settle whether the chip's M-Bus block serves any Origin 300 I²C devices. Neither detail is needed to state the rear-panel connector topology.
