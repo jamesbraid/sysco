@@ -23,6 +23,6 @@ Curated tables, read by `scripts/sysco_tables.py` (every row carries a grade and
 
 ## Listing
 
-[disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/) holds the linear listing of that body (`l1.lst`: address, instruction bytes, mnemonic and operands), a per-routine summary of calls, references and table jumps (`l1.sum`), and a table of printable runs with addresses (`l1.strings.tsv`). The decoder is a 68040-mode M68K decoder; ColdFire-only encodings and data mixed into the text decode as `.dw` words or implausible instructions. Read a listing as a map. `functions.tsv` names are descriptions in our own words, not the firmware's identifiers.
+[disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/) holds the linear listing of that body (`l1.lst`: address, instruction bytes, mnemonic and operands), and a per-routine summary of calls, references and table jumps (`l1.sum`). The firmware's own text strings are not committed; read them from the image in `root/`. The decoder is a 68040-mode M68K decoder; ColdFire-only encodings and data mixed into the text decode as `.dw` words or implausible instructions. Read a listing as a map. `functions.tsv` names are descriptions in our own words, not the firmware's identifiers.
 
 Package bodies that other sets share byte for byte are listed once in the function table; the listing for other packages and versions is not generated yet.
