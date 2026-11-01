@@ -9,7 +9,7 @@ Each entry lists what has been tried and the next route. Move an answered questi
 
 ## L1 hardware seen by the code
 
-- Which MCF5206e on-chip peripherals besides the M-Bus does the code program: chip selects, DRAM controller, timers, the two on-chip UARTs? The notes cover the M-Bus (`MBAR+0x1e0` to `+0x1f0`) and the RAMBAR and MBAR writes only. Route: scan the first-bank listing for accesses relative to the MBAR base `0x10000000` and tabulate by offset.
+- Which MCF5206e on-chip peripherals does the code program beyond those in [mcf5206e-peripherals.md](l1/mcf5206e-peripherals.md)? Timer registers and the remaining routines of the first-bank listing have not been scanned for base-relative accesses. Route: scan the listing for accesses relative to the base stored at `0x300002e8` and tabulate by offset.
 - Which software UART devices (3 and 4 for the Origin 300 peer links, others for the node link) are on-chip UART channels, and at what offsets? Route: follow the UART open routine that the peer links call.
 - What does the revision-0x81 USB callback (`0x300006f4`) point at? Route: find who writes that RAM word.
 - The fitted USB device-controller part is not named by any image. The firmware probe is USS-820-shaped (revision at offset 0x18, scratch at 0x1b, accepted revisions 0x10, 0x11, 0x13); a full register table for that family would let the offset use be named. Unknown: no shipped image names the part.
