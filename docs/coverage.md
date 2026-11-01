@@ -57,10 +57,10 @@ Sets read: 6.5.20 (L1 1.20.6, L2 1.20.1); 6.5.21 (L1 1.22.2, L2 1.22.0); 6.5.22 
 |---|---:|---:|---:|---:|---:|---:|
 | [images](inventory/images.tsv) | 96 | 26 | 2 | 68 | 27.1 | 29.2 |
 | [packages](inventory/packages.tsv) | 51 | 4 | 5 | 42 | 7.8 | 17.6 |
-| [firmware-functions](inventory/firmware-functions.tsv) | 158843 | 189 | 14317 | 144337 | 0.1 | 9.1 |
+| [firmware-functions](inventory/firmware-functions.tsv) | 142402 | 189 | 31131 | 111082 | 0.1 | 22.0 |
 | [request-codes](inventory/request-codes.tsv) | 46 | 43 | 3 | 0 | 93.5 | 100.0 |
 | [io-registers](inventory/io-registers.tsv) | 35 | 35 | 0 | 0 | 100.0 | 100.0 |
-| [protocols](inventory/protocols.tsv) | 23 | 19 | 4 | 0 | 82.6 | 100.0 |
+| [protocols](inventory/protocols.tsv) | 32 | 28 | 4 | 0 | 87.5 | 100.0 |
 
 All understood rows are for L1 1.44.0 package 1 (Origin 300). The function table lists candidate entries of every distinct ColdFire body, found by byte pattern; it is a worklist, not a function count.
 <!-- firmware:end -->
