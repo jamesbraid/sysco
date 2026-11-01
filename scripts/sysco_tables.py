@@ -219,7 +219,9 @@ def l1_packages(data):
         else:
             e['family'] = 'ColdFire MCF5206e'
             e['load'], e['last'] = struct.unpack('>II', pk[8:16])
-            body = pk[44:]
+            # the container's package table (count at 0x2c, pairs from 0x30) overlays the first
+            # package's header, so that package's body starts after the table
+            body = pk[(0x30 + 8 * n) if off == 0 else 44:]
             e['body'] = body
             e['body_sha'] = sha(body)
             e['reset'] = '0x%08x 0x%08x' % struct.unpack('>II', body[:8])
