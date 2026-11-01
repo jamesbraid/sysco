@@ -30,7 +30,7 @@ Routines. Entries are `link.w a6` prologues, absolute `jsr` and `bsr` targets, a
 
 Pairing across a set boundary aligns the routine fingerprints in address order. Unmatched runs are paired by instruction-multiset similarity, at 0.5 or more. What is left over is added or removed. The pairing is inferred. Each changed row carries its similarity.
 
-Limits. A routine reached only by a computed jump has no entry, so it is folded into its predecessor. One 63.7 KB stretch in 1.24.8 has no entry at all (see below). Each body holds the program twice, 0x70000 bytes apart, and the counts include both copies.
+Limits. A routine reached only by a computed jump has no entry, so it is folded into its predecessor. One 63.7 KB stretch in 1.24.8 has no entry inside it (see below). Each body holds the program twice, 0x70000 bytes apart, and the counts include both copies.
 
 Request codes. The general request dispatch is a compare chain followed by word-offset jump tables. The chain is run concretely for every code from 0x0000 to 0x7fff. The entry point differs by set (the code is loaded from d2, a4 or d5). No code stopped at an instruction the interpreter does not model. The 39 general-request rows of the curated 1.44.0 table ([l1/request-codes.tsv](l1/request-codes.tsv)) all agree with the run.
 
@@ -44,9 +44,9 @@ Request codes. The general request dispatch is a compare chain followed by word-
 
 Each set has 4,808 (1.24.8), 5,000 (1.32.15) and 5,050 (1.44.0 and 1.48.1) routines, both copies included. The vector table, the first 0x400 bytes, is identical in all four sets (established).
 
-Bytes in removed and added routines: 418,492 removed and 422,780 added from 1.24.8 to 1.32.15 (inferred, from the pairing). From 1.32.15 to 1.44.0, 150,648 removed and 152,300 added. The changed routines have a median similarity of 0.77 in the first step and 0.87 in the second.
+Bytes in removed and added routines: 418,492 removed and 422,780 added from 1.24.8 to 1.32.15 (inferred, from the pairing). From 1.32.15 to 1.44.0, 150,648 removed and 152,300 added. The changed routines have a median similarity of 0.765 in the first step and 0.871 in the second.
 
-**1.44.0 to 1.48.1.** The two bodies differ at 42 byte positions, all in strings and table data (established, from a byte comparison of the whole body). No instruction changed.
+**1.44.0 to 1.48.1.** The two bodies differ at 42 byte positions (established, from a byte comparison of the whole body). The version and build positions are ASCII text, so they are data (established from the bytes). The decoder also reads them as instructions, which is why the routine rows show text changes at those spots. Whether any executable byte changed is inferred from the positions, not read.
 
 - Version string `1.44.0` becomes `1.48.1`: two bytes near `0x10aab` and two near `0x13ef3`, with mirrors 0x70000 higher.
 - Build stamp `20060717182038` becomes `20070122113420`: 11 bytes in the window `0x7a44f` to `0x7a460`, with the mirror at `0xea44f`.
@@ -56,7 +56,7 @@ The eight changed routines are the ones that contain these bytes: `0xffe10570` a
 
 **1.32.15 to 1.44.0 (inferred).** Most code is reused and most RAM operands moved. 1,891 routines match exactly and 746 match once addresses are masked. One example of a changed routine: the 1.32.15 routine at `0xffe296f4` (232 bytes, paired with 1.44.0 at `0xffe2972c`, similarity 0.977) first differs at `moveq #$e, d1` against `moveq #$12, d1`. The rest of the pair is not read here. Routines that differ only in RAM operands are counted separately, for example the 1.32.15 routine at `0xffe41bd4`, whose first difference is a `pea` of `0x30003e24` in place of `0x30003e44`.
 
-**1.24.8 to 1.32.15 (inferred).** Only 923 routines match exactly. The 1.32.15 image is a substantial rearrangement of the 1.24.8 image by this measure. The 63.7 KB row at `0xffe00b28` in 1.24.8 is one routine only because no entry lies inside it. Its first decode is nonsense, so it is probably a table or string area. It is not split and its role is unknown.
+**1.24.8 to 1.32.15 (inferred).** Only 923 routines match exactly. The 1.32.15 image is a substantial rearrangement of the 1.24.8 image by this measure. The 63.7 KB row at `0xffe00b28` is one routine only because no entry lies inside it. Its first 16 bytes are a small routine (a link, a branch to subroutine at `0xffe00994`, an unlink and a return), and its only link instruction is at that start. The rest is fill: 0xff bytes make up 98.7% of the row, and one run of 61 KB starts at `0xffe01008` (established for 1.24.8). The same length, first bytes and fill fraction hold in all four sets (established). The row is not split. Its role is unread; it is probably unused image space (inferred from the fill).
 
 ## L1 request codes
 
@@ -78,7 +78,7 @@ Code changes:
 Handler bodies, against 1.44.0 (normalized text, see the method):
 
 - 1.48.1: all 39 handlers have the same text as 1.44.0.
-- 1.32.15: 10 match (0x0001, 0x0009, 0x000b, 0x1001, 0x1003 to 0x1006, 0x100a, 0x2001). The other 28 differ. Examples: 0x0011 keeps its frame at `-$c8(a6)` where 1.44.0 has `-$cc(a6)`; 0x1007 has `pea -$310(a6)` where 1.44.0 has `-$31c(a6)`. Frame offsets, not logic, are the first difference (established for the two examples).
+- 1.32.15: 10 match (0x0001, 0x0009, 0x000b, 0x1001, 0x1003 to 0x1006, 0x100a, 0x2001). The other 28 differ; 0x4002 is absent from 1.32.15, so 38 codes are compared. Examples: 0x0011 keeps its frame at `-$c8(a6)` where 1.44.0 has `-$cc(a6)`; 0x1007 has `pea -$310(a6)` where 1.44.0 has `-$31c(a6)`. Frame offsets, not logic, are the first difference (established for the two examples).
 - 1.24.8: only 0x100a matches. Several handlers are short stubs in 1.24.8: 0x0001 is `moveq #3,d4` then `bra`, where 1.44.0 has the `moveq #3,d0`, `move.l d0,-(a7)`, `jsr` sequence. The branch target of such a stub is not compared, so its handler text is cut short (established for 0x0001; the shared tail is unknown).
 
 The request codes for other dispatchers, the command loop (code 0x0000 under task 3, for example) and the flash and peer forwarding paths, are not compared here.
@@ -95,7 +95,7 @@ The request codes for other dispatchers, the command loop (code 0x0000 under tas
 - The kernel banner is the same in all four (established).
 - The 1.44.0 kernel is exactly 8,192 bytes shorter than the others (established).
 - 1.24.1 to 1.32.4, the kernels have the same length and 7,644 of 1,438,340 bytes differ (established).
-- The other kernel pairs have different lengths. Their 4 KB blocks are not aligned by the same offset, so no comparison is reported for them.
+- 1.32.4 to 1.44.0 and 1.44.0 to 1.48.0 have different lengths, so no byte count is reported. Their 4 KB blocks, compared in order, match in 34 of 352 and 34 of 350 blocks (established, block counts only). The low count suggests the kernels are not aligned by a fixed offset (inferred); no finer comparison is made.
 
 No routine-level result for L2. The cramfs file tree could not be walked. The root inode gives a directory at one offset, but the entries parse cleanly from 8 bytes earlier. The first file's block table does not decode as a list of block ends. Both are established observations. Their cause is unknown.
 
@@ -104,5 +104,5 @@ No routine-level result for L2. The cramfs file tree could not be walked. The ro
 - L2: find the cramfs base that makes the directory and the block tables decode, then fingerprint the daemon, the libraries and the kernel functions.
 - Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set.
 - The six bytes at `0x7fd39` and `0xefd39` in 1.44.0 and 1.48.1, and their pointers.
-- The 63.7 KB stretch at `0xffe00b28` in 1.24.8, which has no routine entry.
+- The 63.7 KB fill row at `0xffe00b28` (same length in all four sets): whether any part of it is used is not read.
 - Whether the 1.24.8 handler stubs branch into shared code that is the same in other sets.
