@@ -45,3 +45,17 @@ image	task	code	handler	name	grade	handler_in_body	note	status	doc
 6.5.30:l1#1	19	0x0092	0xffe3f610	power_bay_flash_req_0x92	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
 6.5.30:l1#1	19	0x0093	0xffe3f7e0	power_bay_flash_req_0x93	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
 6.5.30:l1#1	19	0x0094	0xffe3f75a	power_bay_flash_req_0x94	inferred	yes	exactly one argument	located	docs/l1/request-codes.tsv
+6.5.30:l1#3	6	0x0013	0xffe11f04	general_req_type_char	established	yes	reply 0, int 0, then the brick-type character as an int	understood	docs/l1/request-codes.tsv
+6.5.30:l1#3	6	0x200d	0xffe13256	general_req_set_clock	established	yes	seven or more words; builds and runs a date -u line from arguments 1 to 6 (year, month, day, hour, minute, second)	understood	docs/l1/request-codes.tsv
+6.5.30:l1#3	6	0x200e	0xffe133de	general_req_get_clock	established	yes	reply 0 then year, month, day, hour, minute, second as ints	understood	docs/l1/request-codes.tsv
+6.5.30:l1#3	6	0x3001	0xffe13108	general_req_hook_3001	established	yes	three or more words; listed brick types only; calls the hook word at 0x30001114 with (0, arg1, arg2, 0); minus 106 when the result is not positive	understood	docs/l1/request-codes.tsv
+6.5.30:l1#3	6	0x4001	0xffe1321e	general_req_war_flag	established	yes	reply 0 then the SHUB workaround flag byte as an int	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x0013	0xffe3fc26	general_req_type_char	established	yes	reply 0, int 0, then the brick-type character as an int	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x200d	0xffe411e0	general_req_set_clock	established	yes	seven or more words; builds and runs a date -u / hwclock -u line from arguments 1 to 6	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x200e	0xffe41368	general_req_get_clock	established	yes	reply 0 then year, month, day, hour, minute, second as ints	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x3001	0xffe40fd8	general_req_hook_3001	inferred	yes	three or more words; twelve listed brick types; hook call not read to the end	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x3002	0xffe41132	general_req_fru_3002	established	yes	calls the FRU hook word at 0x300013cc and replies its result as the status	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x3003	0xffe4115a	general_req_fru_3003	established	yes	reply 0 then calls the FRU hook word at 0x300013c8	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x3004	0xffe4117a	general_req_fru_3004	established	yes	reply 0 then passes the reply buffer to the hook word at 0x300013dc; its result becomes the reply count	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x4001	0xffe411a8	general_req_war_flag	established	yes	reply 0 then the SHUB workaround flag byte as an int	understood	docs/l1/request-codes.tsv
+6.5.30:l1#5	6	0x4004	0xffe40c2a	general_req_dimm_text	inferred	yes	per-slot text lines with JEDEC,OKAY / NOT_PRESENT / ERROR; field meanings not followed	understood	docs/l1/request-codes.tsv

@@ -57,8 +57,8 @@ Sets read: 6.5.20 (L1 1.20.6, L2 1.20.1); 6.5.21 (L1 1.22.2, L2 1.22.0); 6.5.22 
 |---|---:|---:|---:|---:|---:|---:|
 | [images](inventory/images.tsv) | 96 | 26 | 2 | 68 | 27.1 | 29.2 |
 | [packages](inventory/packages.tsv) | 51 | 4 | 5 | 42 | 7.8 | 17.6 |
-| [firmware-functions](inventory/firmware-functions.tsv) | 142402 | 263 | 31085 | 111054 | 0.2 | 22.0 |
-| [request-codes](inventory/request-codes.tsv) | 46 | 43 | 3 | 0 | 93.5 | 100.0 |
+| [firmware-functions](inventory/firmware-functions.tsv) | 142402 | 263 | 31086 | 111053 | 0.2 | 22.0 |
+| [request-codes](inventory/request-codes.tsv) | 60 | 57 | 3 | 0 | 95.0 | 100.0 |
 | [io-registers](inventory/io-registers.tsv) | 44 | 44 | 0 | 0 | 100.0 | 100.0 |
 | [protocols](inventory/protocols.tsv) | 32 | 28 | 4 | 0 | 87.5 | 100.0 |
 

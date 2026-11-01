@@ -112,10 +112,9 @@ Established. The routines compiled into a package are recognizable by the file-n
 | `Twister.c`, `ChiServ.c`, `ChiWS.c` | . | . | Y | . | . | Twister and Chimera server and workstation boards |
 | `Opus.c`, `SHUB.c` | . | . | . | Y | Y | the O-type brick and the SHUB node chip |
 | `jchip.c`, `llpfun.c` | . | . | Y | Y | Y | JTAG delay-tuning of the link chips (`JChipInit`, `DMIN`/`DMAX`) |
-| `port.c` | Y | . | . | Y | Y | port configuration tables |
-| `L1Req.c` | . | . | . | . | Y | request tracing (`L1REQ: %08x - %04x`) |
-| `L1Cfg_1.c` | Y | Y | . | . | Y | configuration task |
-| `FZL1Cfg_1.c` | . | . | . | Y | . | configuration task |
+| `port.c` | Y | Y | Y | Y | Y | port configuration tables; two literals in each package |
+| `L1Req.c` | Y | Y | Y | Y | Y | request tracing (`L1REQ: %08x - %04x`) and the semaphore error of the general task; referenced by the assertion calls of all five (packages 0 to 3 store it as the tail of a longer literal, package 5 as its own) |
+| `L1Cfg_1.c` | Y | Y | Y | Y | Y | configuration task; package 3 stores the name as the tail of the literal `FZL1Cfg_1.c` |
 | `SysCom_2m.c` | . | . | Y | Y | Y | the system-communication task of the 2 MB build |
 
 Counts of marker strings in the first bank, read from each package: `PLED_` boot-code names 192, 192, 96, 0, 0 (packages 0, 1, 2, 3, 5); `SHUB` or `SHub` 3, 3, 3, 90, 86; `EFI` 1, 1, 9, 23, 23; `SAL_` or `SAL ` 0, 0, 0, 16, 16; `JChip` 0, 0, 29, 43, 49. Packages 3 and 5 therefore carry the status words of an EFI/SAL firmware boot instead of the older processor-boot stages, and a node-chip layer (SHUB) that the first three have only as a name.
@@ -158,3 +157,55 @@ Reading: package 0 is package 1's code with the Origin 300 node board (`IP45.c`,
 3. What the package adds beyond that is the compiled-in board modules in the module table. A package does not switch modules at run time by strap: the modules it lacks are absent from the image.
 
 Unknown, with routes tried in [open-questions.md](../open-questions.md): the meaning of record word 7, the keys 9 and `0x10` settings' writers, and the roles of the added request codes.
+
+## Source files each package references
+
+Established. A file name counts when a word in the first bank points at it (the assertion and trace calls pass the name); each count below is the number of such pointer words in the first bank of that package. Many literals carry two extra leading bytes (`NuL1Req.c`, `NuB2B_1.c`) or a longer prefix (`FZL1Cfg_1.c`); the pointer reaches the short name, which is the one listed, and what the leading bytes are is unknown. A dot means no pointer word.
+
+| Source file | 0 | 1 | 2 | 3 | 5 |
+|---|---:|---:|---:|---:|---:|
+| `Asterix.c` | . | 16 | 16 | . | . |
+| `BIC.c` | . | 6 | 6 | . | . |
+| `PE.c` | . | 1 | 1 | . | . |
+| `eeprom_write.c` | . | 1 | 1 | . | . |
+| `IP45.c` | . | 6 | . | . | . |
+| `IP35.c` | 7 | . | 7 | . | . |
+| `IOlegacy.c`, `Kcar.c`, `NL3R.c`, `brick_base.c` | 2, 6, 1, 2 | . | 2, 6, 1, 2 | . | . |
+| `IP5359.c`, `ChiServ.c`, `ChiWS.c`, `Twister.c`, `autofan.c`, `eeprom_2m.c` | . | . | 11, 1, 1, 1, 1, 4 | . | . |
+| `XBridge.c` | 9 | 9 | 9 | . | . |
+| `pci.c` | 6 | 6 | 6 | . | . |
+| `usbControl.c` | . | 23 | 23 | 23 | 23 |
+| `IRouter.c`, `chario.c`, `scanpkt.c`, `jtag_cfg.c`, `hisr.c`, `pwrLED.c`, `PIC.c`, `uart_1678x.c`, `usb_isp1181.c`, `usb_uss820.c`, `SysCom_2m.c` | . | . | 21, 7, 9, 15, 1, 1, 3, 10, 3, 3, 2 | 21, 7, 9, 15, 1, 1, 3, 10, 3, 3, 2 | 21, 7, 9, 17, 1, 1, 3, 10, 3, 3, 2 |
+| `pcix.c`, `llpfun.c`, `jchip.c` | . | . | 16, 1, 12 | 17, 1, 14 | 17, 1, 18 |
+| `sn1sc.c` | . | . | 10 | 3 | 4 |
+| `IP41.c`, `IP57.c`, `IObrick.c`, `Opus.c`, `SHUB.c`, `promIce.c`, `L1FRU_2m.c` | . | . | . | 22, 10, 4, 11, 88, 4, 1 | 22, 8, 4, 11, 88, 4, 1 |
+
+Shared by all five with the same pointer count (so unchanged in role): `Cmd.c`, `stateVar.c` and `pmalloc.c` of the common system code, `B2B_1.c`, `L1USB.c`, `Lpbk.c`, `PBayITask.c`, `SMP.c`, `SMPCmd.c`, `brick.c`, `fpLED.c`, `i2c.c`, `i2cInt.c`, `main.c`, `mic74.c`, `network.c`, `nvram.c`, `sernum.c`, `test.c`, `uart.c`, `uart_16654.c`, `uart_5206e.c`, `vram.c`. Shared with different counts (the module gained or lost call sites): `display.c` (25, 25, 25, 31, 31), `eeprom.c` (14, 14, 14, 20, 20), `fan.c` (17, 17, 17, 17, 26), `port.c` (24, 24, 24, 25, 37), `power.c` (16, 16, 16, 11, 11), `SysCom.c` (6, 6, 6, 6, 7), `monitor.c` (25, 25, 25, 26, 26), `ioExp.c` (19, 19, 19, 21, 21), `temp.c` (2, 2, 2, 3, 4), `vrm.c` and `vsc055.c`, `i2cMux.c`, `HEnv.c` (15, 15, 15, 15, 12).
+
+Two reads follow. The 1 MB Origin 300 package differs from the generic 1 MB package by swapping `IP35.c`, `IOlegacy.c`, `Kcar.c`, `NL3R.c` and `brick_base.c` for `IP45.c`, `Asterix.c`, `PE.c`, `BIC.c` and `eeprom_write.c`; the MIPS 2 MB package has all of those except `IP45.c` (it carries `Asterix.c`, `PE.c`, `BIC.c` and `eeprom_write.c` too). Packages 3 and 5 share their set of files exactly; their differences are in call counts (`jtag_cfg.c` 15 against 17, `jchip.c` 14 against 18, `IP57.c` 10 against 8, `fan.c`, `port.c`).
+
+## Devices shared by every package
+
+Established by byte patterns in each package's first bank. The chip-select 1 window at `0x20000000` holds a clock device read through the offsets `0x7f8` to `0x7ff`. Every package has the same pointer words in the same numbers: `0x200007f8` five times, `0x200007ff` three, `0x200007f9` twice and `0x200007fa` twice (package 1 `0xffe5a742`, `0xffe5a832`, `0xffe5e33e`, `0xffe5e5da`, `0xffe5f082`; package 5 `0xffe74d62`, `0xffe74e52`, `0xffe7a816`, `0xffe7aab2`, `0xffe7b55a`). The routine that reads the time is `0xffe5e378` (440 bytes) in package 1, `0xffe73c44` (88 bytes, preceded by a split-off helper) in package 3 and `0xffe7a804` (516 bytes) in package 5, all three classed changed against each other by the matcher, so the read has been rewritten rather than copied.
+
+Read in package 5 (`0xffe7a804`, to `0xffe7a8c0`): the routine writes bit 6 of the byte at `0x200007f8` (a read latch), then assembles a four-digit year from that byte (bits 5 and 4 times 1000 plus bits 3 to 0 times 100) and the two-digit year from `0x200007ff` (tens in bits 7 to 4, units in bits 3 to 0), the month from `0x200007fe` (bit 4 tens), and the rest from `0x200007fd`, `0x200007fb` and the neighbouring bytes with the same tens and units split. The fields are packed decimal digits. Which register is the day, hour, minute and second beyond the three read here follows the usual order of such a device and is inferred.
+
+Not compared here: the UART blocks at `0x50000000` and `0x60000000` and the USB windows at `0x40000000`. The 2 MB packages additionally reference `uart_1678x.c`, `usb_isp1181.c` and `usb_uss820.c`; the registers those modules use are not read in this note.
+
+## Request codes added by packages 3 and 5, read in full
+
+All handlers below are task 6 handlers. The reply helpers are the status writer (package 3 `0xffe45bec`, package 5 `0xffe46f64`) and the integer writer (`0xffe45c10`, `0xffe46f88`). A status of `0x9c` (minus 100) is "too few arguments", `0x9b` (minus 101) "unknown or unavailable", and `0x96` (minus 106) is a hook failure.
+
+| Code | Package 3 | Package 5 | What it does | Grade |
+|---|---|---|---|---|
+| `0x0013` | `0xffe11f04` | `0xffe3fc26` | Reply 0, then integer 0, then the brick-type character as an integer. Package 3 reads the type from the accessor `0xffe6b378` in the dispatcher's prologue; package 5 from `0xffe79e60`. | established |
+| `0x200d` | `0xffe13256` | `0xffe411e0` | Needs seven words including the code, otherwise reply `-100`. Builds `date -u MMDDhhmmYYYY.ss; hwclock --systohc` (package 5 adds `-u`: `hwclock -u --systohc`) from arguments 1 to 6 and runs it. The remainder instruction (extension word 1 puts the remainder in the divisor register) reduces them: argument 2 modulo 13 is the month, argument 3 masked with `0x1f` the day, argument 4 modulo 24 the hour, argument 5 modulo 60 the minute, argument 1 modulo 10000 the year, argument 6 modulo 60 the second. A nonzero result from the runner prints an invalid-date message and still replies 0. The request therefore sets the time of the system the shell commands run on. | established for the argument order and formats; inferred that the commands reach a clock (only the tool names say so) |
+| `0x200e` | `0xffe133de` | `0xffe41368` | Reply 0, read the time and break it into fields, then reply the year (record field at +0x14 plus 1900), the month (+0x10 plus 1), and the fields at +0xc, +8, +4 and 0 as integers. The field order is the usual broken-down time record: day, hour, minute, second. | established for the order of stores; inferred for the callee roles (`0xffe73c44` then `0xffe7586c` in package 3; `0xffe7a804` then `0xffe7e44c` in package 5, the first being the clock read above) |
+| `0x3001` | `0xffe13108` | `0xffe40fd8` | Needs three words including the code (`-100` otherwise). Applies only to listed brick types: in package 3 `5`, `@`, `O`, `B`, `F`, `L`, `M` and `|`; in package 5 the same list minus `|` plus `$`, `,`, `}`, `.` and `{`. For any other type the reply is `-101`, and in package 3 so is an empty hook word at `0x30001114`. Otherwise it calls the hook through that word with (0, argument 1, argument 2, 0), replies 0 when the hook result is positive and `-106` otherwise, then the result as an integer. | established for package 3; package 5 read as far as the argument checks and the type list only, so inferred there |
+| `0x4001` | `0xffe1321e` | `0xffe411a8` | Reply 0, then 1 if the flag byte of the SHUB workaround state is set and 0 if not: that byte is at `0x30000845` in package 3 (routine `0xffe5cb40`) and at `0x3000082d` in package 5 (routine `0xffe5cfd0`). The routine prints either `WAR disabled` or the maximum and last durations of the workaround to its text argument, which this handler passes as zero. | established |
+| `0x3002`, `0x3003`, `0x3004` | . | `0xffe41132`, `0xffe4115a`, `0xffe4117a` | Each calls through a hook word that the FRU module (`L1FRU_2m.c`) installs when its task starts: `0x300013cc` (with the first request argument pointer) returning one integer, `0x300013c8` with no argument (reply 0, then no further field), and `0x300013dc` with the reply buffer (the hook's result replaces the reply). | established for the call shapes |
+| `0x4004` | . | `0xffe40c2a` | Loops over a slot count (from the routine at `0xffe7a2fc`) and prints one comma-separated line per slot: `<n>,<name>,` then either `JEDEC,NOT_PRESENT`, or `JEDEC,ERROR,<text>`, or `JEDEC,OKAY,` followed by hex byte fields (`%02X`) and `%3d.%-2d,` values. | inferred: formats and flow read, the SPD byte meaning of each field not followed |
+
+The FRU task installs seven hooks into RAM words at `0x300013c8`, `0x300013cc`, `0x300013d0`, `0x300013d4`, `0x300013d8`, `0x300013dc` and `0x300013e0`, pointing in package 5 at `0xffe2d2c8`, `0xffe2d460`, `0xffe2d710`, `0xffe2d248`, `0xffe2d2b0`, `0xffe2d730` and `0xffe2d764` (initialiser `0xffe2cfdc`, which appears in no Origin 300 counterpart: the matcher reports it and `0xffe2d460` as added). Established from the store sequence at `0xffe2d018`-`0xffe2d06c`.
+
+Package 3's equivalent of the `0x3001` hook is `0xffe3b690` (1,616 bytes, added against package 1), installed at `0x30001114` together with a second hook at `0x30001124` (`0xffe3b368`) by the routine at `0xffe3cb98`, called from `0xffea8b10`. Established: the installation. Its body was read to the brick-type dispatch (selector 0 to 4) and to a writer of a block at record offset `0x80` that stores the bytes 2, 3 and 4 at offsets `0x80`, `0x81`, `0x82`, the value 8 at `0x87`, 1 at `0x90`, `0xc1` at `0x92` and clears `0x93` to `0x96`; the roles of those bytes are not known.
