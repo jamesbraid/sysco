@@ -2,32 +2,82 @@
 
 Each entry lists what has been tried and the next route. Move an answered question into the note that owns it and delete the entry.
 
+Each entry starts with its route, one of:
+
+- **software now**: the next step reads files already in `root/` (the L1 and L2 images, the host tools).
+- **other firmware versions**: the same question in another set already in `root/`.
+- **version diff**: the same question against another package in the same container.
+- **IRIX host objects**: IRIX-side tools and client code that drive the controllers, read from `root/` once the file is there.
+- **MAME ColdFire core**: needs MAME's MCF5206E core or a public reset-state description, neither in hand.
+- **missing binary or release**: the file is not in `root/`; the entry names what to obtain.
+- **hardware only**: needs a physical machine. Recorded, not scheduled.
+
+## Triage (2026-11-01)
+
+25 entries. The L2 bullet that held eight questions is split into eight entries, one per question.
+
+| Route | Entries |
+|---|---:|
+| software now | 16 |
+| version diff | 3 |
+| other firmware versions | 2 |
+| IRIX host objects | 1 |
+| missing binary or release | 2 |
+| hardware only | 1 |
+| MAME ColdFire core (as primary route) | 0 |
+
+Software-now list, in the order to take them:
+
+1. Callers of the chunked EEPROM reader: do they retry a failed read.
+2. Writers of the guard word at `0x30004d88`.
+3. Routine `0xffe48370` and what re-reads the IO8 record.
+4. Monitor register offsets, including reads of `0x3e` and `0x3f`.
+5. Writers of settings 9 (brick type) and 0x10 (sub-type).
+6. Readers of bank record word 7.
+7. Base-relative accesses in the MCF5206E routines not yet scanned, including timers.
+8. USB match rules and identity in the L2 kernel's `sgil1` driver.
+9. L2 flashed-version check and the flash layout around the image header.
+10. L2 kernel entry path and board setup.
+11. L2 boot loader.
+12. L2 daemon request handlers outside task 10.
+13. L2 router library, beyond the packet builder, writer and free routines.
+14. L2 display and touch protocol in `l2gui`.
+15. `pbay.bin` format.
+16. Reset-status test at `0xffe00ac8`: which branch each outcome takes.
+
 ## Other versions
 
-- The I/O register table and protocol rows are read in L1 1.44.0, package 1 (Fuel/PE/O300 1 MB) only. The general request catalogue is compared across the sets in [version-diffs.md](version-diffs.md); the I/O and protocol rows are not. Route: run the same register scan over the 1.48.1 package, whose load layout is identical (same length 0xefd8c).
-- Which request codes does each non-Origin-300 ColdFire package add or drop? Route: the same table-shape search in packages 0, 2, 3 and 5.
+- **Route: other firmware versions.** The I/O register table and protocol rows are read in L1 1.44.0, package 1 (Fuel/PE/O300 1 MB) only. The general request catalogue is compared across the sets in [version-diffs.md](version-diffs.md); the I/O and protocol rows are not. Step: run the same register scan over the 1.48.1 package in patch SG0007149. The note says its load layout is identical (length 0xefd8c); that is not yet checked against [packages.tsv](inventory/packages.tsv).
+- **Route: version diff.** Which request codes does each non-Origin-300 ColdFire package add or drop? Partly answered: the general task's add and drop lists for packages 3 and 5 are in [l1/personalities.md](l1/personalities.md#request-catalogue-of-the-general-task), and packages 0 and 2 have the same 39 codes as package 1. Still open: the other dispatchers (command loop, flash, peer forwarding) and codes above `0x7fff`, which [version-diffs.md](version-diffs.md) does not compare. Step: run the same table-shape search on those dispatchers in packages 0, 2, 3 and 5.
 
 ## L1 hardware seen by the code
 
-- Which MCF5206e on-chip peripherals does the code program beyond those in [mcf5206e-peripherals.md](l1/mcf5206e-peripherals.md)? Timer registers and the remaining routines of the first-bank listing have not been scanned for base-relative accesses. Route: scan the listing for accesses relative to the base stored at `0x300002e8` and tabulate by offset. The chip selects, interrupt controls, watchdog, restart chain and quad UART are read in [l1/board-boot-contract.md](l1/board-boot-contract.md) and [l1/quad-uart-and-serial-links.md](l1/quad-uart-and-serial-links.md); left: the timer routine's remaining writes and the on-chip UART 1 driver for the letters that open it.
-- The revision-0x81 USB callback resolves to an empty routine in package 1 ([l1/flash-nvram-and-image-records.md](l1/flash-nvram-and-image-records.md)); the other packages were not read. Route: read the pointer table at `0xffe7f0e4+0x6c0` in each package.
-- The fitted USB device-controller part is not named by any image. The firmware probe is USS-820-shaped (revision at offset 0x18, scratch at 0x1b, accepted revisions 0x10, 0x11, 0x13); a full register table for that family would let the offset use be named. Unknown: no shipped image names the part.
-- The M-Bus clock: the divider is 0x13 but the processor clock is not stated anywhere in the image. Unknown: no shipped image states it; routes tried: the timer setup and the version banner path.
-- Which monitor part answers at M-Bus addresses `0x2c` to `0x2e`? The initialization routine (`0xffe6836c`) writes offsets `0x40`, `0x43`, `0x44` and `0x47`, which agree with the DS1780 register map. Routes tried: that routine. Next: tabulate every offset the monitor readers and the temperature path touch and compare with the DS1780 and LM78 maps; look for reads of `0x3e` and `0x3f` in this image and in the IRIX-side L1 host objects.
-- Do callers of the chunked EEPROM reader (`0xffe6b03c`) retry a failed read? Routes tried: the reader and the M-Bus layer (neither retries). Next: the error branches of the reader's callers at `0xffe1686a`, `0xffe39614` and the record readers.
-- What does the routine at `0xffe48370` (stored in the pointer at `0x300002f4`, which the MAC EEPROM command calls) do, and does it re-read the IO8 record? Next: read `0xffe48370` and the callers of the per-entry loader at `0xffe489be` to `0xffe48b5a`.
-- Which routine stores the guard word at `0x30004d88` besides the peer initializer at `0xffe2dc3a`? Next: the other users of the record pointer `0x30004d70`, and the network mode setting at `0xffe53400`.
-- What does the MCF5206E reset-status test at `0xffe00ac8` (offset `0x40`, bit 5 of the first argument `0x10000000`) select, and how is MBAR reachable there? Next: the public MCF5206E reset-state description and MAME's MCF5206E core.
+- **Route: software now.** Which MCF5206e on-chip peripherals does the code program beyond those in [mcf5206e-peripherals.md](l1/mcf5206e-peripherals.md)? Premise partly stale: the chip selects, interrupt controls, watchdog, quad UART and the timer 1 and timer 2 reference writes are read in [l1/board-boot-contract.md](l1/board-boot-contract.md). Still open: the base-relative accesses in the remaining routines of the first-bank listing, tabulated by offset. Step: scan the listing for accesses relative to the base stored at `0x300002e8`; add the timer routine's remaining writes and the on-chip UART 1 driver to the table.
+- **Route: version diff.** The revision-0x81 USB callback resolves to an empty routine in package 1 ([l1/flash-nvram-and-image-records.md](l1/flash-nvram-and-image-records.md)); the other packages were not read. Step: read the pointer table at `0xffe7f0e4+0x6c0` (RAM `0x300006c0` to `0x300006f0`) in each of the other packages.
+- **Route: software now.** The fitted USB device-controller part is not named by any image. The probe is USS-820-shaped (revision at offset 0x18, scratch at 0x1b, accepted revisions 0x10, 0x11, 0x13). Step: the L2 kernel carries the `sgil1` driver that talks to these controllers over USB; read its match rules and the device identity it expects from the carved kernel (`scripts/l2_extract.py`), and compare them with the probe offsets. The IRIX-side objects are not in `root/`, so they are a later route. A public USS-820 register map is a hint, not a finding.
+- **Route: hardware only.** The M-Bus clock: the divider is 0x13, but the processor clock is not stated anywhere in the image. Premise partly stale: [l1/board-boot-contract.md](l1/board-boot-contract.md) infers 48 MHz from four constants (inferred), which makes divider 0x13 a 100 kHz bus. [l1/mbus.md](l1/mbus.md) still says the clock is unknown, and the routes listed here omit the UART constant. The fitted oscillator can only be settled on hardware. Keep the inferred value labelled inferred and align the two notes.
+- **Route: software now.** Which monitor part answers at M-Bus addresses `0x2c` to `0x2e`? The initialisation routine (`0xffe6836c`) writes offsets `0x40`, `0x43`, `0x44` and `0x47`, which agree with the DS1780 register map ([l1/ip45-monitor-registers.md](l1/ip45-monitor-registers.md), [l1/mbus-ds1780-candidate.md](l1/mbus-ds1780-candidate.md)). Step: tabulate every offset the monitor readers (`0xffe69844`, `0xffe6904c`) and the temperature path (`0xffe5e1bc`) touch, compare with the DS1780 and LM78 maps, and search the listing for reads of `0x3e` and `0x3f`. The `moveq` loads of those values in the listing are not yet tied to a monitor read.
+- **Route: software now.** Do callers of the chunked EEPROM reader (`0xffe6b03c`) retry a failed read? Checked: the listing has absolute calls at `0xffe1686a` and `0xffe39614`, and branch calls from the record readers at `0xffe6b180`, `0xffe6b23c`, `0xffe6b8f2`, `0xffe6b9b0` and `0xffe6ba8a`. Neither the reader nor the controller layer retries ([l1/mbus.md](l1/mbus.md)). Step: read the error branch after each of those call sites.
+- **Route: software now.** What does the routine at `0xffe48370` (stored in the pointer at `0x300002f4`, which the MAC EEPROM command calls) do, and does it re-read the IO8 record? Step: read `0xffe48370` in full and the callers of the per-entry loader at `0xffe489be` to `0xffe48b5a`.
+- **Route: software now.** Which routine stores the guard word at `0x30004d88` besides the peer initializer? Premise corrected: `0xffe2dc3a` is the store (`move.l d0, $18(a3)`) inside the routine whose entry is `0xffe2dc0a`; `0x30004d70 + 0x18` is `0x30004d88`. Step: the other users of the record pointer `0x30004d70` in the listing, and the network mode setting at `0xffe53400`. This decides the USB versus RS-422 catch-all precedence ([l1/usb-descriptors-routing.md](l1/usb-descriptors-routing.md)).
+- **Route: software now.** What does the MCF5206E reset-status test at `0xffe00ac8` (offset `0x40`, bit 5 of the first argument `0x10000000`) select, and how is MBAR reachable there? Step: read the two branch targets of the test in the listing. The MBAR reachability part needs the MCF5206E reset-state description and MAME's MCF5206E core, which is the MAME ColdFire core route.
 
 ## Images not yet read
 
-- L1 packages 0, 2, 3 and 5: [l1/personalities.md](l1/personalities.md) compares the 1.44.0 ones with the Origin 300 package (layout, personality selection, request codes, module list). Not read: the board devices each module drives (I/O addresses, expected replies), the other sets' versions of these packages, and the added request handlers other than 0x0012.
-- What is word 7 of the bank record (`0xffe7fd24` and its siblings in each package)? Tried: xor, byte sum, 16-bit and little-endian word sums, CRC-32, Adler-32 and two rotating sums over the pre-record bank, with and without the record header; none matches. Next: find the code that reads the record (the loader reads words 0 to 3 and the metadata fields) and see whether anything consumes word 7.
-- Who writes persistent setting keys 9 (brick type) and 0x10 (sub-type)? Route: follow the setter reached from the debug console and from request codes in task 6.
-- The L2 image: container, cramfs, file inventory and boot sequence are read ([l2/](l2/image-layout.md)). The flash library and the partition library are read in full ([libdrivers](l2/libdrivers.md), [libpart](l2/libpart.md)); the daemon and `l2part` run under a user-mode emulator ([user-mode](l2/user-mode.md)). Open there: the flash layout around the image header that the flashed-version check reads (the check reports a corrupt image on the carved bytes), the PROM's own partition fetch, and the router library beyond the chunk frame and the packet builder, writer and free routines ([router-packet](l2/router-packet.md); the connection, event and request-queue code is unread). Unread: the boot loader (bytes 0x34 to 0x4a218 of `l2.bin`), the kernel's entry path and board setup, the L2 daemon's request handlers outside the partition task, `libscan`, the display and touch protocol in `l2gui`. The cramfs CRC field is not reproduced (routes tried: four spans, see the layout note).
-- `pbay.bin` (5,888 bytes, identical in all four sets): format not examined.
-- The host tools' command tables (`l1cmd`, `l2cmd`, `flashsc` options and the update protocol they speak to the controllers).
+- **Route: version diff.** L1 packages 0, 2, 3 and 5: [l1/personalities.md](l1/personalities.md) compares the 1.44.0 ones with the Origin 300 package (layout, personality selection, request codes, module list). Not read: the board devices each module drives (I/O addresses, expected replies), the other sets' versions of these packages, and the added request handlers other than 0x0012. Step: run the register scan used for package 1 over each module's device accesses.
+- **Route: software now.** What is word 7 of the bank record? Premise corrected: the record starts at `0xffe7fd1c` in package 1, so word 7 is at `0xffe7fd38`, not `0xffe7fd24` (that address is word 2). Word 7 is the balancing word of the 12-word zero sum the loader checks ([l1/flash-nvram-and-image-records.md](l1/flash-nvram-and-image-records.md)). Checksum searches over the bank cannot find it, so they are dropped. Open: whether any code reads word 7 as data. Step: search the listing for reads at offset `0x1c` from each package's record.
+- **Route: software now.** Who writes persistent setting keys 9 (brick type) and 0x10 (sub-type)? Step: find callers of the setter at `0xffe58758` from the debug handler (`0xffe15214`) and from the task 6 request handlers ([l1/settings-record.md](l1/settings-record.md)).
+- **Route: software now.** The L2 flashed-version check. The check reports a corrupt image on the carved bytes ([l2/user-mode.md](l2/user-mode.md)), and the flash layout around the image header is not understood. Step: read `FlashValidateImage`, `flash_read_addr` and the address map in [l2/libdrivers.md](l2/libdrivers.md), and find where the header sits in `l2.bin`.
+- **Route: missing binary or release.** The L2 PROM's partition fetch. The PROM that sends task 10 requests is not in any L2 image read ([l2/partition-task.md](l2/partition-task.md)), and the IP35 PROM image that would reach this tree is not in `root/`. The L1 side can be read now: the requests that forward to task 10 (task 5, in [l1/rs422-router.md](l1/rs422-router.md)).
+- **Route: software now.** The router library beyond the chunk frame and the packet builder, writer and free routines ([l2/router-packet.md](l2/router-packet.md)). Open: the connection, event and request-queue code. Step: read those routines in `libRouter` and `libIRouter` from the L2 tree.
+- **Route: software now.** The L2 boot loader: bytes `0x34` to `0x4a218` of `l2.bin`, with its banner at `0x207c` ([l2/image-layout.md](l2/image-layout.md)). Step: disassemble as PowerPC, find the entry, and find the handoff to the kernel's gzip stream at `0x4a218`.
+- **Route: software now.** The L2 kernel's entry path and board setup. The inflated kernel is a flat PowerPC binary whose first word is `mr r31,r3` ([l2/image-layout.md](l2/image-layout.md)). Step: read the entry path and the board setup, and find what the loader passes in `r3`.
+- **Route: software now.** The L2 daemon's request handlers outside the partition task ([l2/daemon.md](l2/daemon.md); task 10 is in [l2/partition-task.md](l2/partition-task.md)). Step: list the handlers from the daemon ELF in the L2 tree and read them.
+- **Route: other firmware versions.** `libscan.ppclinux.so` is absent from the 1.44.0 tree, though the small tools list it as needed. The 1.48.0 tree in patch SG0007149 has it ([l2/image-layout.md](l2/image-layout.md)). Step: carve that library from the 1.48.0 tree and record which tools import which of its exports.
+- **Route: software now.** The display and touch protocol in `l2gui`. `l2gui` maps `/dev/fb0` and opens `/dev/ttyS3`, whose touch role is inferred ([l2/daemon.md](l2/daemon.md), [l2/rootfs.md](l2/rootfs.md)). Step: read the reads and writes on `ttyS3` and the frame-buffer ioctls in `l2gui`, and name the protocol from them.
+- **Route: software now.** `pbay.bin` (5,888 bytes, identical in all four sets, [firmware-versions.md](firmware-versions.md)): format not examined. Step: read the file, and the parser in `flashpbay` (an IRIX host tool in `root/`).
+- **Route: IRIX host objects.** The host tools' command tables: `l1cmd`, `l2cmd` and the `flashsc` options, and the update protocol they speak to the controllers. [coverage.md](coverage.md) lists only their ELF function tables. Step: read the command tables and option strings of those ELF files in `root/`.
 
 ## Media
 
-- Other IRIX releases (6.5.20 to 6.5.29 overlay discs and customer diagnostics discs) may carry L1 and L2 versions between 1.24 and 1.44. Route: list `field_diags_sysco` on each disc and add the files to `root/` per IRIX_FILES.md.
+- **Route: missing binary or release.** Other IRIX releases may carry L1 and L2 versions between 1.24 and 1.44. Premise stale: the overlay discs of 6.5.20 to 6.5.29 are already scanned, and their controllers carry 1.20 to 1.40 ([firmware-versions.md](firmware-versions.md), [IRIX_FILES.md](../IRIX_FILES.md)). Still open: the overlay discs of 6.5.19 and earlier, the customer diagnostics discs, and any patch newer than SG0007149. Step: obtain those media and list `field_diags_sysco` on each, per [IRIX_FILES.md](../IRIX_FILES.md).
