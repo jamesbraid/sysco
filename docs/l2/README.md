@@ -11,6 +11,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [libpart.md](libpart.md) | the partition library: header word, checksum, body layout, lookups, brick and rack identifiers |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
+| [router-packet.md](router-packet.md) | the router packet in memory: segment record, the builder, writer and free routines of `libIRouter` |
 
 Curated tables (rows carry a grade and a locator; they are not yet read by `scripts/sysco_tables.py`):
 

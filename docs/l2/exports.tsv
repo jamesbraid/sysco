@@ -34,3 +34,9 @@ L2 1.44.0	libpart	compare_modes	0x58f8	76	check_reboot_status on saved and worki
 L2 1.44.0	libpart	chksum	0x5944	208	POSIX cksum CRC	established	read in full
 L2 1.44.0	libpart	__lshrdi3	0x5a14	64	compiler support: logical shift right of a 64-bit value	established	read in full
 L2 1.44.0	libpart	brick_types	0x15c90	17	table of 16 brick type letters, crikxdpn%9012345	established	bytes read
+L2 1.44.0	libIRouter	IRouterMakePacket	0x67e8	524	build a segment list from two address records, a class, a code and an argument descriptor array; sets the local flag that raises the segment limit to 0x3000; returns the builder's result	established	read in full; see router-packet.md
+L2 1.44.0	libIRouter	IRouterWritePacket	0x6ef0	272	call a write function once per segment with its wire bytes and length, then free the packet; -0x26e on a zero write, -0x269 on a short one	established	read in full; see router-packet.md
+L2 1.44.0	libIRouter	IRouterFreePacket	0x657c	492	drop one reference; free argument pointers and every segment when it reaches zero; a zero count prints an error and frees nothing	established	read in full; see router-packet.md
+L2 1.44.0	libIRouter	IRouterInit	0x6384	324	set byte order flag to 1, local address to 0x80000000 plus the low 24 bits of the id, initialise the internal id; returns 0	established	read in full; see router-packet.md
+L2 1.44.0	libIRouter	sub_5b2c	0x5b2c		static packet builder behind IRouterMakePacket: totals sizes, allocates segments, writes the header fields and copies payloads, at most 127 segments; -0x25f, -0x25c, -0x272 on error	established	read in full; see router-packet.md
+L2 1.44.0	libIRouter	sub_59dc	0x59dc		static segment allocator: size choice, zeroed malloc of size plus 0x10, copies the 0x14 wire header from the head segment, links it; frees the chain on failure	established	read in full; see router-packet.md
