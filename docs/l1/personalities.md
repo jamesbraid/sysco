@@ -123,7 +123,7 @@ Counts of marker strings in the first bank, read from each package: `PLED_` boot
 
 Established by running the compare chain and jump tables of the general request task (task 6) for every code in each package.
 
-- Packages 0, 1 and 2: 39 codes, the same set (`0x0001`-`0x0011`, `0x1001`-`0x100c`, `0x2001`-`0x2008`, `0x4000`, `0x4002`). The dispatcher code is byte-identical in the three (package 1 `0xffe11e18`, package 0 the same address, package 2 `0xffe14168`).
+- Packages 0, 1 and 2: 39 codes, the same set (`0x0001`-`0x0011`, `0x1001`-`0x100c`, `0x2001`-`0x2008`, `0x4000`, `0x4002`). The dispatcher instruction stream is the same in the three (package 1 `0xffe11e18`, package 0 the same address, package 2 `0xffe14168`); in the first 0x400 bytes at that address packages 0 and 1 differ in 21 bytes, all of them the low halves of call targets and RAM addresses that moved between builds.
 - Package 3: 42 codes. Added against package 1: `0x0012`, `0x0013`, `0x200d`, `0x200e`, `0x3001` and `0x4001`. Dropped: `0x1002`, `0x2007`, `0x2008`.
 - Package 5: 44 codes. Added against package 1: `0x0012`, `0x0013`, `0x200d`, `0x200e`, `0x3001`, `0x3002`, `0x3003`, `0x3004`, `0x4001` and `0x4004`. Dropped: `0x000f`, `0x1002`, `0x1003`, `0x2007`, `0x2008`.
 
