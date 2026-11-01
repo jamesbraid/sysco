@@ -133,6 +133,8 @@ Read in full: `0x0012` (the same in packages 3 and 5, 118 bytes) replies code 0,
 
 Other added handlers were skimmed, not read in full (inferred from their calls only, so the roles stay unclassified): `0x200d` formats a `date -u` command line for the controller's Linux clock and runs it (package 5's string adds `-u` to `hwclock`; package 3's does not), which suggests a set-time request; `0x4004` prints per-DIMM text built from `JEDEC,OKAY`, `JEDEC,NOT_PRESENT` and `JEDEC,ERROR`, which suggests a DIMM-information request; `0x3002`, `0x3003` and `0x3004` each reply with one stored RAM word (`0x300013cc`, `0x300013c8`, `0x300013dc`).
 
+The handler-by-handler comparison of the shared codes, with inputs, board accesses and reply layouts, is in [brick-request-handlers.md](brick-request-handlers.md).
+
 Of the 39 shared codes the dispatchers of packages 3 and 5 reach handlers with a different body shape for most (13 in package 3, 32 in package 5, by a masked instruction-shape comparison). Package 3 keeps 23 handlers shaped like package 1's. The remainder differ in size by a few bytes (a changed reply field) up to the inventory request `0x4000`, which is 1,422 bytes in package 1, 1,478 in package 3 and 918 in package 5.
 
 ## Routine-level comparison with the Origin 300 package
