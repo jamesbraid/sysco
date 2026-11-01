@@ -18,6 +18,4 @@ The post describes a later PROM discovery problem with the second brick that cle
 
 The public manual locates Origin 300 L1 controller functions in the I/O-8 assembly. Its IP45 and I/O-8 descriptions do not name a USB slave controller. An operator's 2013 IO8 photograph discussion says the available image lacks enough resolution to read part numbers.
 
-It supports a USB-device attachment path and L2-driven rack identity in that topology. The evidence cannot establish selected brick L1 1.44's descriptor, reset behavior, endpoint widths, command semantics, chip variant, or whether the same failure and reassignment sequence occurs there. A suitable next source would be a revision-identified I/O-8 schematic or BOM, or an original photo with readable IC and board markings. Any approximation would need its own stated limit and test.
-
-External access was therefore used for the named public page and SGI-published guides.
+It supports a USB-device attachment path and L2-driven rack identity in that topology. The evidence cannot establish selected brick L1 1.44's descriptor, reset behavior, endpoint widths, command semantics, chip variant, or whether the same failure and reassignment sequence occurs there. The L2 image (PowerPC Linux 2.4.7 with its USB host stack and the daemon that names the device `SN1 L1 System Controller`) is the software route to the host side of this exchange; it is unread (see open questions).

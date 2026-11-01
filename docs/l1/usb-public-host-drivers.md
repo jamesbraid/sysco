@@ -1,12 +1,10 @@
 # Public L1 USB host-driver evidence
 
-The public SGI L1 USB Control project supplies concrete host transport requirements. Its documented hardware testing used a Fuel. No hardware run was performed for this research.
+The public SGI L1 USB Control project supplies concrete host transport requirements. Its documented hardware testing used a Fuel.
 
 ## Source and scope
 
-Examined revision: [`3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74`](https://github.com/srcshelton/sgi-l1-usb-control/tree/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74), release v1.0.68, retrieved October 24, 2026. The host module is GPL-2.0-or-later. The shared ioctl header additionally carries the Linux syscall exception. All source citations below refer to this revision unless stated otherwise.
-
-Public repository metadata supplied the file tree, recent commits, module-specific history and all four returned issue entries. All four entries were dependency pull requests, not hardware reports. No later page was indicated by the returned four-entry set.
+Revision read: [`3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74`](https://github.com/srcshelton/sgi-l1-usb-control/tree/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74), release v1.0.68. The host module is GPL-2.0-or-later. The shared ioctl header additionally carries the Linux syscall exception. All source citations below refer to this revision unless stated otherwise.
 
 ## Host transport requirements
 
@@ -19,7 +17,7 @@ Public repository metadata supplied the file tree, recent commits, module-specif
 | Transfer limits | Maximum write setting defaults to 4096 bytes, clamped to 2–4096 and the allocated buffer. Buffers are the smaller of 4096 and host page size. Write timeout is 3000 ms | [lines 33–34, 201–210 and 820–829](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L201) |
 | Reads | Submits a bulk IN URB and returns its actual bytes. A caller buffer smaller than the completed transfer is rejected. The module does not decode application frames | [lines 137–198 and 293–379](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L293) |
 
-The examined module does not supply fixed endpoint numbers, endpoint packet sizes, USB speed, device release number, descriptor strings, configuration power attributes or a product-specific descriptor set. Its introductory comment calls the payload IRouter frames and distinguishes the raw transport from a tty. The two-byte USB length prefix must not be substituted for the processor UART's PPP framing. The application-frame structure was outside the permitted transport-only read.
+The module does not supply fixed endpoint numbers, endpoint packet sizes, USB speed, device release number, descriptor strings, configuration power attributes or a product-specific descriptor set. Its introductory comment calls the payload IRouter frames and distinguishes the raw transport from a tty. The two-byte USB length prefix must not be substituted for the processor UART's PPP framing. The application-frame structure is not covered here.
 
 ## Reset and reconnection
 
@@ -31,14 +29,10 @@ Disconnect marks the device absent, sets the pending read status to `ENODEV`, wa
 
 ## Hardware evidence and history limits
 
-It does not give the tested Fuel's board revision, USB descriptor dump, controller silicon marking or revision-bound L1 firmware version.
+The repository gives no board revision, descriptor dump, controller marking or L1 firmware version for the tested Fuel, and no raw descriptor or transfer recording.
 
-No raw descriptor or transfer recording was identified in the examined files.
+The module has six commits. The initial commit was [`6e57b3276fd31a15d58cbdd5e8e97317be2e8779`](https://github.com/srcshelton/sgi-l1-usb-control/commit/6e57b3276fd31a15d58cbdd5e8e97317be2e8779) on May 27, 2026. Transport hardening followed in [`02a30a086b7ff263b21a048c14183a16b6fbdb7b`](https://github.com/srcshelton/sgi-l1-usb-control/commit/02a30a086b7ff263b21a048c14183a16b6fbdb7b). The latest module change was [`43d93da3e962719e63527c41f7c2ac7588193f25`](https://github.com/srcshelton/sgi-l1-usb-control/commit/43d93da3e962719e63527c41f7c2ac7588193f25) on May 28, adding optional legacy compatibility. The commit messages contain no transfer transcript or hardware identity.
 
-Module history returned six commits. The initial commit was [`6e57b3276fd31a15d58cbdd5e8e97317be2e8779`](https://github.com/srcshelton/sgi-l1-usb-control/commit/6e57b3276fd31a15d58cbdd5e8e97317be2e8779) on May 27, 2026. Transport hardening followed in [`02a30a086b7ff263b21a048c14183a16b6fbdb7b`](https://github.com/srcshelton/sgi-l1-usb-control/commit/02a30a086b7ff263b21a048c14183a16b6fbdb7b). The latest module change was [`43d93da3e962719e63527c41f7c2ac7588193f25`](https://github.com/srcshelton/sgi-l1-usb-control/commit/43d93da3e962719e63527c41f7c2ac7588193f25) on May 28, adding optional legacy compatibility. The examined messages contain no transfer transcript or hardware identity.
+## Use
 
-## What this enables
-
-That would establish compatibility with this driver.
-
-Silicon fitment additionally needs board-linked markings or a published component list.
+The host requirements above (vendor and product pair, interface class triple, two bulk endpoints, big-endian length prefix on each write) are the checks a device model must satisfy to be driven by this module. The L1's descriptors in [usb-descriptor-fields.md](usb-descriptor-fields.md) match them (established by reading the descriptor bytes at `0xffe6fd20`): the vendor and product ids equal the pair above, the interface has class triple `00/00/ff`, and there is one bulk OUT and one bulk IN endpoint. Which silicon sits behind them is a separate question ([usb-controller-registers.md](usb-controller-registers.md)).

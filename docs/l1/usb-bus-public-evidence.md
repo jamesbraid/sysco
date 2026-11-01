@@ -8,8 +8,6 @@ M-Bus has a different source and meaning. The MCF5206e user's manual, `MCF5206EU
 
 The SGI guide calls another path **junkbus**. Its `junkbus` command reports the L1-to-junkbus protocol as PPP, meaning point-to-point protocol. Its `uart` and `usb` commands display separate port status. The manual does not call the USB L1 link `junkbus` or `M-Bus`. [007-3938-001, printed pages 58 and 81.]
 
-## Bounds and unresolved questions
+## Bounds
 
-Reading the chip's M-Bus chapter as proof of its use on IP45 would therefore overstate the evidence.
-
-An IP45/IO-8 schematic or board specification naming the L1 part and tracing its SCL/SDA pins would settle whether the chip's M-Bus block serves any Origin 300 I²C devices. Neither detail is needed to state the rear-panel connector topology.
+The MCF5206E manual's M-Bus chapter shows what the chip's block does; it does not show that an IP45 uses it. That is settled by the image, not by this manual: the firmware drives the M-Bus registers and reads board EEPROMs through it ([mbus.md](mbus.md)). Which board net those pins reach is unknown; the routes are in [mbus-environment-task.md](mbus-environment-task.md).

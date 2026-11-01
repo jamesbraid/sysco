@@ -2,7 +2,7 @@
 
 It describes tables and control flow in that image, not a verified USB enumeration on an IP45 board. It supplements the USB firmware reading. The L1 management port is distinct from the IO-8 PCI OHCI guest ports (Origin 300 User's Guide 007-4365-002, printed pages 10–12 and 67).
 
-The selected 982,412-byte range begins at composite offset `0xefdd0`, has SHA-256 `0c969f9e98c73826495dc37bff685b3403e248993ba92194a288333d9d42b2f4`, and loads its first program bank at `0xffe00000`. Those identities agree with the packaged-image selection review. Addresses here refer to the first bank.
+The body loads at `0xffe00000`; addresses here refer to the first bank.
 
 ## Descriptor tables: observed software
 
@@ -20,7 +20,7 @@ The second timed-out routine is the control task (`0xffe6fb6c`–`0xffe6fd1e`), 
 
 ## Controller probe: observed software, chip inference
 
-The probe reads an eight-bit revision at offset `0x18` from a controller-base pointer and performs a scratch-register readback at offset `0x1b` (`0xffe70968`–`0xffe70a98`). Revision values with high nibble one proceed; three low-nibble patterns take the quiet path, while the other patterns under that high nibble produce a warning. Other high nibbles return an error. The scratch loop writes every even test value from zero through 252, reads each back, and stops on the first mismatch. Successful probing precedes the reset/control/read/write task setup (`0xffe70a98`–`0xffe70ad8`). This supports a **USS-820-family register-layout inference** from the firmware, but not an exact Agere/LSI part, revision or populated board count. An [Agere-authored USS-820D revision 4 data sheet is mirrored online](https://www.datasheetq.com/pdf-html/133712/Agere/1page/USS-820D.html), but only its front page was checked: it identifies a USB device controller, not the probe offsets or the fitted IP45 chip. Those remain unverified as chip specifications.
+The probe reads an eight-bit revision at offset `0x18` from a controller-base pointer and performs a scratch-register readback at offset `0x1b` (`0xffe70968`–`0xffe70a98`). Revision values with high nibble one proceed; three low-nibble patterns take the quiet path, while the other patterns under that high nibble produce a warning. Other high nibbles return an error. The scratch loop writes every even test value from zero through 252, reads each back, and stops on the first mismatch. Successful probing precedes the reset/control/read/write task setup (`0xffe70a98`–`0xffe70ad8`). This supports a **USS-820-family register-layout inference** from the firmware, but not an exact Agere/LSI part, revision or populated board count. An Agere-authored USS-820D revision 4 data sheet is mirrored online, but only its front page was checked: it identifies a USB device controller, not the probe offsets or the fitted IP45 chip. Those remain unverified as chip specifications.
 
 Its external-bus capability is consistent with, but cannot prove, a discrete USB device controller on the fitted IP45 board.
 
@@ -34,10 +34,10 @@ The Origin 300-applicable L1/L2 Controller Software User's Guide 007-3938-001 li
 
 ## Evidence still needed
 
-| Question | Discriminating evidence |
+| Question | Software route |
 |---|---|
-| Exact populated IP45 USB controller, register revision and controller count | Revision-bound board inventory or legible part marking, plus a matching controller revision read; a firmware probe alone identifies software expectations |
-| Descriptor validity and what an L2 sees | L2-side standard enumeration capture on a matching board, including descriptor lengths, selected language and configuration acceptance; compare with these declared tables without copying their vendor strings into a contract |
-| Controller FIFO and endpoint physical mapping | First-party specification for the fitted chip revision, its configured register writes, and a matching board measurement |
-| USB versus RS-422 catch-all precedence | Trace the guard's initializer, boot registration order and persistent mode selection; compare with a peer-plus-L2 packet transcript and route/error logs |
-| USB router packet wire framing and recovery | Decode the two physical callbacks and compare an L2 transfer capture with the Bedrock frame rules; include packet IDs across unplug/reconnect to test replay |
+| Populated IP45 USB controller, register revision and count | Unknown from every image read; see [usb-control.md](usb-control.md) for the routes (register-offset table against the USS-820 family map, the IRIX-side host objects). |
+| Descriptor validity and what an L2 sees | Read the L2 kernel's USB enumeration in the L2 image against these declared tables; the host driver in [usb-public-host-drivers.md](usb-public-host-drivers.md) shows the host's match rules. |
+| Controller FIFO and endpoint mapping | The configured register writes are in [usb-controller-registers.md](usb-controller-registers.md); the USS-820D data sheet gives the FIFO layout for that family. Unknown which part is fitted. |
+| USB versus RS-422 catch-all precedence | Read the writers of the guard word at `0x30004d88` (the peer initializer at `0xffe2dc0a`, the mode setting at `0xffe53400`) and the boot registration order; the image decides this. |
+| USB router packet framing and recovery | Compare the two callbacks with the router stream parser at `0xffe790a8` (read in [usb-bulk.md](usb-bulk.md)) and with the L2 image's own framing code. |
