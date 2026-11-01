@@ -36,7 +36,7 @@ OUT = os.path.join(REPO, 'docs', 'inventory')
 if '--out' in sys.argv:
     OUT = os.path.abspath(sys.argv[sys.argv.index('--out') + 1])
 
-RELEASES = ['6.5.22', '6.5.30', 'patches/SG0005762', 'patches/SG0007149']
+RELEASES = ['6.5.20', '6.5.21', '6.5.22', '6.5.23', '6.5.24', '6.5.25', '6.5.26', '6.5.27', '6.5.28', '6.5.29', '6.5.30', 'patches/SG0005762', 'patches/SG0007149']
 FW = 'usr/cpu/firmware/sysco/'
 CRAMFS_LE, CRAMFS_BE = b'\x45\x3d\xcd\x28', b'\x28\xcd\x3d\x45'
 
