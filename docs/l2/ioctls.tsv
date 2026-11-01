@@ -1,0 +1,12 @@
+image	file	node	request	direction	argument	name	grade	evidence
+L2 1.44.0	bin/l2	/dev/sgil1_cs	0x40045306	read	4-byte integer	driver revision query	established	issued at 0x10004018 and 0x10004110 into 0x10043bc0; the kernel handler copies 4 bytes to the caller (kernel image 0x9d3f8 to 0x9d444)
+L2 1.44.0	bin/l2	/dev/sgil1_N	0xc0095307	read-write	9-byte record, byte 2 set to the device index	SGIL1_ST_READ_DEV_CFG	established	issued at 0x1000470c only when a USB path filter is set and the driver revision is above 1; the error text names it; the kernel handler copies 9 bytes in and out (0x9d44c to 0x9d4a4)
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x40095304	read	9-byte record	SGIL1_READ_CFG	established	issued at 0x1000494c when the word at 0x10043bbc (initially 1) is nonzero; kernel dispatch compare at 0x9e30c
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005301	none	-	SGIL1_RESET_READ	established	issued at 0x10004320; kernel prints the matching string for this request (0x9e2dc, 0x9e364)
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005302	none	-	SGIL1_RESET_WRITE	established	issued at 0x10004270; kernel prints the matching string (0x9e2ec, 0x9e320)
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005303	none	-	SGIL1_RESET_DEVICE	established	issued at 0x100042c0, 0x1000436c and 0x100043d8, after the read or write reset or after a failure of one; kernel 0x9e2c4
+L2 1.44.0	bin/l2	/dev/sgil1_N	0x20005305	none	-	reset (unnamed)	established	issued at 0x1000424c instead of the 0x5302 and 0x5301 sequence when the driver revision is above 0; shares the write-reset kernel case (0x9e300); no name string exists
+L2 1.44.0	bin/l2gui	/dev/fb0	0x4600	read	frame-buffer variable screen info	FBIOGET_VSCREENINFO	inferred	number and use match the public Linux frame-buffer interface; argument not decoded
+L2 1.44.0	bin/l2gui	/dev/fb0	0x4602	read	frame-buffer fixed screen info	FBIOGET_FSCREENINFO	inferred	as above
+L2 1.44.0	bin/l2gui	/dev/fb0	0x4604, 0x4605	read, write	colour map	FBIOGETCMAP, FBIOPUTCMAP	inferred	as above; calls at 0x1003fd34, 0x1003fed8, 0x1003ff24
+L2 1.44.0	bin/l2staticip	socket	0x8915	read	interface address request	SIOCGIFADDR	inferred	used to test whether eth0 already has an address (error text `ioctl SIOCGIFADDR`)

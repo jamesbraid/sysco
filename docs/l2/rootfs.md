@@ -47,7 +47,7 @@ Consequence: at the default level 5 all of `l2`, `l2flash`, `l2gui` and `l2part`
 
 ## Device nodes
 
-Established from the listing (major,minor). 88 character and 12 block nodes plus one FIFO.
+Established from the listing (major,minor). 88 character and 12 block nodes plus one FIFO (`/dev/initctl`).
 
 | Node | Number | Used by |
 |---|---|---|

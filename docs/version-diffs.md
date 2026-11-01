@@ -97,11 +97,11 @@ The request codes for other dispatchers, the command loop (code 0x0000 under tas
 - 1.24.1 to 1.32.4, the kernels have the same length and 7,644 of 1,438,340 bytes differ (established).
 - 1.32.4 to 1.44.0 and 1.44.0 to 1.48.0 have different lengths, so no byte count is reported. Their 4 KB blocks, compared in order, match in 34 of 352 and 34 of 350 blocks (established, block counts only). The low count suggests the kernels are not aligned by a fixed offset (inferred); no finer comparison is made.
 
-No routine-level result for L2. The cramfs file tree could not be walked. The root inode gives a directory at one offset, but the entries parse cleanly from 8 bytes earlier. The first file's block table does not decode as a list of block ends. Both are established observations. Their cause is unknown.
+The cramfs trees are walked by `scripts/l2_extract.py`: every inode offset counts from a 512-byte pad that precedes the superblock, which is why a walk from the superblock fails (see [l2/image-layout.md](l2/image-layout.md)). The per-file differences between the four sets (sizes and which files are byte-identical) are in [l2/rootfs.md](l2/rootfs.md). No routine-level comparison of the daemon and libraries is made yet.
 
 ## Open
 
-- L2: find the cramfs base that makes the directory and the block tables decode, then fingerprint the daemon, the libraries and the kernel functions.
+- L2: fingerprint the daemon, the libraries and the kernel functions across the four sets (the trees themselves now extract).
 - Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set.
 - The six bytes at `0x7fd39` and `0xefd39` in 1.44.0 and 1.48.1, and their pointers.
 - The 63.7 KB fill row at `0xffe00b28` (same length in all four sets): whether any part of it is used is not read.

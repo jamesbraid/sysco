@@ -1,0 +1,12 @@
+image	task	code	handler	name	grade	note
+L2 1.44.0 bin/l2part	10	1	0x10001384	partition_for_brick	established	brick number in; partition number out (0 if unassigned); reply result 0 and one integer
+L2 1.44.0 bin/l2part	10	2	0x10001434	partition_environment	established	partition number in; integer and environment block out; sent by partmgr as the variables request
+L2 1.44.0 bin/l2part	10	3	0x10001594	database_get	established	no argument; whole mode database out in one binary argument; builds the default first if none is loaded
+L2 1.44.0 bin/l2part	10	4	0x10001524	database_time	established	no argument; the header timestamp out as one integer
+L2 1.44.0 bin/l2part	10	5	0x1000160c	database_set	established	complete database image in; header checks give results -1 to -6, older timestamp 7; installs, unpacks and writes flash; broadcasts the new image to task 5
+L2 1.44.0 bin/l2part	10	6	0x100016f4	mode_set	established	integer equal to the current timestamp plus a 24-byte header equal to the current one except the word at 0x10; installs that word; the meaning of the word is inferred as the current mode
+L2 1.44.0 bin/l2part	10	7	0x100017bc	park_request	inferred	slot 0 to 63 and the request itself kept in a table, no immediate reply; used for deferred replies
+L2 1.44.0 bin/l2part	10	8	0x10001870	release_parked	inferred	slot and string; replies to the parked request in that slot with the string and clears the slot
+L2 1.44.0 lib/libIRouter	-	0x3001	0x5474	chunk_first_flagged	established	first frame of a chunked message when bit 7 of packet byte 5 is set; header 9 bytes, payload up to 118
+L2 1.44.0 lib/libIRouter	-	0x3002	0x5474	chunk_first	established	first frame otherwise
+L2 1.44.0 lib/libIRouter	-	0x3003	0x5474	chunk_next	established	every later frame; length bytes zero

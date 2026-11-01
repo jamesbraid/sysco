@@ -41,7 +41,7 @@ Standard cramfs fields, big-endian (established from the bytes): magic `0x28cd3d
 
 File data is one zlib stream per 4 KiB block, with a table of end offsets in front, as in the public cramfs layout. A device node keeps its device numbers in the size field.
 
-Totals for 1.44.0, from the listing: 69 regular files, 116 symbolic links, 88 character and 13 block device nodes, 21 directories. The tree is described in [rootfs.md](rootfs.md).
+Totals for 1.44.0, from the listing: 69 regular files, 116 symbolic links, 88 character device nodes, 12 block device nodes, 1 FIFO and 21 directories (the root counts as the 308th entry). The tree is described in [rootfs.md](rootfs.md).
 
 ## Versions
 
