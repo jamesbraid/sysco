@@ -5,6 +5,7 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | Note | Subject |
 |---|---|
 | [package-container.md](package-container.md), [coldfire-package-sections.md](coldfire-package-sections.md), [boot-memory-base.md](boot-memory-base.md) | the seven-package container, the reset region, the loader candidates, RAMBAR and MBAR values |
+| [arm-linux-packages.md](arm-linux-packages.md) | the two ARM Linux L1 packages of each set: kernel and CramFS layout, brick labels and bitstreams, user-space programs by name |
 | [mbus.md](mbus.md), [mbus-environment-task.md](mbus-environment-task.md), [environment.md](environment.md), [board-records.md](board-records.md), [env-reset-debug.md](env-reset-debug.md) | the M-Bus master, EEPROM records, the environment task and its reset countdown |
 | [usb-overview.md](usb-overview.md), [usb-control.md](usb-control.md), [usb-bulk.md](usb-bulk.md), [usb-descriptor-fields.md](usb-descriptor-fields.md), [usb-descriptors-routing.md](usb-descriptors-routing.md), [usb-controller-registers.md](usb-controller-registers.md), [usb-lower-controller.md](usb-lower-controller.md), [usb-timeouts.md](usb-timeouts.md) | the USB device side |
 | [rs422-router.md](rs422-router.md) | the packet router, the node UART link and the RS-422 peer links |
