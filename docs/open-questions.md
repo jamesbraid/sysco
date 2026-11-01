@@ -23,7 +23,7 @@ Each entry lists what has been tried and the next route. Move an answered questi
 ## Images not yet read
 
 - L1 packages 0, 2, 3 and 5 of every set (other brick families) and the two Linux packages: only their layout is tabulated.
-- The L2 image: layout only (boot loader, kernel, cramfs); the daemon, libraries and the USB host side are unread. The 1.44.0 cramfs is at offset 0xd521d, size 2,052,096 bytes.
+- The L2 image: container, cramfs, file inventory and boot sequence are read ([l2/](l2/image-layout.md)). Unread: the boot loader (bytes 0x34 to 0x4a218 of `l2.bin`), the kernel's entry path and board setup, the L2 daemon's request handlers outside the partition task, `libscan`, the display and touch protocol in `l2gui`. The cramfs CRC field is not reproduced (routes tried: four spans, see the layout note).
 - `pbay.bin` (5,888 bytes, identical in all four sets): format not examined.
 - The host tools' command tables (`l1cmd`, `l2cmd`, `flashsc` options and the update protocol they speak to the controllers).
 
