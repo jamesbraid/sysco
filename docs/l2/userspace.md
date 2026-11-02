@@ -214,3 +214,51 @@ This corrects [partition-task.md](partition-task.md) in two places: the descript
 - What an L1 does with the daemon's recurring request to destination `0x0ffff00e` (section 8, item 6).
 - Whether a segment over 4096 bytes is ever written to a USB node.
 - The kernel's USB match routine and the 9-byte record fill were read to the extent needed here (the match checks a descriptor word equal to `0x065e1234`, one configuration, one interface, a bulk-out then a bulk-in endpoint; the field mapping of that compare is as stated in the L1 notes and is inferred on this side).
+
+## 11. Failure paths of the opens and the system calls
+
+Read from L2 1.44.0 (`bin/l2`, `bin/l2flash`, `lib/libdrivers`); addresses are in `bin/l2` unless named. Each row says what the program does after the failing step.
+
+| Step | Failure | What follows | Grade |
+|---|---|---|---|
+| Reset ioctls on a slot node (`sub_10004210`) | Each failing request prints `SGIL1_RESET_WRITE error`, `SGIL1_RESET_READ error` or `SGIL1_RESET_DEVICE error` with the `strerror` text (0x10004298 to 0x100043a4). The routine returns -1 when the device reset fails or when the 5305 path fails. | The device open at 0x100049e0 does not test the return value. It prints `INFO: opened USB device` and carries on. The two other callers (0x100062a0 and 0x10006f28, the read and write error recovery) were not followed. | E for the prints and returns; E for the open path |
+| Control node `/dev/sgil1_cs` open fails | `ERROR: can't open USB control <node>, <strerror>`, then `sub_10003eec` returns -1 (0x10003fdc). | The connection-mode dispatcher stores the nonzero result and prints `FATAL: can't open connection to L1`, then calls `exit(1)` (0x10005754 to 0x10005778). The daemon does not run. | E |
+| Slot node `/dev/sgil1_N` open fails | `ERROR: can't open <node>, <strerror>`, then `sub_10004680` returns -1 (0x10004910 to 0x10004924). | The status loop (0x100050a0) ignores the result and goes on to the next slot. The slot's state byte was set to 1 before the call (0x10005098), so a later status change is what retries it. | E for the path; I for the retry |
+| `-serial <device>` (mode 3) open fails | `ERROR: can't open device <device>, errno: <n>` (0x1000527c), then -1. | The dispatcher prints `FATAL: can't open connection to L1` and exits with status 1. The default device text `/dev/com2` is in the buffer's initial value; the 1.44.0 tree has no `com2` node (no row in the listing). A bare `-serial` open would fail there; the errno was not run. | E for the path; I for the errno |
+| Modem port `/dev/ttyS0` (`/dev/ttyS1` with `-pc`) open fails | `INFO: can't open modem port (<device>): <strerror> [<errno>]` (0x10008394), then `sub_10008278` returns with no session attached. | Not fatal. The modem session is absent and the daemon carries on. | E |
+| Console session | The daemon does not open a console. The session is its standard input (see the port row in section 3). | Not checked by the daemon. | E for the absence of an open |
+| `/dev/snsc` | The string appears only in the client library `libapi`, in `sn1SCUseSCDevice`, which runs `/bin/ls -1 /dev/snsc/*c*` and prints `Could not find an L1 Controller (/dev/snsc/*) to communicate with!` when nothing matches. | The daemon, `l2part`, `l2flash` and `l2gui` take a host name and a socket and do not open a snsc node themselves (string search). The return value of `sn1SCUseSCDevice` and its callers were not followed. | E for the strings; U for the return path |
+| `/dev/com2` | Covered in the `-serial` row. | | E |
+| `/proc/bus/usb` | No program or library names it (string search). `/etc/fstab` mounts `usbdevfs` there and `rc.sysinit` runs `mount -n -a` without testing the result. | A missing mount point gives a mount error and boot continues. The mount program's text was not read. The daemon uses `/dev/sgil1_*` only. | E for absence and for the missing check; I for the boot effect |
+| `date` command (routine at 0x10011640) | `system("(date <arg>; hwclock -u --systohc) >/dev/null 2>/dev/null")`. Result 0 is success, and so is -1 with `errno` 10 (no child, 0x100116a8 to 0x10011698). Any other result prints `ERROR: Invalid date '<arg>'`. | The time zone from NVRAM key 17 is set before the call (`setenv TZ`) and is not undone. | E |
+| `ip` command | Not traced. The commands that call `system()` are `l1sim` start (0x10008230), `date` (0x10011658), `l2passwd` (0x100152d4), `init 6` or `/sbin/reboot` (0x100164b0, 0x100164c0) and `init 0` (0x100165cc). `ip` is not among them. | | U |
+| `dhcpserver` command | Not traced. It reads and writes NVRAM key 16 and prints the enable or disable text (0x10017960, 0x10017978). It makes no system call. | | U for the failure of the NVRAM write |
+| Partition service and flash updater at start | The client start (`sn1SCInit` in `l2flash`, `sn1SCInitL2App` in `l2part`) fails when the daemon is not listening. The program logs `sn1SCInit failed` and `retrying connection in 5 seconds...`, sleeps 5 s and tries again. `l2flash` gives up after three tries (the counter at its frame offset 0x10; the give-up path at 0x10000a68 was not read in full). | Traced for `l2flash` (0x100009c4 to 0x10000aa0). | E for the retry; I for the give-up |
+
+## 12. Units of the timers
+
+The daemon arms its timers with `EventAddTimeOut` from `libRouter`. Its arguments are the callback, the argument, a name, and a pair of deltas: the first is added to seconds and the second to microseconds. `EventCreateTimeOut` reads `gettimeofday`, adds the two deltas, and moves whole seconds out of the microsecond field when it passes 999,999 (0xf423f). Read in full at 0xa554 to 0xa6e4 of `libRouter`. Established.
+
+| Timer | Call site | Seconds argument | Microseconds argument | Grade |
+|---|---|---|---|---|
+| First request after a device opens | 0x10004b34 (`l1_open_usb_device` timer) | 0 | 750,000 (0xb71b0), so 0.75 s | E |
+| Recurring request to an L1 | 0x1000dc60 to 0x1000dcd8 (`cfg_ping_l1` callback, 0x1000d9a8) | the period in word 0x10043d54, which is NVRAM key 15 | 0 | E |
+
+NVRAM key 15 is read at start-up (0x1000d6e0) and stored in the period word. It defaults to 5 (0x1000d5d4 and the default write just above it), so the first recurring request after an open is 5 s later and then every 5 s. A slot whose port type is not USB (type 2) uses 2 instead (0x1000dc8c). So the period unit is seconds and the default period is 5 s. The 750,000 first delay is microseconds (0.75 s).
+
+The callback's own code does not wait for or record a reply (see section 8, item 6).
+
+## 13. Client ports, the listener address and the start order
+
+**Client command port.** The client library in the L2 image (`libapi`, which the L2 programs link) connects with `IRouterConnect` to a TCP port made of the port bias plus a constant. `sn1SCInit` uses bias + 8000 (0x1f40), or bias + 8002 when the flag word at 0x244a0 is set (0xaa9c to 0xaae8). `sn1SCInitL2App` uses bias + 9002 (0x232a) or bias + 9004 (0x232c) with the same flag (0xab28 to 0xab74). Established from those instructions. Its option text, `--l2 <host>  hostname or IP address of L2 to connect to`, is the same as the IRIX tools' (see [host-tool-options.md](../host-tool-options.md)). The IRIX `l2cmd` build's own port constant was not read: its loaded text is intact but its section table is cut, so a disassembly would need the program headers and a manual decode. Until it is read, the L2 side fixes the command port at 8000 for a default bias of 0 (I for `l2cmd`).
+
+**Listener address.** `EnetServerInit` calls `SocketGetHostAddr` for the local host name. When that fails it logs `EnetServerInit: couldn't get IP address for local host` and returns with no error (0xecd8 to 0xed08). `EnetServerStart` takes the port number as its first argument and passes the validator and a zero to `RouterStartServer`; it does not pass the stored address (0xed24 to 0xedbc). Established from the calls. The socket bind address inside `libRouter` was not read, so whether a listener needs an interface address is unknown (U). The observed run in [user-mode.md](user-mode.md) needed a host-name entry for `127.0.0.1` to avoid a listener error, not an interface address.
+
+**Start order.** `inittab` (see [rootfs.md](rootfs.md)) starts `l2` on levels 3 to 5, `l2flash` on 4 and 5, `l2gui` and `l2part` on 5, all respawned, with no wait or dependency between them. The partition service and the flash updater therefore do not need the daemon to be up first: each retries its connection every 5 s (strings above; `l2gui` prints `L2 Controller connect failed, retrying...`). What a display program that never registers does to the daemon is not traced: the daemon's `l2dsp` commands set daemon state and their delivery to task 6 was not followed (U).
+
+## 14. Power-up mode and delay
+
+Read from `bin/l2` (1.44.0).
+
+- The power-up mode is NVRAM key 21 (0x15). A nonzero value selects `slow` (routers powered in series); zero selects `fast` (routers powered in parallel). The status command prints the mode with the words `parallel` and `series` chosen by the same bit (0x10014dc0 to 0x10014e24). Established.
+- The inter-command delay is held in word 0x10043c4c. The `power` command help says it is in milliseconds (`delay is set to %d milliseconds`), and the stored value is the command's argument (0x10014dac). The delay is passed as the last argument of a per-router request (0x10013fa0). The order of the loop and the body of the routine it calls (`sub_1001f5e0`) were not read, so the sequencing for `fast` and `slow` is unknown (U). The R-brick's power-on serial-number check is an L1 behaviour and is not in these images (see the L1 notes).
