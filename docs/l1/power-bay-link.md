@@ -4,7 +4,7 @@ Reads the Origin 300 L1 1.44.0 body (`Fuel/PE/O300 1MB` package, listing in [dis
 
 ## Image layout (E from the bytes, I for the load address)
 
-- Bytes `0x00-0x1f` are a header, not code: bytes 0-1 `17 00` (the file length is `0x1700`, so a 16-bit length field), bytes 2-3 `d5 da` (E: equals the 16-bit sum of bytes `0x04` to the end, big-endian), then an ASCII author banner and, in the last three bytes, `56 00 12` (`V`, then the version `0x0012` little-endian). The version matches the `00.18` in the RPM label (I).
+- Bytes `0x00-0x1f` are a header, not code: bytes 0-1 `17 00` (the file length is `0x1700`, so a 16-bit length field), bytes 2-3 `d5 da` (E: equals the 16-bit sum of bytes `0x04` to the end, big-endian), then an ASCII author banner and, in the last three bytes, `56 00 12` (`V`, then the version bytes `00 12` in file order; the `0xc0` reply sends the same version as `12 00`). The version matches the `00.18` in the RPM label (I).
 - **Load address `0x4000` (I).** 306 of 306 absolute call and jump targets that land in `0x4000-0x56ff` hit a non-`0xff` byte with that base, and the `0xc0` reply (below) reports the same version and a chunk size that fits whole-file flashing. Under this base the file is the flash content from controller code address `0x4000`; code below it (a boot loader holding the serial driver, a transmit entry at `0x1500` that the frame trailer jumps to) is **not in the image** (E that the app ends its frames with `LJMP 0x1500`).
 - `0x4700` holds `LJMP 0x55a3` and `LJMP 0x557f` (E); they look like a relocated reset and INT0 pair. The app dispatcher is at `0x4706`; handlers and tables follow to `0x5690`. Timer-0-shaped routines at `0x4300` and `0x4500` have no caller in the image (I: called by the loader).
 - Build time reported by command `0xc0`: epoch `0x39d4a060` = 2000-09-29 14:00:00 UTC (E for the bytes, I that the field is a Unix time).
@@ -51,17 +51,19 @@ L1 side: transaction routine `ffe3ddac`, task init `ffe3e470`. The L1 opens UART
 
 Field one is `iram59`, field two `iram5a`; the IPMI names are a hint, not read in the image (public IPMI v1.5 command numbering matches every pair).
 
+Every tunnelled reply, after the frame header, begins with four bytes: a copy of the request byte that precedes the network-function byte, the request's network function plus 4 (`0x04`, `0x14`, `0x1c`, `0x2c`), the command number, and the request's first data byte (offset 8). The data in the table follows those four bytes. E for the emitted bytes; which request offsets the three request bytes sit at is filled by the loader and not read here (U).
+
 | Pair | Handler | Behaviour |
 |---|---|---|
-| `0x00,0x00` | `0x4941` | fixed eleven-byte reply `04 00 id 00 22 22 00 00` after the header (I: capabilities) |
+| `0x00,0x00` | `0x4941` | fixed reply `00 22 22 00 00` after the four leading bytes (whole reply `<echo> 04 00 id 00 22 22 00 00`) (I: capabilities) |
 | `0x10,0x23` | `0x4977` | no reply |
 | `0x10,0x2d` | `0x497a` | **sensor reading**: `iram5b` selects 1-6 (select codes `0x84,0x80,0x90,0x8c,0xa4` strobed on `P1`/`P3.5` by `0x4a33`) or 7-14 (codes `0x94,0x98` by `0x4a82`), 15 triggers the `0x4afb` sequence; the reply carries two bit-mask bytes (`iram27`, `iram28`) |
 | `0x18,0x03` | `0x4b1f` | action: sets `iram20.7` and strobes `P1 = 0x98`, `0x94`, `0x09`, `0x00`, `0x80`, `0xa4`, `0x11`, `0x0a` in a fixed sequence with delays (I: warm reset or DC-port control) |
 | `0x18,0x04` | `0x4c76` | reply `0x56 0x00` (I: self test not implemented) |
 | `0x28,0x10` | `0x4c9d` | reply echoes four request bytes (`iram5b-5e`) |
 | `0x28,0x11` | `0x4cce` | maps `0xa0,0xa2,...,0xae` to 0-7, strobes `P1` with the request bytes (`iram5b`..`5e`) and sets flags (I: write to the power-bay FRU or a latch) |
-| `0x28,0x20` | `0x4dcf` | fixed reply `01 0c` then fifteen zeros |
-| `0x28,0x23` | `0x4e32` | **record read** keyed by `iram5d` (0, 1, 2, 3, 10, 11, 12): returns up to `iram60` bytes (default `0x20`, `0x10` or `0x30`) from the fixed tables at `0x4eb2`, `0x4f1f`, `0x4f8c`, `0x5065`, `0x50bf`, `0x511c`, `0x5179` (I: sensor data records and FRU data; the L1 prints the multirecord power-supply information and DC output fields from them) |
+| `0x28,0x20` | `0x4dcf` | fixed reply `01 0c` then twelve zeros, after the four leading bytes |
+| `0x28,0x23` | `0x4e32` | **record read** keyed by `iram5d` in the ranges 0-1, 2, 3, 4-9, 10, 11, 12 (other keys take the error path): returns up to `iram60` bytes (default `0x20`, `0x10` or `0x30`) from the fixed tables at `0x4eb2`, `0x4f1f`, `0x4f8c`, `0x5065`, `0x50bf`, `0x511c`, `0x5179` (I: sensor data records and FRU data; the L1 prints the multirecord power-supply information and DC output fields from them) |
 
 The `P1`/`P3.5` pairs write a command byte to a latch outside the MCU: `P1` carries the byte and `P3.5` pulses low then high (E for the pattern, 45 uses). What the latch is (U); the previous reading of the vector files points at CPLDs on the bay boards but names no register.
 
