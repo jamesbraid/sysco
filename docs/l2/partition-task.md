@@ -18,7 +18,7 @@ The L1 packet assembler accepts pseudo-request codes `0x3001` to `0x3003` as pie
 
 | Code | Handler | What it does (read from the handler) | `partmgr` name |
 |---|---|---|---|
-| 1 | `0x10001384` | argument: a brick number, taken from the first argument (or the halfword at +0x2a when the argument type is immediate); returns the partition number the mode database assigns to that brick (`get_partid_for_brick`), 0 if the brick is unassigned; reply: result 0 and one integer | not sent by `partmgr` |
+| 1 | `0x10001384` | argument: a brick number, taken from the first argument (or the halfword at +0x2a when the argument type is immediate); returns the partition number the mode database assigns to that brick (`get_partid_for_brick`; the library's -1 for an unlisted brick is clamped to 0 by the wrapper at `0x10002054`, so the reply is 0 for unlisted and for unpartitioned); reply: result 0 and one integer | not sent by `partmgr` |
 | 2 | `0x10001434` | argument: a partition number; copies that partition's environment-variable block (`get_env_for_part`, into a stack buffer) and replies with an integer length and the block | `PART_GET_VARS` |
 | 3 | `0x10001594` | no argument; copies the whole mode database (`sub_10002150`, from the working buffer at `0x10013100`; it first builds the default database if none is loaded) and replies with result 0 and one binary argument holding it | `PART_GET_DB` |
 | 4 | `0x10001524` | no argument; replies with result 0 and one integer, the database timestamp, the word at +0xc of its header | `PART_GET_DB_TIME` |
@@ -70,5 +70,5 @@ So a partition-database reply (code 3, up to 65,536 bytes) travels as one router
 
 ## Open
 
-- The PROM side of the fetch (which code it sends, whether it uses the whole-database code or the per-brick code) is not in the images read. Route tried: the L1 package's chunk assembler and the L2 handler above. Next: the L1 requests that forward to task 10 (task 5 forwarding in [../l1/rs422-router.md](../l1/rs422-router.md)) and any IP35 PROM image that reaches this tree.
+- The PROM side of the fetch (which code it sends) is not in the images read; [partition-record.md](partition-record.md) infers code 1 from the request shape and the reply checks the firmware's published reading records. Route tried: the L1 package's chunk assembler and the L2 handler above. Next: the L1 requests that forward to task 10 (task 5 forwarding in [../l1/rs422-router.md](../l1/rs422-router.md)) and any IP35 PROM image that reaches this tree.
 - Whether `0x3001` versus `0x3002` carries a meaning to the L1 (the L1 assembler's treatment is in the L1 notes).

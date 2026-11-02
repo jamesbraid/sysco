@@ -210,7 +210,7 @@ This corrects [partition-task.md](partition-task.md) in two places: the descript
 
 ## 10. Open items
 
-- Which request code and arguments the stock boot firmware puts in a task-`0xa` request. Routes tried: both L2 sides of the framing, every L2 binary for the three codes, the L1 notes. Next: the boot firmware itself, when an image of it is available.
+- Which request code and arguments the stock boot firmware puts in a task-`0xa` request (inferred to be code 1 with a brick identifier, [partition-record.md](partition-record.md)). Routes tried: both L2 sides of the framing, every L2 binary for the three codes, the L1 notes. Next: the boot firmware itself, when an image of it is available.
 - What an L1 does with the daemon's recurring request to destination `0x0ffff00e` (section 8, item 6).
 - Whether a segment over 4096 bytes is ever written to a USB node.
 - The kernel's USB match routine and the 9-byte record fill were read to the extent needed here (the match checks a descriptor word equal to `0x065e1234`, one configuration, one interface, a bulk-out then a bulk-in endpoint; the field mapping of that compare is as stated in the L1 notes and is inferred on this side).
