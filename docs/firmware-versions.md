@@ -23,7 +23,7 @@ Marks: established means measured directly from the file; inferred means a readi
 | patch SG0007149 | 1.48.1 (the legacy 2 MB ColdFire image reports 1.48.0) | 16,027,376 bytes, sha256 `536bfa4c6d0240b7afbc25bef94e160bdf1a675016c35e68ec52e1bfb1b451f9`, 7 packages | 1.48.0 | 2,993,732 bytes, sha256 `10258789f1cb5dd49d024870ff1d0f14a879a1c3b9aaf75610c51aa5af6f9e4f` |
 | SGI Internal Support Tools 3.24 for Linux (L3 and SGIconsole disc), `snxsc_firmware` 1.62.1-1 | 1.62.1 | 13,258,744 bytes, sha256 `b4b5634949a93f05ad6eb24462e6cd7f10104dd42ff5c2ae8616dd5d87697790`, 5 packages (three ColdFire, two Linux) | 1.62.0 | 2,994,152 bytes, sha256 `e21bf0b0ea0463ff1d0981da401e1ebac5489087217a69838671b44007646d27` |
 
-The hash of every file, including the tools and the CPLD vectors, is in [../scripts/inventory-root.sha256](../scripts/inventory-root.sha256); [inventory/images.tsv](inventory/images.tsv) adds the kind and detail of each.
+The hash of every file, including the tools and the JTAG vectors, is in [../scripts/inventory-root.sha256](../scripts/inventory-root.sha256); [inventory/images.tsv](inventory/images.tsv) adds the kind and detail of each.
 
 Established: the version strings above are the most frequent `1.NN.N` strings in each file. The SG0005762 release note says L1 1.32.14 and L2 1.32.4; the image's own string is 1.32.15. The identification section of the 6.5.27, 6.5.28 and 6.5.29 release notes names L1 and L2 1.6.0. Neither image holds that string (a byte search of each L1 and L2 finds none); the images carry 1.34.x, 1.38.x and 1.40.x, and every package inside each L1 reports the same version. The notes of 6.5.20 to 6.5.26 name the versions the images carry. The SG0007149 release note says it carries System Controller software 1.7 to 1.16 compatibility fixes for IRIX 6.5.24 to 6.5.30 and does not name its firmware version; the images say 1.48.x.
 
@@ -34,10 +34,10 @@ Other `field_diags_sysco` files on the same media:
 | Item | 6.5.22 | 6.5.30 | SG0005762 | SG0007149 |
 |---|---|---|---|---|
 | `pbay.bin` (power-bay controller image) | 5,888 bytes, sha256 `7428aaf3d5beffcb23fb56aa9f82c013a6f3ebbb5f41175a61781bfcf366f9c6` | same | same | same |
-| CPLD vector files (`.svf`) | `ioc4.svf`, `is1.svf` | `dm7`, `io9`, `io10`, `is2`, `is_cpld`, `sgc` | none | `dm7` |
+| SVF JTAG vector files (`.svf`) | `ioc4.svf`, `is1.svf` | `dm7`, `io9`, `io10`, `is2`, `is_cpld`, `sgc` | none | `dm7` |
 | `flashsc` | 291,124 bytes | 419,780 bytes | 312,000 bytes | 407,920 bytes |
 
-The CPLD vector files differ by set. 6.5.20 has none and no `flashsvf`. 6.5.21 has `ioc4.svf` only, byte-identical to the 6.5.22 copy. 6.5.23 has `io9.svf`, `io10.svf` and `is1.svf`. 6.5.24 has `dm7.svf`, `io9.svf`, `io10.svf`, `is1.svf` and `sgc.svf`. 6.5.25 has `dm7.svf`, `io9.svf`, `io10.svf`, `is2.svf` and `sgc.svf`. 6.5.26 to 6.5.29 add `is_cpld.svf` to those; 6.5.26 and 6.5.27 hold a 58,643-byte `is_cpld.svf` where 6.5.28 and 6.5.29 hold 56,946 bytes. `pbay.bin` is the same 5,888-byte file in every set. The four CD-IST 3.24 vectors are SVF text with Xilinx IDCODE reads; their exact IDs and file labels are in [controllers.md](controllers.md). The remaining vectors are inventoried, not read.
+The SVF vector files differ by set. 6.5.20 has none and no `flashsvf`. 6.5.21 has `ioc4.svf` only, byte-identical to the 6.5.22 copy. 6.5.23 has `io9.svf`, `io10.svf` and `is1.svf`. 6.5.24 has `dm7.svf`, `io9.svf`, `io10.svf`, `is1.svf` and `sgc.svf`. 6.5.25 has `dm7.svf`, `io9.svf`, `io10.svf`, `is2.svf` and `sgc.svf`. 6.5.26 to 6.5.29 add `is_cpld.svf` to those; 6.5.26 and 6.5.27 hold a 58,643-byte `is_cpld.svf` where 6.5.28 and 6.5.29 hold 56,946 bytes. `pbay.bin` is the same 5,888-byte file in every set. The four CD-IST 3.24 vectors are SVF text with Xilinx IDCODE reads; their exact IDs and file labels are in [controllers.md](controllers.md). The IRIX-set vectors are inventoried, and their IDCODE reads and parts are in [controllers.md](controllers.md). The rest of each file is not read.
 
 ## Container layout
 

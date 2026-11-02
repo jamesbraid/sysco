@@ -8,7 +8,7 @@ This repository reverse-engineers the SGI L1 and L2 system-controller firmware (
 - **L2 second.** The PowerPC MPC860 image: boot loader, Linux 2.4.7 kernel and the big-endian cramfs with the L2 daemon and its libraries.
 - **Every version.** Findings name the version and package they were read from. A fact read in 1.44.0 is not assumed for 1.24.8, 1.32.15 or 1.48.1 until the same bytes are read there; [docs/firmware-versions.md](docs/firmware-versions.md) lists the sets.
 - **The goal** is a description complete enough to run the real firmware on an emulated machine: every memory-mapped peripheral and external device the code touches, with address, width and expected reply; the packet, USB, RS-422 and node-UART protocols; the boot path and bank selection; the request catalogue.
-- Host tools (`flashsc`, `l1cmd`, `l2cmd`, `flashpbay`, `flashsvf`) are in scope as evidence of how the controllers are driven. CPLD vector files (`.svf`) are inventoried but not read.
+- Host tools (`flashsc`, `l1cmd`, `l2cmd`, `flashpbay`, `flashsvf`) are in scope as evidence of how the controllers are driven. SVF JTAG vector files (`.svf`) are inventoried; only their IDCODE reads are used.
 
 ## 2. Evidence: software only, any source as a hint
 

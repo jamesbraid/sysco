@@ -29,6 +29,27 @@ The four CD-IST 3.24 SVF files are configuration-PROM programming vectors, not C
 
 Sources for the table: OpenOCD `xcf.c` ([openocd.org xcf.c](https://openocd.org/doc/doxygen/html/xcf_8c_source.html)) defines `ID_XCF01S` 0x05044093, `ID_XCF02S` 0x05045093 and `ID_XCF32P` 0x05059093. The xc3sprog device list ([devlist.txt](https://raw.githubusercontent.com/sifive/xc3sprog/master/devlist.txt)) gives the same three IDs as XCF01S, XCF02S and XCF32P. Xilinx DS026 v6.1, "XC18V00 Series In-System-Programmable Configuration PROMs", Table 5 ([DS026](https://docs.amd.com/api/khub/documents/6MAHUFe3JhpT1bdCspA7mQ/content)) gives XC18V04 as `05026093h` or `<v>5036093h`. The IDCODE establishes the device family and product ID; it does not establish which package or board the file was made for. The file header labels are the names the files give themselves.
 
+The 59 SVF paths under the root hold 16 distinct files. The four CD-IST files above are four of them, and the other twelve are the IRIX-set vectors. Each was read the same way: the first `SDR 32` IDCODE read, compared with the revision nibble dropped. Six name XC18V04 PROMs, two XCF04S, two XC18V02, and two match no IDCODE in the public sources searched. The Sets column lists the releases and patches that hold the file byte for byte.
+
+| File | Sets | sha256 | IDCODE in file | Part, by public IDCODE table | Grade | File header label |
+|---|---|---|---|---|---|---|
+| `dm7.svf` | patch SG0007149 | `05e34bce8c8797683423d05830f406dc71f2d69730efb245b1217bb23fe4d99d` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `DM7 PROMS 1.0` |
+| `ioc4.svf` | 6.5.21, 6.5.22 | `1ed15a7dd78025700805af53e5b341684531208d7a89ef6f4141dde8d9b6f54c` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `IO9 IOC4 0.79` |
+| `is_cpld.svf` | 6.5.28 to 6.5.30, patch SG0007149 | `1f1e38528b366694a62b9189288869cf82f00aa0fb749af6207c48698453e45d` | `0xf6c5f093` (mask `0fff8fff`) | unknown | unknown | `GEMINI CPLD 1.2` |
+| `is_cpld.svf` | 6.5.26, 6.5.27 | `1f733381c8998973b8d35756a401b7057c8e5a0cecf40fe48ea8ea0cf184fe9a` | `0x06c5f093` (mask `ffff8fff`) | unknown | unknown | `GEMINI CPLD 1.0` |
+| `io9.svf` | 6.5.26 to 6.5.30, patches SG0005762 and SG0007149 | `26b724a92d06045e3e220d6a5540441b465df0594614f17c88249f998e32f061` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `IO9 IOC4 0.83` |
+| `io9.svf` | 6.5.23 to 6.5.25 | `2ece9af983faa637b1959fc1abc5f98a6b62ec5777a86f988978afa276770359` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `IO9 IOC4 0.79A` |
+| `sgc.svf` | 6.5.24 to 6.5.30, patch SG0007149 | `78ea29e5d617481e775be521a0d9b61340ed6261cf93dd43980164df99cc0ab0` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `SGC PROMS 1.12` |
+| `io10.svf` | 6.5.26 to 6.5.30, patches SG0005762 and SG0007149 | `9d01ed3bff07a4c91d5689c289da6d031d38c18ee624ffad8f8dd49b133b8e67` | `0xf5046093` | XCF04S Platform Flash PROM (`05046093`) | established (IDCODE match) | `IO10 IOC4 0.83` |
+| `dm7.svf` | 6.5.24 to 6.5.30 | `b736a814947630a2e2b4bb21cd756b236554e97c19f3fa99bda5d63922936c3b` | `0xf5036093` | XC18V04 ISP configuration PROM (`<v>5036093`, the newer die) | established (IDCODE match) | `DM7 PROMS` |
+| `io10.svf` | 6.5.23 to 6.5.25 | `dc1e135bd260745a8818fafb2a5b20d6bcf7a03d9c132680724581cee70ba04f` | `0xf5046093` | XCF04S Platform Flash PROM (`05046093`) | established (IDCODE match) | `IO10 IOC4 0.79` |
+| `is1.svf` | 6.5.22 to 6.5.24 | `e1078dad88c1622ca09360d57e60eb9a2d3f36e969631c4e694c28b9368ba5da` | `0x05025093` | XC18V02 ISP configuration PROM (`05025093`) | established (IDCODE match) | `IS1 PROM0 1.10` |
+| `is2.svf` | 6.5.25 to 6.5.30, patches SG0005762 and SG0007149 | `ed72f75d4816d44777b669ee89fc84a7124851a5bf2fd3e238cbcfe2901b78e8` | `0xf5035093` | XC18V02 ISP configuration PROM (`<v>5035093`, the newer die) | established (IDCODE match) | `IS2 PROM0 1.10` |
+
+The two `is_cpld.svf` files carry `GEMINI CPLD` headers. Their IDCODEs, `0xf6c5f093` and `0x06c5f093`, are not in the public sources searched, so their part stays unknown. The header is the file's own label and is not checked against a device.
+
+Sources for the IRIX-set rows: the `ID_XCF04S` value `0x05046093` is on the same OpenOCD `xcf.c` page as above, and DS026 Table 5 gives XC18V02 as `05025093h` or `<v>5035093h` in the same document as the XC18V04 entry.
+
 Challenge and Onyx and the MSC share nothing with the MMSC image except the host daemon names. The MMSC is the only one of the older three whose firmware we hold.
 
 ### What was found, and how
@@ -65,7 +86,7 @@ IRIX 6.5.9 to 6.5.19 shipped L1 and L2 before the layouts in [firmware-versions.
 | MIPS ELF with debug information | IRIX host tools and driver objects | already covered: `tools/re-run --ghidra-export` for relocatable objects, the MIPS objdump, pyelftools |
 | PIC microcontroller (MSC and ELSC, if the hint holds) | MSC | no image to read yet. If one is found: Ghidra ships PIC modules (believed to include the 17Cxxx and 16Cxxx families; verify against the pinned Ghidra release before relying on it) and gputils' `gpdasm` disassembles PIC12 to PIC18. MPLAB simulator material would be needed only for execution. |
 | Unknown Challenge and Onyx controller CPU | Everest | none until the CPU is established |
-| 8051 and HC11 | not seen | no image suggests either; do not install support speculatively |
+| 8051 and HC11 | 8051: inferred only, from the pbay decode above, not established; HC11 not seen | no image establishes either; do not install support speculatively |
 
 ## Public references
 
