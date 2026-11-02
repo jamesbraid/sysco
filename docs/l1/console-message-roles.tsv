@@ -1,0 +1,25 @@
+call_addr	grade	role	evidence
+ffe4a62c	established	Fan control init called again: prints when the word at 0x30000124 is nonzero. That word receives the routine's first argument at the end of the same routine. Severity 9, line 97.	listing ffe4a604-ffe4a63c: tst.l $10(a5) with a5 = 0x30000114; beq.b ffe4a636 skips the call; store move.l $8(a6),$10(a5)
+ffe4b670	established	Power code initialised twice: prints when the word at 0x30000128 is nonzero. Severity 9, line 307.	listing ffe4b644-ffe4b67a: tst.l (a5) with a5 = 0x30000128; beq.b ffe4b67a skips the call
+ffe4b6a8	established	Power supply present array could not be allocated: prints the byte count when the allocator returns zero. Severity 9, line 314.	listing ffe4b644-ffe4b6b2: call ffe560bc, move.l d0,8(a5), tst.l d0; bne.b ffe4b6b2 skips the call; byte count pushed from $c(a6)
+ffe4c4a4	established	Low power monitoring found disabled after reset release: prints when the word at 0x30000138 is nonzero, then clears that word. Severity 4, line 0x9dc. The routine that sets the word was not read.	listing ffe4c478-ffe4c4b0: tst.l $10(a5) with a5 = 0x30000128; beq.b ffe4c4bc skips; clr.l $10(a5) after the call
+ffe4a690	inferred	Fan tachometer index out of range; prints the index and the count.	table row: blt.b ffe4a670 skips the call on cmp.l (a5),d0; pushes the index byte and the word at (a5)
+ffe4abd2	inferred	Fan speed set failed on an I/O expander; prints the device name and the status text.	table row: beq.w ffe4ab9a skips the call on tst.l d7; third argument from call ffe65864 (io_expander_name)
+ffe4acca	inferred	Fan speed set failed on a monitor device; prints the device name and the status text.	table row: beq.b ffe4ac94 skips the call on tst.l d7
+ffe4acf2	inferred	Fan control device number is not one the table knows.	table row: beq.b ffe4ac94 skips the call on tst.l d7; argument is the byte at (a5)
+ffe4b718	inferred	Power supply could not be disabled at the given index.	table row: blt.b ffe4b6fe skips the call on cmp.l $4(a1),d1; argument from $8(a6)
+ffe4c7fc	inferred	System refused to power on: the pre-power check returned zero. No argument is printed.	table row: beq.b ffe4c7e4 skips the call on tst.l d0; no pushes
+ffe4b8d8	inferred	No margin value is defined for a power supply type; prints the type number and its name.	table row: beq.b ffe4b886 skips the call on add.l d1,d0; the name is a pointer, not a literal
+ffe4d198	inferred	Power margin calculation called before its structure is initialised.	table row: bne.b ffe4d180 skips the call on tst.l $8(a5)
+ffe4dd5e	inferred	Power margin calculation could not allocate memory.	table row: bne.b ffe4dd46 skips the call on tst.l -$c(a6)
+ffe5e09c	inferred	Temperature monitor init called again.	table row: beq.b ffe5e084 skips the call on tst.l $4(a5)
+ffe678dc	inferred	Monitor value buffer could not be allocated.	table row: bne.b ffe678c4 skips the call on tst.l d0
+ffe6796c	inferred	A monitor could not be disabled; prints the monitor index.	table row: no compare in the table; reached on a failing path that joins another branch target
+ffe679c2	inferred	A monitor could not be enabled; prints the monitor index.	table row: no compare in the table; reached on a failing path that joins another branch target
+ffe67a56	inferred	Reading the SMBus alert response address failed; prints the status text.	table row: beq.b ffe67a2e skips the call on cmp.l #$fffffe6c,d0
+ffe68628	inferred	Monitor interrupt that no monitor claims; prints the monitor index and the interrupt number.	table row: beq.w ffe685aa skips the call on btst.b #0,d6
+ffe686ce	inferred	Reading interrupt status register 1 of a monitor failed; prints the monitor name and the status text.	table row: beq.b ffe686a6 skips the call on tst.l d0; third argument from call ffe5b7b0, which is a value-to-text conversion (identity not established)
+ffe68762	inferred	Reading interrupt status register 2 of a monitor failed; prints the monitor name and the status text.	table row: beq.b ffe6873a skips the call on tst.l d0
+ffe6832a	inferred	Reading a monitor register failed; prints the register number, the monitor name and the status text.	table row: beq.b ffe68300 skips the call on tst.l d6; third argument from call ffe5b7b0
+ffe69a60	inferred	Monitor initialisation failed; prints the monitor name and the status text.	table row: beq.b ffe69a38 skips the call on tst.l d7
+ffe69eec	inferred	VSC055 monitor interrupt has an unexpected value; prints the three status bytes B, A and V.	table row: bne.b ffe69ec0 skips the call on cmp.l #$ff,d5
