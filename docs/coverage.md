@@ -58,7 +58,7 @@ Sets read: 6.5.12 (L2 1.4.2); 6.5.13 (L2 1.6.0); 6.5.14 (L2 1.8.0); 6.5.15 (L2 1
 
 | Table | Rows | Understood | Located | Undocumented | % understood | % located or better |
 |---|---:|---:|---:|---:|---:|---:|
-| [images](inventory/images.tsv) | 219 | 28 | 16 | 175 | 12.8 | 20.1 |
+| [images](inventory/images.tsv) | 219 | 28 | 28 | 163 | 12.8 | 25.6 |
 | [packages](inventory/packages.tsv) | 70 | 4 | 5 | 61 | 5.7 | 12.9 |
 | [firmware-functions](inventory/firmware-functions.tsv) | 191808 | 400 | 79810 | 111598 | 0.2 | 41.8 |
 | [request-codes](inventory/request-codes.tsv) | 201 | 198 | 3 | 0 | 98.5 | 100.0 |
