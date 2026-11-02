@@ -37,7 +37,7 @@ Other `field_diags_sysco` files on the same media:
 | CPLD vector files (`.svf`) | `ioc4.svf`, `is1.svf` | `dm7`, `io9`, `io10`, `is2`, `is_cpld`, `sgc` | none | `dm7` |
 | `flashsc` | 291,124 bytes | 419,780 bytes | 312,000 bytes | 407,920 bytes |
 
-The CPLD vector files differ by set. 6.5.20 has none and no `flashsvf`. 6.5.21 has `ioc4.svf` only, byte-identical to the 6.5.22 copy. 6.5.23 has `io9.svf`, `io10.svf` and `is1.svf`. 6.5.24 has `dm7.svf`, `io9.svf`, `io10.svf`, `is1.svf` and `sgc.svf`. 6.5.25 has `dm7.svf`, `io9.svf`, `io10.svf`, `is2.svf` and `sgc.svf`. 6.5.26 to 6.5.29 add `is_cpld.svf` to those; 6.5.26 and 6.5.27 hold a 58,643-byte `is_cpld.svf` where 6.5.28 and 6.5.29 hold 56,946 bytes. `pbay.bin` is the same 5,888-byte file in every set. These vectors are inventoried, not read.
+The CPLD vector files differ by set. 6.5.20 has none and no `flashsvf`. 6.5.21 has `ioc4.svf` only, byte-identical to the 6.5.22 copy. 6.5.23 has `io9.svf`, `io10.svf` and `is1.svf`. 6.5.24 has `dm7.svf`, `io9.svf`, `io10.svf`, `is1.svf` and `sgc.svf`. 6.5.25 has `dm7.svf`, `io9.svf`, `io10.svf`, `is2.svf` and `sgc.svf`. 6.5.26 to 6.5.29 add `is_cpld.svf` to those; 6.5.26 and 6.5.27 hold a 58,643-byte `is_cpld.svf` where 6.5.28 and 6.5.29 hold 56,946 bytes. `pbay.bin` is the same 5,888-byte file in every set. The four CD-IST 3.24 vectors are SVF text with Xilinx IDCODE reads; their exact IDs and file labels are in [controllers.md](controllers.md). The remaining vectors are inventoried, not read.
 
 ## Container layout
 
