@@ -6,7 +6,7 @@ Rail, expander and tachometer labels from the image are written in lower case wh
 
 ## Which bricks accept which commands
 
-A command-table entry is 17 words: ten token words, a handler, a pointer to the string of brick-type characters the command is allowed on (null: any brick), three flag words and the help text. A leading `~` in the string negates the set. The match routine is at `0xffe198ac` (E): it takes the brick-type byte, folds `&` to `N` and `3` to `X`, looks the type up in a class table at `0xffe267ec` that maps every type to a class letter (`i` I/O and graphics, `c` compute, `r` router, `t` for `1` and `2`), and allows the command when the type, or its class letter, is in the string (or, for a negated string, is not).
+A command-table entry is 17 words: ten token words, a handler, a pointer to the string of brick-type characters the command is allowed on (null: any brick), three flag words and the help text. A leading `~` in the string negates the set. The match routine is at `0xffe198ac` (E). It reads the brick-type byte through `0xffe75fc8` (a getter for the byte at `0x300008cc`), sign-extends it, and folds `&` to `N` and `Y` to `X`; `3` is not folded. The fold runs before the search, so a set's own `&` or `Y` never matches: the set has to name `N` or `X`. For types up to `Y` (`0x59`) it reads a class letter from a byte table at `0xffe267ec`, indexed by the folded type (`i` I/O and graphics, `c` compute, `r` router, `t` for `1` and `2`). The table's `&` and `Y` entries are never read, and types above `Y` have no class. The command is allowed when the type, or its class letter, is in the string. For a negated string it is allowed when either is absent, so it is refused only when both are present.
 
 | Command | Brick types allowed | Grade |
 |---|---|---|
@@ -22,7 +22,7 @@ A command-table entry is 17 words: ten token words, a handler, a pointer to the 
 | `margin <index> default\|low\|norm\|high`, `margin <index> <value>` | negated empty set: any (the `~` string is `~` alone) | E |
 | `margin dimm v <volts>` | `C 1` | E |
 | `margin pci norm2hi [on\|off]` | `7 8 Q E` | E |
-| `pbay` and its 15 sub-commands (`version`, `dps [n]`, `dcport [n]`, `fru [n]`, `reset`, `env [on\|off]`, `init`, `serial`) | `C 3 5 6 P % # = I X Y R N & !` (every brick that can sit on a power bay; the bay is not a brick personality) | E |
+| `pbay` and its 15 sub-commands (`version`, `dps [n]`, `dcport [n]`, `fru [n]`, `reset`, `env [on\|off]`, `init`, `serial`) | `C 3 5 6 P % # = I X Y R N & !` (every brick that can sit on a power bay; the bay is not a brick personality; the `&` and `Y` entries match only through their folded letters `N` and `X`, which are also listed) | E |
 | `l1dbg env`, `l1dbg margin` | any | E |
 
 A command refused by this test prints a short error and returns -1 (E, `0xffe19950` to `0xffe1997c`).
