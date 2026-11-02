@@ -13,7 +13,7 @@ Method. The segment map is the one in [load-map.md](load-map.md). The firmware i
 
 ## 1. Flash module (module `flash`, `0x10cc24` to `0x10d72c`)
 
-Routines, all 6.5.30 (6.5.5 sits `0x10` lower, 6.5.6 at the 6.5.30 address; the code is identical after addresses are removed, see section 7).
+Routines, all 6.5.30. In the flash and battery-backed store modules 6.5.6 sits at the same addresses and 6.5.5 `0x10` lower; the NVRAM and download routines are further apart (section 7 has the address table). The code is identical after addresses are removed (section 7).
 
 | Routine | Address | Role |
 |---|---|---|
@@ -64,7 +64,7 @@ Up to as many attempts as tunable 38 allows (the erase attempt limit, default 1)
 
 `_ffscDefaultTuneInfo` (6.5.30 `0x12601c`) holds 39 sixteen-byte entries `{name pointer, index, default, flag}`, ending with a zero name. `_ffscEarlyInit` (`0x12661c`) copies them to `_ffscTuneInfo` indexed by `index`, then fills `_ffscTune` (`0x1e0678`, a word array indexed by `index`, 39 words) from NVRAM object 8, replacing any zero word with the default (established). Relevant entries:
 
-| Index | Offset in `_ffscTune` | Name | Default |
+| Index | Offset in `_ffscTune` | Name here | Default |
 |---|---|---|---|
 | 25 | `+0x64` | download error limit | 10 |
 | 26 | `+0x68` | download interrupt limit | 10 |
@@ -73,6 +73,8 @@ Up to as many attempts as tunable 38 allows (the erase attempt limit, default 1)
 | 1 | `+0x04` | buffer-write wait | 10,000,000 |
 | 21 | `+0x54` | connect wait | 3,000,000 |
 | 23 | `+0x5c` | listener connection limit | 25 (23 in 6.5.5) |
+
+The table's fourth field is 0 for the entries with index 24, 25, 26, 28, 33, 34, 35 and 36 and 1 for the other 31; what the flag controls was not read. All 39 entries (index, default and flag, with its name string) were read from the 6.5.30 table at `0x12601c`.
 
 The five defaults the upgrade steps copy besides these are router reply wait 20,000,000, MSC reply wait 5,000,000, local response wait 4,500,000, remote response wait 16,000,000 and switch debounce delay 10,000. The 6.5.5, 6.5.6 and 6.5.30 tables are identical except listener connection limit in 6.5.5. The unit of the time-like entries is inferred to be microseconds: buffer-write wait equals the 10,000,000 that the transfer routine passes as its first-byte timeout, and the timed-read helper (`_timeoutRead` `0x12dc78`, which calls `_timeoutSet` `0x12ddc8`) turns its timeout argument into seconds by dividing by 1,000,000 (established; the multiply by `0x431bde83` and shift by 18 is that divide).
 
@@ -183,7 +185,7 @@ Options by string match: `-a` automatic, `-m` manual, `-d` direct to a named ser
 
 ### The command channel (established)
 
-`mmsc_open` (`0x1000574c`) opens a tty (`/dev/ttyd1` in auto mode, speed `0x2580` = 9600) and the control device `/hw/machdep/mmsc_control`; `mmsc_transact` (`0x100069a4`) does `do_grab`, `mmsc_command`, `do_release`, then `mmsc_response`. `do_grab` is `ioctl(controlFd, 0x7a06)` and `do_release` `ioctl(controlFd, 0x7a07)`, each returning -4 on failure and doing nothing when the record's first word is zero.
+`mmsc_open` (`0x1000574c`) opens a tty (`/dev/ttyd1` in auto mode, speed `0x2580` = 9600) and the control device `/hw/machdep/mmsc_control`; `mmsc_transact` (`0x100069a4`) does `do_grab`, `mmsc_command`, `do_release`, then `mmsc_response`. `do_grab` is `ioctl(controlFd, 0x7a06)` and `do_release` `ioctl(controlFd, 0x7a07)`, `do_grab` returning -4 and `do_release` -5 on failure, and each doing nothing when the record's first word is zero.
 
 - **Command frame** (`mmsc_command`, `0x100065a4`): `0xa0`, operation byte, length high byte, length low byte, payload, one checksum byte; the checksum is the low byte of the sum of the operation byte, both length bytes and every payload byte (the leading `0xa0` is left out). Written through `mmsc_write` (`0x100061ec`) to the tty descriptor when the record's first word is zero, otherwise to the control descriptor, looping over partial writes.
 - **Response frame** (`mmsc_response`, `0x100066ac`): skip bytes until `0xa0`, read three bytes (status, length high, length low), refuse a length above the caller's buffer ("Response too long"), read the payload, then one checksum byte compared with the running sum of the three header bytes and the payload (bad: -3). `OOBCheckSum` (`0x10004efc`) is the same sum over a buffered frame. Reads go through the select-timed helper, which logs "read_expire: timeout" and sets error 62 when its deadline passes; `mmsc_transact` bounds the response wait at the current time plus 5.0 seconds (inferred from the `.lit8` constant and the add before the call).
@@ -193,6 +195,15 @@ Options by string match: `-a` automatic, `-m` manual, `-d` direct to a named ser
 ### Auto flow (`auto_transfer` `0x100028ec`, established in outline)
 
 Stop the host daemon with `/etc/init.d/sn0start stop`; probe (ping, local rack ID, MMSC versions with `r * b * ver`, MSC versions with `r * b * msc ver`; `add_sc_info` stores a baud word at record `+0`, a double version at `+16`, 56 bytes per record); choose a speed per MMSC from its version; for each, send `r <n> flash`, open the serial line without echo, wait for `C`, send the image, then restore 9600 with `r <n> com 4 speed 9600 hwflow N`, send `r <n> reset_mmsc`, sleep 40 s and ping again; finally turn hardware flow control off on the MSC ports (`rack <n> com <m> hwflow n`).
+
+Per-step detail read from `auto_transfer` and `set_io_speed` (`0x1000256c`), 6.5.30 (established):
+
+- The first thing it prints is a warning that MMSC firmware older than 1.1 cannot be driven by `-a`; it then runs `/etc/init.d/sn0start stop` through `system` and prints a notice if that fails, but carries on.
+- Every command to the MMSC goes through `mmsc_transact` with operation 61 (`0x3d`): the buffer is the command text plus its NUL, length is the text length plus one. The tty is `/dev/ttyd1` at 9600 (`0x2580`) each time it is opened.
+- An MMSC whose version is zero or negative is skipped with "does not have a version I understand"; the others get "starting upgrade", `r <n> flash`, then the serial line is reopened and the sender runs. The version values are doubles in the 56-byte records; the constants it compares against (the `.lit8` pool at `0x10009d90`) are 0.0, 5.0, 1.1, 3.1, 1e-6 and 1e6.
+- `set_io_speed(rack, baud, rate-argument...)` sends `r <n> com 4 speed <baud> hwflow N` inside a grab/release pair, then changes the host port's speed with the termios library calls (`tcgetattr`, the input and output speed setters, then `tcsetattr` with the action argument `0x5410`; the callee names come from the failure strings and the import order, not from symbol-resolved stubs), reopens the port at the new speed and pings. It prints `OK` on zero and `FAIL` otherwise.
+- After the image the host sends `r <n> com 4 speed 9600 hwflow N`, restores its own port, sends `r <n> reset_mmsc`, calls `sleep(40)`, then pings once more and prints `OK` when the ping answers with status 0.
+- The final flow-control step covers only MSC records with a version greater than 0 and at most 3.1 (the two compares against the pool values 0.0 and 3.1): for those it sends `rack <n> com <m> hwflow n`, with `m` = 2 when the record's byte at offset 24 is `U` (the "UPPER" label) and 3 otherwise (the "LOWER" label).
 
 Speed rule, as the code is written (established): a version of at least 1.1 gets 115200 (`0x1c200`) with the message "supports 115K FLASH upload"; below 1.1 it stores 9600 but prints "only supports 57.6K FLASH upload"; the third message ("only supports 9600bps") is on a path reached only for an unordered double. The value 57600 is not stored anywhere in the program, so the 57.6K wording and the 9600 setting disagree. Whether older MMSC firmware can change speed at all is not read.
 
@@ -205,9 +216,48 @@ Speed rule, as the code is written (established): a version of at least 1.1 gets
 
 The sender always sends 1024-byte packets; the firmware receiver accepts both sizes. The sender's retry limit (20 per packet) and the firmware's download error limit (10 total) are separate counters.
 
+### The host half in other releases (established, read this session)
+
+All eight releases that ship the tool carry a 512-byte CRC table equal to the polynomial-`0x1021` table (big-endian halfwords): 6.4 at file offset `0x3b50`, 6.5 `0x8768`, 6.5.5 to 6.5.10 `0x9938`, 6.5.30 `0x9928`. The 6.4-origin and 6.4 builds were distinguished by size only (17,604 and 17,620 bytes).
+
+| Release | Size | What the tool does |
+|---|---|---|
+| 6.4-origin, 6.4 | 17,604, 17,620 | manual and direct modes only. Auto mode prints that automatic initiation "is not currently supported" and tells the operator to use `-m`; no version marker, no command channel. The sender is the same: STX packets of 1,029 bytes (`li 1029`), pad byte `0x1a` (26), ACK 6, NAK 21, CAN 24, `C` 67 |
+| 6.5 | 40,524 | adds `-a`/`-p`, the command channel, `set_io_speed` and the three speed messages; no `MMSC VERSION ` marker string and so no `-V` |
+| 6.5.5, 6.5.6, 6.5.7, 6.5.9, 6.5.10 | 44,688 each | `.text` byte-identical across the five (same hash over the 0x5368-byte section); they differ in the `.rodata` build header string and in the dynamic-symbol tables. Adds `-V` and the marker |
+| 6.5.30 | 43,824 | recompiled (text 0x4ccc bytes against 0x5368); same strings and options, the error-message strings are stored in the opposite order, and the `-f` default path string moves |
+
+The 6.5.5 to 6.5.30 differences are build artefacts: the protocol, the command texts, the 1,024-byte packet, the retry counts and the CRC are the same. The speed rule and the strings were compared by string tables, not by disassembling the older routines; the 6.5.30 routine bodies in this section are the ones read in full.
+
+### The command channel, bit-level (6.5.30, re-read)
+
+`mmsc_command` (`0x100065a4`) builds the frame on the stack as `a0`, operation, length high (the signed halfword divide of the length by 256), length low, payload, then one byte after the payload equal to the low byte of operation plus both length bytes plus the payload sum; it writes `length + 5` bytes. `mmsc_response` (`0x100066ac`) skips input until it reads `0xa0`, reads three bytes (status, length high, length low), compares the combined length with the caller's limit and stores -1 and "Response too long" when it is larger, reads the payload, then one checksum byte, returns -3 on a mismatch and 0 on success. `do_grab`/`do_release` issue ioctl requests `0x7a06` and `0x7a07` (31,238 and 31,239) on the control descriptor and return -4 and -5 on failure respectively. The response wait added in `mmsc_transact` is the current time plus the pool value 5.0 (`.lit8` at `0x10009d98`), so the 5-second figure is established, not inferred.
+
 ## 7. Cross-build comparison (established)
 
-For 6.5.5, 6.5.6 and 6.5.30, every routine named in sections 1, 3 and 4 and in `_getflash`, `_cmdFLASH`, `_cmdDOWNLOADER`, `_ceEnterFlashMode`, `_clLeaveFlashMode`, `_writebuf` and `_diffbuf` was disassembled and compared after masking absolute addresses. They are instruction-for-instruction identical. The only differences are the addresses of globals (the flash module sits at `0x10cc14` in 6.5.5 and `0x10cc24` in the other two; `_nvramHdr` is `0x1e0e78`, `0x1e0e88` and `0x1e25d0`; `_routeCheckBaseIO` differs in its flag address). The data is identical too: `_socketArray`, `_flashArray`, the delays, `_nvramObjectInfo`, the CRC table and the default port table; the default tunable table differs only in listener connection limit (23 in 6.5.5). Earlier builds (6.4 to 6.5.2) were not read.
+For 6.5.5, 6.5.6 and 6.5.30, every routine named in sections 1, 3 and 4 and in `_getflash`, `_cmdFLASH`, `_cmdDOWNLOADER`, `_ceEnterFlashMode`, `_clLeaveFlashMode`, `_writebuf` and `_diffbuf` was disassembled and compared after masking absolute addresses. They are instruction-for-instruction identical (re-checked this session for 28 routines against 6.5.5 and 6.5.6 with absolute addresses masked; `_nvramInit` is identical up to its jump table, whose six entries are the same offsets from the routine start, `0x190, 0x199, 0x1a2, 0x1ab, 0x1b4, 0x1bd`, in all three builds). The only differences are the addresses of globals (the flash module sits at `0x10cc14` in 6.5.5 and `0x10cc24` in the other two; `_nvramHdr` is `0x1e0e78`, `0x1e0e88` and `0x1e25d0`; `_routeCheckBaseIO` differs in its flag address). The data is identical too: `_socketArray`, `_flashArray`, the delays, `_nvramObjectInfo`, the CRC table and the default port table; the default tunable table differs only in listener connection limit (23 in 6.5.5). Earlier builds (6.4 to 6.5.2) carry no version string and were not read for these modules.
+
+Addresses of the routines and data named in sections 1 to 5, by build (read from each image's symbol table):
+
+| Name | 6.5.5 | 6.5.6 | 6.5.30 |
+|---|---|---|---|
+| `_initFlash` | `0x10cc14` | `0x10cc24` | `0x10cc24` |
+| `_openFlash` | `0x10cff4` | `0x10d004` | `0x10d004` |
+| `_writeFlash` | `0x10d394` | `0x10d3a4` | `0x10d3a4` |
+| `_sram_read` | `0x10c998` | `0x10c9a8` | `0x10c9a8` |
+| `_cmdDOWNLOADER` | `0x118a68` | `0x118a78` | `0x118a78` |
+| `_cmdFLASH` | `0x118d48` | `0x118d58` | `0x118d58` |
+| `_ceEnterFlashMode` | `0x11b0d0` | `0x11b0e0` | `0x11b0e0` |
+| `_getflash` | `0x124aa8` | `0x124ab8` | `0x124ac8` |
+| `_nvramInit` | `0x129550` | `0x129560` | `0x129570` |
+| `_nvramUpgrade1to2` | `0x129c50` | `0x129c60` | `0x129c70` |
+| `_nvramUpgrade5to6` | `0x12a050` | `0x12a060` | `0x12a070` |
+| `_socketArray` | `0x1b06fc` | `0x1b070c` | `0x1b071c` |
+| `_flashArray` | `0x1b073c` | `0x1b074c` | `0x1b075c` |
+| `_nvramObjectInfo` | `0x1b0fa8` | `0x1b0fb8` | `0x1b0fc8` |
+| `_CRCTab` | `0x1b0d58` | `0x1b0d68` | `0x1b0d78` |
+
+The page table, write-bit table, delay record, object table and CRC table are byte-for-byte equal in all three; the 39-entry tunable table differs only in the listener connection limit default (23 in 6.5.5, 25 elsewhere).
 
 ## 8. Not settled
 
