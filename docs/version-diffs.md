@@ -292,3 +292,67 @@ The kernel is the same length in both sets (1,438,340 bytes). 2,012 bytes differ
 - Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set. The general chain is covered for every L1 set with the Origin 300 package (above).
 - The 63.7 KB fill row at `0xffe00b28` (same length in all four sets): whether any part of it is used is not read.
 - Whether the 1.24.8 handler stubs branch into shared code that is the same in other sets.
+
+## Early series, 1.0.2 to 1.18.3
+
+The IRIX 6.5.9 to 6.5.19 L1 images, ten sets. Their layout is in [l1/pre-container-layout.md](l1/pre-container-layout.md). The routine diff and the request tables below come from `tools/re-run python3 scripts/version_diff.py --series early` and `scripts/l1_request_catalogue.py --series early`:
+
+- [version-diffs/l1-early-routines.tsv](version-diffs/l1-early-routines.tsv): one row per added, removed or changed routine between consecutive sets, in the same columns as [l1-routines.tsv](version-diffs/l1-routines.tsv).
+- [version-diffs/l1-early-request-catalogue.tsv](version-diffs/l1-early-request-catalogue.tsv): every accepted general request code in each set, with the handler address, a hash of its normalised text and its relation to the same code in 1.18.3.
+- [version-diffs/l1-early-request-changes.tsv](version-diffs/l1-early-request-changes.tsv): codes added between consecutive sets and codes whose handler text changes. No code is removed in the series.
+
+The package each set is measured from:
+
+| Set | IRIX | Package | Body bytes |
+|---|---|---|---:|
+| 1.0.2 | 6.5.9 | whole file (one package) | 927,272 |
+| 1.1.6 | 6.5.10 | whole file | 961,564 |
+| 1.4.1 | 6.5.12 | whole file | 947,796 |
+| 1.6.0 | 6.5.13 | whole file | 957,064 |
+| 1.8.0 | 6.5.14 | whole file | 953,972 |
+| 1.10.0 | 6.5.15 | whole file | 972,800 |
+| 1.12.3 | 6.5.16 | `1MB image`, package 0 of the container | 974,564 |
+| 1.14.1 | 6.5.17 | `1MB image`, package 0 | 976,968 |
+| 1.16.0 | 6.5.18 | `1MB image`, package 0 | 969,780 |
+| 1.18.3 | 6.5.19 | `1MB image`, package 0 | 976,988 |
+
+Which product the `1MB image` is (the Base 1MB or the Fuel/PE package of 1.24.8) is unsettled. The 6.5.19 image's normalised routines match the 1.24.8 Base 1MB package in 2,069 routines and its Fuel/PE package in 2,049, out of roughly 4,800 each, so the match does not decide it (inferred, marginal). The diff takes the one 1 MB package of each container without assigning it a product.
+
+Routines. The method is the one in the section above. Counts include both copies of each body, as before.
+
+| Step | Same bytes | Same code, moved | Changed, RAM only | Changed | Removed | Added |
+|---|---:|---:|---:|---:|---:|---:|
+| 1.0.2 to 1.1.6 | 1,275 | 460 | 724 | 565 | 530 | 778 |
+| 1.1.6 to 1.4.1 | 1,009 | 332 | 466 | 548 | 1,447 | 1,841 |
+| 1.4.1 to 1.6.0 | 1,331 | 434 | 640 | 597 | 1,194 | 1,146 |
+| 1.6.0 to 1.8.0 | 411 | 91 | 100 | 664 | 2,882 | 3,218 |
+| 1.8.0 to 1.10.0 | 1,345 | 678 | 892 | 568 | 1,001 | 1,225 |
+| 1.10.0 to 1.12.3 | 1,129 | 424 | 570 | 519 | 2,066 | 2,078 |
+| 1.12.3 to 1.14.1 | 1,683 | 488 | 566 | 511 | 1,472 | 1,588 |
+| 1.14.1 to 1.16.0 | 1,623 | 642 | 1,048 | 478 | 1,045 | 1,067 |
+| 1.16.0 to 1.18.3 | 1,565 | 572 | 726 | 605 | 1,390 | 1,324 |
+
+Each set has 3,554 (1.0.2), 3,802 (1.1.6), 4,196 (1.4.1), 4,148 (1.6.0), 4,484 (1.8.0), 4,708 (1.10.0), 4,720 (1.12.3), 4,836 (1.14.1), 4,858 (1.16.0) and 4,792 (1.18.3) routines. Within each step, the paired rows plus the removed rows give the earlier set's total, and the paired rows plus the added rows give the later set's total (both checked from the counts). The changed rows carry the pairing similarity, as in the 1.24.8 to 1.48.1 table. The pairing is inferred.
+
+Routines are paired by sequence alignment of their fingerprints, so the added and removed counts depend on what pairs (inferred). The 1.6.0 to 1.8.0 step has the most removed and added routines (2,882 and 3,218), and only 411 of its routines keep their bytes.
+
+Request codes. Every set's chain is run concretely for each code from 0x0000 to 0x7fff, as for the 1.24.8 to 1.48.1 sets. The early chains differ from the later ones in two ways that the run handles (established from the bytes of each set): the chain opens with `#$1001` or `#$1002` rather than `#$1003`, and the table jump is either a longword table reached through `movea.l` and `jmp (a0)` (6.5.9 to 6.5.13) or a word table reached through `move.w` and `jmp (pc,d0.l)` (6.5.14 to 6.5.19). The chain entry of each set is the load or move before its first compare.
+
+| Set | Codes | Accepted codes |
+|---|---:|---|
+| 1.0.2 | 17 | 0x0001 to 0x0009; 0x1001 to 0x1007; 0x2001 |
+| 1.1.6 | 21 | 0x0001 to 0x000a; 0x1001 to 0x1007; 0x2001 to 0x2004 |
+| 1.4.1 | 21 | as 1.1.6 |
+| 1.6.0 | 25 | 0x0001 to 0x000d; 0x1001 to 0x1008; 0x2001 to 0x2004 |
+| 1.8.0 | 26 | 0x0001 to 0x000d; 0x1001 to 0x1009; 0x2001 to 0x2004 |
+| 1.10.0 | 28 | 0x0001 to 0x000d; 0x1001 to 0x100a; 0x2001 to 0x2005 |
+| 1.12.3 | 29 | 0x0001 to 0x000e; 0x1001 to 0x100a; 0x2001 to 0x2005 |
+| 1.14.1 | 31 | 0x0001 to 0x000f; 0x1001 to 0x100a; 0x2001 to 0x2006 |
+| 1.16.0 | 31 | as 1.14.1 |
+| 1.18.3 | 31 | as 1.14.1 |
+
+Codes added between consecutive sets (established, from the accepted-code runs): 0x000a, 0x2002 to 0x2004 in 1.0.2 to 1.1.6; 0x000b to 0x000d and 0x1008 in 1.4.1 to 1.6.0; 0x1009 in 1.6.0 to 1.8.0; 0x100a and 0x2005 in 1.8.0 to 1.10.0; 0x000e in 1.10.0 to 1.12.3; 0x000f and 0x2006 in 1.12.3 to 1.14.1. No code is added or removed from 1.14.1 to 1.18.3.
+
+Handler text against the next set (literal comparison, addresses masked). Codes whose text changes, with the codes that differ only in RAM operands in brackets: 17 from 1.0.2 to 1.1.6; 6 (1) from 1.1.6 to 1.4.1; 21 from 1.4.1 to 1.6.0; 25 from 1.6.0 to 1.8.0; 6 (2) from 1.8.0 to 1.10.0; 4 (2) from 1.10.0 to 1.12.3; 25 from 1.12.3 to 1.14.1; 13 (1) from 1.14.1 to 1.16.0; 11 (2) from 1.16.0 to 1.18.3. The caveats in the L1 general request codes section above apply: a handler that is only a setup and a branch says nothing about the shared code it reaches, and a register or frame-offset change in the same logic shows as a text change. These are candidates to read, not findings.
+
+Not covered: the command loop, the flash and power-bay tasks and the peer forwarding paths in these sets, as in the later tables.
