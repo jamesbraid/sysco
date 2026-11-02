@@ -19,6 +19,29 @@ Files wanted from each source (install path inside the source directory):
 /usr/sbin/flashsvf
 ```
 
+The other controller families (the Challenge and Onyx system controller, the MSC and ELSC, the MMSC; see [docs/controllers.md](docs/controllers.md)) ship in the base `eoe` product of each release, not in `field_diags_sysco`. Files wanted from those sources, same install paths:
+
+```files
+/usr/cpu/firmware/mmscfw.bin
+/usr/cpu/firmware/l1.bin
+/usr/cpu/firmware/l2.bin
+/usr/sbin/flashmmsc
+/usr/sbin/flash
+/usr/etc/mmscd
+/usr/etc/sysctlrd
+/sbin/scmsg
+/usr/cpu/sysgen/IP27boot/elsc.o
+/usr/cpu/sysgen/IP19boot/sysctlr.o
+/usr/cpu/sysgen/IP21boot/sysctlr.o
+/usr/cpu/sysgen/IP25boot/sysctlr.o
+/usr/include/sys/EVEREST/sysctlr.h
+/usr/share/catman/a_man/cat1/mmscd.z
+/usr/share/catman/a_man/cat1/flashmmsc.z
+/usr/share/catman/a_man/cat1/flash.z
+/usr/share/catman/a_man/cat1/sysctlrd.z
+/usr/share/catman/a_man/cat7/sysctlr.z
+```
+
 ## Sources
 
 | Directory in `root/` | Media | Notes |
@@ -34,6 +57,17 @@ Files wanted from each source (install path inside the source directory):
 | `6.5.27/` | IRIX 6.5.27 Overlays (3 of 3), product `field_diags_sysco` | L1 1.34.2, L2 1.34.0. The `flashsc` link under `/usr/sbin` comes from the `eoe` product on the release's Installation Tools disc, not from this product. |
 | `6.5.28/` | IRIX 6.5.28 Overlays (3 of 3), product `field_diags_sysco` | L1 1.38.4, L2 1.38.8. The `flashsc` link under `/usr/sbin` comes from the `eoe` product on the release's Installation Tools disc, not from this product. |
 | `6.5.29/` | IRIX 6.5.29 Overlays (3 of 3), product `field_diags_sysco` | L1 1.40.5, L2 1.40.1. The `flashsc` link under `/usr/sbin` comes from the `eoe` product on the release's Installation Tools disc, not from this product. |
+| `6.4/` | IRIX 6.4 | `mmscfw.bin` (no version string), `elsc.o`, `mmscd`, `flashmmsc`, man pages |
+| `6.4-origin/` | IRIX 6.4 for Origin200, Origin2000, Onyx2IR | `mmscfw.bin`, `elsc.o`, `mmscd`, `flashmmsc`, `sysctlrd`, `sysctlr.o` for IP19, IP21 and IP25, `sysctlr.h`, `scmsg` |
+| `6.5/` | IRIX 6.5 Foundation 1 | `mmscfw.bin`, `elsc.o`, `mmscd`, `flashmmsc`, `sysctlrd`, the three `sysctlr.o`, `scmsg`, man pages |
+| `6.5.2/` | IRIX 6.5.2 Installation Tools and Overlays (1 of 2) | `mmscfw.bin` (no version string), `elsc.o` |
+| `6.5.5/` | IRIX 6.5.5 Installation Tools and Overlays (1 of 2) | `mmscfw.bin` 2.1, `elsc.o`, `mmscd`, `flashmmsc`, man page |
+| `6.5.6/` | IRIX 6.5.6 Installation Tools and Overlays (1 of 2) | `mmscfw.bin` 2.2, `elsc.o`, `mmscd`, `flashmmsc` |
+| `6.5.7/` | IRIX 6.5.7 Installation Tools and Overlays (1 of 2) | `mmscfw.bin` 2.3, `elsc.o`, `mmscd`, `flashmmsc`, man page |
+| `6.5.9/` | IRIX 6.5.9 Installation Tools and Overlays (1 of 3) | `l1.bin` 1.0.2 and `l2.bin` 1.0.0 (one image per controller, before the sysco product), `mmscfw.bin`, `elsc.o`, `flash`, `flashsc` |
+| `6.5.10/` | IRIX 6.5.10 Installation Tools and Overlays (1 of 3) | `l1.bin` 1.1.6 and `l2.bin` 1.1.13 (6.5.11 is byte-identical), `mmscfw.bin`, `elsc.o`, `flash`, `flashsc`, man pages |
+| `6.5.12/` to `6.5.19/` | IRIX 6.5.12 to 6.5.19 Overlays (last disc of each), product `field_diags_sysco` | L1 and L2 1.4.x to 1.18.x (version table in [docs/controllers.md](docs/controllers.md)); `pbay.bin` and `flashpbay` from 6.5.14 |
+| `6.5.30/` | as above, plus the base `eoe` product on IRIX 6.5.30 Installation Tools and Overlays (1 of 3) | adds `mmscfw.bin` 2.3, `elsc.o`, `mmscd`, `flashmmsc`, `flash`, `sysctlrd`, man pages |
 | `patches/SG0005762/` | patch SG0005762, subsystem `patchSG0005762.field_diags_sysco_sw` | L1 1.32.15, L2 1.32.4. The patch's own release note says L1 1.32.14. |
 | `patches/SG0007149/` | patch SG0007149, subsystem `patchSG0007149.field_diags_sysco_sw` | L1 1.48.0 and 1.48.1, L2 1.48.0. Replaces SG0005762. |
 
@@ -59,9 +93,32 @@ f73660c9e85b1dbd615856377e8480a4c8a39f76fc86d21cc23533b0787acd29  patch SG000711
 
 The 6.5.30 image is `field_diags_sysco.sw`, 21,355,926 bytes; its idb records `l1.bin` at 15,988,636 bytes and `l2.bin` at 2,924,652 bytes, which the extracted files match.
 
+Carriers of the controller files added later, as SHA-1 digests published with the disc images by the mirror they came from:
+
+```
+36e6e78c1a21ef0b7242994f7297a40f2686dc28  IRIX 6.4.iso
+be516db533461b83a2ff434a0c84657ffdbef199  IRIX 6.4 for Origin200, Origin2000, Onyx2IR.iso
+c87e57b0d64733f76f73679b25cdd596d79a5302  IRIX 6.5 Foundation 1.iso
+0533da57374f2fd82bdfdcf6ad50a461e5a0b79f  IRIX 6.5.2 Installation Tools and Overlays (1 of 2).iso
+5d5cfac3254461c7583e7b8be176b404d3c12697  IRIX 6.5.5 Installation Tools and Overlays (1 of 2).iso
+f1db7bdc1734686483cb247504a66434a5969919  IRIX 6.5.6 Installation Tools and Overlays (1 of 2).iso
+4195c88109887248c6b06a2d3feb868aa6256e5c  IRIX 6.5.7 Installation Tools and Overlays (1 of 2).iso
+c0ffbeb15e50f93f2ca3f2b80e61c83c0e2e7447  IRIX 6.5.9 Installation Tools and Overlays (1 of 3).iso
+676438c9308dbf320647577c3be19159571b49d5  IRIX 6.5.10 Installation Tools and Overlays (1 of 3).iso
+b30f8222d92eb2f42b0714582c136b9d54c52bcb  IRIX 6.5.30 Installation Tools and Overlays (1 of 3).iso
+0a5e08d3b462961632fb77c7cac17c6261a85266  IRIX 6.5.12 Overlays (3 of 3).iso
+654798961047d87265c267fcb2c5ffb7aa6b2d41  IRIX 6.5.13 Overlays 3 of 3.iso
+5a7daefc4eb580d36d634de97b6d215f607f06fc  IRIX 6.5.14 Overlays (3 of 3).iso
+8333cb5fd087f051a6791aa0353a02b54186c719  IRIX 6.5.15 Overlays (4 of 4).iso
+f3dfbd81fafdcb2e41a209e3f94060b50aa68a05  IRIX 6.5.16 Overlays (4 of 4).iso
+1ffb35001abdb2324d2f4d4ba666260862405446  IRIX 6.5.17 Overlays (4 of 4).iso
+8bd758f54b7c645b6f0e066421e1636cd28a52ed  IRIX 6.5.18 Overlays (4 of 4).iso
+00ffd9a5086e43e5ecc69278a559991eeddf6bb3  IRIX 6.5.19 Overlays (4 of 4).iso
+```
+
 Patches install with the IRIX software manager; a patch image is an `im001` archive described by the `.idb` beside it, the same layout as the media's product images. Unpack a product or patch with any decoder for that layout and keep only the paths above.
 
-Scanned: the overlay discs of 6.5.20 to 6.5.29. Not scanned yet: the overlay discs of 6.5.19 and earlier, the customer diagnostics discs, and any patch newer than SG0007149.
+Scanned: the overlay discs of 6.5.9 to 6.5.30, the base and installation-tools discs of 6.4 to 6.5.30, and the IRIX 5.x to 6.3 system discs (manifests only, for the controller files above). Not scanned yet: the customer diagnostics discs beyond the manifest check, and any patch newer than SG0007149. IRIX 5.0 to 6.2 builds of the Challenge and Onyx controller files are on the media but compressed in a form the extraction tools here do not decode, so they are not in `root/`.
 
 ```archives
 ```

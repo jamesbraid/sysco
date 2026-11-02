@@ -2,7 +2,7 @@
 
 Reverse-engineering notes for the SGI system-controller firmware of the Origin 300, Origin 3000 and Origin 350 generation, read from the images IRIX ships to flash it. "sysco" is the name of the shipped firmware directory (`usr/cpu/firmware/sysco`).
 
-Two controllers are in scope.
+Two controllers are in scope for the reading notes below; [docs/controllers.md](docs/controllers.md) surveys every other SGI system controller (the Challenge and Onyx controller, the MSC and ELSC, the MMSC, the L3 and the Altix generations), what is held for each, and the reading lanes that follow.
 
 - **L1**, the per-brick controller. The first target is the Origin 300 L1 (the Fuel/PE/O300 1 MB ColdFire MCF5206e image), then the personalities for the C-brick, I-brick and R-brick. The L1 container also carries ColdFire images for other brick families and two embedded-Linux images for ARM S3C2410 controllers; they come after the Origin 300 image.
 - **L2**, the rack controller: a PowerPC MPC860 running Linux 2.4.7 with a cramfs root. It comes second.
