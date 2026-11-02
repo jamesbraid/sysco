@@ -125,3 +125,42 @@ One entry per routine in the lane. Sizes are the symbol sizes. A routine called 
 - `elsc_parse` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x5f4`, 740 bytes). As in "Reply grammar". It makes seven `strncmp` calls in the worst case (`err`, `ok`, `csum`, `cmd`, `arg`, `perm`, `pwr_state`). Established.
 - `elsc_process` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x8d8`, 468 bytes). Formats `get` into the request buffer and calls `elsc_command` with second argument 1; a negative result is returned as is. If the reply starts with the four characters `acp ` it copies the reply from its seventh character (offset 6) to the NUL into the console-input ring at +4, one byte at a time through the ring's write index (the fifth character, the sender id, is not examined; nothing is added when the seventh character is NUL). Any other reply, empty ones included, is handed to the callback with the stored argument if one is set, and otherwise appended to the message ring as a length byte then the characters. With no callback set the append happens only if the text length is below the free space (127 minus the used bytes); otherwise nothing is stored and the routine returns -120. The `acp` copy reads offset 6 without checking that the reply is that long, so bytes left from an earlier, longer reply can be taken, and the console-input ring has no full test: a write past the read index overwrites unread bytes. Returns 0 on every other path. Established.
 - `elsc_version` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xaac`, 108 bytes). `ver`; the first word of the reply goes to the caller's buffer, the other two output pointers are null. Returns 0 on success even though the parse return is the word count. Established.
+
+### Non-volatile store
+
+- `elsc_nvram_write` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x27c`, 252 bytes). Arguments: state, address, buffer, length. A negative length means a string write of `min(-length, strlen + 1)` bytes. Each byte is a separate two-byte transfer to slave `0x50 | ((address >> 8) & 7)` carrying the low address byte then the data byte; the address increments after each. The first transfer failure ends the loop and its negative status is returned; otherwise the last transfer's status is returned (a length of 0 returns an uninitialised stack word). There is no delay between bytes in this routine. Established.
+- `elsc_nvram_read` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x378`, 236 bytes). Same addressing; each byte is a combined transfer sending the low address byte and receiving one byte. A negative length means a string read: after storing each byte it looks at the next byte of the destination (not the byte just stored) and stops when that is 0 or when `-length` bytes have been read, so a NUL in the data stops the read only if the buffer already holds a zero after it, and no terminator is written. The first failure returns its negative status; otherwise the last transfer's status (a length of 0 returns an uninitialised register). Established.
+- `elsc_nvram_magic` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xb18`, 68 bytes). Reads the byte at address 1792 (`0x700`); returns 0 if it is `0x37`, -124 if not, the read error if the read failed. All the get and set families below call it first. Established.
+- `elsc_debug_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xb5c`, 120 bytes). Checks the magic, then writes its second argument to the byte at 1797 and its third to the byte at 1798. Established.
+- `elsc_debug_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xbd4`, 120 bytes). Checks the magic, then reads the byte at 1797 through its second argument and the byte at 1798 through its third (both pointers). Returns the first failure or 0. Established.
+- `elsc_module_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xc4c`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1800. Returns the first failure or 0. Established.
+- `elsc_module_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xc98`, 72 bytes). Checks the magic, then reads one byte at 1800; returns the byte, or the failure code from the magic check or the read. Established.
+- `elsc_bist_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xf30`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1801. Returns the first failure or 0. Established.
+- `elsc_bist_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xf7c`, 84 bytes). Checks the magic, then reads one byte at 1801. Both failure paths (the magic check and the read) return the code masked with 0xff, so -124 comes back as 0x84 where every other getter returns the negative code; success returns the byte. Established.
+- `elsc_partition_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xce0`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1802. Returns the first failure or 0. Established.
+- `elsc_partition_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xd2c`, 72 bytes). Checks the magic, then reads one byte at 1802; returns the byte, or the failure code from the magic check or the read. Established.
+- `elsc_domain_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xd74`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1803. Returns the first failure or 0. Established.
+- `elsc_domain_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xdc0`, 72 bytes). Checks the magic, then reads one byte at 1803; returns the byte, or the failure code from the magic check or the read. Established.
+- `elsc_cluster_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xe08`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1804. Returns the first failure or 0. Established.
+- `elsc_cluster_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xe54`, 72 bytes). Checks the magic, then reads one byte at 1804; returns the byte, or the failure code from the magic check or the read. Established.
+- `elsc_cell_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xe9c`, 76 bytes). Checks the magic, then writes its second argument as one byte at 1805. Returns the first failure or 0. Established.
+- `elsc_cell_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0xee8`, 72 bytes). Checks the magic, then reads one byte at 1805; returns the byte, or the failure code from the magic check or the read. Established.
+- `elsc_password_set` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x12c4`, 132 bytes). After the magic check it copies up to 4 characters of the string, padding with spaces from the first NUL, and writes the 4 bytes at 1793. Established.
+- `elsc_password_get` (`usr/cpu/sysgen/IP27boot/elsc.o`, 6.5.30, `0x1348`, 76 bytes). Checks the magic and returns its error on failure; otherwise reads 4 bytes from 1793 into the caller's buffer and stores a NUL after them (the NUL is stored before the read starts). Returns the read's status. Established.
+
+The map as the object uses it, with every address in page 7 of the store (slave `0x57`):
+
+| Address | Size | Content | Routines |
+|---|---|---|---|
+| 1792 (`0x700`) | 1 | magic byte `0x37` | `elsc_nvram_magic` |
+| 1793 to 1796 | 4 | password, space padded | `elsc_password_set`, `elsc_password_get` |
+| 1797, 1798 | 1 each | two debug bytes | `elsc_debug_set`, `elsc_debug_get` |
+| 1799 | 1 | not touched by this object | |
+| 1800 | 1 | module number | `elsc_module_set`, `elsc_module_get` |
+| 1801 | 1 | BIST setting | `elsc_bist_set`, `elsc_bist_get` |
+| 1802 | 1 | partition | `elsc_partition_set`, `elsc_partition_get` |
+| 1803 | 1 | domain | `elsc_domain_set`, `elsc_domain_get` |
+| 1804 | 1 | cluster | `elsc_cluster_set`, `elsc_cluster_get` |
+| 1805 | 1 | cell | `elsc_cell_set`, `elsc_cell_get` |
+
+The field names are the routine names (inferred); the addresses and widths are established. The kernel proper may use other addresses through `elsc_nvram_read` and `elsc_nvram_write`, which are exported.
