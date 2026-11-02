@@ -46,3 +46,63 @@ The general request dispatch of each early set is a compare chain of the same sh
 - 6.5.15 opens its chain with `#$1002`. The other nine sets open with `#$1001`.
 
 The table in each set and the codes it accepts are in [version-diffs/l1-early-request-catalogue.tsv](../version-diffs/l1-early-request-catalogue.tsv).
+# Pre-container L1 images (IRIX 6.5.9 to 6.5.15)
+
+Six L1 images come before the container layout of [package-container.md](package-container.md): 1.0.2 (6.5.9), 1.1.6 (6.5.10), 1.4.1 (6.5.12), 1.6.0 (6.5.13), 1.8.0 (6.5.14) and 1.10.0 (6.5.15). Each file is one ColdFire MCF5206e package with no package table, no label and no ARM Linux package: none of the six holds a gzip stream or a CramFS image (established, by scanning each file for both signatures). The 6.5.9 and 6.5.10 images are in the base product (`usr/cpu/firmware/l1.bin`); the other four are in the sysco product. The layout below is the same in both places.
+
+The 6.5.16 image is the first container, with a package count at `0x2c` (see [package-container.md](package-container.md)).
+
+Grades follow [AGENTS.md](../../AGENTS.md) section 3. Everything here was read from the six files. The reader finds the vector table with `pre_container_body` in the shared `scripts/sysco/sysco_tables.py`; the last-address and loader-table checks below were run on all six files separately.
+
+## Header
+
+| Offset | Content | Grade |
+|---|---|---|
+| `0x00` | ASCII `ESTFBINR` | established, all six |
+| `0x08` | load address `0xffe00000` | established, all six |
+| `0x0c` | last address: `0xffe00000` plus (file size minus V) minus 1, where V is the vector table offset below | established, all six |
+| `0x10` | `0xff000000` | established, all six |
+| `0x14` | `0` | established, all six |
+| `0x18`, `0x1c` | the load and last addresses again | established, all six |
+| `0x20` | `0xffffffff` in 6.5.10 to 6.5.15. In 6.5.9 this word is the stack pointer (see the vector table) | established |
+| `0x24` | layout word: 1 (6.5.10), 2 (6.5.12, 6.5.13), 3 (6.5.14, 6.5.15). The container at 6.5.16 has 4 here | established values; meaning unknown |
+| `0x28` | `0` in 6.5.14 and 6.5.15; the stack pointer in 6.5.10, 6.5.12 and 6.5.13; the third vector word in 6.5.9 | established |
+
+## Vector table and mapping
+
+The vector table begins with the initial stack pointer `0x301017fc`, followed by the reset PC `0xffe00400` and a third word `0xffe0042c`. The table's offset V in the file is:
+
+| Image | V |
+|---|---|
+| 6.5.9 | `0x20` |
+| 6.5.10, 6.5.12, 6.5.13 | `0x28` |
+| 6.5.14, 6.5.15 | `0x2c` |
+
+An image offset `o` maps to address `0xffe00000 + (o - V)`. This is established by the loader table: at address `0xffe01000` (image offset V + `0x1000`) the image holds two bank starts, `0xffe10000` and `0xffe80000`, in all six. The 1.44.0 packages use the same table at the same addresses ([personalities.md](personalities.md#the-bank-record)).
+
+The stack pointer `0x301017fc` is the same word the 1.44.0 packages start with ([coldfire-package-sections.md](coldfire-package-sections.md)). That it is the initial stack pointer follows from its position in the vector table (inferred).
+
+## Bank records
+
+Each bank holds one 32-byte record. The first is in bank 1 (`0xffe10000`) and the second in bank 2 (`0xffe80000`); the two are `0x70000` apart in the file.
+
+| Word | Content | Grade |
+|---|---|---|
+| 0 | `0x00030020`: type 3, length `0x20` | established, all six |
+| 1 | bank start (`0xffe10000` or `0xffe80000`) | established, all six |
+| 2 | bank size `0x70000` | established, all six |
+| 3 | bytes from the bank start to the end of the record | established: equals the record's end address minus the bank start, for both records of all six images |
+| 4 to 6 | three pointer-like words | unknown |
+| 7 | one word, not decoded | unknown |
+
+The record is not the 48-byte type 4 record of the 1.44.0 packages. Whether words 4 to 7 take part in a sum check like the one 1.44.0 uses was not tested. The four-byte pattern `0x00030020` also occurs elsewhere in these files (in code and data). A record must be found by position, and the word 3 check is what separates it from those hits.
+
+## Version strings
+
+The version reported for each image is the first occurrence of the most common `1.N.N` string. In 6.5.14 and 6.5.15 the image also holds `1.8.1` and `1.10.1`, each twice, a tie with the reported string. The reported strings (1.8.0 and 1.10.0) match the firmware note. The second strings are unknown; each occurs at two offsets `0x70000` apart, and no word read here refers to them.
+
+## Routes tried and what is left
+
+- The header words and the vector table were read in every image, and the mapping was tested against the loader table and the last-address rule.
+- The bank records were found by pattern and tested by word 3 in both banks of all six images.
+- Not settled: the meaning of the layout word at `0x24` and of the zero word at `0x28` in 6.5.14 and 6.5.15; words 4 to 7 of each bank record; the `1.8.1` and `1.10.1` strings. Nothing in the six images or the 1.44.0 package settles them so far.
