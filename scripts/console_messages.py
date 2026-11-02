@@ -47,7 +47,9 @@ COND = {'beq': 'equal', 'bne': 'not equal', 'bhi': 'unsigned higher', 'bls': 'un
         'bcc': 'carry clear', 'bcs': 'carry set', 'bge': 'signed greater or equal', 'blt': 'signed less',
         'bgt': 'signed greater', 'ble': 'signed less or equal', 'bpl': 'plus', 'bmi': 'minus',
         'bvc': 'overflow clear', 'bvs': 'overflow set'}
-FLAG_SETTERS = ('tst', 'cmp', 'btst', 'sub', 'add', 'and', 'or', 'eor', 'neg', 'move')
+FLAG_SETTERS = ('tst', 'cmp', 'cmpi', 'cmpa', 'btst', 'bset', 'bclr', 'bchg', 'sub', 'subq', 'subi', 'add', 'addq',
+                'addi', 'and', 'andi', 'or', 'ori', 'eor', 'eori', 'neg', 'not', 'move', 'moveq', 'clr', 'ext',
+                'lsl', 'lsr', 'asl', 'asr', 'muls', 'mulu', 'divs', 'divu')
 CONV = re.compile(r'%%|%[-+ #0]*(\*|\d+)?(\.(\*|\d+))?[hlLqjzt]*([diouxXcsfgeEpnaA])')
 
 
@@ -223,9 +225,40 @@ class Walker:
             return self.resolve(src, j)
         return ('expr', '%08x %s' % (a, t))
 
+    def skip_nested(self, j):
+        """j indexes a stack cleanup (addq/lea #N,a7) after the call whose arguments it removes.
+        Returns the index just before that call's own pushes, or None when the shape is not the
+        plain push-call-cleanup one."""
+        img = self.img
+        mn, ops = split_ops(img.ins[j][1])
+        m = re.match(r'#\$?([0-9a-f]+), a7$', ops) if mn.startswith('addq') else \
+            re.match(r'\$([0-9a-f]+)\(a7\), a7$', ops) if mn.startswith('lea') else None
+        if not m or j == 0:
+            return None
+        words = int(m.group(1), 16) // 4
+        j -= 1
+        if split_ops(img.ins[j][1])[0].split('.')[0] not in ('jsr', 'bsr'):
+            return None
+        j -= 1
+        while words > 0 and j >= 0:
+            mn, ops = split_ops(img.ins[j][1])
+            if is_transfer(mn):
+                return None
+            if re.search(r'\ba7\b', ops) and mn.split('.')[0] in ('lea', 'addq') and not ops.endswith('-(a7)'):
+                j = self.skip_nested(j)
+                if j is None:
+                    return None
+                words -= 1
+                continue
+            if self.decode_push(j) is not None:
+                words -= 1
+            j -= 1
+        return j if words == 0 else None
+
     def collect(self, call_idx, need):
-        """Pushes before a call, nearest first, up to need of them. Stops at a stack adjustment or
-        a transfer of control. Returns (pushes, stop_reason)."""
+        """Pushes before a call, nearest first, up to need of them. Pushes that belong to an
+        argument's own nested call are skipped. Stops at a stack adjustment that is not such a
+        nested call or at a transfer of control. Returns (pushes, stop_reason)."""
         img = self.img
         out = []
         j = call_idx - 1
@@ -235,12 +268,26 @@ class Walker:
             if is_transfer(mn):
                 return out, 'transfer at %08x' % a
             if re.search(r'\ba7\b', ops) and mn.split('.')[0] in ('lea', 'addq', 'subq', 'add', 'sub', 'adda', 'suba') and not ops.endswith('-(a7)'):
-                return out, 'stack adjust at %08x' % a
+                k = self.skip_nested(j)
+                if k is None:
+                    return out, 'stack adjust at %08x' % a
+                j = k
+                continue
             d = self.decode_push(j)
             if d is not None:
                 out.append((a, t, d))
             j -= 1
         return out, 'enough' if len(out) >= need else 'start of listing'
+
+    def passed(self, call_idx):
+        """The number of words the call's own cleanup removes, or None when it is not read."""
+        img = self.img
+        if call_idx + 1 >= len(img.ins):
+            return None
+        mn, ops = split_ops(img.ins[call_idx + 1][1])
+        m = re.match(r'#\$?([0-9a-f]+), a7$', ops) if mn.startswith('addq') else \
+            re.match(r'\$([0-9a-f]+)\(a7\), a7$', ops) if mn.startswith('lea') else None
+        return int(m.group(1), 16) // 4 if m else None
 
     def guard(self, call_idx, call_addr, routine_start):
         img = self.img
@@ -266,7 +313,11 @@ class Walker:
                                 break
                             k -= 1
                         skip = COND.get(base, base)
-                        return '%s at %08x skips the call when %s (flags from %s)' % (mn, a, skip, setter or 'unknown')
+                        text = '%s at %08x skips the call when %s (flags from %s)' % (mn, a, skip, setter or 'unknown')
+                        joins = [x for x in img.joins if a < x <= call_addr]
+                        if joins:
+                            text += '; other paths reach the call from the branch target at %08x' % max(joins)
+                        return text
             j -= 1
         return ''
 
@@ -291,6 +342,12 @@ def describe(v):
     if kind == 'lit':
         return '%d' % val if val < 1000 else '0x%x' % val
     return '%s %s' % (kind, val)
+
+
+# Six messages begin with the name of the routine that logs them. The table shows <routine> in
+# place of that name and the full text stays in the image at the call address.
+NAMED_PREFIX = {0xffe50260, 0xffe5029c, 0xffe5034c, 0xffe503ce, 0xffe50402, 0xffe580d2}
+PREFIX = re.compile(r'^[A-Za-z_]+(?=\(%s\)|: )')
 
 
 def escape(s):
@@ -335,15 +392,17 @@ def main():
         if fmt_v and fmt_v[0] == 'lit':
             fmt = img.text(fmt_v[1])
         nconv = conversions(fmt) if fmt is not None else 0
-        if fmt is not None and len(pushes) < fixed + nconv:
-            pushes, why = walker.collect(idx, fixed + nconv)
+        words = walker.passed(idx)
+        want = max(words, fixed) if words is not None else fixed + nconv
+        if fmt is not None and len(pushes) < want:
+            pushes, why = walker.collect(idx, want)
         if sink == 'log_message':
             sev, srcf, line, flags = (pushes[i][2] if i < len(pushes) else None for i in range(4))
         else:
             sev = flags = srcf = line = None
         src_text = img.text(srcf[1]) if srcf and srcf[0] == 'lit' else None
         rout, rstart = img.routine_of(a)
-        var = pushes[fixed:fixed + nconv] if len(pushes) > fixed else []
+        var = pushes[fixed:want] if len(pushes) > fixed else []
         status = 'extracted'
         row = {
             'call_addr': '%08x' % a,
@@ -353,10 +412,10 @@ def main():
             'flags': describe(flags) if sink == 'log_message' else '',
             'source_file': escape(src_text) if src_text is not None else describe(srcf),
             'source_line': describe(line) if sink == 'log_message' else '',
-            'format': escape(fmt) if fmt is not None else ('unread: ' + describe(fmt_v) if fmt_v else 'no format pushed'),
+            'format': escape(PREFIX.sub('<routine>', fmt) if a in NAMED_PREFIX else fmt) if fmt is not None else ('unread: ' + describe(fmt_v) if fmt_v else 'no format pushed'),
             'varargs': '%d of %d' % (len(var), nconv) if fmt is not None else 'unknown',
             'guard': walker.guard(idx, a, rstart),
-            'pushes': '; '.join(describe(p[2]) for p in pushes[:fixed + nconv]) + ('' if why == 'enough' else ' [%s]' % why),
+            'pushes': '; '.join(describe(p[2]) for p in pushes[:want]) + ('' if why == 'enough' else ' [%s]' % why),
             'status': status,
             'grade': '',
             'role': '',
