@@ -18,3 +18,5 @@ Public documents the notes cite. A hint from here is not a finding until the sam
 | SGI, *Origin 200 and Origin 200 GIGAchannel Owner's Guide*, 007-3708-002 | MSC placement, DIP switch, MSC firmware-version note |
 | SGI, *Deskside POWER CHALLENGE and CHALLENGE L Owner's Guide*, 007-1732-060; *POWER CHALLENGE and CHALLENGE XL Rackmount Owner's Guide*, 007-1735-050; *POWER Onyx and Onyx Deskside Owner's Guide*, 007-1733-070; *POWER Onyx and Onyx Rackmount Owner's Guide*, 007-1736-060 | the Challenge and Onyx system controller |
 | Linux kernel source, `arch/mips/sgi-ip27/ip27-nmi.c` | MMSC NMI delivery limits (hint) |
+| Intel, *28F008SA* 8-Mbit flash memory data sheet | identifier bytes `0x89`/`0xa2`, block size and command set the MMSC flash code uses (hint) |
+| Chuck Forsberg, *XMODEM/YMODEM Protocol Reference* (1988) | XMODEM-CRC and 1K packet framing, control bytes (hint) |

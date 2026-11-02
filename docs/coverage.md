@@ -17,7 +17,7 @@ What is read, by area. The tables below the markers are generated; the areas tab
 | L1 ARM S3C2410 Linux images | kernel and cramfs located; userland not read |
 | L2 PowerPC image | layout and byte measurements across the four sets ([version-diffs.md](version-diffs.md)); cramfs file tree not walked |
 | Host tools | ELF function tables only |
-| MMSC firmware (`mmscfw.bin`, x86 VxWorks) | segment map, symbol table and loader tools in all ten images ([mmsc/load-map.md](mmsc/load-map.md)); layout, version strings, module names ([controllers.md](controllers.md)); code not read |
+| MMSC firmware (`mmscfw.bin`, x86 VxWorks) | segment map, symbol table and loader tools in all ten images ([mmsc/load-map.md](mmsc/load-map.md)); layout, version strings, module names ([controllers.md](controllers.md)); flash, battery-backed NVRAM, the FLASH and DOWNLOADER commands and the XMODEM-CRC download read in 2.1, 2.2 and 2.3, with the `flashmmsc` host half ([mmsc/flash-nvram-download.md](mmsc/flash-nvram-download.md)); the rest of the code not read |
 | MSC and ELSC, Challenge and Onyx controller | no firmware held; host driver objects and daemons located; not read ([controllers.md](controllers.md)) |
 | L1 and L2 before 6.5.20 (6.5.9 to 6.5.19) | versions tabulated ([controllers.md](controllers.md)); 6.5.12 to 6.5.15 L1 table layout not parsed |
 

@@ -13,13 +13,13 @@ Each entry starts with its route, one of:
 
 ## Triage (2026-11-01)
 
-22 entries. The L2 bullet that held eight questions is split into eight entries, one per question.
+26 entries. The L2 bullet that held eight questions is split into eight entries, one per question.
 
 | Route | Entries |
 |---|---:|
-| software now | 16 |
+| software now | 19 |
 | version diff | 2 |
-| other firmware versions | 0 |
+| other firmware versions | 1 |
 | IRIX host objects | 1 |
 | missing binary or release | 3 |
 | MAME ColdFire core (as primary route) | 0 |
@@ -41,6 +41,9 @@ Software-now list, in the order to take them:
 13. L2 router library, beyond the packet builder, writer and free routines.
 14. L2 display and touch protocol in `l2gui`.
 15. `pbay.bin` format.
+16. Memory-window controller behind ports `0x540`, `0x548`, `0x760`.
+17. Consumer of CMOS byte `0x7e` bit 7.
+18. Meaning of the `FLASH` reply `STATE` fields and the serial-port flag bits.
 
 ## Other versions
 
@@ -71,6 +74,10 @@ Software-now list, in the order to take them:
 - **Route: software now.** The display and touch protocol in `l2gui`. `l2gui` maps `/dev/fb0` and opens `/dev/ttyS3`, whose touch role is inferred ([l2/daemon.md](l2/daemon.md), [l2/rootfs.md](l2/rootfs.md)). Step: read the reads and writes on `ttyS3` and the frame-buffer ioctls in `l2gui`, and name the protocol from them.
 - **Route: software now.** `pbay.bin` (5,888 bytes, identical in all four sets, [firmware-versions.md](firmware-versions.md)): format not examined. Step: read the file, and the parser in `flashpbay` (an IRIX host tool in `root/`).
 - **Route: IRIX host objects.** The text-command routine that `l1cmd` and `l2cmd` share, and the update requests `flashsc` sends, are read in [host-tool-options.md](host-tool-options.md) (request and reply of the text command in full; the status, erase, program and validate requests of `flashsc`'s three update routines by call shape). Still open: the controller side of requests `0x73` and `0x74` (handlers `0xffe3c4c2`, `0xffe3c41e`), the argument layout of the `0x72` reply as `flashsc` consumes arguments 6 to 12, the type 3 (inventory record) reply format behind `FRUDumpAll`, the unit of the wait argument, and the code behind each other `flashsc` option. Step: read the two handlers in the Origin 300 package, then `FlashUseNewestImage` and the option parser in `main` (`0x10007eb0`).
+- **Route: software now.** What is the memory-window controller behind ports `0x540`, `0x548` and `0x760` in the MMSC image? Tried: both the flash module and the battery-backed store drive these three ports (flash: `0x548 <- 0xff`, page byte on `0x760`, `0x540 <- 0xff`; SRAM: `0x548 <- 0`, `0x760 <- 0x81`, `0x540 <- 0`), the page tables and values are read in full ([mmsc/flash-nvram-download.md](mmsc/flash-nvram-download.md)), and no string or symbol in the three images names the part. Step: look for the board-support routines that write the same ports during start-up (the `0x108000` entry path) and the I/O range the PC BSP reserves.
+- **Route: software now.** What reads CMOS byte `0x7e` bit 7 (the downloader flag the `DOWNLOADER` command and the flash console state set and clear)? Tried: every image routine that touches ports `0x70` and `0x71` was found; only the two flag routines use that byte. The consumer is boot code that no image read contains, so this is the boot ROM and is listed as absent in [controllers.md](controllers.md). Step: search the `0x108000` entry path of each build for a read of `0x7e`; otherwise the question stays open until a boot image is available.
+- **Route: other firmware versions.** What were the object counts and sizes of NVRAM layout versions 1 to 5? Tried: the 2.1, 2.2 and 2.3 images carry only the version-6 table and the five upgrade steps, which work on the version-6 object ids ([mmsc/flash-nvram-download.md](mmsc/flash-nvram-download.md)). Step: read `_nvramObjectInfo` in the 6.4 to 6.5.2 builds already in `root/` (they predate the version-6 table if their upgrade chain is shorter).
+- **Route: software now.** What do the console `STATE BS FS FP M` fields of the `FLASH` reply and the flag bits of the serial-port records (object 4) mean? Tried: both are read as values ([mmsc/flash-nvram-download.md](mmsc/flash-nvram-download.md)); their use by `flashmmsc` and by the console task is not traced. Step: follow the reply fields through the console routine and the host tool's parsing of the reply.
 
 ## MSC and ELSC host side
 
