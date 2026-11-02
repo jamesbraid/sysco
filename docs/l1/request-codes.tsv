@@ -5,8 +5,8 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#1	6	0x0003	ffe11ffc	general_req_rack_bay_type	established	same entry as 0x0002; adds the stored brick-type character (0x34 for ip45)
 6.5.30:l1#1	6	0x0004	ffe122a8	general_req_brick_serial	established	reply 0 then text; minus 104 when absent
 6.5.30:l1#1	6	0x0005	ffe122da	general_req_firmware_revision	established	reply 0 then three ints parsed from the version string
-6.5.30:l1#1	6	0x0006	ffe12526	general_req_eeprom_read	established	four ints; areas 0 to 4; minus 104, 105, 107 conditions
-6.5.30:l1#1	6	0x0007	ffe1236a	general_req_eeprom_format	established	one int; reply describes the record kind and area sizes
+6.5.30:l1#1	6	0x0006	ffe12526	general_req_eeprom_read	established	status 0, bytes left after the window, then a binary field; areas 0 to 4; minus 104, 105, 107 conditions
+6.5.30:l1#1	6	0x0007	ffe1236a	general_req_eeprom_format	established	record kind, then eight more ints for kind 1 and two for kind 2
 6.5.30:l1#1	6	0x0008	ffe12848	general_req_system_serial	established	reply 0 then text; minus 104 when empty
 6.5.30:l1#1	6	0x0009	ffe128ca	general_req_partition_get	established	reply 0 then int
 6.5.30:l1#1	6	0x000a	ffe128f2	general_req_port_speeds	established	reply 0 then two ints from per-port speed settings
@@ -53,12 +53,12 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#5	6	0x0013	ffe3fc26	general_req_type_char	established	reply 0, int 0, then the brick-type character as an int
 6.5.30:l1#5	6	0x200d	ffe411e0	general_req_set_clock	established	seven or more words; builds and runs a date -u / hwclock -u line from arguments 1 to 6
 6.5.30:l1#5	6	0x200e	ffe41368	general_req_get_clock	established	reply 0 then year, month, day, hour, minute, second as ints
-6.5.30:l1#5	6	0x3001	ffe40fd8	general_req_hook_3001	inferred	three or more words; twelve listed brick types; hook call not read to the end
-6.5.30:l1#5	6	0x3002	ffe41132	general_req_fru_3002	established	calls the FRU hook word at 0x300013cc and replies its result as the status
+6.5.30:l1#5	6	0x3001	ffe40fd8	general_req_hook_3001	established	three or more words; twelve listed brick types; calls the memory-record routine at ffe7f3b8 directly with (0, arg1, arg2, 0); minus 106 when the result is negative
+6.5.30:l1#5	6	0x3002	ffe41132	general_req_fru_3002	established	calls the FRU hook word at 0x300013cc with the frame sender word and replies its result as the status
 6.5.30:l1#5	6	0x3003	ffe4115a	general_req_fru_3003	established	reply 0 then calls the FRU hook word at 0x300013c8
 6.5.30:l1#5	6	0x3004	ffe4117a	general_req_fru_3004	established	reply 0 then passes the reply buffer to the hook word at 0x300013dc; its result becomes the reply count
 6.5.30:l1#5	6	0x4001	ffe411a8	general_req_war_flag	established	reply 0 then the SHUB workaround flag byte as an int
-6.5.30:l1#5	6	0x4004	ffe40c2a	general_req_dimm_text	inferred	per-slot text lines with JEDEC,OKAY / NOT_PRESENT / ERROR; field meanings not followed
+6.5.30:l1#5	6	0x4004	ffe40c2a	general_req_dimm_text	established	per-record text with JEDEC,OKAY / NOT_PRESENT / ERROR; text layout read in full, field names are a hint
 6.5.30:l1#0	6	0x0001	ffe11fe8	general_req_read_debug_switches	established	same instruction stream as the Origin 300 handler; only call targets, string pointers and moved RAM words differ
 6.5.30:l1#0	6	0x0002	ffe11ffc	general_req_rack_bay	established	same instruction stream as the Origin 300 handler; only call targets, string pointers and moved RAM words differ
 6.5.30:l1#0	6	0x0003	ffe11ffc	general_req_rack_bay_type	established	same instruction stream as the Origin 300 handler; only call targets, string pointers and moved RAM words differ
@@ -140,8 +140,8 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#3	6	0x0002	ffe11488	general_req_rack_bay	established	reply 0 then rack<<6|bay; type 0x3d reports 0x23 when the slot low byte is zero; no type 0x38 case
 6.5.30:l1#3	6	0x0003	ffe11488	general_req_rack_bay_type	established	same entry as 0x0002; adds the reported type character
 6.5.30:l1#3	6	0x0004	ffe11714	general_req_brick_serial	established	reply 0 then text; type 0x40 uses the per-node serial routine, others the brick serial; minus 104 when null
-6.5.30:l1#3	6	0x0006	ffe1198e	general_req_eeprom_read	established	five or more words; record number from a local type map instead of a hook word; four ints
-6.5.30:l1#3	6	0x0007	ffe117d2	general_req_eeprom_format	established	two or more words; record number from a local type map instead of a hook word; nine ints
+6.5.30:l1#3	6	0x0006	ffe1198e	general_req_eeprom_read	established	five or more words; record number from a local type map instead of a hook word; status 0, bytes left, then a binary field
+6.5.30:l1#3	6	0x0007	ffe117d2	general_req_eeprom_format	established	two or more words; record number from a local type map instead of a hook word; record kind, then eight more ints for kind 1 and two for kind 2
 6.5.30:l1#3	6	0x0008	ffe11cb6	general_req_system_serial	established	descriptor word at +0xe4 else setting 0xd; reply 0 then text; minus 104 when empty
 6.5.30:l1#3	6	0x000a	ffe11d60	general_req_port_speeds	established	type table sends types 03456789@ABCFLMOQ| to the port-record path, others read setting 0x2a; reply 0 then two ints
 6.5.30:l1#3	6	0x000c	ffe114fc	general_req_attached_ports_1_to_4	established	reply 0 then four (rack<<6|bay, type) pairs; same stream as the Origin 300 handler
@@ -173,14 +173,14 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#5	6	0x0002	ffe3f160	general_req_rack_bay	established	reply 0 then rack<<6|bay; type 0x3d reports 0x23 when the slot low byte is zero; no type 0x38 case
 6.5.30:l1#5	6	0x0003	ffe3f160	general_req_rack_bay_type	established	same entry as 0x0002; adds the reported type character
 6.5.30:l1#5	6	0x0004	ffe3f3ec	general_req_brick_serial	established	reply 0 then text; types 0x2c 0x2d 0x2e 0x40 0x7d use the per-node serial routine with a second argument; minus 104 when null
-6.5.30:l1#5	6	0x0006	ffe3f66e	general_req_eeprom_read	inferred	five or more words; local type map not read through its table; four ints
-6.5.30:l1#5	6	0x0007	ffe3f4c8	general_req_eeprom_format	inferred	two or more words; local type map not read through its table; nine ints
+6.5.30:l1#5	6	0x0006	ffe3f66e	general_req_eeprom_read	established	five or more words; local type map read through its table; status 0, bytes left, then a binary field
+6.5.30:l1#5	6	0x0007	ffe3f4c8	general_req_eeprom_format	established	two or more words; local type map read through its table; record kind, then eight more ints for kind 1 and two for kind 2
 6.5.30:l1#5	6	0x0008	ffe3f990	general_req_system_serial	established	descriptor word at +0xec else setting 0xd; reply 0 then text; minus 104 when empty
 6.5.30:l1#5	6	0x000a	ffe3fa3a	general_req_port_speeds	established	type table sends types $,.03456789@ABCFLMOQ{} to the port-record path, others read setting 0x2a; reply 0 then two ints
-6.5.30:l1#5	6	0x000c	ffe3f1d4	general_req_attached_ports_1_to_4	inferred	reply 0 then four pairs; port-record routine has a different body
-6.5.30:l1#5	6	0x000d	ffe3f350	general_req_attached_ports_5_and_10	inferred	reply 0 then two pairs; port-record routine has a different body
+6.5.30:l1#5	6	0x000c	ffe3f1d4	general_req_attached_ports_1_to_4	established	reply 0 then four pairs; port-record routine returns no record for an index outside its table
+6.5.30:l1#5	6	0x000d	ffe3f350	general_req_attached_ports_5_and_10	established	reply 0 then two pairs (records 5 and 10); same fields as the Origin 300 handler
 6.5.30:l1#5	6	0x000e	ffe3fbcc	general_req_requesting_port	established	reply 0 then the requesting link index; added type test has no effect
-6.5.30:l1#5	6	0x0010	ffe3fc66	general_req_processor_masks	inferred	slab trace added; descriptor +0x90 and shift +0x68; reply loop not read to the end
+6.5.30:l1#5	6	0x0010	ffe3fc66	general_req_processor_masks	established	slab trace added; descriptor +0x90 and shift +0x68; two reply shapes by type character, one mask pair for the requesting port or all pairs
 6.5.30:l1#5	6	0x0011	ffe3ff16	general_req_scan_record	established	reply 0 then a 64-byte binary field or minus 106; relocation of the Origin 300 body
 6.5.30:l1#5	6	0x1001	ffe400d8	general_req_write_debug_switches	established	one int; writes setting 3 through a different setting writer; reply 0
 6.5.30:l1#5	6	0x1004	ffe4011c	general_req_display_line_1	established	one text; display write; minus 102 if not text; same stream as the Origin 300 handler
@@ -190,8 +190,8 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#5	6	0x1008	ffe401d8	general_req_two_bit_setting_set	established	one int; writes setting 0x12; reply 0
 6.5.30:l1#5	6	0x1009	ffe4030a	general_req_panel_control	established	two ints; selector 0 to 2 else minus 105; reply 0; same stream as the Origin 300 handler
 6.5.30:l1#5	6	0x100a	ffe4045c	general_req_event_subchannel_clear	established	no reply; clears and unpersists the event subchannel
-6.5.30:l1#5	6	0x100b	ffe40466	general_req_prom_version_report	inferred	exactly three ints; as package 3 with an extra tested result; no reply on success
-6.5.30:l1#5	6	0x100c	ffe4057c	general_req_per_processor_setting	inferred	exactly two ints; per-processor setter takes three arguments and was not read; no reply on success
+6.5.30:l1#5	6	0x100b	ffe40466	general_req_prom_version_report	established	exactly three ints; as package 3 but the line is printed only with the trace flag and the slot setter result is not tested; no reply on success
+6.5.30:l1#5	6	0x100c	ffe4057c	general_req_per_processor_setting	established	exactly two ints; per-processor setter takes three arguments, the first zero; setter body not read; no reply on success
 6.5.30:l1#5	6	0x2001	ffe40610	general_req_system_reset	established	no reply on success; calls the hook word at 0x30000900 with reason 6
 6.5.30:l1#5	6	0x2002	ffe40624	general_req_pci_operation_a	established	three or more words; hook at offset 8 of block 0x30001334 with three arguments; reply is the hook result
 6.5.30:l1#5	6	0x2003	ffe406c2	general_req_pci_operation_b	established	three or more words; hook at offset 0xc of block 0x30001334; minus 106 on failure
