@@ -3014,3 +3014,740 @@ The access tables include non-stack sites. A dash in Stored value marks a load.
 | `rts` at 0xffedc9e8 | `d0` | `?` |
 
 [Full fact sheet and listing](disasm/mcf5206e-1.34.2-package-0/controller-write-loops-facts.txt).
+
+## 6.5.27:l1#1 at 0xffe6c7e8
+
+- `0xffe6c7e8`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.27:l1#1`, version `1.34.2`. Payload file offset 0xefb74.
+  Load 0xffe00000. Analysed span 0xffe6c7e8 to 0xffe6c886.
+  Established. The first byte writes carry zero through `[0x3000043c] +0x1e8` and 0x13 through
+  `[0x3000043c] +0x1e4` (`clr.b` at 0xffe6c808, `move.b` at 0xffe6c80e). The later call targets
+  0xffe56488 with candidates beginning 9, 0xffe6d016 and 0x182 (`jsr` at 0xffe6c872).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe6c806 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffe6c808 | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6c80c | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c80e | store | 1 | `[0x3000043c] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe6c812 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffe6c814 | store | 1 | `[0x3000043c] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe6c818 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c81a | store | 1 | `[0x3000043c] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe6c81e | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c822 | load | 1 | `[0x3000043c] +0x1ec` | `-` |
+| `movea.l` at 0xffe6c82c | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffe6c82e | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6c832 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c834 | store | 1 | `[0x3000043c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe6c838 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c83a | load | 1 | `[0x3000043c] +0x1f0` | `-` |
+| `movea.l` at 0xffe6c83e | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffe6c842 | load | 1 | `[0x3000043c] +0x1ec` | `-` |
+| `movea.l` at 0xffe6c846 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffe6c848 | store | 1 | `[0x3000043c] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe6c84c | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffe6c84e | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe6c872 | `0xffe56488` | `0x9` | `0xffe6d016` | `0x182` | `0x0` | `0xffe6d03c` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6c82a | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe6c856 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6c884 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.34.2-package-1/controller-write-loops-facts.txt).
+
+## 6.5.27:l1#1 at 0xffedc7e8
+
+- `0xffedc7e8`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.27:l1#1`, version `1.34.2`. Payload file offset 0xefb74.
+  Load 0xffe00000. Analysed span 0xffedc7e8 to 0xffedc886.
+  Established. The `beq.b` takes the restore tail when `(? & 0x20) == 0x0`, with the tested value
+  unknown (`beq.b` at 0xffedc82a); its fall-through for `(? & 0x20) != 0x0` reaches a byte 0xa0
+  store rendered as `[0x3000043c] +0x1e8` (`beq.b` at 0xffedc82a, `move.b` at 0xffedc834).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffedc806 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffedc808 | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedc80c | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc80e | store | 1 | `[0x3000043c] +0x1e4` | `0x13` |
+| `movea.l` at 0xffedc812 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffedc814 | store | 1 | `[0x3000043c] +0x1e0` | `0x0` |
+| `movea.l` at 0xffedc818 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc81a | store | 1 | `[0x3000043c] +0x1e8` | `0x80` |
+| `movea.l` at 0xffedc81e | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc822 | load | 1 | `[0x3000043c] +0x1ec` | `-` |
+| `movea.l` at 0xffedc82c | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffedc82e | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedc832 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc834 | store | 1 | `[0x3000043c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffedc838 | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc83a | load | 1 | `[0x3000043c] +0x1f0` | `-` |
+| `movea.l` at 0xffedc83e | load | 4 | `abs 0x3000043c` | `-` |
+| `move.b` at 0xffedc842 | load | 1 | `[0x3000043c] +0x1ec` | `-` |
+| `movea.l` at 0xffedc846 | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffedc848 | store | 1 | `[0x3000043c] +0x1ec` | `0x0` |
+| `movea.l` at 0xffedc84c | load | 4 | `abs 0x3000043c` | `-` |
+| `clr.b` at 0xffedc84e | store | 1 | `[0x3000043c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffedc872 | `0xffec6488` | `0x9` | `0xffedd016` | `0x182` | `0x0` | `0xffedd03c` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedc82a | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffedc856 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedc884 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.34.2-package-1/controller-write-loops-facts.txt).
+
+## 6.5.27:l1#2 at 0xffeaf4ac
+
+- `0xffeaf4ac`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.27:l1#2`, version `1.34.2`. Payload file offset 0x1df678.
+  Load 0xffe00000. Analysed span 0xffeaf4ac to 0xffeaf54a.
+  Established. Two initial byte-clear sites render as `[0x30000a8c] +0x1e8` and `[0x30000a8c]
+  +0x1e0` (`clr.b` at 0xffeaf4cc, `clr.b` at 0xffeaf4d8). The backward `blt.b` has unknown condition
+  operands (`blt.b` at 0xffeaf51a).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffeaf4ca | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xffeaf4cc | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffeaf4d0 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf4d2 | store | 1 | `[0x30000a8c] +0x1e4` | `0x13` |
+| `movea.l` at 0xffeaf4d6 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xffeaf4d8 | store | 1 | `[0x30000a8c] +0x1e0` | `0x0` |
+| `movea.l` at 0xffeaf4dc | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf4de | store | 1 | `[0x30000a8c] +0x1e8` | `0x80` |
+| `movea.l` at 0xffeaf4e2 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf4e6 | load | 1 | `[0x30000a8c] +0x1ec` | `-` |
+| `movea.l` at 0xffeaf4f0 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xffeaf4f2 | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffeaf4f6 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf4f8 | store | 1 | `[0x30000a8c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffeaf4fc | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf4fe | load | 1 | `[0x30000a8c] +0x1f0` | `-` |
+| `movea.l` at 0xffeaf502 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xffeaf506 | load | 1 | `[0x30000a8c] +0x1ec` | `-` |
+| `movea.l` at 0xffeaf50a | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xffeaf50c | store | 1 | `[0x30000a8c] +0x1ec` | `0x0` |
+| `movea.l` at 0xffeaf510 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xffeaf512 | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffeaf536 | `0xffe89840` | `0x9` | `0xffeafcda` | `0x182` | `0x0` | `0xffeafd00` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffeaf4ee | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffeaf51a | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffeaf548 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.34.2-package-2/controller-write-loops-facts.txt).
+
+## 6.5.27:l1#2 at 0xfff9f4ac
+
+- `0xfff9f4ac`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.27:l1#2`, version `1.34.2`. Payload file offset 0x1df678.
+  Load 0xffe00000. Analysed span 0xfff9f4ac to 0xfff9f54a.
+  Established. The direct call targets 0xfff79840 with third candidate 0x182 and fourth candidate
+  zero (`jsr` at 0xfff9f536). The recorded D0 return value remains unknown (`rts` at 0xfff9f548).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xfff9f4ca | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xfff9f4cc | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff9f4d0 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f4d2 | store | 1 | `[0x30000a8c] +0x1e4` | `0x13` |
+| `movea.l` at 0xfff9f4d6 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xfff9f4d8 | store | 1 | `[0x30000a8c] +0x1e0` | `0x0` |
+| `movea.l` at 0xfff9f4dc | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f4de | store | 1 | `[0x30000a8c] +0x1e8` | `0x80` |
+| `movea.l` at 0xfff9f4e2 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f4e6 | load | 1 | `[0x30000a8c] +0x1ec` | `-` |
+| `movea.l` at 0xfff9f4f0 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xfff9f4f2 | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff9f4f6 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f4f8 | store | 1 | `[0x30000a8c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xfff9f4fc | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f4fe | load | 1 | `[0x30000a8c] +0x1f0` | `-` |
+| `movea.l` at 0xfff9f502 | load | 4 | `abs 0x30000a8c` | `-` |
+| `move.b` at 0xfff9f506 | load | 1 | `[0x30000a8c] +0x1ec` | `-` |
+| `movea.l` at 0xfff9f50a | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xfff9f50c | store | 1 | `[0x30000a8c] +0x1ec` | `0x0` |
+| `movea.l` at 0xfff9f510 | load | 4 | `abs 0x30000a8c` | `-` |
+| `clr.b` at 0xfff9f512 | store | 1 | `[0x30000a8c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xfff9f536 | `0xfff79840` | `0x9` | `0xfff9fcda` | `0x182` | `0x0` | `0xfff9fd00` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff9f4ee | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xfff9f51a | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff9f548 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.34.2-package-2/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#0 at 0xffe6cbd0
+
+- `0xffe6cbd0`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#0`, version `1.38.4`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffe6cbd0 to 0xffe6cc6e.
+  Established. Byte zero at `[0x300002bc] +0x1e8` precedes byte 0x13 at `[0x300002bc] +0x1e4`
+  (`clr.b` at 0xffe6cbf0, `move.b` at 0xffe6cbf6). Subsequent initial sites write byte zero through
+  `[0x300002bc] +0x1e0` and byte 0x80 through `[0x300002bc] +0x1e8` (`clr.b` at 0xffe6cbfc, `move.b`
+  at 0xffe6cc02).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe6cbee | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffe6cbf0 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cbf4 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cbf6 | store | 1 | `[0x300002bc] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe6cbfa | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffe6cbfc | store | 1 | `[0x300002bc] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe6cc00 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cc02 | store | 1 | `[0x300002bc] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe6cc06 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cc0a | load | 1 | `[0x300002bc] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cc14 | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffe6cc16 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cc1a | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cc1c | store | 1 | `[0x300002bc] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe6cc20 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cc22 | load | 1 | `[0x300002bc] +0x1f0` | `-` |
+| `movea.l` at 0xffe6cc26 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffe6cc2a | load | 1 | `[0x300002bc] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cc2e | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffe6cc30 | store | 1 | `[0x300002bc] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe6cc34 | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffe6cc36 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe6cc5a | `0xffe58d98` | `0x9` | `0xffe6d3fe` | `0x182` | `0x0` | `0xffe6d424` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6cc12 | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe6cc3e | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6cc6c | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-0/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#0 at 0xffedcbd0
+
+- `0xffedcbd0`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#0`, version `1.38.4`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffedcbd0 to 0xffedcc6e.
+  Established. The final non-stack store sites clear bytes through `[0x300002bc] +0x1ec` and
+  `[0x300002bc] +0x1e8` (`clr.b` at 0xffedcc30, `clr.b` at 0xffedcc36). The taken `beq.b` bypasses
+  these sites for `(? & 0x20) == 0x0` (`beq.b` at 0xffedcc12).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffedcbee | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffedcbf0 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcbf4 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcbf6 | store | 1 | `[0x300002bc] +0x1e4` | `0x13` |
+| `movea.l` at 0xffedcbfa | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffedcbfc | store | 1 | `[0x300002bc] +0x1e0` | `0x0` |
+| `movea.l` at 0xffedcc00 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcc02 | store | 1 | `[0x300002bc] +0x1e8` | `0x80` |
+| `movea.l` at 0xffedcc06 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcc0a | load | 1 | `[0x300002bc] +0x1ec` | `-` |
+| `movea.l` at 0xffedcc14 | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffedcc16 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcc1a | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcc1c | store | 1 | `[0x300002bc] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffedcc20 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcc22 | load | 1 | `[0x300002bc] +0x1f0` | `-` |
+| `movea.l` at 0xffedcc26 | load | 4 | `abs 0x300002bc` | `-` |
+| `move.b` at 0xffedcc2a | load | 1 | `[0x300002bc] +0x1ec` | `-` |
+| `movea.l` at 0xffedcc2e | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffedcc30 | store | 1 | `[0x300002bc] +0x1ec` | `0x0` |
+| `movea.l` at 0xffedcc34 | load | 4 | `abs 0x300002bc` | `-` |
+| `clr.b` at 0xffedcc36 | store | 1 | `[0x300002bc] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffedcc5a | `0xffec8d98` | `0x9` | `0xffedd3fe` | `0x182` | `0x0` | `0xffedd424` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedcc12 | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffedcc3e | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedcc6c | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-0/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#1 at 0xffe6ca88
+
+- `0xffe6ca88`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#1`, version `1.38.4`. Payload file offset 0xefdc4.
+  Load 0xffe00000. Analysed span 0xffe6ca88 to 0xffe6cb26.
+  Established. On `beq.b` fall-through for `(? & 0x20) != 0x0`, a byte read renders as `[0x300002e8]
+  +0x1f0` (`beq.b` at 0xffe6caca, `move.b` at 0xffe6cada). A later byte read renders as
+  `[0x300002e8] +0x1ec`, followed by a byte clear through that expression (`move.b` at 0xffe6cae2,
+  `clr.b` at 0xffe6cae8).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe6caa6 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffe6caa8 | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6caac | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6caae | store | 1 | `[0x300002e8] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe6cab2 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffe6cab4 | store | 1 | `[0x300002e8] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe6cab8 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6caba | store | 1 | `[0x300002e8] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe6cabe | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6cac2 | load | 1 | `[0x300002e8] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cacc | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffe6cace | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cad2 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6cad4 | store | 1 | `[0x300002e8] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe6cad8 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6cada | load | 1 | `[0x300002e8] +0x1f0` | `-` |
+| `movea.l` at 0xffe6cade | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffe6cae2 | load | 1 | `[0x300002e8] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cae6 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffe6cae8 | store | 1 | `[0x300002e8] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe6caec | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffe6caee | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe6cb12 | `0xffe5836c` | `0x9` | `0xffe6d2b6` | `0x182` | `0x0` | `0xffe6d2dc` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6caca | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe6caf6 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6cb24 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-1/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#1 at 0xffedca88
+
+- `0xffedca88`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#1`, version `1.38.4`. Payload file offset 0xefdc4.
+  Load 0xffe00000. Analysed span 0xffedca88 to 0xffedcb26.
+  Established. The call to 0xffec836c has first candidates 9, 0xffedd2b6 and 0x182 (`jsr` at
+  0xffedcb12). Before its setup, the backward `blt.b` decides the loop route with unresolved
+  operands (`blt.b` at 0xffedcaf6).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffedcaa6 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcaa8 | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcaac | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcaae | store | 1 | `[0x300002e8] +0x1e4` | `0x13` |
+| `movea.l` at 0xffedcab2 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcab4 | store | 1 | `[0x300002e8] +0x1e0` | `0x0` |
+| `movea.l` at 0xffedcab8 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcaba | store | 1 | `[0x300002e8] +0x1e8` | `0x80` |
+| `movea.l` at 0xffedcabe | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcac2 | load | 1 | `[0x300002e8] +0x1ec` | `-` |
+| `movea.l` at 0xffedcacc | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcace | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcad2 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcad4 | store | 1 | `[0x300002e8] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffedcad8 | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcada | load | 1 | `[0x300002e8] +0x1f0` | `-` |
+| `movea.l` at 0xffedcade | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcae2 | load | 1 | `[0x300002e8] +0x1ec` | `-` |
+| `movea.l` at 0xffedcae6 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcae8 | store | 1 | `[0x300002e8] +0x1ec` | `0x0` |
+| `movea.l` at 0xffedcaec | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcaee | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffedcb12 | `0xffec836c` | `0x9` | `0xffedd2b6` | `0x182` | `0x0` | `0xffedd2dc` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedcaca | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffedcaf6 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedcb24 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-1/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#2 at 0xffe8e6b8
+
+- `0xffe8e6b8`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#2`, version `1.38.4`. Payload file offset 0x1dfb30.
+  Load 0xffe00000. Analysed span 0xffe8e6b8 to 0xffe8e756.
+  Established. The first byte-read site renders as `[0x300008bc] +0x1ec` (`move.b` at 0xffe8e6f2).
+  The following `beq.b` selects register restoration for `(? & 0x20) == 0x0` (`beq.b` at
+  0xffe8e6fa).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe8e6d6 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8e6d8 | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe8e6dc | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e6de | store | 1 | `[0x300008bc] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe8e6e2 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8e6e4 | store | 1 | `[0x300008bc] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe8e6e8 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e6ea | store | 1 | `[0x300008bc] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe8e6ee | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e6f2 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `movea.l` at 0xffe8e6fc | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8e6fe | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe8e702 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e704 | store | 1 | `[0x300008bc] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe8e708 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e70a | load | 1 | `[0x300008bc] +0x1f0` | `-` |
+| `movea.l` at 0xffe8e70e | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8e712 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `movea.l` at 0xffe8e716 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8e718 | store | 1 | `[0x300008bc] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe8e71c | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8e71e | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe8e742 | `0xffe78fa8` | `0x9` | `0xffe8eee6` | `0x182` | `0x0` | `0xffe8ef0c` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe8e6fa | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe8e726 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe8e754 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-2/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#2 at 0xfff7e6b8
+
+- `0xfff7e6b8`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#2`, version `1.38.4`. Payload file offset 0x1dfb30.
+  Load 0xffe00000. Analysed span 0xfff7e6b8 to 0xfff7e756.
+  Established. Two byte stores rendered as `[0x300008bc] +0x1e8` carry zero then 0xa0 on the `beq.b`
+  fall-through for `(? & 0x20) != 0x0` (`beq.b` at 0xfff7e6fa, `clr.b` at 0xfff7e6fe, `move.b` at
+  0xfff7e704). The call target is 0xfff68fa8 (`jsr` at 0xfff7e742).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xfff7e6d6 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7e6d8 | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff7e6dc | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e6de | store | 1 | `[0x300008bc] +0x1e4` | `0x13` |
+| `movea.l` at 0xfff7e6e2 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7e6e4 | store | 1 | `[0x300008bc] +0x1e0` | `0x0` |
+| `movea.l` at 0xfff7e6e8 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e6ea | store | 1 | `[0x300008bc] +0x1e8` | `0x80` |
+| `movea.l` at 0xfff7e6ee | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e6f2 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `movea.l` at 0xfff7e6fc | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7e6fe | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff7e702 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e704 | store | 1 | `[0x300008bc] +0x1e8` | `0xa0` |
+| `movea.l` at 0xfff7e708 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e70a | load | 1 | `[0x300008bc] +0x1f0` | `-` |
+| `movea.l` at 0xfff7e70e | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7e712 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `movea.l` at 0xfff7e716 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7e718 | store | 1 | `[0x300008bc] +0x1ec` | `0x0` |
+| `movea.l` at 0xfff7e71c | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7e71e | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xfff7e742 | `0xfff68fa8` | `0x9` | `0xfff7eee6` | `0x182` | `0x0` | `0xfff7ef0c` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff7e6fa | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xfff7e726 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff7e754 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-2/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#3 at 0xffe930fc
+
+- `0xffe930fc`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#3`, version `1.38.4`. Payload file offset 0x38c214.
+  Load 0xffe00000. Analysed span 0xffe930fc to 0xffe9319a.
+  Established. The byte 0x80 store renders as `[0x30000ba8] +0x1e8` (`move.b` at 0xffe9312e). The
+  later direct call has candidates beginning 9, 0xffe9392a, 0x182, zero and 0xffe93950, with the
+  sixth unknown (`jsr` at 0xffe93186).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe9311a | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xffe9311c | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe93120 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe93122 | store | 1 | `[0x30000ba8] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe93126 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xffe93128 | store | 1 | `[0x30000ba8] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe9312c | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe9312e | store | 1 | `[0x30000ba8] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe93132 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe93136 | load | 1 | `[0x30000ba8] +0x1ec` | `-` |
+| `movea.l` at 0xffe93140 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xffe93142 | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe93146 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe93148 | store | 1 | `[0x30000ba8] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe9314c | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe9314e | load | 1 | `[0x30000ba8] +0x1f0` | `-` |
+| `movea.l` at 0xffe93152 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xffe93156 | load | 1 | `[0x30000ba8] +0x1ec` | `-` |
+| `movea.l` at 0xffe9315a | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xffe9315c | store | 1 | `[0x30000ba8] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe93160 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xffe93162 | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe93186 | `0xffe6c1c8` | `0x9` | `0xffe9392a` | `0x182` | `0x0` | `0xffe93950` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe9313e | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe9316a | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe93198 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-3/controller-write-loops-facts.txt).
+
+## 6.5.28:l1#3 at 0xfff830fc
+
+- `0xfff830fc`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.28:l1#3`, version `1.38.4`. Payload file offset 0x38c214.
+  Load 0xffe00000. Analysed span 0xfff830fc to 0xfff8319a.
+  Established. The two byte-read sites rendered as `[0x30000ba8] +0x1ec` each have a separate base
+  load (`move.b` at 0xfff83136, `move.b` at 0xfff83156, `movea.l` at 0xfff83132, `movea.l` at
+  0xfff83152). The second read lies on `beq.b` fall-through for `(? & 0x20) != 0x0` (`beq.b` at
+  0xfff8313e, `move.b` at 0xfff83156).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xfff8311a | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xfff8311c | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff83120 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff83122 | store | 1 | `[0x30000ba8] +0x1e4` | `0x13` |
+| `movea.l` at 0xfff83126 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xfff83128 | store | 1 | `[0x30000ba8] +0x1e0` | `0x0` |
+| `movea.l` at 0xfff8312c | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff8312e | store | 1 | `[0x30000ba8] +0x1e8` | `0x80` |
+| `movea.l` at 0xfff83132 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff83136 | load | 1 | `[0x30000ba8] +0x1ec` | `-` |
+| `movea.l` at 0xfff83140 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xfff83142 | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+| `movea.l` at 0xfff83146 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff83148 | store | 1 | `[0x30000ba8] +0x1e8` | `0xa0` |
+| `movea.l` at 0xfff8314c | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff8314e | load | 1 | `[0x30000ba8] +0x1f0` | `-` |
+| `movea.l` at 0xfff83152 | load | 4 | `abs 0x30000ba8` | `-` |
+| `move.b` at 0xfff83156 | load | 1 | `[0x30000ba8] +0x1ec` | `-` |
+| `movea.l` at 0xfff8315a | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xfff8315c | store | 1 | `[0x30000ba8] +0x1ec` | `0x0` |
+| `movea.l` at 0xfff83160 | load | 4 | `abs 0x30000ba8` | `-` |
+| `clr.b` at 0xfff83162 | store | 1 | `[0x30000ba8] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xfff83186 | `0xfff5c1c8` | `0x9` | `0xfff8392a` | `0x182` | `0x0` | `0xfff83950` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff8313e | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xfff8316a | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff83198 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.38.4-package-3/controller-write-loops-facts.txt).
+
+## 6.5.29:l1#0 at 0xffe6cbe0
+
+- `0xffe6cbe0`, `6.5.29/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.29:l1#0`, version `1.40.5`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffe6cbe0 to 0xffe6cc7e.
+  Established. A1 receives 0x3e8 (`movea.w` at 0xffe6cbee). The later backward `blt.b` still has
+  unresolved condition operands, so the tool does not establish a loop count (`blt.b` at
+  0xffe6cc4e). The direct call targets 0xffe59380 (`jsr` at 0xffe6cc6a).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe6cbfe | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffe6cc00 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cc04 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc06 | store | 1 | `[0x3000031c] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe6cc0a | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffe6cc0c | store | 1 | `[0x3000031c] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe6cc10 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc12 | store | 1 | `[0x3000031c] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe6cc16 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc1a | load | 1 | `[0x3000031c] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cc24 | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffe6cc26 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cc2a | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc2c | store | 1 | `[0x3000031c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe6cc30 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc32 | load | 1 | `[0x3000031c] +0x1f0` | `-` |
+| `movea.l` at 0xffe6cc36 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffe6cc3a | load | 1 | `[0x3000031c] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cc3e | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffe6cc40 | store | 1 | `[0x3000031c] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe6cc44 | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffe6cc46 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe6cc6a | `0xffe59380` | `0x9` | `0xffe6d40e` | `0x182` | `0x0` | `0xffe6d434` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6cc22 | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe6cc4e | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6cc7c | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.40.5-package-0/controller-write-loops-facts.txt).
+
+## 6.5.29:l1#0 at 0xffedcbe0
+
+- `0xffedcbe0`, `6.5.29/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.29:l1#0`, version `1.40.5`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffedcbe0 to 0xffedcc7e.
+  Established. The `beq.b` bypasses the call route for `(? & 0x20) == 0x0` (`beq.b` at 0xffedcc22).
+  The call itself targets 0xffec9380 with third candidate 0x182 and an unknown sixth candidate
+  (`jsr` at 0xffedcc6a).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffedcbfe | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffedcc00 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcc04 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc06 | store | 1 | `[0x3000031c] +0x1e4` | `0x13` |
+| `movea.l` at 0xffedcc0a | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffedcc0c | store | 1 | `[0x3000031c] +0x1e0` | `0x0` |
+| `movea.l` at 0xffedcc10 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc12 | store | 1 | `[0x3000031c] +0x1e8` | `0x80` |
+| `movea.l` at 0xffedcc16 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc1a | load | 1 | `[0x3000031c] +0x1ec` | `-` |
+| `movea.l` at 0xffedcc24 | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffedcc26 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+| `movea.l` at 0xffedcc2a | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc2c | store | 1 | `[0x3000031c] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffedcc30 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc32 | load | 1 | `[0x3000031c] +0x1f0` | `-` |
+| `movea.l` at 0xffedcc36 | load | 4 | `abs 0x3000031c` | `-` |
+| `move.b` at 0xffedcc3a | load | 1 | `[0x3000031c] +0x1ec` | `-` |
+| `movea.l` at 0xffedcc3e | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffedcc40 | store | 1 | `[0x3000031c] +0x1ec` | `0x0` |
+| `movea.l` at 0xffedcc44 | load | 4 | `abs 0x3000031c` | `-` |
+| `clr.b` at 0xffedcc46 | store | 1 | `[0x3000031c] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffedcc6a | `0xffec9380` | `0x9` | `0xffedd40e` | `0x182` | `0x0` | `0xffedd434` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedcc22 | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffedcc4e | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedcc7c | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.40.5-package-0/controller-write-loops-facts.txt).
+
+## 6.5.29:l1#1 at 0xffe6ca98
+
+- `0xffe6ca98`, `6.5.29/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.29:l1#1`, version `1.40.5`. Payload file offset 0xefdd4.
+  Load 0xffe00000. Analysed span 0xffe6ca98 to 0xffe6cb36.
+  Established. The last non-stack write sites store byte zero through `[0x30000348] +0x1ec` and
+  `[0x30000348] +0x1e8` (`clr.b` at 0xffe6caf8, `clr.b` at 0xffe6cafe). The later direct call has
+  first candidate 9 and target 0xffe59040 (`jsr` at 0xffe6cb22).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `movea.l` at 0xffe6cab6 | load | 4 | `abs 0x30000348` | `-` |
+| `clr.b` at 0xffe6cab8 | store | 1 | `[0x30000348] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cabc | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6cabe | store | 1 | `[0x30000348] +0x1e4` | `0x13` |
+| `movea.l` at 0xffe6cac2 | load | 4 | `abs 0x30000348` | `-` |
+| `clr.b` at 0xffe6cac4 | store | 1 | `[0x30000348] +0x1e0` | `0x0` |
+| `movea.l` at 0xffe6cac8 | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6caca | store | 1 | `[0x30000348] +0x1e8` | `0x80` |
+| `movea.l` at 0xffe6cace | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6cad2 | load | 1 | `[0x30000348] +0x1ec` | `-` |
+| `movea.l` at 0xffe6cadc | load | 4 | `abs 0x30000348` | `-` |
+| `clr.b` at 0xffe6cade | store | 1 | `[0x30000348] +0x1e8` | `0x0` |
+| `movea.l` at 0xffe6cae2 | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6cae4 | store | 1 | `[0x30000348] +0x1e8` | `0xa0` |
+| `movea.l` at 0xffe6cae8 | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6caea | load | 1 | `[0x30000348] +0x1f0` | `-` |
+| `movea.l` at 0xffe6caee | load | 4 | `abs 0x30000348` | `-` |
+| `move.b` at 0xffe6caf2 | load | 1 | `[0x30000348] +0x1ec` | `-` |
+| `movea.l` at 0xffe6caf6 | load | 4 | `abs 0x30000348` | `-` |
+| `clr.b` at 0xffe6caf8 | store | 1 | `[0x30000348] +0x1ec` | `0x0` |
+| `movea.l` at 0xffe6cafc | load | 4 | `abs 0x30000348` | `-` |
+| `clr.b` at 0xffe6cafe | store | 1 | `[0x30000348] +0x1e8` | `0x0` |
+
+| Call instruction | Target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 | Candidate 4 | Candidate 5 |
+|---|---|---|---|---|---|---|---|
+| `jsr` at 0xffe6cb22 | `0xffe59040` | `0x9` | `0xffe6d2c6` | `0x182` | `0x0` | `0xffe6d2ec` | `?` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6cada | `(? & 0x20) == 0x0` | `(? & 0x20) != 0x0` |
+| `blt.b` at 0xffe6cb06 | `lt flags condition (operands unknown)` | `not (lt flags condition (operands unknown))` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6cb34 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.40.5-package-1/controller-write-loops-facts.txt).
