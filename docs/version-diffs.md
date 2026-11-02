@@ -228,7 +228,7 @@ First ten, hardware-facing first:
 | Legacy 2MB | 0x200e | `0xffe15452` | block `0x300010fc` to `0x30001158` (+0x5c), instruction 46 | 1 of 158 | Loads the block base at instruction 46 and reads the block at +0x4 at instructions 47 and 49. The curated 1.44.0 row gives the clock-read role; the body was not read beyond the text match. |
 | Legacy 2MB | 0x4000 | `0xffe14b1c` | block `0x30001114` to `0x30001170` (+0x5c), loaded into a4 at instruction 279 | 1 of 459 | Same block as 0x3001 below. The inventory role is the curated 1.44.0 row's; not re-read. |
 | Legacy 2MB | 0x3001 | `0xffe1517c` | block `0x30001114` to `0x30001170` (+0x5c), instruction 40 | 1 of 98 | The curated 1.44.0 row says it calls the word at 0x30001114 with (0, arg1, arg2, 0); the 1.62.1 call was not re-read. The moved instruction is the block load. |
-| NL3R 1MB | 0x2002 | `0xffe126a4` | block `0x30000964` to `0x30000924` (-0x40), instruction 4 | 1 of 53 | Tests the word at block+0xc (instruction 5), calls it at instructions 46 and 49 with three arguments. The hook offset is +0xc here, not the +0x8 of Legacy 2MB; the curated rows are for another package and are not cited. |
+| NL3R 1MB | 0x2002 | `0xffe126a4` | block `0x30000964` to `0x30000924` (-0x40), instruction 4 | 1 of 53 | Tests the word at block+0xc (instruction 5), calls it at instructions 46 and 49 with two arguments (the values in a4 and d2, popped at instruction 50), where Legacy 2MB passes three. The hook offset is +0xc here, not the +0x8 of Legacy 2MB; the curated rows are for another package and are not cited. |
 | NL3R 1MB | 0x2003 | `0xffe1273e` | block `0x30000964` to `0x30000924` (-0x40), instruction 4 | 1 of 61 | Same shape, through the word at block+0x10 (instructions 5, 46). |
 | NL3R 1MB | 0x2004 | `0xffe127f4` | block `0x30000964` to `0x30000924` (-0x40), instruction 4 | 1 of 61 | Same shape, through the word at block+0x14 (instructions 5, 46). |
 | NL3R 1MB | 0x0006 | `0xffe1185e` | word `0x30000964` to `0x30000924` (-0x40), loaded into a0 at instruction 27 | 1 of 271 | Reads the word at the address the PCI handlers above take as their block base, so the address and its move are the same. The EEPROM-read role is the curated row's; not re-read. |
@@ -239,7 +239,7 @@ The other thirteen:
 
 | Pair | Code | Handler | Moved operand | Differing instructions | Read |
 |---|---|---|---|---:|---|
-| Legacy 2MB | 0x0008 | `0xffe11cb6` | block `0x30002b90` to `0x30002e5c` (+0x2cc), loaded at instruction 0 | 1 of 38 | Same block as 0x0010. The curated row names it system serial; the body was not read beyond the text match. |
+| Legacy 2MB | 0x0008 | `0xffe13d2a` | block `0x30002b90` to `0x30002e5c` (+0x2cc), loaded at instruction 0 | 1 of 38 | Same block as 0x0010. The curated row names it system serial; the body was not read beyond the text match. |
 | Legacy 2MB | 0x0010 | `0xffe1400c` | address `0x30002b90` to `0x30002e5c` (+0x2cc), moved into d7 at instruction 6 | 1 of 116 | Same block as 0x0008. |
 | Legacy 2MB | 0x000a | `0xffe13dd4` | long `0x30000878` to `0x30000894` (+0x1c), tested at instruction 108 | 1 of 137 | A single word, not a block. In both packages of the pair, only this handler uses it. |
 | Legacy 2MB | 0x1007 | `0xffe1451a` | block `0x30005a44` to `0x30005cd0` (+0x28c), loaded at instruction 23 | 1 of 41 | Same block as 0x100b. The curated row gives the one-int NVRAM setting; not re-read. |
