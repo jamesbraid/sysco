@@ -23,11 +23,41 @@ Read from package 1 of IRIX 6.5.30 `usr/cpu/firmware/sysco/l1.bin` (L1 1.44.0). 
 - two_call_forwarder_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe8bc34
   It passes argument 0 to 0xffecb6b4, then passes that call’s d0 result and pointer 0xffe96f83 to 0xffecaed8 (move.l at 0xffe8bc38, jsr at 0xffe8bc3e, move.l at 0xffe8bc46, pea.l at 0xffe8bc48, jsr at 0xffe8bc4e). The routine’s broader role is Unknown.
 
-- write_selector_0x0c_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b810
+- selector_0x0c_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b810
   It calls 0xffec8758 with selector 0x0c and argument 0, then calls 0xffe9b798 (move.l at 0xffe9b814, moveq at 0xffe9b81a, jsr at 0xffe9b81e, bsr.w at 0xffe9b826). Selector 0x0c has no identified meaning in this listing.
 
-- write_selector_0x7d_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b888
+- selector_0x7d_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b888
   It calls 0xffec8758 with selector 0x7d and argument 0, then calls 0xffe9b798 (move.l at 0xffe9b88c, moveq at 0xffe9b892, jsr at 0xffe9b896, bsr.w at 0xffe9b89e). Selector 0x7d has no identified meaning in this listing.
 
-- write_selector_0x07_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b8a8
+- selector_0x07_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9b8a8
   It converts argument 0 to 1 when zero and to 0 otherwise, passes that value with selector 7 to 0xffec8758, then calls 0xffe9b798 (cmp.l at 0xffe9b8b0, seq.b at 0xffe9b8b6, moveq at 0xffe9b8c0, jsr at 0xffe9b8c4, bsr.w at 0xffe9b8cc). Selector 7 has no identified meaning in this listing.
+
+- selector_two_dispatch_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9be58
+  It passes selector 2 to 0xffe9b8d4 and returns that call’s result in d0 (moveq at 0xffe9be5c, bsr.w at 0xffe9be60, rts at 0xffe9be68). What selector 2 requests is Unknown.
+
+- forward_pointer_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9be90
+  It passes argument 0 to 0xffe98178 and returns that call’s result (movea.l at 0xffe9be94, move.l at 0xffe9be98, bsr.w at 0xffe9be9a, rts at 0xffe9bea2). The callee’s effect is not established here.
+
+- selector_three_dispatch_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9bea4
+  It passes selector 3 to 0xffe9b8d4 and leaves its result in d0 for return (moveq at 0xffe9bea8, bsr.w at 0xffe9beac, rts at 0xffe9beb4). Selector 3’s meaning is Unknown.
+
+- selector_four_then_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9beb8
+  It passes selector 4 to 0xffe9b8d4, then calls 0xffea517c with no arguments; the second call’s d0 is returned (moveq at 0xffe9bebc, bsr.w at 0xffe9bec0, jsr at 0xffe9bec6, rts at 0xffe9bece). Neither selector 4 nor the final call’s role is established.
+
+- call_result_pair_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe9bee8
+  It saves argument 0, calls 0xffe99160 without arguments, then calls 0xffe98ff8 with argument 0 and the first call’s d0 result; the second result remains in d0 on return (move.l at 0xffe9beee, bsr.w at 0xffe9bef2, move.l at 0xffe9bef6, move.l at 0xffe9bef8, bsr.w at 0xffe9befa). The calls’ roles are Unknown.
+
+- zero_selector_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffea1ea4
+  It passes zero to 0xffea1d7c and returns its result (clr.l at 0xffea1ea8, bsr.w at 0xffea1eaa, rts at 0xffea1eb2). The selector’s role is Unknown.
+
+- one_selector_call_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffea1eb4
+  It passes 1 to 0xffea1d7c and returns its result (moveq at 0xffea1eb8, move.l at 0xffea1eba, bsr.w at 0xffea1ebc, rts at 0xffea1ec4). The selector’s role is Unknown.
+
+- triple_zero_selector_one_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffea3220
+  It calls 0xffea3060 with arguments 1, 0, 0 and returns its result (clr.l at 0xffea3224, clr.l at 0xffea3226, moveq at 0xffea3228, bsr.w at 0xffea322c, rts at 0xffea3236). The call’s role is Unknown.
+
+- triple_zero_selector_two_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffea3238
+  It calls 0xffea3060 with arguments 2, 0, 0 and returns its result (clr.l at 0xffea323c, clr.l at 0xffea323e, moveq at 0xffea3240, bsr.w at 0xffea3244, rts at 0xffea324e). The call’s role is Unknown.
+
+- triple_zero_selector_three_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffea3250
+  It calls 0xffea3060 with arguments 3, 0, 0 and returns its result (clr.l at 0xffea3254, clr.l at 0xffea3256, moveq at 0xffea3258, bsr.w at 0xffea325c, rts at 0xffea3266). The call’s role is Unknown.
