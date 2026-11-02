@@ -194,7 +194,7 @@ The `2MB image` packages (both sets) have a `cmp.l #$1001,d0` followed by `bgt.b
 
 ### Reading queue: changed request handlers
 
-The 23 RAM-only handlers are the queue. Each needs one read to confirm the moved RAM word is the same variable in both sets. Hardware-facing first (the handler calls a device or stores to a device-facing word; judged from the code number and the handler text, not from a full read), then the rest. The names are from the 1.44.0 Origin 300 table, for orientation only: the same code in these packages is not named here.
+The 23 RAM-only handlers were the queue; each is now read, with its moved operand, in [Handler reads](#handler-reads-ram-only-changes) below. The order was hardware-facing first (the handler calls a device or stores to a device-facing word; judged from the code number and the handler text). The names are from the 1.44.0 Origin 300 table, for orientation only: the same code in these packages is not named here.
 
 | Tier | Pair | Codes (handler address in 1.62.1) | Why |
 |---|---|---|---|
@@ -234,6 +234,26 @@ First ten, hardware-facing first:
 | NL3R 1MB | 0x0006 | `0xffe1185e` | word `0x30000964` to `0x30000924` (-0x40), loaded into a0 at instruction 27 | 1 of 271 | Reads the word at the address the PCI handlers above take as their block base, so the address and its move are the same. The EEPROM-read role is the curated row's; not re-read. |
 
 Grades: the text match is established for all ten. The hook offsets are established from the bodies. "Same variable" is inferred for all ten. The roles are the curated rows' names and are not re-read.
+
+The other thirteen:
+
+| Pair | Code | Handler | Moved operand | Differing instructions | Read |
+|---|---|---|---|---:|---|
+| Legacy 2MB | 0x0008 | `0xffe11cb6` | block `0x30002b90` to `0x30002e5c` (+0x2cc), loaded at instruction 0 | 1 of 38 | Same block as 0x0010. The curated row names it system serial; the body was not read beyond the text match. |
+| Legacy 2MB | 0x0010 | `0xffe1400c` | address `0x30002b90` to `0x30002e5c` (+0x2cc), moved into d7 at instruction 6 | 1 of 116 | Same block as 0x0008. |
+| Legacy 2MB | 0x000a | `0xffe13dd4` | long `0x30000878` to `0x30000894` (+0x1c), tested at instruction 108 | 1 of 137 | A single word, not a block. In both packages of the pair, only this handler uses it. |
+| Legacy 2MB | 0x1007 | `0xffe1451a` | block `0x30005a44` to `0x30005cd0` (+0x28c), loaded at instruction 23 | 1 of 41 | Same block as 0x100b. The curated row gives the one-int NVRAM setting; not re-read. |
+| Legacy 2MB | 0x100b | `0xffe146fe` | block `0x30005a44` to `0x30005cd0` (+0x28c), instruction 79 | 1 of 90 | Same block as 0x1007. |
+| NL3R 1MB | 0x0007 | `0xffe116a2` | word `0x30000964` to `0x30000924` (-0x40), loaded into a0 at instruction 27 | 1 of 130 | Same address as 0x0006 above. |
+| NL3R 1MB | 0x4002 | `0xffe130ae` | four operands, each -0x40: the word at `0x300008fc` pushed at instruction 3 (to `0x300008bc`); block `0x30000964` loaded at instruction 9 (to `0x30000924`); constant `0x30003df0` pushed at instruction 31 (to `0x30003db0`); `0x30003dc8` pushed by `pea` at instruction 49 (to `0x30003d88`) | 4 of 121 | The only handler here with four differing instructions. The words at `0x300008fc`, `0x30003dc8` and `0x30003df0` are used only by this handler. The block at `0x30000964` is shared with six other handlers (the PCI and EEPROM rows above). The curated row gives the reboot role; not re-read. |
+| NL3R 1MB | 0x4000 | `0xffe12b20` | block `0x30000984` to `0x30000944` (-0x40), loaded into a4 at instruction 257 | 1 of 436 | Second NL3R block; moves by the same -0x40 as the PCI block. |
+| NL3R 1MB | 0x0008 | `0xffe11b80` | block `0x30001e30` to `0x30002144` (+0x314), loaded at instruction 0 | 1 of 38 | Same block as 0x0010. This block moves by +0x314, not -0x40. |
+| NL3R 1MB | 0x0010 | `0xffe11e04` | address `0x30001e30` to `0x30002144` (+0x314), moved into d7 at instruction 6 | 1 of 116 | Same block as 0x0008. |
+| NL3R 1MB | 0x000a | `0xffe11c2a` | long `0x30000130` to `0x300000b0` (-0x80), tested at instruction 97 | 1 of 126 | The only -0x80 move in the queue. In both packages of the pair, only this handler uses the word. |
+| NL3R 1MB | 0x1007 | `0xffe12310` | block `0x30004f48` to `0x30004f08` (-0x40), loaded at instruction 23 | 1 of 41 | Same block as 0x100b. |
+| NL3R 1MB | 0x100b | `0xffe124f4` | block `0x30004f48` to `0x30004f08` (-0x40), instruction 79 | 1 of 90 | Same block as 0x1007. |
+
+Grades for these thirteen: the text match is established. The "used only by" and "shared with" claims are established by scanning every general request handler in both packages for the operand address. The move is established from the operand. "Same variable" is inferred, as above. The curated roles are not re-read.
 
 ### Linux L1 packages
 
