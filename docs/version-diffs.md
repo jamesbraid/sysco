@@ -133,6 +133,88 @@ Codes added and removed between consecutive sets (established, from the accepted
 
 Handler text changed between consecutive sets: 36 codes from 1.24.8 to 1.26.5, 36 from 1.26.5 to 1.28.3, 36 from 1.28.3 to 1.30.6, 36 from 1.30.6 to 1.32.6, 2 from 1.32.15 to 1.34.2 and 28 from 1.34.2 to 1.38.4 (all inferred; literal text, see above). RAM-only changes: 11 from 1.32.6 to 1.32.15, 9 from 1.32.15 to 1.34.2, 6 from 1.38.4 to 1.40.5 and 4 from 1.40.5 to 1.44.0. Nothing changes from 1.44.0 to 1.48.1, which matches the earlier note.
 
+## Early L1 series, 1.0.2 to 1.18.3
+
+The ten L1 sets from IRIX 6.5.9 to 6.5.19 are compared with the same routine and request-code measurements as above, run by `tools/re-run python3 scripts/version_diff.py --series early` and `scripts/l1_request_catalogue.py --series early`. The outputs are [version-diffs/l1-early-routines.tsv](version-diffs/l1-early-routines.tsv), [version-diffs/l1-early-request-catalogue.tsv](version-diffs/l1-early-request-catalogue.tsv) and [version-diffs/l1-early-request-changes.tsv](version-diffs/l1-early-request-changes.tsv).
+
+What is compared. Each set contributes its first ColdFire package, the 1 MB image:
+
+| Set | IRIX | Package | Bytes | Label | Version |
+|---|---|---|---:|---|---|
+| 1.0.2 | 6.5.9 | whole image (base product) | 927,304 | none | 1.0.2 |
+| 1.1.6 | 6.5.10 | whole image (base product) | 961,604 | none | 1.1.6 |
+| 1.4.1 | 6.5.12 | whole image | 947,836 | none | 1.4.1 |
+| 1.6.0 | 6.5.13 | whole image | 957,104 | none | 1.6.0 |
+| 1.8.0 | 6.5.14 | whole image | 954,016 | none | 1.8.0 |
+| 1.10.0 | 6.5.15 | whole image | 972,844 | none | 1.10.0 |
+| 1.12.3 | 6.5.16 | container package 0 | 974,628 | `1MB image` | 1.12.3 |
+| 1.14.1 | 6.5.17 | container package 0 | 977,032 | `1MB image` | 1.14.1 |
+| 1.16.0 | 6.5.18 | container package 0 | 969,844 | `1MB image` | 1.16.0 |
+| 1.18.3 | 6.5.19 | container package 0 | 977,052 | `1MB image` | 1.18.3 |
+
+Established: the sizes, labels and version strings, from [inventory/packages.tsv](inventory/packages.tsv). The layout of the six early images is in [l1/pre-container-layout.md](l1/pre-container-layout.md).
+
+Not settled: whether the `1MB image` of 6.5.16 to 6.5.19 is the Origin 300 package. In 1.44.0 the first ColdFire package is `Base 1MB` and the Origin 300 package is the second, `Fuel/PE/O300 1MB`, so the slot alone does not decide it. The 2 MB packages of 6.5.16 to 6.5.19 are not compared. Their labels are `2MB image`, and they are not part of this series.
+
+### Routines
+
+Pairing and classes are as in the method above. The changed counts are the pairs whose normalised text differs; the first difference of each pair is in the TSV.
+
+| Step | Same bytes | Same code, moved | Changed, RAM only | Changed | Removed | Added |
+|---|---:|---:|---:|---:|---:|---:|
+| 1.0.2 to 1.1.6 | 1,275 | 460 | 724 | 565 | 530 | 778 |
+| 1.1.6 to 1.4.1 | 1,009 | 332 | 466 | 548 | 1,447 | 1,841 |
+| 1.4.1 to 1.6.0 | 1,331 | 434 | 640 | 597 | 1,194 | 1,146 |
+| 1.6.0 to 1.8.0 | 411 | 91 | 100 | 664 | 2,882 | 3,218 |
+| 1.8.0 to 1.10.0 | 1,345 | 678 | 892 | 568 | 1,001 | 1,225 |
+| 1.10.0 to 1.12.3 | 1,129 | 424 | 570 | 519 | 2,066 | 2,078 |
+| 1.12.3 to 1.14.1 | 1,683 | 488 | 566 | 511 | 1,472 | 1,588 |
+| 1.14.1 to 1.16.0 | 1,623 | 642 | 1,048 | 478 | 1,045 | 1,067 |
+| 1.16.0 to 1.18.3 | 1,565 | 572 | 726 | 605 | 1,390 | 1,324 |
+
+Established: the counts, from the run over the images. Inferred: which routine of one set pairs with which in the next, by the sequence alignment and similarity rule above. The removed and added counts depend on that pairing.
+
+### Request codes
+
+The general request chain of each set is run concretely for every code from 0x0000 to 0x7fff, as for the four sets above. Each set's chain opens with a compare against `#$1001` (1.0.2 to 1.8.0 and 1.12.3 to 1.18.3) or `#$1002` (1.10.0, 6.5.15), and the code is loaded from a frame slot (1.0.2 to 1.6.0) or a data register (the rest). Established: those opening instructions, read from each set's bytes.
+
+| Set | Codes accepted | Unknown-code handler |
+|---|---:|---|
+| 1.0.2 | 17 | `0xffe26f36` |
+| 1.1.6 | 21 | `0xffe29168` |
+| 1.4.1 | 21 | `0xffe1243c` |
+| 1.6.0 | 25 | `0xffe1286e` |
+| 1.8.0 | 26 | `0xffe11e9e` |
+| 1.10.0 | 28 | `0xffe1216c` |
+| 1.12.3 | 29 | `0xffe120d6` |
+| 1.14.1 | 31 | `0xffe121b2` |
+| 1.16.0 | 31 | `0xffe122e8` |
+| 1.18.3 | 31 | `0xffe1236e` |
+
+Codes added at each step (inferred from the chain run; no code is removed in the series):
+
+| Step | Added codes | Handler text changed | Handler text changed, RAM only |
+|---|---|---:|---:|
+| 1.0.2 to 1.1.6 | `000a`, `2002`, `2003`, `2004` | 17 | 0 |
+| 1.1.6 to 1.4.1 | none | 6 | 1 |
+| 1.4.1 to 1.6.0 | `000b`, `000c`, `000d`, `1008` | 21 | 0 |
+| 1.6.0 to 1.8.0 | `1009` | 25 | 0 |
+| 1.8.0 to 1.10.0 | `100a`, `2005` | 6 | 2 |
+| 1.10.0 to 1.12.3 | `000e` | 4 | 2 |
+| 1.12.3 to 1.14.1 | `000f`, `2006` | 25 | 0 |
+| 1.14.1 to 1.16.0 | none | 13 | 1 |
+| 1.16.0 to 1.18.3 | none | 11 | 2 |
+
+"Handler text changed" compares the normalised text of each handler (addresses masked) with the same code in the previous set. It is a text comparison, not a reading of what the handler does, so it is inferred. The codes a set accepts are the codes whose chain run ends at a handler other than its unknown-code target; the run is a model of the chain, and its limits are those of the interpreter described above.
+
+The 1.44.0 table above has codes `0010`, `0011`, `100b`, `100c`, `2007`, `2008`, `3001`, `4000` and `4002` that none of these sets accept.
+
+### Limits
+
+- Only the 1 MB ColdFire package of each set. Each set's other packages, and the Linux packages of 6.5.16 to 6.5.19, are not compared.
+- The package of 6.5.16 to 6.5.19 is the first container package; that it is the Origin 300 package is not settled (above).
+- The request chain is found by its first compare, so a chain that opens with another constant would not be found. Every set found one.
+
 ## L2 image
 
 | Set | Kernel (decompressed) | Kernel bytes | cramfs offset | cramfs size |
