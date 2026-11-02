@@ -10,6 +10,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [libdrivers.md](libdrivers.md) | the flash library, routine by routine: the 4 MiB window, locking, command sequences, erase and program, return codes |
 | [libpart.md](libpart.md) | the partition library: header word, checksum, body layout, lookups, brick and rack identifiers |
 | [userspace.md](userspace.md) | the contract of the shipped programs: how to unpack each held image, every device node and ioctl with argument layouts, NVRAM, VPD and display access, what each link mode expects at the far end, the USB link as the daemon sees it, and the reply to the partition service requests |
+| [config-request-reply.md](config-request-reply.md) | the daemon's recurring configuration request to an L1, the L1's reply, how the reply becomes a route (and why `NO RECEIVER` without it), the request period, and the flashed-version check |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
 | [partition-record.md](partition-record.md) | the partition record end to end: the code-1 reply byte by byte, how it meets the boot firmware's reply checks, the database producer in `partmgr`, test vectors |

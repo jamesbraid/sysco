@@ -177,17 +177,17 @@ count word at `0x30000aa8`, whose word at `+0x60` is nonzero. The text is the sy
 number (inferred: the L2's request carries the serial as its second argument, see
 [userspace.md](../l2/userspace.md)).
 
-**3.5 Reply (unknown).** The tail of selector 6 and the reply it sends were not read. The
-routine calls `response_send` (`0xffe78e0c`) and `peer_forward_response` (`0xffe2eadc`)
-on other paths; which fields the L2 receives for code 0 was not established. Route tried:
-the listing of `config_exchange_request` from `0xffe32702` onward, and the response path
-through `response_send`. Next route: trace the tail from `0xffe328dc` with the record table
-layout in [settings-record.md](settings-record.md).
+**3.5 Reply (established for selector 6 with three arguments).** The tail was read in
+full: the reply is class 1, status 0, to the request's source word, with the integer 7, the
+request's third argument, a count `N`, the record size 0x70, a byte array of `N` table
+indices and `N` 0x70-byte table records (`0xffe32702` to `0xffe32c40`; the field-by-field
+account and the daemon's use of it are in
+[../l2/config-request-reply.md](../l2/config-request-reply.md) section 3).
 
 ## Open
 
-- Reply fields for request 0x0ffff00e (3.5). Next route: read the tail of the selector 6
-  path and its response call.
+- The writer of the 0x70-byte table behind the reply of 3.5 (pointer at `0x30000aa4`), and
+  the consumer of the two requests the L1 sends after its first reply.
 - The string compared in the L2 scan of 2.2, and the meaning of `-1` in 2.3.
 - Whether the link tasks time out a partial message outside 1.1 to 1.6 (1.9).
 - Whether the call at `0xffe352fe` to `0xffe7d268` clears the start-frame slot (1.2). It is

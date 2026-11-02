@@ -71,7 +71,7 @@ The matching L2 reads (kernel driver: one completed bulk-in transfer per `read`,
 
 The L2 sends the layout of [router-packet.md](../l2/router-packet.md) segment by segment: wire bytes from segment offset `0x10`, the first two bytes the segment length (stamped by the kernel to the write length, so a length the router already put there is unchanged), one `write` per segment, at most `0x400` bytes a segment for a destination without a local router form (destination top nibble 0, as for the configuration request), `0x3000` for local forms. Established ([../l2/router-packet.md](../l2/router-packet.md), [../l2/userspace.md](../l2/userspace.md)).
 
-The one packet the daemon sends unprompted is its recurring configuration request (period from the NVRAM setting, 5 seconds after reset; [../l2/userspace.md](../l2/userspace.md) section 8). Its wire bytes for a daemon whose serial setting `S` is non-empty and `n` characters long (so the string argument is `n + 1` bytes with its NUL):
+The one packet the daemon sends unprompted is its recurring configuration request (first at 0.75 s after the device opens, then every 2 s until a reply has been processed and every 5 s by the default NVRAM setting after that; [../l2/config-request-reply.md](../l2/config-request-reply.md) section 4). Its wire bytes for a daemon whose serial setting `S` is non-empty and `n` characters long (so the string argument is `n + 1` bytes with its NUL):
 
 | Wire offset | Bytes | Content |
 |---|---|---|
