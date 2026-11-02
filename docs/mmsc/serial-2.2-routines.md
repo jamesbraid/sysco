@@ -415,7 +415,7 @@ unless the entry establishes them.
 |---|---|---|
 | `ret` at 0x179fee | `eax` | `ret(unknown)` |
 
-Known-path coverage stops at the unresolved transfer (`jmp` at 0x179e69).
+Coverage excludes unresolved case-dispatch edges from the computed jump (`jmp` at 0x179e69).
 
 ## `_ns16550IntEx`
 
@@ -468,7 +468,7 @@ Known-path coverage stops at the unresolved transfer (`jmp` at 0x179e69).
 |---|---|---|
 | `ret` at 0x179d45 | `eax` | `0x47` |
 
-Known-path coverage stops at the unresolved transfer (`jmp` at 0x1798e9).
+Coverage excludes unresolved case-dispatch edges from the computed jump (`jmp` at 0x1798e9).
 
 ## `_ns16550Open`
 
