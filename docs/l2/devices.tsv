@@ -1,7 +1,7 @@
 image	node	major_minor	kind	opened_by	flags	purpose	grade	evidence
 L2 1.44.0	/dev/sgil1_cs	180,104	char	bin/l2	read-only	USB control channel of the L1 driver: revision ioctl and connection status reads of 0x28 bytes	established	open at 0x10003f88, read at 0x10004eec
 L2 1.44.0	/dev/sgil1_N (0 to 39)	180,64+N	char	bin/l2	read-write	one L1 USB device: packet read and write, configuration and reset ioctls	established	sprintf at 0x100048b0 then open flags 2 at 0x100048d0
-L2 1.44.0	/dev/ttyS0	4,64	char	bin/l2	0x82 (O_RDWR|O_EXCL)	modem serial port session	established	sub_10008278, open at 0x10008348
+L2 1.44.0	/dev/ttyS0	4,64	char	bin/l2	0x82 (O_RDWR|O_EXCL)	modem serial port session (the daemon opens /dev/ttyS1 instead with -pc)	established	sub_10008278, open at 0x10008348
 L2 1.44.0	/dev/ttyS1	4,65	char	bin/l2	-	console; /dev/console is a link to it and is the standard streams of the daemon in inittab	established	listing and inittab
 L2 1.44.0	/dev/ttyS3	4,67	char	bin/l2gui	0x800	opened non-blocking, 9600 8N1 raw, 4-byte reports read (bytes 1 and 2 used); touch-panel role inferred	established for settings and read, inferred for the role	open at 0x10040630, tcsetattr at 0x10040678
 L2 1.44.0	/dev/fb0	29,0	char	bin/l2gui	read-write	LCD frame buffer, mapped with mmap; FRAMEBUFFER overrides the path	established	open at 0x1003f8c4, mmap at 0x1003fb58
@@ -11,5 +11,4 @@ L2 1.44.0	/dev/i2c-0	89,0	char	none	-	kernel I2C adapter node, not opened by any
 L2 1.44.0	/dev/rtc	10,135	char	bin/hwclock	-	real-time clock, read at boot by hwclock --hctosys	established	rc.sysinit
 L2 1.44.0	/dev/watchdog	10,130	char	none found	-	kernel MPC8xx watchdog node	inferred	node and kernel string only
 L2 1.44.0	/dev/ppp	108,0	char	bin/pppd	-	PPP over ttyS0 (silent noauth crtscts lock 115200)	inferred	options.ttyS0 present; no inittab or inetd line starts pppd
-L2 1.44.0	any path given to -serial	char	bin/l2	2	raw 38400 8N1 RTS/CTS link to an L1 (debug mode 3); handshake 0x0d, then 0x18, then wait for 0x18	established	sub_10005ed0 open at 0x10005f00, termios stores 0x10005f98 to 0x10005fe0; handshake 0x10005800 to 0x10005a70
-
+L2 1.44.0	any path given to -serial	-	char	bin/l2	2	raw 8N1 RTS/CTS link to an L1 (debug mode 3; both speed fields set to 38400 but the baud bits of the control word are 0, so the line speed is not established); handshake 0x0d, then 0x18, then wait for 0x18	established	sub_10005ed0 open at 0x10005f00, termios stores 0x10005f98 to 0x10005fe0; handshake 0x10005800 to 0x10005a70
