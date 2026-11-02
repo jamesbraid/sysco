@@ -194,7 +194,7 @@ The `2MB image` packages (both sets) have a `cmp.l #$1001,d0` followed by `bgt.b
 
 ### Reading queue: changed request handlers
 
-The 23 RAM-only handlers were the queue; each is now read, with its moved operand, in [Handler reads](#handler-reads-ram-only-changes) below. The order was hardware-facing first (the handler calls a device or stores to a device-facing word; judged from the code number and the handler text). The names are from the 1.44.0 Origin 300 table, for orientation only: the same code in these packages is not named here.
+The 23 RAM-only handlers were the queue; each now has a row, with its moved operand, in [Handler reads](#handler-reads-ram-only-changes) below. Most rows are a text match and the operand; the roles and the same-variable question are not read. The order was hardware-facing first (the handler calls a device or stores to a device-facing word; judged from the code number and the handler text). The names are from the 1.44.0 Origin 300 table, for orientation only: the same code in these packages is not named here.
 
 | Tier | Pair | Codes (handler address in 1.62.1) | Why |
 |---|---|---|---|
@@ -225,7 +225,7 @@ First ten, hardware-facing first:
 | Legacy 2MB | 0x2002 | `0xffe148ae` | block `0x300010fc` to `0x30001158` (+0x5c), loaded at instruction 4 | 1 of 54 | Tests the word at block+0x8 (instruction 5). Zero: calls a fixed routine with the constant -100 and two stack addresses (instructions 7 to 11). Otherwise, on the path ending at instructions 46 to 50, it calls the word at block+0x8 with three arguments, the first 0. Offset +0x8 agrees with the curated 1.44.0 row. |
 | Legacy 2MB | 0x2003 | `0xffe1494c` | block `0x300010fc` to `0x30001158` (+0x5c), instruction 4 | 1 of 62 | Same shape as 0x2002, through the word at block+0xc (instructions 5, 46). Agrees with the curated 1.44.0 row. |
 | Legacy 2MB | 0x2004 | `0xffe14a06` | block `0x300010fc` to `0x30001158` (+0x5c), instruction 4 | 1 of 62 | Same shape as 0x2002, through the word at block+0x10 (instructions 5, 46). Agrees with the curated 1.44.0 row. |
-| Legacy 2MB | 0x200e | `0xffe15452` | block `0x300010fc` to `0x30001158` (+0x5c), instruction 46 | 1 of 158 | Uses the block base at one point only. The curated 1.44.0 row gives the clock-read role; the body was not read beyond the text match. |
+| Legacy 2MB | 0x200e | `0xffe15452` | block `0x300010fc` to `0x30001158` (+0x5c), instruction 46 | 1 of 158 | Loads the block base at instruction 46 and reads the block at +0x4 at instructions 47 and 49. The curated 1.44.0 row gives the clock-read role; the body was not read beyond the text match. |
 | Legacy 2MB | 0x4000 | `0xffe14b1c` | block `0x30001114` to `0x30001170` (+0x5c), loaded into a4 at instruction 279 | 1 of 459 | Same block as 0x3001 below. The inventory role is the curated 1.44.0 row's; not re-read. |
 | Legacy 2MB | 0x3001 | `0xffe1517c` | block `0x30001114` to `0x30001170` (+0x5c), instruction 40 | 1 of 98 | The curated 1.44.0 row says it calls the word at 0x30001114 with (0, arg1, arg2, 0); the 1.62.1 call was not re-read. The moved instruction is the block load. |
 | NL3R 1MB | 0x2002 | `0xffe126a4` | block `0x30000964` to `0x30000924` (-0x40), instruction 4 | 1 of 53 | Tests the word at block+0xc (instruction 5), calls it at instructions 46 and 49 with three arguments. The hook offset is +0xc here, not the +0x8 of Legacy 2MB; the curated rows are for another package and are not cited. |
