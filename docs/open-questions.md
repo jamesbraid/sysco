@@ -88,3 +88,11 @@ Software-now list, in the order to take them:
 ## Media
 
 - **Route: missing binary or release.** Other IRIX releases may carry L1 and L2 versions between 1.24 and 1.44. Premise stale: the overlay discs of 6.5.20 to 6.5.29 are already scanned, and their controllers carry 1.20 to 1.40 ([firmware-versions.md](firmware-versions.md), [IRIX_FILES.md](../IRIX_FILES.md)). Still open: the overlay discs of 6.5.19 and earlier, the customer diagnostics discs, and any patch newer than SG0007149. Step: obtain those media and list `field_diags_sysco` on each, per [IRIX_FILES.md](../IRIX_FILES.md).
+
+## Everest host side
+
+- **Controller CPU and firmware (Challenge and Onyx).** Route: missing binary or release. No tool on the media scanned flashes or carries the controller firmware; the driver and daemon give only the wire protocol ([everest/](everest/README.md)). Routes tried: strings and sections of `sysctlrd`, the three `sysctlr.o` and `scmsg`; the man pages. Next: any IRIX 5.x or 6.x diagnostics disc (the CPU PROM or power-board diagnostics may carry controller test code).
+- **Meaning of the length-mode answers and of the `N` and `06Y` replies.** Route: software now. The framing is read; that `Y` means length mode on is inferred ([everest/daemon-wire.md](everest/daemon-wire.md)). Next: the IP19 PROM diagnostics, if one is obtained.
+- **`check_inventory` and the `syssgi` 102 buffer.** Route: software now. Only the strings are located; the routine (`0x1000703c`) and the 1,768-byte record it reads are not.
+- **Effect of the `scmsg` short write.** Route: unknown. The tool writes four bytes fewer than it frames ([everest/scmsg.md](everest/scmsg.md)); the controller side is not available.
+- **IRIX 5.0 to 6.1 and 6.2 system-disc builds.** Route: missing binary or release. Only a 6.2 patch image was available; discs were not.
