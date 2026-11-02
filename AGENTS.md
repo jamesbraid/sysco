@@ -52,7 +52,7 @@ Curated entries that name a package are checked against the bytes on every run: 
 
 ## 7. Shared toolset
 
-`tools/Containerfile`, `Containerfile.ghidra`, `ghidra-export.py`, `ghidra-scripts/`, `re-run`, `setup-clone.sh`, `check-shared` and `shared.sha256`, and in `scripts/` `inventory.py`, `facts.py`, `check_claims.py`, `check-leaks.sh`, `pre-push` and their tests, are the same files in every sibling. Edit one in a sibling, run `tools/check-shared --update`, copy to the others. Do not fork them here; sysco-specific code lives in its own files (`scripts/sysco_tables.py`, `scripts/inventory-config.json`).
+The container definitions, wrappers, Ghidra scripts, inventory, fact sheet, claim checker, pre-push hook and leak check are the `retools/` submodule (sgi-retools); the paths under `tools/` and `scripts/` link into it. Change them there and move the pin; do not fork them here; sysco-specific code lives in its own files (`scripts/sysco_tables.py`, `scripts/inventory-config.json`).
 
 ColdFire work in Ghidra uses the `68000:BE:32:Coldfire` language; PowerPC uses `PowerPC:BE:32:default` with the MPC860 internal memory map set by hand; ARM uses `ARM:LE:32:v4`. The listings under `docs/l1/disasm/` were made with a 68040-mode decoder, which covers the ColdFire ISA_A subset the compiler emitted; data mixed into the text decodes as `.dw` words or implausible instructions, so confirm a routine's shape from its prologue and return.
 
