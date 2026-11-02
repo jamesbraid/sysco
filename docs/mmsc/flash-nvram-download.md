@@ -177,6 +177,10 @@ Bounds come from `.debug_frame`; all addresses are `flashmmsc` 6.5.30. The tool 
 
 Options by string match: `-a` automatic, `-m` manual, `-d` direct to a named serial device (`-l`), `-p` probe only, `-V` print the version of the image file, `-f` image file (default `/usr/cpu/firmware/mmscfw.bin`), `-r` rack, `-L` log file, `-v` verbose. Mode numbers inside `main`: `-a` 1, `-m` 2, `-d` 3, `-p` 4, `-V` 5. `-a` and `-p` call `auto_transfer` (the second argument 0 or 1 selects probe-only), `-m` prints instructions telling the operator to type the MMSC escape character followed by `rack <rackid> flash` and then runs the sender on descriptor 0 (the operator's own terminal, put in raw mode); `-d` opens the device named with `-l`, prints "Waiting for MMSC to initiate transfer..." and runs the sender on it. A manual or direct run does not issue any command to the MMSC itself; the firmware is put in flash mode by the operator's `FLASH` command.
 
+### Version report (established, `get_firmware_version` `0x1000207c`)
+
+`-V` opens the image and reads it one byte at a time until a byte equals the first letter of the 13-byte marker `MMSC VERSION ` (the marker string at `0x10008088`), reads the next 79 bytes, compares the first 13 bytes with the marker, and on a match prints the text after the marker; on a mismatch it seeks back by the number of extra bytes read minus one and carries on. A file with no marker prints a notice that the image has no version information and returns -1; the exit status of the mode is that return. Auto mode does not use it: it compares versions reported by the live MMSC units.
+
 ### The command channel (established)
 
 `mmsc_open` (`0x1000574c`) opens a tty (`/dev/ttyd1` in auto mode, speed `0x2580` = 9600) and the control device `/hw/machdep/mmsc_control`; `mmsc_transact` (`0x100069a4`) does `do_grab`, `mmsc_command`, `do_release`, then `mmsc_response`. `do_grab` is `ioctl(controlFd, 0x7a06)` and `do_release` `ioctl(controlFd, 0x7a07)`, each returning -4 on failure and doing nothing when the record's first word is zero.
