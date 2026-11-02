@@ -48,7 +48,7 @@ The 59 SVF paths under the root hold 16 distinct files. The four CD-IST files ab
 
 The two `is_cpld.svf` files carry `GEMINI CPLD` headers. Their IDCODEs, `0xf6c5f093` and `0x06c5f093`, are not in the public sources searched, so their part stays unknown. The header is the file's own label and is not checked against a device.
 
-Sources for the IRIX-set rows: the `ID_XCF04S` value `0x05046093` is on the same OpenOCD `xcf.c` page as above, and DS026 Table 5 gives XC18V02 as `05025093h` or `<v>5035093h` in the same document as the XC18V04 entry.
+Sources for the IRIX-set rows: the `ID_XCF04S` value `0x05046093` is on the same OpenOCD `xcf.c` page as above. The XC18V02 values are from Xilinx DS026, "XC18V00 Series In-System-Programmable Configuration PROMs", v6.1 (February 5, 2019), Table 5 on page 7, which lists XC18V02 as `05025093h` or `<v>5035093h`. The check read them from the PDF itself (sha256 `ea538a662dff89c25b689c6c156755e4117a4e9228337be7f696d24823111899`), not from a search summary.
 
 Challenge and Onyx and the MSC share nothing with the MMSC image except the host daemon names. The MMSC is the only one of the older three whose firmware we hold.
 
