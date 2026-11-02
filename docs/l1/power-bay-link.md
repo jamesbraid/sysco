@@ -11,9 +11,9 @@ Reads the Origin 300 L1 1.44.0 body (`Fuel/PE/O300 1MB` package, listing in [dis
 
 ## Transport (E, both ends read)
 
-L1 side: transaction routine `ffe3ddac`, task init `ffe3e470`. The L1 opens UART device class 1 index 2 (`ffe648bc(1,2)`), sets **19200 baud** (`0x4b00` in the settings block, E), and runs a request/response transaction per command with a bounded retry (a count in the context) and a receive-attempt count. Command `0x0b` brackets the transaction with a UART mode change (`ffe643e8` value 3 before, 0 after; meaning of the mode **U**).
+L1 side: transaction routine `ffe3ddac`, task init `ffe3e470`. The task opens software UART port 1 with client mode 2, read and write (`ffe648bc(1, 2)` at `ffe3e4e2`; the first argument is the port, the second the open mode, E). Port 1 is the processor's on-chip UART 1 (see [The L1 UART handler](#the-l1-uart-handler-framing-address-filter-and-direction-control), E for the registration, I for the chip-level identification). The task fills a settings block with **19200 baud** (`0x4b00`), the L1's own 16-bit address, 8 data bits without parity, no flow control and handler mode value 2, and applies it with `ffe643e8` (E, `ffe3e520-ffe3e554`). It runs a request/response transaction per command with a bounded retry (a count in the context) and a receive-attempt count. Command `0x0b` brackets the transaction with a change to settings offset `+0xc` (set to 3 at `ffe3de8e-ffe3de9c`, back to 0 at `ffe3dee2-ffe3deee`; E); what the value 3 does in the handler is below.
 
-**Framing (ICMB-style, I that it follows the public ICMB byte stuffing).** Frame start byte and stop byte appear in the app's transmit routines at `0x54d2` and `0x5509` as the stuffed values: the app escapes `0xa0`, `0xa5` and `0xaa` as `0xaa 0xb0`, `0xaa 0xb5`, `0xaa 0xba` (E, three tests at `0x54d6-0x54ec`, repeated for the checksum bytes at `0x552f-0x556b`), and ends the frame with `0xa5` before jumping to the loader transmit entry (E). The start byte `0xa0` is written by the loader (U: not in this image; I that it is kept in `iram50`, see Buffer aliasing). The L1 side builds and parses unframed, unstuffed bodies (`ffe3f404`, `ffe3f378`, `ffe642d0`, `ffe64bac`; no `a0`, `a5`, `aa` constants in package 1), so framing is added elsewhere (U).
+**Framing (ICMB-style, I that it follows the public ICMB byte stuffing).** On the wire a frame is the start byte `0xa0`, the body with its checksum, each `0xa0`, `0xa5` or `0xaa` replaced by `0xaa 0xb0`, `0xaa 0xb5` or `0xaa 0xba`, and the end byte `0xa5`. The bay application stuffs its replies and ends them with `0xa5` before jumping to the loader transmit entry (E, tests at `0x54d6-0x54ec`, repeated for the checksum bytes at `0x552f-0x556b`; the transmit routines at `0x54d2` and `0x5509`). The bay's start byte is written by the loader (U: not in this image; I that it is kept in `iram50`, see Buffer aliasing). The L1's transaction routines build and parse unframed, unstuffed bodies (`ffe3f404`, `ffe3f378`, `ffe642d0`, `ffe64bac`; no `a0`, `a5`, `aa` constants), and the L1's own start byte, stuffing, end byte, unstuffing and destination filter are in its UART interrupt handler for the port in mode 2 (E, next section). There is no separate framing board on the L1 side.
 
 **Frame body (E).** Little-endian 16-bit fields, offsets from the first destination byte:
 
@@ -41,7 +41,7 @@ pre-increments it), so a handler must copy what it needs before it writes.
 |---|---|---|---|
 | `0x02` | `0x4777` | reply carries its own address `00 44` and echoes `iram53/54`; answers regardless of destination | init step 2: the reply's 16-bit value becomes the bay address; zero means no bay (state 5, "communication failure") and `0x4400` is then used |
 | `0x0a` | `0x47be` | fixed three-byte reply `01 08 02` (I: device or protocol revision) | sent in `ffe3d2a8` |
-| `0x0b` | `0x47db` | strobes `P1 = 0x9c` with `P3.5` low then high, sets flag `iram20.2`, then replies `iram34` mapped from a one-hot code to its bit number (8 bits), after a delay loop | bracketed with the UART mode change |
+| `0x0b` | `0x47db` | strobes `P1 = 0x9c` with `P3.5` low then high, sets flag `iram20.2`, then replies `iram34` mapped from a one-hot code to its bit number (8 bits), after a delay loop | bracketed with the transmit-hold setting (settings offset `+0xc` = 3) |
 | `0x10` | `0x4862` | no reply (returns unless `iram41 == 0xff`) | sent at init to address 0 |
 | `0x11` | `0x486b` | reply with sixteen zero bytes | none found |
 | `0x12` | `0x48c9` | reply with header only (I: assign address) | init step 3, argument is the bay address |
@@ -67,7 +67,7 @@ The data of a `0x20` request is an IPMI-shaped inner message built by the L1 at 
 | 11 | second data byte (`iram5c`) | inner completion code (`iram42`, a copy of `iram41` at entry), 0 |
 | 12.. | third data byte on | data |
 
-An earlier version of this note put the first data byte at offset 8 and called the fourth reply byte the request's first data byte; the fourth byte is the inner completion code and a link completion code precedes the four. The L1 does not read the echo or either address; it needs the link and inner completion codes 0, tag and command equal, and the response bit (bit 2 of the network function byte) set. On the status-`0xff` path (`0x545a`) `iram45` is not loaded, so the echo is a stale byte.
+An earlier version of this note put the first data byte at offset 8 and called the fourth reply byte the request's first data byte; the fourth byte is the inner completion code and a link completion code precedes the four. The L1 does not read the echo or either address; it needs the link and inner completion codes 0, tag and command equal, the response bit (bit 2 of the network function byte) set, and the network function (that byte shifted right two, response bit dropped) equal to the request's (E, `ffe3e016`). On the status-`0xff` path (`0x545a`) `iram45` is not loaded, so the echo is a stale byte.
 
 | Pair | Handler | Behaviour |
 |---|---|---|
@@ -220,9 +220,10 @@ application):
 |---|---|
 | link command not in the table (including `0xc1`, `0xc2` if they ever reached the application) | `0xc1` |
 | tunnelled pair not in the table, `0x10,0x23`, sensor number 0 or 16 and above, record key 13 and above, `0x28,0x11` device byte not in the list | `0xc1` |
-| frame status `0xff` set by the loader (see below) on any command | `0xff` (link commands answer header-only; a tunnelled request answers with the prefix `<stale byte> <netfn+4> <cmd> ff` and no data) |
+| frame status `0xff` set by the loader (see below) on a command in the table, other than `0xa2` | `0xff` (link commands answer header-only; a tunnelled request answers with the prefix `<stale byte> <netfn+4> <cmd> ff` and no data; a tunnelled request whose network-function byte is not `00 10 18 28` gets silence) |
+| frame status `0xff` on a command not in the table | `0xc1` (the unknown-command path overwrites the status) |
 | destination not `00 44` (except commands `0x02` and `0xc0`) | none (silence) |
-| commands `0x10` and `0xa2` | none (silence) |
+| commands `0x10` and `0xa2` (with status `0xff`, `0x10` answers header-only `0xff`; `0xa2` stays silent) | none (silence) |
 
 The application reads a status byte left by the loader (`iram41`): `0x00` in
 the normal case (**E**: the L1 requires a zero link completion code), `0xff`
@@ -257,8 +258,8 @@ knowable:
 | Frame shorter than 9 bytes | the application does not check length (**E**); the loader's minimum is **U** |
 | The bay sends a start byte | **I** yes (`0xa0`, see buffer aliasing) |
 | Receive timeout | **I**: a timer-0 routine at `0x4300` reloads the timer with `0xfc68` (920 machine cycles per tick), counts eight ticks, then sets flag `iram21.0` and clears `iram21.5`; nothing in the image reads these, so they are loader flags (about 7 ms at 1 MHz machine cycles, the clock being **U**) |
-| What the L1 transmits | **E** (`ffe3f404`, `ffe642d0`): the frame body and checksum with **no** start byte, stop byte or stuffing; the L1 does not frame or unframe in the transaction or the UART read/write routines (no `a0`, `a5`, `aa` constants in package 1). Where the wire framing is added is **U** (the L1's UART driver or a bridge; the L1 prints "power bay ICMB card serial number") |
-| What the L1 accepts as a reply | **E** (`ffe3f378`, `ffe3ddac`): checksum rule above, control bit 7 set, tag equal, command equal, link completion code 0, and for `0x20` the inner checks; it does not check either address. Up to 3 attempts (`ffe3ddac` counts in the context). |
+| What the L1 transmits | **E**: the transaction routines (`ffe3f404`, `ffe642d0`) hand the UART the frame body and checksum with no start byte, stop byte or stuffing; the port's interrupt handler in mode 2 sends `0xa0` first, stuffs the body and sends `0xa5` last (`ffe631c8-ffe631de`, `ffe63492-ffe63556`; see the section below). The checksum is not in the handler. |
+| What the L1 accepts as a reply | **E** (`ffe3f378`, `ffe3ddac`): checksum rule above, control bit 7 set, tag equal, command equal, link completion code 0, and for `0x20` the inner checks (inner completion code 0, response bit set, network function equal to the request's); it does not check either address, but the UART handler has already dropped a frame whose destination is neither zero nor the L1's own address (E, `ffe63374-ffe633d4`). Up to 3 attempts (`ffe3ddac` counts in the context). |
 
 Loader commands `0xc1` and `0xc2`: the application's dispatch answers them with
 completion code `0xc1`, so for flashing to work the loader must intercept them
@@ -284,6 +285,32 @@ Every latch write puts a byte on `P1` and strobes `P3.5` low then high
 The `0x18,0x03` reply carries only the prefix `<echo> 1c 03 00`. What the
 individual `P1` bits mean on the bay's boards is **U**.
 
+## The L1 UART handler: framing, address filter and direction control
+
+Read in full: the handler `ffe6325c-ffe635f6` (entry stubs `ffe635f8` and `ffe6360c` for ports 1 and 2), the port command function `ffe6309c`, the port programming routine `ffe62f44`, and the open, read, write and registration routines `ffe648bc`, `ffe64bac`, `ffe642d0` and `ffe645a4` (L1 1.44.0 package 1). Grades are E unless marked.
+
+**Which port.** The power-bay task opens port 1 (`ffe3e4e2`). Port 1 is registered by `ffe62de8`, called from `ffe54c3c` for brick letter `G` (class 2, 9600 baud) and from `ffe55184` for the default arm (class 4, 19200 baud, interrupt level 6, vector `0x42`). Its port 1 case takes a register block from the pointer at `0x300002e8` plus `0x140` (`ffe62e0c-ffe62e18`); its port 2 case would take `+0x180` (`ffe62e24-ffe62e30`), but no caller registers port 2. With the board contract's `MBAR` of `0x10000000` ([board-boot-contract.md](board-boot-contract.md)) and the public MCF5206e manual's UART offsets (I: manual, not an image), port 1 is the on-chip UART 1. The port tables in [quad-uart-and-serial-links.md](quad-uart-and-serial-links.md) leave UART 1 closed for brick letters `0 4 7 8 9 A E Q V`, so on an Origin 300 (`4`) the open at `ffe3e4e2` returns zero (`ffe648de`) and the task takes its failure branch (`ffe3e55e`, I that this ends in status 5). The registration stores the port's command function at descriptor `+0x24`; the `jsr (a0)` calls in the read and write routines are calls to that function with a command number: 4 arms a read (`ffe64c1a`), 13 begins a write (`ffe64324`), 6 enables the transmit interrupt (`ffe64354`), 2 resets the transmitter, 3 and 5 stop the receive and transmit interrupts.
+
+**Settings that select the framed handler.** The settings block at `ffe3e520-ffe3e544` sets the long at offset `0x10` to 2. The handler tests that field (`ffe63296`, `ffe6348c`): value 2 takes the framed path below; any other value moves one raw byte per interrupt (`ffe633fc`, `ffe635a0`). The same value 2 makes the programming routine release the output-port bit at start (`ffe63044-ffe6304e`). Settings offset `+4` is the 16-bit own address (setting 1 in the high byte, setting 2 in the low byte, `ffe3e4b0-ffe3e4d6`); `+8` is 0, which programs 8 data bits, no parity (`ffe62f92`, mode byte `0x13`); `+0xc` is 0, no flow control (`ffe62f9c-ffe62fc4`).
+
+**Receive, mode 2 (`ffe63296-ffe633ea`).** A state word at `+0xac` of the port record (0 idle, 7 and 8 reading the destination, 5 data, 3 after an escape, 6 complete, 9 rejected). Each received byte goes through these steps, in this order:
+
+| Byte | Action |
+|---|---|
+| `0xa0` | if idle (state 0), enter state 7 (expect the destination); in any other state the byte is dropped and nothing restarts |
+| `0xb0`, `0xb5`, `0xba` | only if the previous byte was `0xaa` (state 3): the byte becomes `0xa0`, `0xa5` or `0xaa` and the saved pre-escape state is restored; otherwise an ordinary data byte |
+| `0xa5` | if no byte has been stored since the read began, back to idle with the frame discarded; otherwise state 6 and the read completes. The buffer holds the unstuffed body and checksum, without `0xa0` or `0xa5` |
+| `0xaa` | save the state, enter state 3 (escape); the next byte is taken as above. After `0xaa`, a byte other than `0xb0`, `0xb5`, `0xba` or `0xa5` is dropped and the handler stays in the escape state (`ffe6335a-ffe6336c`); `0xa5` still ends the frame |
+| other | state 0 (before a start byte): dropped. State 5: stored. States 7 and 8: the two destination bytes, low byte first |
+
+After both destination bytes the handler compares the 16-bit value with zero and with the own address (`ffe63398-ffe633d4`): equal to either, it stores both bytes and enters state 5; otherwise state 9, in which bytes are dropped until `0xa5`, when the read goes back to idle and keeps waiting. A read also completes when its buffer is full (`ffe633ea`, `ffe63436`) or on a line error bit (`ffe63218` maps the four error bits to completion codes `-0x450` to `-0x453`). The handler never sums or compares the checksum; it passes the two checksum bytes up as data, and the checksum rule is in the transaction routines `ffe3f404` and `ffe3f378`. A receive interrupt is served only while a read is armed (`ffe63280`); otherwise the handler disables the receive interrupt and leaves the byte in the UART, and the next write that starts with a byte waiting is abandoned (below).
+
+**Transmit, mode 2.** Begin-write (`ffe6318a-ffe631e2`): if the receiver holds a byte, the write is abandoned with `-0x454` and the receiver is reset; otherwise the transmitter is enabled, the output-port bit 0 is cleared through the reset-bit command (`+0x3c`, `ffe631c4`) and, if the transmit holding register is free, `0xa0` is written at once (state 0); else state 10 sends it from the interrupt (`ffe634bc`). Each transmit interrupt (`ffe63492-ffe6355c`) sends the next body byte; `0xa0`, `0xa5` and `0xaa` are sent as `0xaa` followed by `0xb0`, `0xb5` or `0xba` (`ffe63514-ffe63540`, states 1 to 3). When the buffer is empty it sends `0xa5` and resets and re-enables the receiver (`ffe63542-ffe63556`), then waits for the transmitter-empty status bit (`ffe63572`), disables the transmitter and sets the output-port bit again through the set-bit command (`+0x38`, `ffe63594-ffe6359a`) before finishing. When settings offset `+0xc` is 3, which only the `0x0b` bracket sets, the handler reads the status register 1000 times (`ffe63578-ffe63590`) after the transmitter-empty bit and before it disables the transmitter and sets the output-port bit: a hold of the driver after the last byte (E for the loop, I for the purpose). Offset `+0xc` is 0 for every other power-bay frame.
+
+**Direction control (I).** The output-port bit is cleared for the whole transmission and set outside it; with a receiver that is reset when the frame ends, this is the shape of a half-duplex driver-enable line on a shared two-wire bus. Which pin and which transceiver is **U**: the image shows only the UART's output-port set and reset commands. That the bay's cable is a multi-drop bus is also **I** (the L1 filters on a 16-bit destination and every L1 has its own address), not shown by this image.
+
+**"power bay ICMB card".** The string `power bay ICMB card serial number` occurs once, as the help text of a console command-table entry for `pbay serial` (entry at body offset `0x204c8`, help pointer at `0x204dc`, names `pbay` and `serial`; command number 0x10). The dispatcher `ffe27464` sends command 0x10 to `ffe27424`, which calls `ffe3cf84` with the power-bay context at `0x30004150`. That routine builds a read request with `ffe3ce74`, runs it through the same transaction routine `ffe3ddac`, and walks type and length prefixed fields (length in the low six bits, a `0xc1` end marker, the fifth field copied out, `ffe3d0bc-ffe3d11c`): the layout of an IPMI FRU product area (I: public IPMI FRU specification). The request is a tunnelled `0x20` command (`ffe3ce4a`) whose inner network function is `0x0a` (`ffe3ce5e`) and whose four data bytes are a device byte, a 16-bit offset and a count (`ffe3cea6-ffe3cec2`; I that this is the `0x28,0x11` read described below, and so a Read FRU Data in the public IPMI storage network function). So the "ICMB card" is a name for the device on the far end of the same link, whose inventory data the L1 reads; no other use of the string, no second device address and no other UART or bus access exists in this path (E: the whole path read). Whether that device is the bay's controller board or a daughter card on it is **U** (the image cannot tell; I that it is the controller, since the bay's own address `00 44` answers).
+
 ## L1 side: when and what it sends (E, order from `ffe3e470` and `ffe3e294`)
 
 1. Task start: wait on a semaphore, set status 1 ("PBay busy initializing"), build the L1's source address from two settings (high byte setting 1, low byte setting 2), open UART, 19200 baud, wait `100 * setting + 300` ms (units of the L1 delay routine).
@@ -304,6 +331,15 @@ L1 task `power_bay_flash_task` (`ffe3f480`, file `PBayFlash.c`) answers three re
 Status codes the `pbay` command reports (`ffe96f9c`): 0 not initialized, 1 busy initializing, 2 ready, 3 busy try again later, 4 busy flashing, 5 communication failure.
 
 **Unknown (U):** the loader's replies to `0xc1` and `0xc2`, its erase behaviour (no erase command is sent: the L1 sends only `0xc0`, `0xc1`, `0xc2`), its checksum check against the header sum, and whether `0xc2` boots the new image. The `flashpbay` host tool carries the same L1 packet code (see [../host-tool-functions.md](../host-tool-functions.md)); its file-to-request mapping was not read in this pass.
+
+## What the published documents say about the link (hints, not findings)
+
+- *Origin 3000 Series System Architecture* (108-0240-002), printed page 2-36: each of the power bay's eight output connectors carries 48 V dc, 12 V standby "and signals" to a brick over the power cable; the bay powers the L1 with the standby voltage and supplies 48 V only when the L1 asks. Printed page 2-49 lists the L2 controller's single RS-485 port, labelled "ICMB", as "Not used".
+- *SGI Origin 3000 Series Internal Technical Configuration Guide* (108-0266-001), printed pages 19-20: the bay "provides power control and monitoring" and has eight 48 V outputs on 21-pin connectors.
+- *System Cabling* preliminary draft (108-xxxx-PR2), printed page 1-16: the L2 controller's "ICMB" connector is a Molex RS-485 port to the D-bricks ("can link to many D bricks (32 devices)"). The draft's power-bay table (printed page 1-14) lists only the AC input and the 48 V outputs.
+- None of them names an ICMB card in the bay, a bridge between an L1 and the bay, or the bay's signal pinout. The *System Controllers* manual (108-0241-001) was not available.
+
+So the published word "ICMB" belongs to a multi-drop RS-485 bus of the same family as the byte stuffing seen here, and the bay's link rides on the power-cable connectors (I). Which wires, and whether several bricks share one bay line, are **U**.
 
 ## Not read
 
