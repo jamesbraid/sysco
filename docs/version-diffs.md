@@ -46,13 +46,26 @@ Each set has 4,808 (1.24.8), 5,000 (1.32.15) and 5,050 (1.44.0 and 1.48.1) routi
 
 Bytes in removed and added routines: 418,492 removed and 422,780 added from 1.24.8 to 1.32.15 (inferred, from the pairing). From 1.32.15 to 1.44.0, 150,648 removed and 152,300 added. The changed routines have a median similarity of 0.765 in the first step and 0.871 in the second.
 
-**1.44.0 to 1.48.1.** The two bodies differ at 42 byte positions (established, from a byte comparison of the whole body). The version and build positions are ASCII text, so they are data (established from the bytes). The decoder also reads them as instructions, which is why the routine rows show text changes at those spots. Whether any executable byte changed is inferred from the positions, not read.
+**1.44.0 to 1.48.1.** The two bodies differ at 42 byte positions (established, from a byte comparison of the whole body). The version and build positions are ASCII text, so they are data (established from the bytes). The decoder also reads them as instructions, which is why the routine rows show text changes at those spots. All 42 positions fall in the version strings, the build stamp and the bank record described below, so no executable byte changed (established, each position read in context).
 
 - Version string `1.44.0` becomes `1.48.1`: two bytes near `0x10aab` and two near `0x13ef3`, with mirrors 0x70000 higher.
 - Build stamp `20060717182038` becomes `20070122113420`: 11 bytes in the window `0x7a44f` to `0x7a460`, with the mirror at `0xea44f`.
-- Six bytes at `0x7fd39` (and `0xefd39`) differ. They sit beside pointers to the build-stamp area (`0xffe7a44c` and `0xffe7a45b`). Their meaning is unknown.
+- Six bytes at `0x7fd39` to `0x7fd3f` (and `0xefd39` to `0xefd3f`) differ: the low three bytes of word 7 and of word 8 of the 48-byte bank record at `0xffe7fd1c` ([l1/personalities.md](l1/personalities.md#the-bank-record)). Word 8 is the additive sum of the bank before the record, and the sum recomputed over the 1.48.1 bank equals the stored `0xa82b0f11` (1.44.0: `0xa83e0909`), so it moved because the strings moved (established). Word 7 moved with it so the twelve record words still add to zero (established: both sums are zero); word 7 is the balancing word and no code is known to read it. The pointers beside them (`0xffe7a44c` and `0xffe7a45b`) are record words 4 and 5, which point at the build stamp and version string and did not change.
 
 The eight changed routines are the ones that contain these bytes: `0xffe10570` and `0xffe80570` (version string), `0xffe13eea` and `0xffe83eea` (second version string), `0xffe7a344` and `0xffeea344` (build stamp and version string), and `0xffe7f9a0` and `0xffeef9a0` (the six-byte table).
+
+**1.44.0 to 1.48.x in the other ColdFire packages (established, from a byte comparison of each pair of bodies).** Packages 0, 2 and 3 have the same length in both sets, and the packages differ in the same classes as package 1 and in nothing else:
+
+| Package | Differing byte positions | Classes |
+|---|---:|---|
+| 0 `Base 1MB` | 44 | two version strings, the build stamp and a second version string beside it, record words 7 and 8, each twice (the bank repeats) |
+| 1 `Fuel/PE/O300 1MB` | 42 | as above, with one version string and one build stamp |
+| 2 `MIPS 2MB` | 68 | two version strings, build stamp and version string, record words 7 and 8, one word in the table that follows the record, two words in the tail of that table, each twice |
+| 3 `Legacy 2MB` | 62 | the same classes as package 2 (this package reports 1.48.0 in its own strings and 1.48.1 in its stamp area) |
+
+The table after the record in the 2 MB packages is a list of 32-bit entries headed by three words (1, a byte length, one more word). Its entries carry a tag in the top byte and a bank offset in the low 24 bits; the two tag-3 entries name the bank offsets of record words 7 and 8 (`0x9a2a8` and `0x9a2ac` in package 2), and the one differing header word and the two values after the tag-3 entries are the other changed words. The table's role is inferred only, from one message in the 6.5.30 `flashsc`, which refuses an L1 flash binary that has no "relocation tables" (the string sits beside the check for both A and B images); its words were not decoded. Package 5 (`2MB image`) is not the same length in the two sets (1,778,732 and 1,768,320 bytes, last addresses `0xfffb242b` and `0xfffafb7f`), so it is a rebuilt body and was not compared byte by byte.
+
+Because the bodies of packages 0 to 3 differ only in strings, the record and its table, everything read in 1.44.0 about their code (the request dispatchers, the I/O register accesses, the protocols) holds for 1.48.x unchanged. For the Origin 300 package that includes the register and protocol rows of [l1/io-registers.tsv](l1/io-registers.tsv) and [l1/protocols.tsv](l1/protocols.tsv): a register scan of the 1.48.1 package would repeat the 1.44.0 result.
 
 **1.32.15 to 1.44.0 (inferred).** Most code is reused and most RAM operands moved. 1,891 routines match exactly and 746 match once addresses are masked. One example of a changed routine: the 1.32.15 routine at `0xffe296f4` (232 bytes, paired with 1.44.0 at `0xffe2972c`, similarity 0.977) first differs at `moveq #$e, d1` against `moveq #$12, d1`. The rest of the pair is not read here. Routines that differ only in RAM operands are counted separately, for example the 1.32.15 routine at `0xffe41bd4`, whose first difference is a `pea` of `0x30003e24` in place of `0x30003e44`.
 
@@ -141,6 +154,5 @@ The cramfs trees are walked by `scripts/l2_extract.py`: every inode offset count
 - L2: fingerprint the daemon, the libraries and the kernel functions across the four sets (the trees themselves now extract).
 - L2 request codes: the task-10 catalogue in [l2/request-codes.tsv](l2/request-codes.tsv) is read from 1.44.0 only. The other L2 sets are not carved for it, so their partition-task codes are not tabulated.
 - Request codes above 0x7fff, and the other dispatchers (command loop, flash, peer forwarding) for each set. The general chain is covered for every L1 set with the Origin 300 package (above).
-- The six bytes at `0x7fd39` and `0xefd39` in 1.44.0 and 1.48.1, and their pointers.
 - The 63.7 KB fill row at `0xffe00b28` (same length in all four sets): whether any part of it is used is not read.
 - Whether the 1.24.8 handler stubs branch into shared code that is the same in other sets.

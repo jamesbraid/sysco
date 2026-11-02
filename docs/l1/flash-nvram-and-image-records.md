@@ -65,6 +65,20 @@ The 2 KB battery-backed window at `CS1` (`0x20000000`) holds, from offset 0:
 
 The USB probe (`0xffe6db6c`) writes `0xb5` to the scratch register at offset `0x1b`, reads the revision register at `0x18` twice, and returns true only when it reads `0x81`. In that case the caller (`0xffe6dba8`) calls the pointer in RAM at `0x300006f4` with the slot number, base address, level and callback arguments, and does not run the USS-820-shaped initialiser at `0xffe70a98`. The initialised pointer value in this package is `0xffe70464`, a routine consisting of `link`, `unlk`, `rts` (`0xffe70464`): it does nothing. The neighbouring pointers at `0x300006c0`-`0x300006f0` all point at similar empty routines or at functions of the sibling drivers (`0xffe6fe00`-`0xffe6fe80`). So a controller that answers `0x81` leaves the L1's USB side inert, with no endpoint, descriptor or interrupt activity; the other revisions (`0x10`, `0x11`, `0x13` quiet, other high-nibble-1 values with a warning) take the register-driven path described in [usb-controller-registers.md](usb-controller-registers.md). Slot 0 responds at `0x40000000` (when a USB controller is counted); slot 1 at `0x60000000` only when the count is 2; their interrupt levels are the arguments 2 and 3 given to the driver (`0xffe55198`; see [the board contract](board-boot-contract.md)).
 
+### The callback pointer in the other packages and sets
+
+Found by the shape of the probe (a `cmp.l #$81,d0` after the write of `0xb5` to offset `0x1b`, followed by a call through a RAM word) and by the start-up block copy to RAM at `0x30000000` (`move.l #$30000000,d1` then `movea.l #source,a1`). In every ColdFire package of IRIX 6.5.23 onward (L1 1.26.5 to 1.48.1, both patches) the copied flash word for the callback is the address of the same 8-byte empty routine (`link`, `unlk`, `rts`), so the revision-`0x81` path leaves the USB side inert in all of them (established for the pointer values and the routine bytes; the caller was read in full only in package 1 of 1.44.0, the others are matched by shape, inferred).
+
+| Package (1.44.0) | Callback RAM word | Copy source | Flash word | Empty routine |
+|---|---|---|---|---|
+| 0 `Base 1MB` | `0x300006c8` | `0xffe7f114` | `0xffe7f7dc` | `0xffe705b4` |
+| 1 `Fuel/PE/O300 1MB` | `0x300006f4` | `0xffe7f0e4` | `0xffe7f7d8` | `0xffe70464` |
+| 2 `MIPS 2MB` | `0x30000cf0` | `0xffea8ff4` | `0xffea9ce4` | `0xffe93610` |
+| 3 `Legacy 2MB` | `0x30000e60` | `0xffeae322` | `0xffeaf182` | `0xffe9784c` |
+| 5 `2MB` | `0x30000e8c` | `0xffeb02de` | `0xffeb116a` | `0xffe97fec` |
+
+The 1.48.1 packages 0 to 3 have the same values; the 1.48.1 package 5 is a different build (copy source `0xffead98e`, routine `0xffe9527c`). The RAM word of package 1 moved between sets: `0x30000b4c` in 1.26.5 and 1.28.3, `0x300006ec` in 1.30.6, `0x300006e8` in 1.32.6, `0x300006e4` in 1.32.15 and `0x300006f4` from 1.34.2 on. In 1.24.8 and the two sets before it (6.5.20, 6.5.21 and 6.5.22) neither the `cmp.l #$81` nor the `moveq #$b5` shape occurs in any package, so those images have no revision-`0x81` branch of this shape; whether their USB probe is coded another way was not read (inferred).
+
 ## Not covered here
 
 The front-panel display text path, the LED expanders and button reads, and the JTAG master's target are not re-read in this note; see [mbus.md](mbus.md) and the parallel-port table in [io-registers.tsv](io-registers.tsv). Their remaining questions are in [../open-questions.md](../open-questions.md).
