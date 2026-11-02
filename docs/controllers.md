@@ -88,3 +88,19 @@ Lanes 1 to 3 are readable now with the tools in the toolchain image. Lane 2 and 
 - Altix firmware newer than 1.62.1; the Altix 450, 4700 and UV controller (CMC and BMC) firmware.
 - L3 and SGIconsole software other than the 3.24 disc.
 - IRIX media before 6.4 for the MMSC (the product started with 6.4).
+
+## Second search pass: sources the first pass did not search
+
+Pass 2 covered the bitsavers PDF and bits trees, sgidepot, the Nekonomicon, Usenet and open-source trees (Linux and coreboot). Grades: a hint is a secondary source that has not been checked against an image. No new firmware image was found, so nothing was added to `root/`.
+
+| Gap | Searched | Result | Grade |
+|---|---|---|---|
+| MSC or ELSC firmware, or its CPU | bitsavers `pdf/sgi/` and `bits/SGI/` (both HTTP 403 to the fetch tool, not retried); sgidepot.co.uk (certificate expired); the Nekonomicon (redirects to a domain-parking page, not followed); Usenet `comp.sys.sgi.admin` and the SGI hardware FAQ (2000 to 2001, no MSC firmware text); web search | not found. The 1999 Usenet post (Message-ID `Pine.LNX.4.10.9911041056340.1110-100000@adming.amherst.com`) reports an MMSC 1.3 reload and no MSC firmware version. | not found; PIC CPU stays unsourced |
+| Challenge and Onyx (Everest) controller firmware or CPU | the same sources, plus web search and the iFixit Onyx teardown | iFixit's Onyx teardown names a system controller EPROM and a "Motorola 68hc11 MCU" on the system-controller board (step 16), with no firmware version. The 2008 Challenge and Onyx parts post has no firmware text. | hint: one teardown, not an SGI document; no image |
+| MMSC 1.3 image or boot ROM | the same sources, plus the MMSC `flashmmsc` and `MMSC VER` search | a 2008 weblog shows `MMSC> VER` returning `R7:MMSC 1.3`, and its help text reads "Show current MMSC firmware revision". The weblog links no image. The Usenet post and the weblog both name version 1.3. | hint: secondary post, not checked against an image; image and boot ROM not found |
+| L1 or L2 newer than 1.62.1 | Usenet, the Nekochan archive (404), the irixnet forum thread on Tezro and Origin 300 L1 flashing, web search. The L1 and L2 guides (007-3938-001, -003) and the 1.15 update guide (007-4576-016) appeared only as search results and were not read. | not found. The forum thread's highest versions are L2 1.48.0 and L1 1.48.1, both older than 1.62.1 and both from a post, not an image. The search snippet for 007-4576-016 names `snxsc_firmware` 1.46.x, also older, and was not checked in full. | not found; newest held remains 1.62.1 |
+| Altix 450 and 4700 controller images (CMC or L1 and L2) | web search, the Altix 4700 user guide 007-4823-001 (search snippet only), Usenet threads on Altix 4700 help (2013) | not found. The Altix 4700 snippets name an L1 at version 0.7.37 (a 2005 build), an L2 layer, and a system PROM `shub2snprom.bin`, not a CMC. The CMC snippets belong to the Altix UV line (a `Firmware Rev. 0.0.22` prompt), a different product. | hint from snippets only; the guide was not read in full |
+| MMSC and MSC images beyond the held set | bitsavers and sgidepot (above) | not found | not found |
+| Linux `drivers/char/snsc.c` (SGI Altix system controller communication driver, removed 2019) | Bootlin v4.0 page | the fetch returned only the page menu, so the driver body was not read. The snippet describes IRouter communication and says nothing about a controller version or CPU. | unknown: body not read |
+| Linux `arch/ia64/sn/io/l1.c` and `include/asm-ia64/sn/elsc.h` (2.6.8) | Bootlin v2.6.8 and the GitHub mirror | HTTP 404 at the paths tried; the correct paths were not confirmed | unknown: not read |
+| coreboot SGI or Origin port | web search | no SGI Origin port found. The results cover general coreboot and Origin 200 and 350 pages only. | not found |
