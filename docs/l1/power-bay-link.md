@@ -13,22 +13,27 @@ Reads the Origin 300 L1 1.44.0 body (`Fuel/PE/O300 1MB` package, listing in [dis
 
 L1 side: transaction routine `ffe3ddac`, task init `ffe3e470`. The L1 opens UART device class 1 index 2 (`ffe648bc(1,2)`), sets **19200 baud** (`0x4b00` in the settings block, E), and runs a request/response transaction per command with a bounded retry (a count in the context) and a receive-attempt count. Command `0x0b` brackets the transaction with a UART mode change (`ffe643e8` value 3 before, 0 after; meaning of the mode **U**).
 
-**Framing (ICMB-style, I that it follows the public ICMB byte stuffing).** Frame start byte and stop byte appear in the app's transmit routines at `0x54d2` and `0x5509` as the stuffed values: the app escapes `0xa0`, `0xa5` and `0xaa` as `0xaa 0xb0`, `0xaa 0xb5`, `0xaa 0xba` (E, three tests at `0x54d6-0x54ec`, repeated for the checksum bytes at `0x552f-0x556b`), and ends the frame with `0xa5` before jumping to the loader transmit entry (E). The start byte `0xa0` is written by the loader (U: not in this image).
+**Framing (ICMB-style, I that it follows the public ICMB byte stuffing).** Frame start byte and stop byte appear in the app's transmit routines at `0x54d2` and `0x5509` as the stuffed values: the app escapes `0xa0`, `0xa5` and `0xaa` as `0xaa 0xb0`, `0xaa 0xb5`, `0xaa 0xba` (E, three tests at `0x54d6-0x54ec`, repeated for the checksum bytes at `0x552f-0x556b`), and ends the frame with `0xa5` before jumping to the loader transmit entry (E). The start byte `0xa0` is written by the loader (U: not in this image; I that it is kept in `iram50`, see Buffer aliasing). The L1 side builds and parses unframed, unstuffed bodies (`ffe3f404`, `ffe3f378`, `ffe642d0`, `ffe64bac`; no `a0`, `a5`, `aa` constants in package 1), so framing is added elsewhere (U).
 
-**Frame body (E).** Little-endian 16-bit fields:
+**Frame body (E).** Little-endian 16-bit fields, offsets from the first destination byte:
 
 | Offset | Size | Meaning |
 |---|---|---|
-| 0 | 2 | destination address (L1 builds it at `ffe3f404`; app reads `00 44` for itself, i.e. `0x4400`) |
-| 2 | 2 | source address |
-| 4 | 1 | zero |
-| 5 | 1 | control: bits 0-4 a sequence or tag, bit 7 set on a reply (L1 accessors `ffe3e9c4`, `ffe3ea00`; app `ORL #0x80` at `0x54be`) |
-| 6 | 1 | command code (`iram57` in the app) |
-| 7 | 1 | request: first argument byte; reply: completion code (app sends `iram41`) |
-| 8.. | n | data |
+| 0 | 2 | destination address (L1 builds it at `ffe3f404`; app reads `00 44` for itself, i.e. `0x4400`) in app bytes `iram51/52` |
+| 2 | 2 | source address (`iram53/54`) |
+| 4 | 1 | zero (`iram55`) |
+| 5 | 1 | control: bits 0-4 a tag, bit 7 set on a reply (L1 accessors `ffe3e9c4`, `ffe3ea00`; app `ORL #0x80` at `0x54be`) (`iram56`) |
+| 6 | 1 | command code (`iram57`) |
+| 7 | n | request: data (`iram58` on) |
+| 7 | 1 | reply: **completion code** (app sends `iram41`; the L1 requires 0, `ffe3df9a`) |
+| 8.. | n | reply: data |
 | last 2 | 2 | checksum |
 
-**Checksum (E, both ends).** Sum all bytes before the checksum, add the byte count of that sum, add one, and send `0xffff` minus that 16-bit total, low byte first (L1 `ffe3f314` and `ffe3f404`; app `0x54d2` counting `iram43`, `0x5509` adding the count and 1 and complementing). The L1 receiver (`ffe3f378`) accepts a frame when the checksum and the received complement sum to `0xffff`. A request whose destination bytes are not `00 44` is ignored unless the command is `0x02` or `0xc0` (E, `0x4706-0x4727`); a command not in the table, or `0xff` in the completion field, takes the error-reply path at `0x5451`.
+The app reads request field `iram51+k` for frame offset k, and assembles its reply in
+the same bytes starting at `iram51` (`0x5498` loads `R0 = 0x50` and every send at `0x54d2`
+pre-increments it), so a handler must copy what it needs before it writes.
+
+**Checksum (E, both ends).** Sum all bytes before the checksum, add the byte count of that sum, add one, and send `0xffff` minus that 16-bit total, low byte first (L1 `ffe3f314` and `ffe3f404`; app `0x54d2` counting `iram43`, `0x5509` adding the count and 1 and complementing). The L1 receiver (`ffe3f378`) accepts a frame when the checksum and the received complement sum to `0xffff`. A request whose destination bytes are not `00 44` is ignored unless the command is `0x02` or `0xc0` (E, `0x4706-0x4727`); a command not in the table takes the `0x5448` path (header-only reply, completion code `0xc1`); a status `0xff` left by the loader in `iram41` takes the `0x5451` path (completion code `0xff`).
 
 ## Link commands (the app's dispatch table at `0x4758`, handlers at `0x4763`)
 
@@ -51,21 +56,233 @@ L1 side: transaction routine `ffe3ddac`, task init `ffe3e470`. The L1 opens UART
 
 Field one is `iram59`, field two `iram5a`; the IPMI names are a hint, not read in the image (public IPMI v1.5 command numbering matches every pair).
 
-Every tunnelled reply, after the frame header, begins with four bytes: a copy of the request byte that precedes the network-function byte, the request's network function plus 4 (`0x04`, `0x14`, `0x1c`, `0x2c`), the command number, and the request's first data byte (offset 8). The data in the table follows those four bytes. E for the emitted bytes; which request offsets the three request bytes sit at is filled by the loader and not read here (U).
+The data of a `0x20` request is an IPMI-shaped inner message built by the L1 at `ffe3eae8` (inside the outer frame from `ffe3f404`) and the reply data is its response (parsed at `ffe3dfb6`-`ffe3dffc`):
+
+| Frame offset | Request | Reply |
+|---|---|---|
+| 7 | inner byte 0 (`iram58`): `0x22` (the `0x13` reply byte at init, the sensor record's owner byte later) | link completion code (`iram41`), 0 |
+| 8 | inner byte 1 (`iram59`): network function << 2, unit in bits 0-1 (L1 sends unit 0) | copy of request offset 7 (the "echo", saved in `iram45`) |
+| 9 | inner byte 2 (`iram5a`): command | network function byte + 4 (`0x04 0x14 0x1c 0x2c`, `iram46`) |
+| 10 | first data byte (`iram5b`) | command |
+| 11 | second data byte (`iram5c`) | inner completion code (`iram42`, a copy of `iram41` at entry), 0 |
+| 12.. | third data byte on | data |
+
+An earlier version of this note put the first data byte at offset 8 and called the fourth reply byte the request's first data byte; the fourth byte is the inner completion code and a link completion code precedes the four. The L1 does not read the echo or either address; it needs the link and inner completion codes 0, tag and command equal, and the response bit (bit 2 of the network function byte) set. On the status-`0xff` path (`0x545a`) `iram45` is not loaded, so the echo is a stale byte.
 
 | Pair | Handler | Behaviour |
 |---|---|---|
 | `0x00,0x00` | `0x4941` | fixed reply `00 22 22 00 00` after the four leading bytes (whole reply `<echo> 04 00 id 00 22 22 00 00`) (I: capabilities) |
-| `0x10,0x23` | `0x4977` | no reply |
-| `0x10,0x2d` | `0x497a` | **sensor reading**: `iram5b` selects 1-6 (select codes `0x84,0x80,0x90,0x8c,0xa4` strobed on `P1`/`P3.5` by `0x4a33`) or 7-14 (codes `0x94,0x98` by `0x4a82`), 15 triggers the `0x4afb` sequence; the reply carries two bit-mask bytes (`iram27`, `iram28`) |
+| `0x10,0x23` | `0x4977` | jumps to `0x5448`, the unknown-command reply: header only, completion code `0xc1` |
+| `0x10,0x2d` | `0x497a` | **sensor reading**: `iram5b` (first data byte) selects 1-6 (select codes `0x84,0x80,0x90,0x8c,0xa4` strobed on `P1`/`P3.5` by `0x4a33`) or 7-14 (codes `0x94,0x98` by `0x4a82`), 15 triggers the `0x4afb` sequence; reply data `00 00 <iram27> 00` (`iram28` is cleared and never set); other numbers take the `0x5448` reply; see Sensor reads below |
 | `0x18,0x03` | `0x4b1f` | action: sets `iram20.7` and strobes `P1 = 0x98`, `0x94`, `0x09`, `0x00`, `0x80`, `0xa4`, `0x11`, `0x0a` in a fixed sequence with delays (I: warm reset or DC-port control) |
 | `0x18,0x04` | `0x4c76` | reply `0x56 0x00` (I: self test not implemented) |
-| `0x28,0x10` | `0x4c9d` | reply echoes four request bytes (`iram5b-5e`) |
-| `0x28,0x11` | `0x4cce` | maps `0xa0,0xa2,...,0xae` to 0-7, strobes `P1` with the request bytes (`iram5b`..`5e`) and sets flags (I: write to the power-bay FRU or a latch) |
+| `0x28,0x10` | `0x4c9d` | reply data copies `iram5b-5e` while those bytes are being overwritten by the reply (offsets 10-11 hold the reply's command and inner completion code), so the data is `10 00 10 00` for every request |
+| `0x28,0x11` | `0x4cce` | maps `0xa0,0xa2,...,0xae` (`iram5b`) to 0-7 (other values take the `0x5448` reply), strobes `P1` with `0xac`, `iram5b`, `iram5c`, the index, `iram5e` and sets flags; the reply is streamed later, see below (I: a FRU read) |
 | `0x28,0x20` | `0x4dcf` | fixed reply `01 0c` then twelve zeros, after the four leading bytes |
-| `0x28,0x23` | `0x4e32` | **record read** keyed by `iram5d` in the ranges 0-1, 2, 3, 4-9, 10, 11, 12 (other keys take the error path): returns up to `iram60` bytes (default `0x20`, `0x10` or `0x30`) from the fixed tables at `0x4eb2`, `0x4f1f`, `0x4f8c`, `0x5065`, `0x50bf`, `0x511c`, `0x5179` (I: sensor data records and FRU data; the L1 prints the multirecord power-supply information and DC output fields from them) |
+| `0x28,0x23` | `0x4e32` | **record read**, data = reservation (2), record id (2), offset, count; keyed by `iram5d` (record id low byte) in the ranges 0-1, 2, 3, 4-9, 10, 11, 12 (other keys take the `0x5448` reply): returns up to `iram60` bytes (default `0x20`, `0x10` or `0x30`) from the fixed tables at `0x4eb2`, `0x4f1f`, `0x4f8c`, `0x5065`, `0x50bf`, `0x511c`, `0x5179` (I: sensor data records and FRU data; the L1 prints the multirecord power-supply information and DC output fields from them) |
 
 The `P1`/`P3.5` pairs write a command byte to a latch outside the MCU: `P1` carries the byte and `P3.5` pulses low then high (E for the pattern, 45 uses). What the latch is (U); the previous reading of the vector files points at CPLDs on the bay boards but names no register.
+
+## Exchanges, records, sensors and errors
+
+### Worked tunnelled frames
+
+Frame bodies with checksum (no start byte, before stuffing), L1 address
+`0x0102`, tag 5 (control `0x05` in the request, `0x85` in the reply), inner
+target byte `0x22`. Every reply below was produced by running the bay
+application's handlers from `pbay.bin` in a small MCS-51 interpreter and its
+checksum recomputed from the rule above; this is **E** for the handler logic and
+**I** for the interpreter's agreement with the part.
+
+| Exchange | Request | Reply |
+|---|---|---|
+| `0x00,0x00` | `00 44 02 01 00 05 20 22 00 00 66 ff` | `02 01 00 44 00 85 20 00 22 04 00 00 00 22 22 00 00 97 fe` |
+| `0x18,0x04` | `00 44 02 01 00 05 20 22 18 04 4a ff` | `02 01 00 44 00 85 20 00 22 1c 04 00 56 00 6c fe` |
+| `0x28,0x20` | `00 44 02 01 00 05 20 22 28 20 1e ff` | `02 01 00 44 00 85 20 00 22 2c 20 00 01 0c` + 12 x `00` + `7d fe` |
+| `0x28,0x23` key 0, count 5 | `00 44 02 01 00 05 20 22 28 23 00 00 00 00 00 05 10 ff` | `02 01 00 44 00 85 20 00 22 2c 23 00 02 00 01 00 01 02 1b 6d fe` |
+| `0x28,0x23` key 12, count 5 | `00 44 02 01 00 05 20 22 28 23 00 00 0c 00 00 05 04 ff` | `02 01 00 44 00 85 20 00 22 2c 23 00 ff ff 0c 00 01 01 2c 56 fc` |
+| `0x10,0x2d` sensor 1, input snapshot `0x01` | `00 44 02 01 00 05 20 22 10 2d 01 27 ff` | `02 01 00 44 00 85 20 00 22 14 2d 00 00 00 0f 00 90 fe` |
+| `0x28,0x23` key 4, count `0xff` | `00 44 02 01 00 05 20 22 28 23 00 00 04 00 00 ff 12 fe` | `02 01 00 44 00 85 20 00 22 2c 23 00 05 00 04 00 01 11 0b 22 a0 80 00 00 10 00 0a 01 00 00 00 fd` |
+
+The last reply contains `a0`, so on the wire the bay writes `aa b0` for it
+(`... 22 aa b0 80 ...`), with the checksum `00 fd` computed over the unstuffed
+bytes, then `a5`. The request for the same exchange on the wire, with the
+loader's start byte (**U** for who sends it, see Receive rules): `a0 00 44 02 01
+00 05 20 22 28 23 00 00 04 00 00 ff 12 fe a5`. The bay's reply also shows that
+the L1 address in the reply destination is copied from the request source, and
+the reply source is the request destination (not a fixed `00 44`; only link
+command `0x02` replies with a fixed `00 44`).
+
+### Record reads
+
+Request data (offset 10 on): reservation (2 bytes), record id (2), offset, count.
+The bay uses **only** the record id low byte (offset 12) as the key and the count
+(offset 15); the reservation, record id high byte and offset are ignored
+(**E**, `iram5d` and `iram60`). Reply data: next record id (2 bytes, little-endian),
+then the record bytes. Keys map to records by range: keys 0 and 1 give the same
+record, 2 gives record 2, 3 gives 3, 4 to 9, 10, 11, 12 give 4 to 12 and any other
+key (including 13 and above) gets the error reply. The record's own id is its
+first two bytes. Full records (count `0xff`; bytes shown are the record, not the
+next id):
+
+| Key | Next id | Record id | Length | Record bytes after the id |
+|---|---|---|---|---|
+| 0, 1 | `0002` | 1 | 32 | `01 02 1b 22 00 07 15 01 00 03 09 71 00 00 00 00 03 00 c0 00 00 08 81 00 00 00 00 00 00 00` |
+| 2 | `0003` | 2 | 32 | `01 02 1b 22 00 01 0a 01 00 03 08 70 00 00 00 00 1f 00 c0 00 00 06 81 00 00 00 00 00 00 00` |
+| 3 | `0004` | 3 | 16 | `01 12 0b 22 01 cb 00 00 00 00 15 01 00 00` |
+| 4 to 9 | key+1 | key | 16 | `01 11 0b 22 <a0 + 2(key-4)> 80 00 00 10 00 0a <key-3> 00 00` |
+| 10 | `000b` | 10 | 16 | `01 11 0b 22 ac 80 00 00 10 00 15 01 00 00` |
+| 11 | `000c` | 11 | 16 | `01 11 0b 22 ae 80 00 00 10 00 b0 01 00 00` |
+| 12 | `ffff` | 12 | 48 | `01 01 2c 22 00 0f 14 09 00 03 03 01 00 00 00 00 00 00 00 05 00 01 01 02 00 0b 08 00 00 00 00 00 ff 00 ... 00` (the header's length byte says 49; the table holds 48) |
+
+The records read as IPMI sensor data records (**I**: header id, version, type,
+length, then owner `22`, unit 0, sensor number): record 1 is eight sensors
+numbered from 7 (entity `0x15`), record 2 six sensors numbered from 1 (entity
+`0x0a`, sensor type 8, discrete mask `0x001f`), record 3 a controller locator,
+records 4 to 11 FRU device locators with I2C-style addresses `a0` to `ae`, and record
+12 a full sensor. The count of 12 matches the repository-info reply
+(`01 0c`). The L1 starts at id 0, reads five bytes to learn the record id,
+reads the record with count `0xff` and a second key equal to that id, takes the next
+id from the first two reply data bytes and stops when it is `ffff` (**E**,
+`ffe3e054`).
+
+Count rules (**E**, by running the handlers). The count is clamped by the table,
+not the record; `0xff` means the table size:
+
+| Keys | Count `c` (not `0xff`) returns | `0xff` returns |
+|---|---|---|
+| 0, 1, 2 | `c` table bytes for `1 <= c <= 0x20`, otherwise nothing | 32 bytes |
+| 3, 10, 11 | `c` bytes for `1 <= c <= 0x10`, otherwise nothing | 16 bytes |
+| 12 | `c` bytes for `1 <= c <= 0x30`, otherwise nothing | 48 bytes |
+| 4 to 9 | the key byte, then `c-1` bytes for `1 <= c <= 0x10`; the key byte alone for `c = 0` or `c > 0x10` | 16 bytes |
+
+"Nothing" is an **empty body**: only the two next-id bytes. The L1 sends only
+counts 5 and `0xff`, so an empty body occurs only for a malformed request. The
+L1 does not check the body length (**E**, `ffe3e13e`-`ffe3e14a`): given an
+empty body it would take the record id from stale buffer bytes.
+
+### Sensor reads
+
+Request data: sensor number (offset 10). Reply data: `00 00 <mask> 00`, where
+`<mask>` bits 0 to 4 are the five inputs of the group and the last byte is
+always 0 (**E**: the second mask byte is cleared and never set). Each input is
+read by writing a select code to `P1`, pulsing `P3.5` low then high, releasing
+`P1` to inputs and waiting for the external-interrupt routine at `0x4500` to
+store a snapshot of `P1` in `iram34`; the handler then ANDs the snapshot with a
+mask (**E**, handlers at `0x4a33`, `0x4a82`, `0x4aa1`):
+
+| Sensor | Select codes (one input each, bit 0 first) | Mask applied to the snapshot |
+|---|---|---|
+| 1 to 6 | `84`, `80`, `90`, `8c`, `a4` (bits 0 to 4) | `1 << (n-1)` for the first four; always `04` for `a4` |
+| 7 to 14 | `94`, `98` (bits 0 and 1; bits 2 to 4 stay 0) | `1 << (n-7)` |
+| 15 | writes `a8`, replies later (below) | none |
+| 0, 16 and above | error reply | none |
+
+A bit is 1 when the masked snapshot is nonzero. What the pins carry (**U**) is
+set by the bay's boards; the L1 reads them as follows (**E** for the L1's use,
+**I** that the sensor numbers are fixed by records 1 and 2 above): for sensors 1
+to 6 (one per supply) bit 0 set means the supply is not inserted, and bits 1, 2
+and 3 set mean fail, predictive fail and AC fail, which the polling task logs on
+a 0-to-1 change; for sensors 7 to 14 (one per DC port) bit 0 set means not
+present (the port is skipped) and bit 1 set means "DCport fail". A model returns
+a chosen mask per sensor; bits 4 of sensors 1 to 6 follow the fixed mask `04`
+and are not read by the L1.
+
+Sensor 15 does not reply from the handler. It sets a flag and writes `a8`; the
+next time the interrupt routine runs the bay sends `<echo> 14 2d 00 <snapshot> 00`
+as the data (**E**, `0x55a3`). The L1 never requests it (**E**: its sensor
+numbers come from the records), so it is low priority.
+
+### The streamed read of pair 0x28,0x11
+
+Request data: device byte (offset 10, one of `a0 a2 a4 a6 a8 aa ac ae`), two
+more bytes (offsets 11 and 12, written to the latch; offset 12 is first
+replaced by the device's index 0 to 7), and a count (offset 13). The handler
+returns nothing at once: it writes `ac`, the device byte, offsets 11, 12 and the
+count to `P1` with `P3.5` strobes and sets a pending flag. Each later interrupt
+sample (`iram34`) then appends one byte: the first call sends the frame header,
+the reply prefix (`<echo> 2c 11 00`), the count byte and the first sample, and
+each following call appends one sample until `count` samples are in, after which
+the bay appends the checksum and `a5`. Example (count 4, samples `11 22 33
+44`): reply `02 01 00 44 00 85 20 00 22 2c 11 00 04 11 22 33 44 f4 fd`. The bytes
+are whatever the device returns (**U**; the device is presumably a FRU EEPROM per
+device byte, **I**), and a count of 0 streams 256 bytes (the counter wraps). This
+is how the L1 gets the power-supply multirecord data, so a model needs its own
+FRU contents.
+
+### Error replies
+
+Every error is a header-only reply (no inner prefix, no data), with the control
+tag copied, bit 7 set and the command echoed (**E**, tested by running the
+application):
+
+| Cause | Reply completion code |
+|---|---|
+| link command not in the table (including `0xc1`, `0xc2` if they ever reached the application) | `0xc1` |
+| tunnelled pair not in the table, `0x10,0x23`, sensor number 0 or 16 and above, record key 13 and above, `0x28,0x11` device byte not in the list | `0xc1` |
+| frame status `0xff` set by the loader (see below) on any command | `0xff` (link commands answer header-only; a tunnelled request answers with the prefix `<stale byte> <netfn+4> <cmd> ff` and no data) |
+| destination not `00 44` (except commands `0x02` and `0xc0`) | none (silence) |
+| commands `0x10` and `0xa2` | none (silence) |
+
+The application reads a status byte left by the loader (`iram41`): `0x00` in
+the normal case (**E**: the L1 requires a zero link completion code), `0xff`
+when the loader flags the frame; the loader's rule for `0xff` is **U** (a bad
+checksum is the likely cause, **I**). The application never checks a frame's
+length: a request shorter than a command needs is answered from stale buffer
+bytes.
+
+### Buffer aliasing
+
+The application assembles its reply in place at `iram51` onward, the same bytes
+that hold the request (**E**: both use `iram51` as offset 0). Handlers copy the
+fields they need before writing (echo, command, count, key), except
+`0x28,0x10`, which reads four request bytes while overwriting them and so
+returns `10 00 10 00`. The transmit buffer begins at `iram50` (the application
+writes `MOV @R0,iram50` as a no-op placeholder); **I** that the loader keeps the
+received start byte `0xa0` there and sends it as the reply's start byte. The
+reply buffer ends at `iram` `0xff` at the latest.
+
+### Receive rules
+
+None of the receive rules are in the image: the serial receive and transmit
+code is the loader below `0x4000`, which the image does not hold. What is
+knowable:
+
+| Question | Answer |
+|---|---|
+| Bare `0xa0` inside a frame abandons it | **U** (loader) |
+| Bad escape (`0xaa` then not `b0 b5 ba`) | **U** |
+| Frame ending inside an escape | **U** |
+| Body over 256 bytes | the application cannot hold it: the reply buffer lies in the 256-byte internal RAM from `iram51`, and request fields are read at offsets up to 15 (**I**) |
+| Frame shorter than 9 bytes | the application does not check length (**E**); the loader's minimum is **U** |
+| The bay sends a start byte | **I** yes (`0xa0`, see buffer aliasing) |
+| Receive timeout | **I**: a timer-0 routine at `0x4300` reloads the timer with `0xfc68` (920 machine cycles per tick), counts eight ticks, then sets flag `iram21.0` and clears `iram21.5`; nothing in the image reads these, so they are loader flags (about 7 ms at 1 MHz machine cycles, the clock being **U**) |
+| What the L1 transmits | **E** (`ffe3f404`, `ffe642d0`): the frame body and checksum with **no** start byte, stop byte or stuffing; the L1 does not frame or unframe in the transaction or the UART read/write routines (no `a0`, `a5`, `aa` constants in package 1). Where the wire framing is added is **U** (the L1's UART driver or a bridge; the L1 prints "power bay ICMB card serial number") |
+| What the L1 accepts as a reply | **E** (`ffe3f378`, `ffe3ddac`): checksum rule above, control bit 7 set, tag equal, command equal, link completion code 0, and for `0x20` the inner checks; it does not check either address. Up to 3 attempts (`ffe3ddac` counts in the context). |
+
+Loader commands `0xc1` and `0xc2`: the application's dispatch answers them with
+completion code `0xc1`, so for flashing to work the loader must intercept them
+before the application (**I**). The L1 accepts a `0xc1` reply with any addresses,
+tag equal, command `0xc1`, completion code 0 (**E**) and ignores the reply to
+`0xc2`. Erase behaviour, the header-sum check and the boot after `0xc2` stay
+**U**.
+
+### Output latch
+
+Every latch write puts a byte on `P1` and strobes `P3.5` low then high
+(**E**). The codes, with every bank-select code having bit 7 set (**E**):
+
+| Code | Used by |
+|---|---|
+| `84 80 90 8c a4` | input banks for sensors 1 to 6 (`80` and `a4` also in `0x18,0x03`) |
+| `94 98` | input banks for sensors 7 to 14 (also in `0x18,0x03`) |
+| `a8` | sensor 15 |
+| `9c` | link command `0x0b` and the hook at `0x4703` |
+| `ac` | start of a `0x28,0x11` read |
+| `09` then `00`, `11` then `0a` | only the `0x18,0x03` action: each pair is written (about 1.45 million machine cycles apart) only when a flag from the interrupt-time code is set, `09`/`00` for flag `iram21.3`, `11`/`0a` for `iram21.4`; the flags come from `P1` snapshots after the `98`/`94` and `80`/`a4` selects |
+
+The `0x18,0x03` reply carries only the prefix `<echo> 1c 03 00`. What the
+individual `P1` bits mean on the bay's boards is **U**.
 
 ## L1 side: when and what it sends (E, order from `ffe3e470` and `ffe3e294`)
 
