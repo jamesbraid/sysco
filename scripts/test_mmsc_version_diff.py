@@ -1,0 +1,1 @@
+../retools/scripts/sysco/test_mmsc_version_diff.py
