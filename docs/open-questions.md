@@ -93,3 +93,9 @@ Software-now list, in the order to take them:
 - **Meaning of the length-mode answers and of the `N` and `06Y` replies.** Route: software now. The framing is read; that `Y` means length mode on is inferred ([everest/daemon-wire.md](everest/daemon-wire.md)). The IP19 standalone diagnostic was read and never sends the `C` item ([everest/prom-client.md](everest/prom-client.md)); it settles only that plain frames work from power-up. Next: the IP25 and IP21 CPU PROM, if one is obtained.
 - **`check_inventory` and the `syssgi` 102 buffer.** Route: software now. Only the strings are located; the routine (`0x1000703c`) and the 1,768-byte record it reads are not.
 - **Effect of the `scmsg` short write.** Route: unknown. The tool writes four bytes fewer than it frames ([everest/scmsg.md](everest/scmsg.md)); the controller side is not available. The short write began in IRIX 5.1.1, with the length digits; the 5.0 tool wrote a complete frame ([everest/early-builds.md](everest/early-builds.md)).
+## MMSC rack election
+
+- **Route: software now.** What is the capability flag bit 0 that makes two MMSCs exchange a 112-byte user record, and what do the first two copied dwords of that record carry? Read so far: the flag is 1 locally and gates the record in [mmsc/remote-link.md](mmsc/remote-link.md). Step: read `userExtractUserInfo`'s source fields (user record +0x18, +0x1c) through their uses in the console code.
+- **Route: software now.** Do the 2.1 and 2.2 builds (IRIX 6.5.5, 6.5.6) and the 6.4 builds elect the same way? Only 2.3 was read ([mmsc/rack-election.md](mmsc/rack-election.md)). Step: locate the same routines by symbol name in those images and compare frame version, type table and the 2-second timer.
+- **Route: software now.** How long is a clock tick on the MMSC (`sysClkRateGet`), which fixes the 3-tick reply delay and the per-rack reboot stagger? Step: read the clock set-up in the board support code of the image.
+
