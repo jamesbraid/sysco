@@ -938,3 +938,469 @@ and a write on separate rows when one instruction performs both. A dash in Store
 | `rts` at 0xffedcdbc | `d0` | `?` |
 
 [Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-0/byte-status-facts.txt).
+
+## 6.5.30:l1#1 at 0xffedcc34
+
+- `0xffedcc34`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#1`, version `1.44.0`. Payload file offset 0xefdfc.
+  Load 0xffe00000. Analysed span 0xffedcc34 to 0xffedcc6e.
+  Established. A byte from `[0x300002e8] +0x1ec` is stored at 0x3000067c on the fall-through of
+  `beq.b` for `[0x30000690] != 0` (`move.b` at 0xffedcc4e, `beq.b` at 0xffedcc44). The same path
+  clears four bytes at 0x30000690 before writing four-byte 0xfffffe70 at 0x30000694 (`clr.l` at
+  0xffedcc58, `move.l` at 0xffedcc62).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffedcc40 | load | 4 | `abs 0x30000690` | `-` |
+| `movea.l` at 0xffedcc4c | load | 4 | `abs 0x300002e8` | `-` |
+| `move.b` at 0xffedcc4e | load | 1 | `[0x300002e8] +0x1ec` | `-` |
+| `move.b` at 0xffedcc4e | store | 1 | `abs 0x3000067c` | `([[0x300002e8]+492]:1 & 0xff)` |
+| `movea.l` at 0xffedcc52 | load | 4 | `abs 0x300002e8` | `-` |
+| `clr.b` at 0xffedcc54 | store | 1 | `[0x300002e8] +0x1e8` | `0x0` |
+| `clr.l` at 0xffedcc58 | store | 4 | `abs 0x30000690` | `0x0` |
+| `move.l` at 0xffedcc62 | store | 4 | `abs 0x30000694` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedcc44 | `[0x30000690] == 0x0` | `[0x30000690] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedcc6c | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-1/byte-status-facts.txt).
+
+## 6.5.30:l1#2 at 0xffe8eab8
+
+- `0xffe8eab8`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#2`, version `1.44.0`. Payload file offset 0x1dfb88.
+  Load 0xffe00000. Analysed span 0xffe8eab8 to 0xffe8eaf2.
+  Established. Separate four-byte loads at 0x300008bc supply the bases for the two byte operations
+  (`movea.l` at 0xffe8ead0, `movea.l` at 0xffe8ead6). One operation reads through `[0x300008bc]
+  +0x1ec` and writes at 0x30000c78, while the other stores byte zero through `[0x300008bc] +0x1e8`
+  (`move.b` at 0xffe8ead2, `clr.b` at 0xffe8ead8).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe8eac4 | load | 4 | `abs 0x30000c8c` | `-` |
+| `movea.l` at 0xffe8ead0 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xffe8ead2 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `move.b` at 0xffe8ead2 | store | 1 | `abs 0x30000c78` | `([[0x300008bc]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe8ead6 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xffe8ead8 | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe8eadc | store | 4 | `abs 0x30000c8c` | `0x0` |
+| `move.l` at 0xffe8eae6 | store | 4 | `abs 0x30000c90` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe8eac8 | `[0x30000c8c] == 0x0` | `[0x30000c8c] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe8eaf0 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-2/byte-status-facts.txt).
+
+## 6.5.30:l1#2 at 0xfff7eab8
+
+- `0xfff7eab8`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#2`, version `1.44.0`. Payload file offset 0x1dfb88.
+  Load 0xffe00000. Analysed span 0xfff7eab8 to 0xfff7eaf2.
+  Established. The tested four-byte value at 0x30000c8c decides whether `beq.b` reaches the restore
+  tail directly (`tst.l` at 0xfff7eac4, `beq.b` at 0xfff7eac8). A nonzero value falls through to the
+  byte-copy and clear sites, followed by the four-byte 0xfffffe70 store at 0x30000c90 (`beq.b` at
+  0xfff7eac8, `move.b` at 0xfff7ead2, `clr.b` at 0xfff7ead8, `move.l` at 0xfff7eae6).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xfff7eac4 | load | 4 | `abs 0x30000c8c` | `-` |
+| `movea.l` at 0xfff7ead0 | load | 4 | `abs 0x300008bc` | `-` |
+| `move.b` at 0xfff7ead2 | load | 1 | `[0x300008bc] +0x1ec` | `-` |
+| `move.b` at 0xfff7ead2 | store | 1 | `abs 0x30000c78` | `([[0x300008bc]+492]:1 & 0xff)` |
+| `movea.l` at 0xfff7ead6 | load | 4 | `abs 0x300008bc` | `-` |
+| `clr.b` at 0xfff7ead8 | store | 1 | `[0x300008bc] +0x1e8` | `0x0` |
+| `clr.l` at 0xfff7eadc | store | 4 | `abs 0x30000c8c` | `0x0` |
+| `move.l` at 0xfff7eae6 | store | 4 | `abs 0x30000c90` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff7eac8 | `[0x30000c8c] == 0x0` | `[0x30000c8c] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff7eaf0 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-2/byte-status-facts.txt).
+
+## 6.5.30:l1#3 at 0xffe93180
+
+- `0xffe93180`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#3`, version `1.44.0`. Payload file offset 0x38c534.
+  Load 0xffe00000. Analysed span 0xffe93180 to 0xffe931ba.
+  Established. The byte source is `[0x30000a50] +0x1ec`, with destination 0x30000df0 (`move.b` at
+  0xffe9319a); its path also clears one byte through `[0x30000a50] +0x1e8` and four bytes at
+  0x30000e04 (`clr.b` at 0xffe931a0, `clr.l` at 0xffe931a4). The branch takes the skip when
+  `[0x30000e04] == 0` (`beq.b` at 0xffe93190).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe9318c | load | 4 | `abs 0x30000e04` | `-` |
+| `movea.l` at 0xffe93198 | load | 4 | `abs 0x30000a50` | `-` |
+| `move.b` at 0xffe9319a | load | 1 | `[0x30000a50] +0x1ec` | `-` |
+| `move.b` at 0xffe9319a | store | 1 | `abs 0x30000df0` | `([[0x30000a50]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe9319e | load | 4 | `abs 0x30000a50` | `-` |
+| `clr.b` at 0xffe931a0 | store | 1 | `[0x30000a50] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe931a4 | store | 4 | `abs 0x30000e04` | `0x0` |
+| `move.l` at 0xffe931ae | store | 4 | `abs 0x30000e08` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe93190 | `[0x30000e04] == 0x0` | `[0x30000e04] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe931b8 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-3/byte-status-facts.txt).
+
+## 6.5.30:l1#3 at 0xfff83180
+
+- `0xfff83180`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#3`, version `1.44.0`. Payload file offset 0x38c534.
+  Load 0xffe00000. Analysed span 0xfff83180 to 0xfff831ba.
+  Established. The conditional path contains two zero stores, one byte through `[0x30000a50] +0x1e8`
+  and four bytes at 0x30000e04 (`clr.b` at 0xfff831a0, `clr.l` at 0xfff831a4); its final store puts
+  four-byte 0xfffffe70 at 0x30000e08 (`move.l` at 0xfff831ae). The taken arm of `beq.b` bypasses
+  that path for `[0x30000e04] == 0` (`beq.b` at 0xfff83190).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xfff8318c | load | 4 | `abs 0x30000e04` | `-` |
+| `movea.l` at 0xfff83198 | load | 4 | `abs 0x30000a50` | `-` |
+| `move.b` at 0xfff8319a | load | 1 | `[0x30000a50] +0x1ec` | `-` |
+| `move.b` at 0xfff8319a | store | 1 | `abs 0x30000df0` | `([[0x30000a50]+492]:1 & 0xff)` |
+| `movea.l` at 0xfff8319e | load | 4 | `abs 0x30000a50` | `-` |
+| `clr.b` at 0xfff831a0 | store | 1 | `[0x30000a50] +0x1e8` | `0x0` |
+| `clr.l` at 0xfff831a4 | store | 4 | `abs 0x30000e04` | `0x0` |
+| `move.l` at 0xfff831ae | store | 4 | `abs 0x30000e08` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff83190 | `[0x30000e04] == 0x0` | `[0x30000e04] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff831b8 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-3/byte-status-facts.txt).
+
+## 6.5.30:l1#5 at 0xffe93920
+
+- `0xffe93920`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#5`, version `1.44.0`. Payload file offset 0x8e127c.
+  Load 0xffe00000. Analysed span 0xffe93920 to 0xffe9395a.
+  Established. A byte is read through `[0x30000bd4] +0x1ec` and written at 0x30000e1c by one
+  instruction (`move.b` at 0xffe9393a). A separate base load precedes the byte-zero store through
+  `[0x30000bd4] +0x1e8` (`movea.l` at 0xffe9393e, `clr.b` at 0xffe93940). The nonzero `[0x30000e30]`
+  route reaches these operations by falling through `beq.b` (`beq.b` at 0xffe93930).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe9392c | load | 4 | `abs 0x30000e30` | `-` |
+| `movea.l` at 0xffe93938 | load | 4 | `abs 0x30000bd4` | `-` |
+| `move.b` at 0xffe9393a | load | 1 | `[0x30000bd4] +0x1ec` | `-` |
+| `move.b` at 0xffe9393a | store | 1 | `abs 0x30000e1c` | `([[0x30000bd4]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe9393e | load | 4 | `abs 0x30000bd4` | `-` |
+| `clr.b` at 0xffe93940 | store | 1 | `[0x30000bd4] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe93944 | store | 4 | `abs 0x30000e30` | `0x0` |
+| `move.l` at 0xffe9394e | store | 4 | `abs 0x30000e34` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe93930 | `[0x30000e30] == 0x0` | `[0x30000e30] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe93958 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-5/byte-status-facts.txt).
+
+## 6.5.30:l1#5 at 0xfff83920
+
+- `0xfff83920`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#5`, version `1.44.0`. Payload file offset 0x8e127c.
+  Load 0xffe00000. Analysed span 0xfff83920 to 0xfff8395a.
+  Established. The initial four-byte test uses 0x30000e30, which is later cleared as four bytes in
+  the write path (`tst.l` at 0xfff8392c, `clr.l` at 0xfff83944). Zero takes `beq.b` around that path
+  (`beq.b` at 0xfff83930). The other four-byte store there writes 0xfffffe70 at 0x30000e34 (`move.l`
+  at 0xfff8394e).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xfff8392c | load | 4 | `abs 0x30000e30` | `-` |
+| `movea.l` at 0xfff83938 | load | 4 | `abs 0x30000bd4` | `-` |
+| `move.b` at 0xfff8393a | load | 1 | `[0x30000bd4] +0x1ec` | `-` |
+| `move.b` at 0xfff8393a | store | 1 | `abs 0x30000e1c` | `([[0x30000bd4]+492]:1 & 0xff)` |
+| `movea.l` at 0xfff8393e | load | 4 | `abs 0x30000bd4` | `-` |
+| `clr.b` at 0xfff83940 | store | 1 | `[0x30000bd4] +0x1e8` | `0x0` |
+| `clr.l` at 0xfff83944 | store | 4 | `abs 0x30000e30` | `0x0` |
+| `move.l` at 0xfff8394e | store | 4 | `abs 0x30000e34` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff83930 | `[0x30000e30] == 0x0` | `[0x30000e30] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff83958 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.44.0-package-5/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#0 at 0xffe64898
+
+- `0xffe64898`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#0`, version `1.62.1`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffe64898 to 0xffe648d2.
+  Established. The branch bypasses the copy and stores for `[0x30000624] == 0` (`beq.b` at
+  0xffe648a8). On its fall-through route, the byte read through `[0x30000380] +0x1ec` goes to
+  0x30000610 (`move.b` at 0xffe648b2). The last store on that route writes four-byte 0xfffffe70 at
+  0x30000628 (`move.l` at 0xffe648c6).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe648a4 | load | 4 | `abs 0x30000624` | `-` |
+| `movea.l` at 0xffe648b0 | load | 4 | `abs 0x30000380` | `-` |
+| `move.b` at 0xffe648b2 | load | 1 | `[0x30000380] +0x1ec` | `-` |
+| `move.b` at 0xffe648b2 | store | 1 | `abs 0x30000610` | `([[0x30000380]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe648b6 | load | 4 | `abs 0x30000380` | `-` |
+| `clr.b` at 0xffe648b8 | store | 1 | `[0x30000380] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe648bc | store | 4 | `abs 0x30000624` | `0x0` |
+| `move.l` at 0xffe648c6 | store | 4 | `abs 0x30000628` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe648a8 | `[0x30000624] == 0x0` | `[0x30000624] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe648d0 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-0/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#0 at 0xffed4898
+
+- `0xffed4898`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#0`, version `1.62.1`. Payload file offset 0x58.
+  Load 0xffe00000. Analysed span 0xffed4898 to 0xffed48d2.
+  Established. Two four-byte reads at 0x30000380 supply bases for the separate byte-copy and
+  byte-clear operations (`movea.l` at 0xffed48b0, `movea.l` at 0xffed48b6). The copied byte is
+  placed at 0x30000610, and the clear writes zero through `[0x30000380] +0x1e8` (`move.b` at
+  0xffed48b2, `clr.b` at 0xffed48b8).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffed48a4 | load | 4 | `abs 0x30000624` | `-` |
+| `movea.l` at 0xffed48b0 | load | 4 | `abs 0x30000380` | `-` |
+| `move.b` at 0xffed48b2 | load | 1 | `[0x30000380] +0x1ec` | `-` |
+| `move.b` at 0xffed48b2 | store | 1 | `abs 0x30000610` | `([[0x30000380]+492]:1 & 0xff)` |
+| `movea.l` at 0xffed48b6 | load | 4 | `abs 0x30000380` | `-` |
+| `clr.b` at 0xffed48b8 | store | 1 | `[0x30000380] +0x1e8` | `0x0` |
+| `clr.l` at 0xffed48bc | store | 4 | `abs 0x30000624` | `0x0` |
+| `move.l` at 0xffed48c6 | store | 4 | `abs 0x30000628` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffed48a8 | `[0x30000624] == 0x0` | `[0x30000624] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffed48d0 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-0/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#1 at 0xffe9310c
+
+- `0xffe9310c`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#1`, version `1.62.1`. Payload file offset 0xe79b4.
+  Load 0xffe00000. Analysed span 0xffe9310c to 0xffe93146.
+  Established. For a nonzero tested value at 0x30000e04, `beq.b` falls through to the byte read
+  through `[0x30000b50] +0x1ec` and byte store at 0x30000df0 (`tst.l` at 0xffe93118, `beq.b` at
+  0xffe9311c, `move.b` at 0xffe93126). The final four-byte store in that region uses 0xfffffe70 at
+  0x30000e08 (`move.l` at 0xffe9313a).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe93118 | load | 4 | `abs 0x30000e04` | `-` |
+| `movea.l` at 0xffe93124 | load | 4 | `abs 0x30000b50` | `-` |
+| `move.b` at 0xffe93126 | load | 1 | `[0x30000b50] +0x1ec` | `-` |
+| `move.b` at 0xffe93126 | store | 1 | `abs 0x30000df0` | `([[0x30000b50]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe9312a | load | 4 | `abs 0x30000b50` | `-` |
+| `clr.b` at 0xffe9312c | store | 1 | `[0x30000b50] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe93130 | store | 4 | `abs 0x30000e04` | `0x0` |
+| `move.l` at 0xffe9313a | store | 4 | `abs 0x30000e08` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe9311c | `[0x30000e04] == 0x0` | `[0x30000e04] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe93144 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-1/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#1 at 0xfff8310c
+
+- `0xfff8310c`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#1`, version `1.62.1`. Payload file offset 0xe79b4.
+  Load 0xffe00000. Analysed span 0xfff8310c to 0xfff83146.
+  Established. The byte access through `[0x30000b50] +0x1ec` and the write at 0x30000df0 share an
+  instruction (`move.b` at 0xfff83126); its path later clears a byte through `[0x30000b50] +0x1e8`
+  before clearing four bytes at 0x30000e04 (`clr.b` at 0xfff8312c, `clr.l` at 0xfff83130). The
+  branch skips those operations when `[0x30000e04] == 0` (`beq.b` at 0xfff8311c).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xfff83118 | load | 4 | `abs 0x30000e04` | `-` |
+| `movea.l` at 0xfff83124 | load | 4 | `abs 0x30000b50` | `-` |
+| `move.b` at 0xfff83126 | load | 1 | `[0x30000b50] +0x1ec` | `-` |
+| `move.b` at 0xfff83126 | store | 1 | `abs 0x30000df0` | `([[0x30000b50]+492]:1 & 0xff)` |
+| `movea.l` at 0xfff8312a | load | 4 | `abs 0x30000b50` | `-` |
+| `clr.b` at 0xfff8312c | store | 1 | `[0x30000b50] +0x1e8` | `0x0` |
+| `clr.l` at 0xfff83130 | store | 4 | `abs 0x30000e04` | `0x0` |
+| `move.l` at 0xfff8313a | store | 4 | `abs 0x30000e08` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff8311c | `[0x30000e04] == 0x0` | `[0x30000e04] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff83144 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-1/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#3 at 0xffe91740
+
+- `0xffe91740`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#3`, version `1.62.1`. Payload file offset 0x63c680.
+  Load 0xffe00000. Analysed span 0xffe91740 to 0xffe9177a.
+  Established. The four-byte guard at 0x30000e30 feeds `beq.b`, with zero selecting the restore tail
+  (`tst.l` at 0xffe9174c, `beq.b` at 0xffe91750). The fall-through region copies a byte from
+  `[0x30000bd4] +0x1ec` to 0x30000e1c, then has a byte-zero store through `[0x30000bd4] +0x1e8`
+  (`move.b` at 0xffe9175a, `clr.b` at 0xffe91760).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe9174c | load | 4 | `abs 0x30000e30` | `-` |
+| `movea.l` at 0xffe91758 | load | 4 | `abs 0x30000bd4` | `-` |
+| `move.b` at 0xffe9175a | load | 1 | `[0x30000bd4] +0x1ec` | `-` |
+| `move.b` at 0xffe9175a | store | 1 | `abs 0x30000e1c` | `([[0x30000bd4]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe9175e | load | 4 | `abs 0x30000bd4` | `-` |
+| `clr.b` at 0xffe91760 | store | 1 | `[0x30000bd4] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe91764 | store | 4 | `abs 0x30000e30` | `0x0` |
+| `move.l` at 0xffe9176e | store | 4 | `abs 0x30000e34` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe91750 | `[0x30000e30] == 0x0` | `[0x30000e30] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe91778 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-3/byte-status-facts.txt).
+
+## cd-ist-3.24:l1#3 at 0xfff81740
+
+- `0xfff81740`, `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin`:
+  Package `cd-ist-3.24:l1#3`, version `1.62.1`. Payload file offset 0x63c680.
+  Load 0xffe00000. Analysed span 0xfff81740 to 0xfff8177a.
+  Established. A four-byte zero at 0x30000e30 and four-byte 0xfffffe70 at 0x30000e34 are the last
+  two stores in this body (`clr.l` at 0xfff81764, `move.l` at 0xfff8176e). The earlier byte-copy
+  instruction reads through `[0x30000bd4] +0x1ec` and writes at 0x30000e1c (`move.b` at 0xfff8175a).
+  All those writes lie on the fall-through of `beq.b` for `[0x30000e30] != 0` (`beq.b` at
+  0xfff81750).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xfff8174c | load | 4 | `abs 0x30000e30` | `-` |
+| `movea.l` at 0xfff81758 | load | 4 | `abs 0x30000bd4` | `-` |
+| `move.b` at 0xfff8175a | load | 1 | `[0x30000bd4] +0x1ec` | `-` |
+| `move.b` at 0xfff8175a | store | 1 | `abs 0x30000e1c` | `([[0x30000bd4]+492]:1 & 0xff)` |
+| `movea.l` at 0xfff8175e | load | 4 | `abs 0x30000bd4` | `-` |
+| `clr.b` at 0xfff81760 | store | 1 | `[0x30000bd4] +0x1e8` | `0x0` |
+| `clr.l` at 0xfff81764 | store | 4 | `abs 0x30000e30` | `0x0` |
+| `move.l` at 0xfff8176e | store | 4 | `abs 0x30000e34` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xfff81750 | `[0x30000e30] == 0x0` | `[0x30000e30] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xfff81778 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.62.1-package-3/byte-status-facts.txt).
+
+## patches/SG0005762:l1#0 at 0xffe6c61c
+
+- `0xffe6c61c`, `patches/SG0005762/usr/cpu/firmware/sysco/l1.bin`:
+  Package `patches/SG0005762:l1#0`, version `1.32.15`. Payload file offset 0x50.
+  Load 0xffe00000. Analysed span 0xffe6c61c to 0xffe6c656.
+  Established. The pointer-relative byte clear targets `[0x300003bc] +0x1e8`, after a four-byte
+  pointer read at 0x300003bc (`clr.b` at 0xffe6c63c, `movea.l` at 0xffe6c63a). The guard skips this
+  access and the other writes for zero `[0x30000654]` (`beq.b` at 0xffe6c62c). The final numeric
+  store is four-byte 0xfffffe70 at 0x30000658 (`move.l` at 0xffe6c64a).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffe6c628 | load | 4 | `abs 0x30000654` | `-` |
+| `movea.l` at 0xffe6c634 | load | 4 | `abs 0x300003bc` | `-` |
+| `move.b` at 0xffe6c636 | load | 1 | `[0x300003bc] +0x1ec` | `-` |
+| `move.b` at 0xffe6c636 | store | 1 | `abs 0x30000640` | `([[0x300003bc]+492]:1 & 0xff)` |
+| `movea.l` at 0xffe6c63a | load | 4 | `abs 0x300003bc` | `-` |
+| `clr.b` at 0xffe6c63c | store | 1 | `[0x300003bc] +0x1e8` | `0x0` |
+| `clr.l` at 0xffe6c640 | store | 4 | `abs 0x30000654` | `0x0` |
+| `move.l` at 0xffe6c64a | store | 4 | `abs 0x30000658` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffe6c62c | `[0x30000654] == 0x0` | `[0x30000654] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffe6c654 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.32.15-package-0/byte-status-facts.txt).
+
+## patches/SG0005762:l1#0 at 0xffedc61c
+
+- `0xffedc61c`, `patches/SG0005762/usr/cpu/firmware/sysco/l1.bin`:
+  Package `patches/SG0005762:l1#0`, version `1.32.15`. Payload file offset 0x50.
+  Load 0xffe00000. Analysed span 0xffedc61c to 0xffedc656.
+  Established. The byte-copy site reads through `[0x300003bc] +0x1ec` and writes at 0x30000640
+  (`move.b` at 0xffedc636). A subsequent byte clear through `[0x300003bc] +0x1e8` uses a new
+  four-byte pointer load (`movea.l` at 0xffedc63a, `clr.b` at 0xffedc63c). The branch reaches the
+  restore tail without these accesses for `[0x30000654] == 0` (`beq.b` at 0xffedc62c).
+
+| Instruction | Access | Width in bytes | Effective target | Stored value |
+|---|---|---:|---|---|
+| `tst.l` at 0xffedc628 | load | 4 | `abs 0x30000654` | `-` |
+| `movea.l` at 0xffedc634 | load | 4 | `abs 0x300003bc` | `-` |
+| `move.b` at 0xffedc636 | load | 1 | `[0x300003bc] +0x1ec` | `-` |
+| `move.b` at 0xffedc636 | store | 1 | `abs 0x30000640` | `([[0x300003bc]+492]:1 & 0xff)` |
+| `movea.l` at 0xffedc63a | load | 4 | `abs 0x300003bc` | `-` |
+| `clr.b` at 0xffedc63c | store | 1 | `[0x300003bc] +0x1e8` | `0x0` |
+| `clr.l` at 0xffedc640 | store | 4 | `abs 0x30000654` | `0x0` |
+| `move.l` at 0xffedc64a | store | 4 | `abs 0x30000658` | `0xfffffe70` |
+
+| Branch instruction | Taken when | Falls through when |
+|---|---|---|
+| `beq.b` at 0xffedc62c | `[0x30000654] == 0x0` | `[0x30000654] != 0x0` |
+
+| Return instruction | Register | Value |
+|---|---|---|
+| `rts` at 0xffedc654 | `d0` | `?` |
+
+[Full fact sheet and listing](disasm/mcf5206e-1.32.15-package-0/byte-status-facts.txt).
