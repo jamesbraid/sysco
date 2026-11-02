@@ -372,7 +372,7 @@ The power-bay start routine itself begins by comparing the letter with `2` (`ffe
 | `G` | G-brick | not started | console, not the bay link | refused |
 | `D` | no package lists it | started if an L1 ever reported it (arm B) | open | refused (not in the command's string) |
 | `4` | Origin 300 node board | not started | closed | refused |
-| `0 7 8 9 A E Q` | workstation and Chimera boards, IP34 | not started | closed | refused |
+| `0 7 8 9 A E Q` | other board types (the identity table names `0` CGN Voyager, `7` and `9` Chimera, `A` IP34) | not started | closed | refused |
 
 **What `pbay` and the poll do where the task is not started.** The status word (word at `0x300009d4`) keeps its initial 0, the text "not initialized"; nothing polls; and the command is refused by its brick-type string before the handler runs (short error, return -1, `ffe19950-ffe1997c`). A type that is allowed but has no bay on the wire (any allowed brick not cabled to a bay) does start the task: its first request, link command `0x10` to address 0, gets no reply, the `0x02` exchange then fails and the status becomes 5, "communication failure". Every sub-command but `init` then prints that state text and fails; `init` re-runs the start-up sequence.
 
