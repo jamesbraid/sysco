@@ -101,4 +101,4 @@ In daemon mode, the calls are in this order (addresses of the calls in `main`): 
 ## Versions
 
 - The 6.4 Origin build of the daemon (`root/6.4-origin/usr/etc/sysctlrd`, 42,352 bytes) carries the strings `N`/`06Y`, `%2x` and "Result length mismatch" and so supports length mode; it lacks the option string of the 6.5 build (`dgprnestf:vl` and `dgprnestf:vlhk` are both absent). Checked by byte search, not read routine by routine.
-- A 6.2 build is described in [inst-compression.md](inst-compression.md); it has the same length-mode strings, the 6.5 option string and "should be at least 2.02", checked by byte search.
+- The builds of IRIX 5.0 to 6.3 are compared in [early-builds.md](early-builds.md). The 5.0 daemon has no length mode (frames and replies are plain, read in full); length mode, the log clear (`K`) and the 26-field environment reply arrive in 5.1.1. The 6.2 base daemon has the option string `dgprnestf:vhk`, not the 6.5 `vlhk`.

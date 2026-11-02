@@ -121,7 +121,7 @@ f3dfbd81fafdcb2e41a209e3f94060b50aa68a05  IRIX 6.5.16 Overlays (4 of 4).iso
 
 Patches install with the IRIX software manager; a patch image is an `im001` archive described by the `.idb` beside it, the same layout as the media's product images. Unpack a product or patch with any decoder for that layout and keep only the paths above.
 
-Scanned: the overlay discs of 6.5.9 to 6.5.30, the base and installation-tools discs of 6.4 to 6.5.30, and the IRIX 5.x to 6.3 system discs (manifests only, for the controller files above). Not scanned yet: the customer diagnostics discs beyond the manifest check, and any patch newer than SG0007149. IRIX 5.0 to 6.2 builds of the Challenge and Onyx controller files are on the media but their system discs were not held; the compression is classic `compress(1)` (see [docs/everest/inst-compression.md](docs/everest/inst-compression.md)). They are not in `root/`.
+Scanned: the overlay discs of 6.5.9 to 6.5.30, the base and installation-tools discs of 6.4 to 6.5.30, and the IRIX 5.x to 6.3 system discs (manifests only, for the controller files above). Not scanned yet: the customer diagnostics discs beyond the manifest check, and any patch newer than SG0007149. IRIX 5.0 to 6.2 builds of the Challenge and Onyx controller files were extracted from those system discs (the image is `compress(1)` data in an index without offsets; see [docs/everest/inst-compression.md](docs/everest/inst-compression.md)) and read in [docs/everest/early-builds.md](docs/everest/early-builds.md). They are not in `root/`.
 
 ```archives
 ```

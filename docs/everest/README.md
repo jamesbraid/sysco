@@ -15,7 +15,7 @@ These notes read that host software in the IRIX 6.5 Foundation 1 set (`root/6.5/
 | message tool | `sbin/scmsg` | 9,596 | `92a124eee0e14ebf` | N32 executable, stripped; one function |
 | header | `usr/include/sys/EVEREST/sysctlr.h` | 4,288 | `6d87557ec1f999d5` | shipped header that names the item codes and alarm letters |
 
-The same files exist in `root/6.4-origin/` as different builds (daemon 42,352 bytes; drivers 12,688, 12,952 and 12,744 bytes; message tool 9,364 bytes). Those builds are listed in [../inventory/images.tsv](../inventory/images.tsv) and were compared only by string and constant checks here (see [daemon-wire.md](daemon-wire.md), version notes). A 6.2 build of the daemon was decoded from a patch image; see [inst-compression.md](inst-compression.md).
+The same files exist in `root/6.4-origin/` as different builds (daemon 42,352 bytes; drivers 12,688, 12,952 and 12,744 bytes; message tool 9,364 bytes). Those builds are listed in [../inventory/images.tsv](../inventory/images.tsv) and were compared only by string and constant checks here (see [daemon-wire.md](daemon-wire.md), version notes). The builds of IRIX 5.0 to 6.3 were decoded from the system discs (see [inst-compression.md](inst-compression.md)) and compared with these in [early-builds.md](early-builds.md).
 
 ## Notes
 
@@ -23,7 +23,9 @@ The same files exist in `root/6.4-origin/` as different builds (daemon 42,352 by
 - [daemon-wire.md](daemon-wire.md): how the daemon frames requests and parses replies, the item catalogue, alarms, retries, power-down sequence.
 - [records.md](records.md): the environment reply, the log reply, the PROM diagnostic table and board-type names.
 - [scmsg.md](scmsg.md): the one-shot front-panel message tool.
-- [inst-compression.md](inst-compression.md): what the old media compression is and how to extract it.
+- [prom-client.md](prom-client.md): the standalone IP19 diagnostic as a second client; the serial-number requests.
+- [early-builds.md](early-builds.md): the daemon, message tool, driver and header of IRIX 5.0 to 6.4, what changed and when.
+- [inst-compression.md](inst-compression.md): the old inst image layout and compression, and how to extract it.
 
 ## Grades
 
