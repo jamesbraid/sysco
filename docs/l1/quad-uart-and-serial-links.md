@@ -1,6 +1,6 @@
 # Origin 300 L1 1.44.0: the four-channel UART and the serial link settings
 
-Read from L1 1.44.0, package 1 (`Fuel/PE/O300 1MB image`, body sha256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`, load address `0xffe00000`, first program copy). The same switch tables and driver bytes occur in the other ColdFire packages of the composite; only package 1 was read here. This note says what the software programs into the external UART block at `CS4` (`0x50000000`) and which software port each use belongs to, so that a firmware-backed machine can be checked against its own register log and link traffic.
+Read from L1 1.44.0, package 1 (`Fuel/PE/O300 1MB image`, body sha256 `9db44f3bb06ec90475035781766e1ca7e924f15a0ed215cf855c1f491275fdd1`, load address `0xffe00000`, first program copy). The same switch tables and driver bytes occur in the other ColdFire packages of the composite; only package 1 was read for the UART programming. The on-chip UART 1 letter table (the last row of the table below) was also read in packages 0, 2, 3 and 5: packages 0 and 2 have the same two groups, and packages 3 and 5 open UART 1 for every letter except `O` ([power-bay-link.md](power-bay-link.md#which-bricks-start-the-power-bay-task-all-five-coldfire-packages)). This note says what the software programs into the external UART block at `CS4` (`0x50000000`) and which software port each use belongs to, so that a firmware-backed machine can be checked against its own register log and link traffic.
 
 ## The part behind the register block
 
