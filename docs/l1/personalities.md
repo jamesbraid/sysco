@@ -29,7 +29,7 @@ All five records have the same twelve words, read here at the first-bank record 
 | 3 | bytes from the bank start to the end of the record | established: equals record address plus 0x30 minus the bank start in all five |
 | 4, 5 | pointers to the build stamp and the version string | established |
 | 6 | pointer to the end of the record | established |
-| 7 | 32-bit value not reproduced | unknown, see [open-questions.md](../open-questions.md) |
+| 7 | 32-bit value that makes the twelve record words add to zero | established for the sum: all 86 records found by their header words in the ColdFire packages of 6.5.20 to 6.5.30 and both patches add to zero; what the value is derived from is unknown, see [open-questions.md](../open-questions.md) |
 | 8 | additive 32-bit word sum of the bank from its start up to the record | established: recomputed over every first-bank record and equal in all five |
 | 9 | pointer to the supported-brick string | established |
 | 10 | 1 in the 1 MB packages, 2 in the 2 MB packages | established value; meaning inferred as the flash size class in megabytes, from the two bank sizes that go with it |

@@ -59,7 +59,7 @@ The eight changed routines are the ones that contain these bytes: `0xffe10570` a
 | Package | Differing byte positions | Classes |
 |---|---:|---|
 | 0 `Base 1MB` | 44 | two version strings, the build stamp and a second version string beside it, record words 7 and 8, each twice (the bank repeats) |
-| 1 `Fuel/PE/O300 1MB` | 42 | as above, with one version string and one build stamp |
+| 1 `Fuel/PE/O300 1MB` | 42 | the same classes as package 0; the count is lower only because fewer stamp digits and fewer bytes of words 7 and 8 differ |
 | 2 `MIPS 2MB` | 68 | two version strings, build stamp and version string, record words 7 and 8, one word in the table that follows the record, two words in the tail of that table, each twice |
 | 3 `Legacy 2MB` | 62 | the same classes as package 2 (this package reports 1.48.0 in its own strings and 1.48.1 in its stamp area) |
 

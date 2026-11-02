@@ -74,7 +74,7 @@ Read from the usage and message strings (established that the strings exist; the
 - `-l2recover`: emergency L2 flash recovery over a serial connection chosen with `--serial` or `--dev`; it needs an L2 firmware image in the binary and cannot update several bricks at once over serial.
 - `<target>`: `<rack>.<slot>`, a list of those, `all` or `local` (for an L2). The string table also holds the words `router`, `compute`, `other`, `l2local` and `local`, the options `-router`, `-io`, `-other`, `-test`, `-manual`, `-new`, `-image`, `-boot`, `-bootldr` and `-compute`, and the messages that go with `-image` ("invalid image (%d) selected with -image option") and `-manual` ("MANUAL FLASH IMAGE SELECTED").
 - `-n`: named in two notices that say it is forced when a system mixes legacy and newer bricks, and that a lone legacy brick that will join newer hardware needs it; it makes the legacy brick take firmware that can talk to the newer hardware.
-- An L1 flash binary must hold both an "A" and a "B" image, with relocation tables, or the tool refuses it ("does not contain both the A and B images"); a multi-image binary lists its images (`Image %d:`).
+- The refusal text for an L1 flash binary reads that it does not contain both the "A" and "B" images and also contains no relocation tables, so the tool cannot use it (established that the strings exist and are one message; the test that selects it was not located, so whether an image with relocation tables but one slot is accepted is not read); a multi-image binary lists its images (`Image %d:`).
 - The banner reads "System Controller Flash Utility - Version 1.4.1"; `-version` prints "Supports flash binary rev. %d".
 
 ### The update requests (`FlashUpdateRemote`, `0x1000ebf0` to `0x100103c0`, 6.5.30)
