@@ -263,7 +263,7 @@ The callback's own code does not wait for or record a reply (see section 8, item
 Read from `bin/l2` (1.44.0).
 
 - The power-up mode is NVRAM key 21 (0x15). A nonzero value selects `slow` (routers powered in series); zero selects `fast` (routers powered in parallel). The status command prints the mode with the words `parallel` and `series` chosen by the same bit (0x10014dc0 to 0x10014e24). Established.
-- The inter-command delay is held in word 0x10043c4c. The `power` command help says it is in milliseconds (`delay is set to %d milliseconds`), and the stored value is the command's argument (0x10014dac). The delay is passed as the last argument of a per-router request (0x10013fa0). The order of the loop and the body of the routine it calls (`sub_1001f5e0`) were not read, so the sequencing for `fast` and `slow` is unknown (U). The R-brick's power-on serial-number check is an L1 behaviour and is not in these images (see the L1 notes).
+- The inter-command delay is held in word 0x10043c4c. The `power` command help says it is in milliseconds (`delay is set to %d milliseconds`), and the stored value is the command's argument (0x10014dac). The delay is passed as the last argument of a per-router request (0x10013fa0). The queue, its runner, the sender and the order and spacing of both modes are read in [power-queue.md](power-queue.md); the delay defaults to 500 ms and is not saved to NVRAM. The R-brick's power-on serial-number check is an L1 behaviour and is not in these images (see the L1 notes).
 
 ## 15. The flash updater, the power queue and the open items (2026-11-02)
 
@@ -271,15 +271,7 @@ Read from `bin/l2` (1.44.0).
 
 **Display program and start order.** `l2flash` does not wait for the display program. The daemon has no dependency on task 6: the daemon's `l2dsp` command sets its own state, and whether a task-6 client's absence changes any reply was not followed (U, as before).
 
-**The power queue (`l2`, the `power` command).** The loop at 0x10013e90 to 0x10013fb0 queues work per router. For each router it calls the enqueue routine `sub_1001f5e0` three times:
-
-| Call site | Arguments after the queue (r4, r5, r6) | Reading |
-|---|---|---|
-| 0x10013f70 | a value from the earlier call at 0x10013f50, 1, 0 | first step (I) |
-| 0x10013f88 | 0, 0, -1 | second step (I) |
-| 0x10013fa4 | 0, 0, the delay word at 0x10043c4c | third step; the delay is the last argument (established from the call, E) |
-
-`sub_1001f5e0` allocates a 20-byte node (through `sub_10043ff8`) and stores its three arguments at node offsets 0, 4 and 8, then links it onto the router's list (established from the instructions at 0x1001f5e0 to 0x1001f6e0). The consumer that dequeues the nodes and sends them is `sub_1001f6e4`; it was read only as far as its first list operations (0x1001f6e4 to 0x1001f7b8). So the order in which the queued steps go to each L1, and how the delay is applied between them, is unknown (U). That the delay is in milliseconds rests on the `power` command's help text (E for the text, I for the unit at the consumer).
+**The power queue (`l2`, the `power` command).** Read in full in [power-queue.md](power-queue.md): `sub_1001f5e0` appends a (packet, wait flag, delay word) node to a FIFO, `sub_1001f6e4` removes it, and the runner `sub_1001c3ac` sends the packet, then waits for outstanding replies when the delay word is -1 or sleeps for that many milliseconds when it is positive. The earlier reading of the three calls per router in this section (a packet, a wait node, a delay node) is the serial case of that sender.
 
 **R-brick power-on serial-number check.** Not in the L2 images. The L1 personalities for the R-brick (package 3 or 5) are not read (see [../coverage.md](../coverage.md)), so the check is unknown from this repository (U).
 

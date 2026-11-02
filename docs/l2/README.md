@@ -12,6 +12,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [userspace.md](userspace.md) | the contract of the shipped programs: how to unpack each held image, every device node and ioctl with argument layouts, NVRAM, VPD and display access, what each link mode expects at the far end, the USB link as the daemon sees it, and the reply to the partition service requests |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
+| [power-queue.md](power-queue.md) | the `power` command: the send queue and its runner, the sender's class order, and the order and spacing of `fast` and `slow` power-up and of power-down |
 | [router-packet.md](router-packet.md) | the router packet in memory: segment record, the builder, writer and free routines of `libIRouter` |
 
 Curated tables (rows carry a grade and a locator; they are not yet read by `scripts/sysco_tables.py`):
