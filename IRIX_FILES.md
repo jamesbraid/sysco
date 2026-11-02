@@ -69,6 +69,8 @@ The other controller families (the Challenge and Onyx system controller, the MSC
 | `6.5.12/` to `6.5.19/` | IRIX 6.5.12 to 6.5.19 Overlays (last disc of each), product `field_diags_sysco` | L1 and L2 1.4.x to 1.18.x (version table in [docs/controllers.md](docs/controllers.md)); `pbay.bin` and `flashpbay` from 6.5.14 |
 | `6.5.30/` | as above, plus the base `eoe` product on IRIX 6.5.30 Installation Tools and Overlays (1 of 3) | adds `mmscfw.bin` 2.3, `elsc.o`, `mmscd`, `flashmmsc`, `flash`, `sysctlrd`, man pages |
 | `patches/SG0005762/` | patch SG0005762, subsystem `patchSG0005762.field_diags_sysco_sw` | L1 1.32.15, L2 1.32.4. The patch's own release note says L1 1.32.14. |
+| `patches/SG0002378/` | patch SG0002378 (Origin 2000 and Onyx2 MMSC firmware update, September 1997), subsystem `patchSG0002378.eoe_sw`, as published in the IRIX 6.4 patch directory of SGI's former public FTP server | `mmscfw.bin`, 1,005,275 bytes, a build of 20 August 1997 (the release note says it fixes MMSC firmware 1.1). Only the patch's own `mmscfw.bin`; the image carries no version string. |
+| `cd-ist-3.24/` | SGI Internal Support Tools 3.24 for Linux (`CD-IST_3.24.tar.gz`, 67,461,003 bytes, SHA-256 `10441afaa94787ecfaf597829eae4f0e02e1007682a04fe98704f404719425aa`), the L3 controller and SGIconsole disc of the SGI 3000 and Altix family, as published by Graphica (graphica.com.au/files) | `snxsc_firmware-1.62.1-1.i386.rpm` unpacked to `usr/cpu/firmware/sysco/` (`l1.bin` 1.62.1, `l2.bin` 1.62.0, and the CPLD vector files `ab_lfprom`, `ab_ufprom`, `athena` and `is3`, not seen in any IRIX set); the versioned file names in the RPM are `l1-1.62.1.bin`, `l2-1.62.0.bin`, `pbay-00.18.bin` and `l1_mips-1.48.1.bin`; the last two and the other vector files are byte-identical to files already held. Linux i386 host tools of the same RPM in `linux-host-tools/` (`flashsc`, `flashpbay`, `l1cmd`, `l2cmd`, `flashsvf`, `flashfile`, `flashioc4`). The other packages of the disc are kept whole in `CD/`: `snxsc_l3` (the L3 software: `l2`, `l2cmd`, `l2find`, `l2term`, `libsnxsc`), `snxscan`, `sscope`, `sysco_tools` (a Perl 5.6.1 runtime), the `sgil1` USB driver source and the `install` script. A second copy of the archive on another public mirror is truncated at 26 MB and lacks these. |
 | `patches/SG0007149/` | patch SG0007149, subsystem `patchSG0007149.field_diags_sysco_sw` | L1 1.48.0 and 1.48.1, L2 1.48.0. Replaces SG0005762. |
 
 Patch SG0007114 (`ws_field_diags_irix_sw`) ships host-side diagnostic programs and no controller firmware; nothing from it is needed.
@@ -87,6 +89,7 @@ f8c36e377b5733e04633acd3309dd79da626c5ddc7800f57ca4710bf8e662ec1  IRIX 6.5.24 Ov
 2bb622a160da6a0a2825f3221545225a2bf3ec0c59cadffa76b4ca9c172b0e09  IRIX 6.5.28 Overlays (3 of 3).iso
 f7df5880c6b83a6b0f0f2cea02de159c713decc063b3b16df302f8990153bf57  IRIX 6.5.29 Overlays (3 of 3).iso
 54b60017f395f824138e6164f7c19f440626d10d23e449a9c55f95f2a4c24473  patch SG0005762 tardist
+ebb0e6e71c196d7fec6844a06c2a0024de0c785810212bcfb5a5f987b0221195  patch SG0002378 tar
 f73660c9e85b1dbd615856377e8480a4c8a39f76fc86d21cc23533b0787acd29  patch SG0007114 tardist
 9f4b8abf97c0903f697f75888ae1363b19e385a85c9d34446973975eecf9930a  patch SG0007149 tardist
 ```
