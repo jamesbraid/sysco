@@ -302,7 +302,7 @@ fact-sheet warnings.
 | `str` at 0x71584 | store | 4 | `sp -0x2cc` | `ret(unknown)` |
 | `str` at 0x71598 | store | 4 | `sp -0x2d0` | `ret(0xb45d0)` |
 | `ldr` at 0x7159c | load | 4 | `abs 0x71ae8` | `-` |
-| `ldrb` at 0x715a4 | load | 1 | `sp +0xfffffd34` | `-` |
+| `ldrb` at 0x715a4 | load | 1 | `sp -0x2cc` | `-` |
 | `ldr` at 0x715bc | load | 4 | `abs 0x71aec` | `-` |
 | `ldr` at 0x715e0 | load | 4 | `sp -0x2cc` | `-` |
 | `ldr` at 0x715e4 | load | 4 | `sp -0x2d0` | `-` |
@@ -397,7 +397,7 @@ fact-sheet warnings.
 | `str` at 0x71a0c | store | 4 | `sp -0x2e4` | `0x0` |
 | `str` at 0x71a20 | store | 4 | `sp -0x2e8` | `ret(0xb45d0)` |
 | `ldr` at 0x71a24 | load | 4 | `abs 0x71ae8` | `-` |
-| `ldrb` at 0x71a2c | load | 1 | `sp +0xfffffd34` | `-` |
+| `ldrb` at 0x71a2c | load | 1 | `sp -0x2cc` | `-` |
 | `ldr` at 0x71a60 | load | 4 | `sp -0x2cc` | `-` |
 | `ldr` at 0x71a64 | load | 4 | `sp -0x2e8` | `-` |
 | `ldr` at 0x71b0c | load | 4 | `sp -0x2d4` | `-` |
@@ -478,7 +478,7 @@ fact-sheet warnings.
 | `ldr` at 0x7260c | load | 4 | `abs 0x27ee60` | `-` |
 | `str` at 0x72614 | store | 4 | `sp -0x2f8` | `?` |
 | `ldr` at 0x72618 | load | 4 | `abs 0x71af8` | `-` |
-| `ldrb` at 0x72620 | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x72620 | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x72638 | load | 4 | `sp -0x2f4` | `-` |
 | `ldr` at 0x72640 | load | 4 | `sp -0x2d0` | `-` |
 | `ldr` at 0x72648 | load | 4 | `sp -0x2f4` | `-` |
@@ -487,7 +487,7 @@ fact-sheet warnings.
 | `ldr` at 0x72664 | load | 4 | `(unknown)` | `-` |
 | `str` at 0x7266c | store | 4 | `(unknown)` | `?` |
 | `ldr` at 0x72670 | load | 4 | `abs 0x71af8` | `-` |
-| `ldrb` at 0x72678 | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x72678 | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x72690 | load | 4 | `sp -0x2f4` | `-` |
 | `ldr` at 0x72698 | load | 4 | `sp -0x2cc` | `-` |
 | `ldr` at 0x726a0 | load | 4 | `sp -0x2f4` | `-` |
@@ -873,7 +873,7 @@ fact-sheet warnings.
 | `ldr` at 0x73838 | load | 4 | `sp -0x18` | `-` |
 | `ldrb` at 0x7383c | load | 1 | `[sp-24] +0x20` | `-` |
 | `ldr` at 0x73864 | load | 4 | `abs 0x73e10` | `-` |
-| `ldrb` at 0x7386c | load | 1 | `sp +0xfffffd08` | `-` |
+| `ldrb` at 0x7386c | load | 1 | `sp -0x2f8` | `-` |
 | `str` at 0x73888 | store | 4 | `sp -0x2f4` | `ret(0xb7af8)` |
 | `ldr` at 0x7388c | load | 4 | `sp -0x2f4` | `-` |
 | `ldr` at 0x738c0 | load | 4 | `sp -0x2f4` | `-` |
@@ -902,8 +902,8 @@ fact-sheet warnings.
 | `strb` at 0x73a90 | store | 1 | `(unknown)` | `([sp-1184]:1 & 0xff)` |
 | `str` at 0x73a98 | store | 4 | `sp -0x4a4` | `?` |
 | `ldr` at 0x73a9c | load | 4 | `abs 0x73e14` | `-` |
-| `ldrb` at 0x73aa4 | load | 1 | `sp +0xfffffc9a` | `-` |
-| `str` at 0x73aa8 | store | 4 | `sp -0x4a8` | `[sp+4294966426]:1` |
+| `ldrb` at 0x73aa4 | load | 1 | `sp -0x366` | `-` |
+| `str` at 0x73aa8 | store | 4 | `sp -0x4a8` | `[sp-870]:1` |
 | `ldr` at 0x73aac | load | 4 | `sp -0x18` | `-` |
 | `ldrb` at 0x73ab0 | load | 1 | `[sp-24] +0x2c` | `-` |
 | `ldr` at 0x73ac0 | load | 4 | `sp -0x18` | `-` |
@@ -917,9 +917,9 @@ fact-sheet warnings.
 | `ldr` at 0x73b08 | load | 4 | `sp -0x4a4` | `-` |
 | `strb` at 0x73b0c | store | 1 | `(sp-20 + [sp-1188]) +0x0` | `([sp-1193]:1 & 0xff)` |
 | `ldr` at 0x73b10 | load | 4 | `abs 0x73e10` | `-` |
-| `ldrb` at 0x73b18 | load | 1 | `sp +0xfffffd08` | `-` |
+| `ldrb` at 0x73b18 | load | 1 | `sp -0x2f8` | `-` |
 | `ldr` at 0x73b1c | load | 4 | `abs 0x73e14` | `-` |
-| `ldrb` at 0x73b24 | load | 1 | `sp +0xfffffc9a` | `-` |
+| `ldrb` at 0x73b24 | load | 1 | `sp -0x366` | `-` |
 | `ldrb` at 0x73b30 | load | 1 | `(unknown)` | `-` |
 | `str` at 0x73b48 | store | 4 | `sp -0x2f4` | `ret(0xb79a0)` |
 | `ldr` at 0x73b4c | load | 4 | `sp -0x2f4` | `-` |
@@ -930,7 +930,7 @@ fact-sheet warnings.
 | `ldr` at 0x73c04 | load | 4 | `sp -0x2e0` | `-` |
 | `ldr` at 0x73c08 | load | 4 | `sp -0x2f4` | `-` |
 | `ldr` at 0x73c18 | load | 4 | `abs 0x73e48` | `-` |
-| `ldrb` at 0x73c20 | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x73c20 | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x73c38 | load | 4 | `abs 0x73e18` | `-` |
 | `ldr` at 0x73c3c | load | 4 | `sp -0x2e0` | `-` |
 | `str` at 0x73c60 | store | 4 | `sp -0x2d4` | `(sp-1000 + ret(0x18a1c))` |
@@ -938,7 +938,7 @@ fact-sheet warnings.
 | `ldr` at 0x73c6c | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x73c70 | load | 4 | `[sp-760] +0x0` | `-` |
 | `ldr` at 0x73c7c | load | 4 | `abs 0x73e48` | `-` |
-| `ldrb` at 0x73c84 | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x73c84 | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x73ca4 | load | 4 | `abs 0x73e1c` | `-` |
 | `ldr` at 0x73cb0 | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x73cb4 | load | 4 | `[sp-760] +0x1c` | `-` |
@@ -967,7 +967,7 @@ fact-sheet warnings.
 | `ldr` at 0x73d44 | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x73d48 | load | 4 | `[sp-760] +0x0` | `-` |
 | `ldr` at 0x73d54 | load | 4 | `abs 0x73e48` | `-` |
-| `ldrb` at 0x73d5c | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x73d5c | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x73d7c | load | 4 | `abs 0x73e28` | `-` |
 | `ldr` at 0x73d88 | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x73d8c | load | 4 | `[sp-760] +0x4` | `-` |
@@ -1077,7 +1077,7 @@ fact-sheet warnings.
 | `ldr` at 0x74180 | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x74184 | load | 4 | `[sp-760] +0x0` | `-` |
 | `ldr` at 0x74190 | load | 4 | `abs 0x73e48` | `-` |
-| `ldrb` at 0x74198 | load | 1 | `sp +0xfffffd20` | `-` |
+| `ldrb` at 0x74198 | load | 1 | `sp -0x2e0` | `-` |
 | `ldr` at 0x741b8 | load | 4 | `abs 0x73e4c` | `-` |
 | `ldr` at 0x741c4 | load | 4 | `sp -0x2f8` | `-` |
 | `ldr` at 0x741c8 | load | 4 | `[sp-760] +0x4` | `-` |
@@ -1254,7 +1254,7 @@ fact-sheet warnings.
 | `bl` at 0x71520 | `(unknown callee) 0x9ca84` | `[sp-24]` | `0x1` | `[sp-680]` | `?` |
 | `mov` at 0x7157c | `(unknown callee) (unknown target)` | `[sp-1044]` | `[sp-1036]` | `0x11b130` | `[[sp-1040]]` |
 | `bl` at 0x71590 | `(unknown callee) 0xb45d0` | `sp-712` | `?` | `?` | `sp-712` |
-| `bl` at 0x715ac | `(unknown callee) 0xb460c` | `[sp+4294966580]:1` | `sp-20` | `?` | `[sp+4294966580]:1` |
+| `bl` at 0x715ac | `(unknown callee) 0xb460c` | `[sp-716]:1` | `sp-20` | `?` | `[sp-716]:1` |
 | `bl` at 0x715c0 | `(unknown callee) 0x1d6d8` | `0xe8f34` | `?` | `?` | `ret(0xb460c)` |
 | `bl` at 0x715d8 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x71604 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
@@ -1277,7 +1277,7 @@ fact-sheet warnings.
 | `bl` at 0x719b4 | `(unknown callee) 0x9ca84` | `[sp-24]` | `0x3` | `?` | `?` |
 | `bl` at 0x719f0 | `(unknown callee) 0x9ca84` | `[sp-24]` | `0x4` | `?` | `?` |
 | `bl` at 0x71a18 | `(unknown callee) 0xb45d0` | `sp-720` | `[sp-1072]` | `?` | `sp-720` |
-| `bl` at 0x71a34 | `(unknown callee) 0xb460c` | `[sp+4294966580]:1` | `?` | `sp-20` | `[sp+4294966580]:1` |
+| `bl` at 0x71a34 | `(unknown callee) 0xb460c` | `[sp-716]:1` | `?` | `sp-20` | `[sp-716]:1` |
 | `bl` at 0x71a58 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x71a84 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x71f4c | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
@@ -1316,8 +1316,8 @@ fact-sheet warnings.
 | `bl` at 0x725ac | `(unknown callee) 0x18c20` | `ret(0x18920)` | `0x0` | `?` | `?` |
 | `bl` at 0x725e8 | `(unknown callee) 0xd569c` | `[sp-736]` | `[sp-752]` | `0x4` | `?` |
 | `bl` at 0x72600 | `(unknown callee) 0xd580c` | `[sp-736]` | `[sp-752]` | `?` | `[sp-736]` |
-| `bl` at 0x72628 | `(unknown callee) 0x2e878` | `[sp+4294966560]:1` | `?` | `ret(0xd580c)` | `[sp+4294966560]:1` |
-| `bl` at 0x72680 | `(unknown callee) 0x2e8fc` | `[sp+4294966560]:1` | `sp-20` | `?` | `[sp+4294966560]:1` |
+| `bl` at 0x72628 | `(unknown callee) 0x2e878` | `[sp-736]:1` | `?` | `ret(0xd580c)` | `[sp-736]:1` |
+| `bl` at 0x72680 | `(unknown callee) 0x2e8fc` | `[sp-736]:1` | `sp-20` | `?` | `[sp-736]:1` |
 | `bl` at 0x726ec | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `0x0` | `sp-668` |
 | `bl` at 0x72704 | `(unknown callee) 0x54230` | `sp-668` | `sp-664` | `[sp-724]` | `sp-668` |
 | `bl` at 0x7271c | `(unknown callee) 0x54230` | `sp-668` | `sp-664` | `[sp-732]` | `sp-668` |
@@ -1416,7 +1416,7 @@ fact-sheet warnings.
 | `bl` at 0x73758 | `(unknown callee) 0x54230` | `sp-668` | `sp-664` | `[sp-696]` | `sp-668` |
 | `bl` at 0x73830 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x7385c | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
-| `bl` at 0x73880 | `(unknown callee) 0xb7af8` | `[sp+4294966536]:1` | `sp-745` | `[sp+4294966536]:1` | `sp-745` |
+| `bl` at 0x73880 | `(unknown callee) 0xb7af8` | `[sp-760]:1` | `sp-745` | `[sp-760]:1` | `sp-745` |
 | `bl` at 0x738ac | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x738c4 | `(unknown callee) 0x54230` | `sp-668` | `sp-664` | `[sp-756]` | `sp-668` |
 | `bl` at 0x738e0 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `0x0` | `sp-668` |
@@ -1425,22 +1425,22 @@ fact-sheet warnings.
 | `bl` at 0x73a08 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x73a5c | `(unknown callee) 0x9ca84` | `[sp-24]` | `0x2` | `[sp-680]` | `?` |
 | `bl` at 0x73ae4 | `(unknown callee) 0x9ca84` | `[sp-24]` | `0x1` | `sp-20` | `?` |
-| `bl` at 0x73b40 | `(unknown callee) 0xb79a0` | `[sp+4294966536]:1` | `[sp+4294966426]:1` | `?` | `?` |
+| `bl` at 0x73b40 | `(unknown callee) 0xb79a0` | `[sp-760]:1` | `[sp-870]:1` | `?` | `?` |
 | `bl` at 0x73b6c | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x73b84 | `(unknown callee) 0x54230` | `sp-668` | `sp-664` | `[sp-756]` | `sp-668` |
 | `bl` at 0x73ba0 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `0x0` | `sp-668` |
 | `bl` at 0x73bb0 | `(unknown callee) 0xb45d0` | `sp-760` | `[sp-680]` | `[sp-680]` | `sp-760` |
 | `bl` at 0x73bdc | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `?` | `sp-668` |
 | `bl` at 0x73bf8 | `(unknown callee) 0x541d4` | `sp-668` | `sp-664` | `0x0` | `sp-668` |
-| `bl` at 0x73c28 | `(unknown callee) 0xb4848` | `[sp+4294966560]:1` | `sp-20` | `?` | `[sp+4294966560]:1` |
+| `bl` at 0x73c28 | `(unknown callee) 0xb4848` | `[sp-736]:1` | `sp-20` | `?` | `[sp-736]:1` |
 | `bl` at 0x73c44 | `(unknown callee) 0x18c74` | `sp-1000` | `0xe8f64` | `[sp-736]` | `ret(0xb4848)` |
 | `bl` at 0x73c54 | `(unknown callee) 0x18a1c` | `sp-1000` | `?` | `?` | `sp-1000` |
-| `bl` at 0x73c8c | `(unknown callee) 0xb460c` | `[sp+4294966560]:1` | `?` | `sp-20` | `[sp+4294966560]:1` |
+| `bl` at 0x73c8c | `(unknown callee) 0xb460c` | `[sp-736]:1` | `?` | `sp-20` | `[sp-736]:1` |
 | `bl` at 0x73ca8 | `(unknown callee) 0x18ab8` | `sp-1000` | `0xe8f6c` | `?` | `sp-1000` |
 | `bl` at 0x73cc8 | `(unknown callee) 0xb48a8` | `[[sp-760]+28]` | `?` | `?` | `[sp-760]` |
 | `bl` at 0x73cdc | `(unknown callee) 0x18c74` | `[sp-724]` | `0xe8f80` | `ret(0xb48a8)` | `ret(0xb48a8)` |
 | `bl` at 0x73d3c | `(unknown callee) 0x18c74` | `[sp-724]` | `0xe8f90` | `[[sp-760]+76]` | `[[sp-760]+80]` |
-| `bl` at 0x73d64 | `(unknown callee) 0xb460c` | `[sp+4294966560]:1` | `?` | `?` | `[sp+4294966560]:1` |
+| `bl` at 0x73d64 | `(unknown callee) 0xb460c` | `[sp-736]:1` | `?` | `?` | `[sp-736]:1` |
 | `bl` at 0x73d80 | `(unknown callee) 0x18ab8` | `sp-1000` | `0xe8fac` | `?` | `sp-1000` |
 | `bl` at 0x73da0 | `(unknown callee) 0xb48a8` | `[[sp-760]+4]` | `?` | `?` | `[sp-760]` |
 | `bl` at 0x73db4 | `(unknown callee) 0x18c74` | `[sp-724]` | `0xe8fc0` | `ret(0xb48a8)` | `ret(0xb48a8)` |
@@ -1455,7 +1455,7 @@ fact-sheet warnings.
 | `bl` at 0x74124 | `(unknown callee) 0x18a1c` | `[sp-724]` | `?` | `?` | `?` |
 | `mov` at 0x74168 | `(unknown callee) (unknown target)` | `[sp-760]` | `0x0` | `0x0` | `([sp-724] + ret(0x18a1c))` |
 | `bl` at 0x74178 | `(unknown callee) 0x18cd4` | `([sp-724] + ret(0x18a1c))` | `0xe8ffc` | `ret(0x18a1c)` | `[0x11b148]` |
-| `bl` at 0x741a0 | `(unknown callee) 0xb460c` | `[sp+4294966560]:1` | `sp-20` | `?` | `[sp+4294966560]:1` |
+| `bl` at 0x741a0 | `(unknown callee) 0xb460c` | `[sp-736]:1` | `sp-20` | `?` | `[sp-736]:1` |
 | `bl` at 0x741bc | `(unknown callee) 0x18ab8` | `sp-1000` | `0xe9000` | `?` | `sp-1000` |
 | `bl` at 0x741dc | `(unknown callee) 0xb48a8` | `[[sp-760]+4]` | `?` | `?` | `[sp-760]` |
 | `bl` at 0x741f0 | `(unknown callee) 0x18c74` | `[sp-724]` | `0xe9014` | `ret(0xb48a8)` | `ret(0xb48a8)` |
