@@ -138,7 +138,7 @@ unless the entry establishes them.
 - `_addrdElectMaster`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10d750 to 0x10d950.
   Established. The `_semBCreate` call has leading candidates `0x0` and `0x0` (`call` at 0x10d75b). A
-  word store places its result at `sp -0x10` (`mov` at 0x10d763). Calling `_lstAdd` exposes leading
+  four-byte store places its result at `sp -0x10` (`mov` at 0x10d763). Calling `_lstAdd` exposes leading
   candidates `0x1db808` and `sp-24` (`call` at 0x10d7a6). After the `_addrdElectionStart` call
   (`call` at 0x10d7bc), the branch takes `(ret(_addrdElectionStart) & ret(_addrdElectionStart)) ==
   0x0` and falls through on inequality (`je` at 0x10d7c3). That taken route contains `_semTake` with
@@ -197,7 +197,7 @@ unless the entry establishes them.
 
 - `_addrdElectionEnd`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10e310 to 0x10e350.
-  Established. Word stores place `0x3` at `sp -0x34` (`mov` at 0x10e316) and `0x5` at `sp -0x30`
+  Established. Four-byte stores place `0x3` at `sp -0x34` (`mov` at 0x10e316) and `0x5` at `sp -0x30`
   (`mov` at 0x10e31d). The `_addrdLocalMsg` call has leading candidates `sp-52`, `0x3`, and `0x5`
   (`call` at 0x10e328). The branch takes `(ret(_addrdLocalMsg) & ret(_addrdLocalMsg)) != 0x0` and
   falls through for zero (`jne` at 0x10e32f). The two exits carry EAX `0x0` (`ret` at 0x10e336) and
@@ -225,7 +225,7 @@ unless the entry establishes them.
 
 - `_addrdElectionStart`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10e350 to 0x10e390.
-  Established. The local record receives word values `0x3` at `sp -0x34` (`mov` at 0x10e356) and
+  Established. The local record receives four-byte values `0x3` at `sp -0x34` (`mov` at 0x10e356) and
   `0x4` at `sp -0x30` (`mov` at 0x10e35d). `_addrdLocalMsg` sees leading candidates `sp-52`, `0x3`,
   and `0x4` (`call` at 0x10e368). The nonzero `(ret(_addrdLocalMsg) & ret(_addrdLocalMsg))` edge is
   taken and the zero edge falls through (`jne` at 0x10e36f). EAX is zero at the fall-through exit
@@ -305,10 +305,10 @@ unless the entry establishes them.
 - `_addrdProcessElectionEndMsg`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10e610 to 0x10e7b0.
   Established. The `_identCleanOldEntries` call has leading candidate `0x1ebaf0` (`call` at
-  0x10e631). A word store saves `ret(_identFindMaster)` at absolute `0x1ec3ac` (`mov` at 0x10e655).
-  Alternative word stores write `0x1` (`mov` at 0x10e670) or `0x0` (`mov` at 0x10e68d) at absolute
+  0x10e631). A four-byte store saves `ret(_identFindMaster)` at absolute `0x1ec3ac` (`mov` at 0x10e655).
+  Alternative four-byte stores write `0x1` (`mov` at 0x10e670) or `0x0` (`mov` at 0x10e68d) at absolute
   `0x1ef76c`. The controlling branch takes `(ret(_ffscCompareUniqueIDs) &
-  ret(_ffscCompareUniqueIDs)) != 0x0` and falls through for zero (`jne` at 0x10e66e). Another word
+  ret(_ffscCompareUniqueIDs)) != 0x0` and falls through for zero (`jne` at 0x10e66e). Another four-byte
   store clears absolute `0x1db3bc` (`mov` at 0x10e754). The meanings of these global flags and the
   election outcome remain unknown.
 
@@ -369,10 +369,10 @@ unless the entry establishes them.
 - `_addrdProcessElectionStartMsg`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10e7b0 to 0x10e8b0.
   Established. Calling `_clock_gettime` presents leading candidates `0x0` and `0x1ebaf0` (`call` at
-  0x10e7be). Word stores write `0x3` at `sp -0x34` (`mov` at 0x10e7ec) and `0x2` at `sp -0x30`
+  0x10e7be). Four-byte stores write `0x3` at `sp -0x34` (`mov` at 0x10e7ec) and `0x2` at `sp -0x30`
   (`mov` at 0x10e7f3). `_addrdBroadcastMsg` has leading candidate `sp-52` (`call` at 0x10e80c). The
   branch takes `(ret(_addrdBroadcastMsg) & ret(_addrdBroadcastMsg)) != 0x0` and falls through for
-  zero (`jne` at 0x10e816). A word store sets absolute `0x1db3bc` to `0x1` (`mov` at 0x10e821). The
+  zero (`jne` at 0x10e816). A four-byte store sets absolute `0x1db3bc` to `0x1` (`mov` at 0x10e821). The
   transmitted record semantics are unknown without the message callees.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
@@ -408,7 +408,7 @@ unless the entry establishes them.
   Analysed span 0x10eb50 to 0x10eca0.
   Established. The `_addrdExtractIdentity` call has leading candidates `[sp+4]` and `sp-32` (`call`
   at 0x10eb61). A `_memcpy` call presents candidates `sp-60`, `ret(_identFindConflictingRackID)`,
-  and `0x1c` (`call` at 0x10ebe5). A word store saves `ret(_addrdFindUnusedRackID)` at `sp -0x30`
+  and `0x1c` (`call` at 0x10ebe5). A four-byte store saves `ret(_addrdFindUnusedRackID)` at `sp -0x30`
   (`mov` at 0x10ebf2). The branch takes `ret(_addrdFindUnusedRackID) != 0xffffffff` and falls
   through for equality (`jne` at 0x10ebf8). `_addrdAssignNewIdentity` receives leading candidate
   `sp-60` (`call` at 0x10ec16). The assignment policy and external effects are unknown.
@@ -456,7 +456,7 @@ unless the entry establishes them.
 - `_addrdRequestRackID`, `6.4/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x10dae0 to 0x10db80.
   Established. The `_identSetRackID` call exposes leading candidate `[[sp+4]+12]` (`call` at
-  0x10daee). The body writes word `0x3` at `sp -0x34` (`mov` at 0x10db2a) and word `0x6` at `sp
+  0x10daee). The body writes four-byte `0x3` at `sp -0x34` (`mov` at 0x10db2a) and four-byte `0x6` at `sp
   -0x30` (`mov` at 0x10db31). The branch takes `[0x1ef76c] == 0x0` and falls through for nonzero
   (`je` at 0x10db50). The local-message call presents leading candidate `sp-52` (`call` at
   0x10db53), as does the broadcast call (`call` at 0x10db63). The global flag and request policy
@@ -499,7 +499,7 @@ unless the entry establishes them.
   Analysed span 0x10edc0 to 0x10ee70.
   Established. Calling `_ffscCompareUniqueIDs` presents leading candidates `[sp+4]` and `[sp+8]`
   (`call` at 0x10edd0). The merged `_memcpy` call has candidates `sp-32`, unknown, and `0x1c`
-  (`call` at 0x10edf7). A word store saves `ret(_addrdFindUnusedRackID)` at `sp -0x14` (`mov` at
+  (`call` at 0x10edf7). A four-byte store saves `ret(_addrdFindUnusedRackID)` at `sp -0x14` (`mov` at
   0x10ee04). The branch takes `ret(_addrdFindUnusedRackID) != 0xffffffff` and falls through for
   equality (`jne` at 0x10ee0a). The exit returns `ret(_addrdAssignNewIdentity)` in EAX (`ret` at
   0x10ee3b). Which identity should change remains unknown from the merged copy source.
