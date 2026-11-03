@@ -309,7 +309,8 @@ unless the entry establishes them.
 - `_mw8514WPal`, `6.5.2/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x14ac88 to 0x14ad20.
   Established. Falling through the upper-range guard means `[[ebp+16]+8] > 0xff (unsigned, 32-bit)`
-  (`jbe` at 0x14acab) and reaches a jump to the error assignment (`jmp` at 0x14acad). Arm selection
+  (`jbe` at 0x14acab) and reaches a jump (`jmp` at 0x14acad) to the assignment
+  `eax = 0xffffffff` (`mov` at 0x14acf3). Arm selection
   lies after following both range guards (`jbe` at 0x14acab, `jae` at 0x14acb1); its branch is taken
   when `(([[ebp+8]+22]:2 & 0xffff) & 0x100) != 0x0` (`jne` at 0x14acbc). Both arms include byte
   outputs with unknown I/O addresses and values (`out` at 0x14acd2, `out` at 0x14acd7, `out` at

@@ -30,7 +30,7 @@ unless the entry establishes them.
 
 - `_mwCGAPal`, `6.5.5/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x14e7f0 to 0x14e858.
-  Established. The four-byte pointer load uses `ebp +0x10` (`mov` at 0x14e7f2). A second four-byte
+  Established. The four-byte load uses `ebp +0x10` (`mov` at 0x14e7f2). A second four-byte
   load uses `[ebp+16] +0x4` (`mov` at 0x14e7f5), followed by the taken predicate `Z == 0` (`jne` at
   0x14e7fa). Two software interrupts use immediate `0x10` (`int` at 0x14e83e, `int` at 0x14e851).
   Their service meanings and replies remain unknown.
@@ -69,7 +69,8 @@ unless the entry establishes them.
 - `_mwEGAWPal`, `6.5.5/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x14e858 to 0x14e90c.
   Established. The guard falls through when `[[ebp+16]+8] > 0xf (unsigned, 32-bit)` (`jbe` at
-  0x14e869), reaching the jump to the error assignment (`jmp` at 0x14e86b). Taking both range
+  0x14e869), reaching the jump (`jmp` at 0x14e86b) to the assignment
+  `eax = 0xffffffff` (`mov` at 0x14e904). Taking both range
   guards (`jbe` at 0x14e869, `jae` at 0x14e872) instead reaches the body, which includes a byte
   input at I/O absolute `0x3da` (`in` at 0x14e884). The byte output values are unknown (`out` at
   0x14e8d7, `out` at 0x14e8da) and `0x20` (`out` at 0x14e8e7), all at unknown I/O addresses.
@@ -112,7 +113,7 @@ unless the entry establishes them.
   Analysed span 0x14e90c to 0x14e99c.
   Established. The output stores in the loop are two-byte accesses at unknown effective addresses,
   with unknown values (`mov` at 0x14e949, `mov` at 0x14e963, `mov` at 0x14e97e). The earlier
-  four-byte pointer load uses `[ebp+16] +0xc` (`mov` at 0x14e92d). A signed eight-bit repeat
+  four-byte load uses `[ebp+16] +0xc` (`mov` at 0x14e92d). A signed eight-bit repeat
   condition remains `? <= ?` on its taken edge (`jle` at 0x14e98a). No destination span or component
   encoding is established.
 

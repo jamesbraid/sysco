@@ -310,7 +310,8 @@ unless the entry establishes them.
 - `_mw8514WPal`, `patches/SG0002378/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x14ab88 to 0x14ac20.
   Established. The range branch falls through when `[[ebp+16]+8] > 0xff (unsigned, 32-bit)` (`jbe`
-  at 0x14abab), reaching the error assignment through a jump (`jmp` at 0x14abad, `mov` at 0x14abf3).
+  at 0x14abab), reaching the assignment `eax = 0xffffffff` (`mov` at 0x14abf3) through a jump
+  (`jmp` at 0x14abad).
   When both range guards take their branches (`jbe` at 0x14abab, `jae` at 0x14abb1), the selection
   branch is reached. It is taken when `(([[ebp+8]+22]:2 & 0xffff) & 0x100) != 0x0` (`jne` at
   0x14abbc). Each output arm includes four byte outputs with unknown I/O addresses

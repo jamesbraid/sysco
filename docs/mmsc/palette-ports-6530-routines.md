@@ -313,7 +313,8 @@ unless the entry establishes them.
 - `_mw8514WPal`, `6.5.30/usr/cpu/firmware/mmscfw.bin`:
   Analysed span 0x14ea00 to 0x14ea98.
   Established. The failed upper-bound guard falls through when `[[ebp+16]+8] > 0xff (unsigned,
-  32-bit)` (`jbe` at 0x14ea23), then jumps to its error assignment (`jmp` at 0x14ea25). Only after
+  32-bit)` (`jbe` at 0x14ea23), then jumps (`jmp` at 0x14ea25) to the assignment
+  `eax = 0xffffffff` (`mov` at 0x14ea6b). Only after
   following both range guards (`jbe` at 0x14ea23, `jae` at 0x14ea29) does the arm-selection branch test
   `(([[ebp+8]+22]:2 & 0xffff) & 0x100) != 0x0` (`jne` at 0x14ea34). The eight byte outputs retain
   unknown I/O targets and values (`out` at 0x14ea4a, `out` at 0x14ea4f, `out` at 0x14ea52, `out` at
