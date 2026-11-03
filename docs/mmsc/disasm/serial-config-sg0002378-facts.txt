@@ -1,0 +1,3093 @@
+routine _comGetInfo  0x12b1c0-0x12b1e0  size 0x20 (32 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (3)
+  0x12b1c0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b1c3 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b1d0 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (8)
+  B0 0x12b1c0-0x12b1c0 preds: entry
+      normal -> B1
+  B1 0x12b1c1-0x12b1c1 preds: B0
+      normal -> B2
+  B2 0x12b1c3-0x12b1c3 preds: B1
+      normal -> B3
+  B3 0x12b1c6-0x12b1c6 preds: B2
+      normal -> B4
+  B4 0x12b1c9-0x12b1c9 preds: B3
+      normal -> B5
+  B5 0x12b1ce-0x12b1ce preds: B4
+      normal -> B6
+  B6 0x12b1d0-0x12b1d0 preds: B5
+      normal -> B7
+  B7 0x12b1d1-0x12b1d1 preds: B6
+      return
+
+returns (1)
+  0x12b1d1: eax = ?; reached from B6
+
+constants
+immediates
+  0x4 at 0x12b1c6
+  0x1dd0d0 at 0x12b1c9
+instructions
+  0x12b1c0 55 push ebp
+  0x12b1c1 89e5 mov ebp, esp
+  0x12b1c3 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b1c6 c1e004 shl eax, 4
+  0x12b1c9 05d0d01d00 add eax, 0x1dd0d0
+  0x12b1ce 89ec mov esp, ebp
+  0x12b1d0 5d pop ebp
+  0x12b1d1 c3 ret
+  0x12b1d2 90 nop  (not reached by known edges)
+  0x12b1d3 90 nop  (not reached by known edges)
+  0x12b1d4 90 nop  (not reached by known edges)
+  0x12b1d5 90 nop  (not reached by known edges)
+  0x12b1d6 90 nop  (not reached by known edges)
+  0x12b1d7 90 nop  (not reached by known edges)
+  0x12b1d8 90 nop  (not reached by known edges)
+  0x12b1d9 90 nop  (not reached by known edges)
+  0x12b1da 90 nop  (not reached by known edges)
+  0x12b1db 90 nop  (not reached by known edges)
+  0x12b1dc 90 nop  (not reached by known edges)
+  0x12b1dd 90 nop  (not reached by known edges)
+  0x12b1de 90 nop  (not reached by known edges)
+  0x12b1df 90 nop  (not reached by known edges)
+
+routine _comGetTxBuf  0x12b200-0x12b220  size 0x20 (32 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b206 dec: unsupported effects invalidated
+
+accesses (4)
+  0x12b200 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b203 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b207 store w4 push base=esp disp -0x4 => sp -0x8 value ?
+  0x12b20f load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x12b208 call _ttyGetTxBuf [0x12b6e0]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (9)
+  B0 0x12b200-0x12b200 preds: entry
+      normal -> B1
+  B1 0x12b201-0x12b201 preds: B0
+      normal -> B2
+  B2 0x12b203-0x12b203 preds: B1
+      normal -> B3
+  B3 0x12b206-0x12b206 preds: B2
+      normal -> B4
+  B4 0x12b207-0x12b207 preds: B3
+      normal -> B5
+  B5 0x12b208-0x12b208 preds: B4
+      call -> 0x12b6e0
+  B6 0x12b20d-0x12b20d preds: B5
+      normal -> B7
+  B7 0x12b20f-0x12b20f preds: B6
+      normal -> B8
+  B8 0x12b210-0x12b210 preds: B7
+      return
+
+returns (1)
+  0x12b210: eax = ret(_ttyGetTxBuf); reached from B7
+
+constants
+immediates
+  0x12b6e0 at 0x12b208
+instructions
+  0x12b200 55 push ebp
+  0x12b201 89e5 mov ebp, esp
+  0x12b203 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b206 48 dec eax
+  0x12b207 50 push eax
+  0x12b208 e8d3040000 call 0x12b6e0
+  0x12b20d 89ec mov esp, ebp
+  0x12b20f 5d pop ebp
+  0x12b210 c3 ret
+  0x12b211 90 nop  (not reached by known edges)
+  0x12b212 90 nop  (not reached by known edges)
+  0x12b213 90 nop  (not reached by known edges)
+  0x12b214 90 nop  (not reached by known edges)
+  0x12b215 90 nop  (not reached by known edges)
+  0x12b216 90 nop  (not reached by known edges)
+  0x12b217 90 nop  (not reached by known edges)
+  0x12b218 90 nop  (not reached by known edges)
+  0x12b219 90 nop  (not reached by known edges)
+  0x12b21a 90 nop  (not reached by known edges)
+  0x12b21b 90 nop  (not reached by known edges)
+  0x12b21c 90 nop  (not reached by known edges)
+  0x12b21d 90 nop  (not reached by known edges)
+  0x12b21e 90 nop  (not reached by known edges)
+  0x12b21f 90 nop  (not reached by known edges)
+
+routine _comGetRxBuf  0x12b1e0-0x12b200  size 0x20 (32 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b1e6 dec: unsupported effects invalidated
+
+accesses (4)
+  0x12b1e0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b1e3 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b1e7 store w4 push base=esp disp -0x4 => sp -0x8 value ?
+  0x12b1ef load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x12b1e8 call _ttyGetRxBuf [0x12b690]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (9)
+  B0 0x12b1e0-0x12b1e0 preds: entry
+      normal -> B1
+  B1 0x12b1e1-0x12b1e1 preds: B0
+      normal -> B2
+  B2 0x12b1e3-0x12b1e3 preds: B1
+      normal -> B3
+  B3 0x12b1e6-0x12b1e6 preds: B2
+      normal -> B4
+  B4 0x12b1e7-0x12b1e7 preds: B3
+      normal -> B5
+  B5 0x12b1e8-0x12b1e8 preds: B4
+      call -> 0x12b690
+  B6 0x12b1ed-0x12b1ed preds: B5
+      normal -> B7
+  B7 0x12b1ef-0x12b1ef preds: B6
+      normal -> B8
+  B8 0x12b1f0-0x12b1f0 preds: B7
+      return
+
+returns (1)
+  0x12b1f0: eax = ret(_ttyGetRxBuf); reached from B7
+
+constants
+immediates
+  0x12b690 at 0x12b1e8
+instructions
+  0x12b1e0 55 push ebp
+  0x12b1e1 89e5 mov ebp, esp
+  0x12b1e3 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b1e6 48 dec eax
+  0x12b1e7 50 push eax
+  0x12b1e8 e8a3040000 call 0x12b690
+  0x12b1ed 89ec mov esp, ebp
+  0x12b1ef 5d pop ebp
+  0x12b1f0 c3 ret
+  0x12b1f1 90 nop  (not reached by known edges)
+  0x12b1f2 90 nop  (not reached by known edges)
+  0x12b1f3 90 nop  (not reached by known edges)
+  0x12b1f4 90 nop  (not reached by known edges)
+  0x12b1f5 90 nop  (not reached by known edges)
+  0x12b1f6 90 nop  (not reached by known edges)
+  0x12b1f7 90 nop  (not reached by known edges)
+  0x12b1f8 90 nop  (not reached by known edges)
+  0x12b1f9 90 nop  (not reached by known edges)
+  0x12b1fa 90 nop  (not reached by known edges)
+  0x12b1fb 90 nop  (not reached by known edges)
+  0x12b1fc 90 nop  (not reached by known edges)
+  0x12b1fd 90 nop  (not reached by known edges)
+  0x12b1fe 90 nop  (not reached by known edges)
+  0x12b1ff 90 nop  (not reached by known edges)
+
+routine _comSetFlag  0x12b290-0x12b350  size 0xc0 (192 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b299 dec: unsupported effects invalidated
+  warning: 0x12b2d5 inc: unsupported effects invalidated
+  warning: 0x12b2e0 setle: unsupported effects invalidated
+
+accesses (16)
+  0x12b290 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b293 store w4 push base=esp disp -0x4 => sp -0x8 value edi
+  0x12b294 store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x12b295 store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x12b296 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b29d load w2 mov base=ebp disp +0xc => sp +0x8
+  0x12b2a1 load w2 or base=eax disp +0x1dd0e4 => ? (unknown effective address)
+  0x12b2a1 store w2 or base=eax disp +0x1dd0e4 => ? (unknown effective address) value ?
+  0x12b2a8 store w4 push base=esp disp -0x4 => sp -0x14 value 0x1dd0e0
+  0x12b2ad store w4 push base=esp disp -0x4 => sp -0x18 value 0x4
+  0x12b2c0 load w4 mov base=? disp +0x1edd50 => ? (unknown effective address)
+  0x12b2c7 store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12b2eb load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12b2ec load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12b2ed load w4 pop base=esp disp +0x0 => sp -0x8
+  0x12b2f0 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (2)
+  0x12b2af call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b2c8 call _cmCheckTTYFlags [0x11a070]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (36)
+  B0 0x12b290-0x12b290 preds: entry
+      normal -> B1
+  B1 0x12b291-0x12b291 preds: B0
+      normal -> B2
+  B2 0x12b293-0x12b293 preds: B1
+      normal -> B3
+  B3 0x12b294-0x12b294 preds: B2
+      normal -> B4
+  B4 0x12b295-0x12b295 preds: B3
+      normal -> B5
+  B5 0x12b296-0x12b296 preds: B4
+      normal -> B6
+  B6 0x12b299-0x12b299 preds: B5
+      normal -> B7
+  B7 0x12b29a-0x12b29a preds: B6
+      normal -> B8
+  B8 0x12b29d-0x12b29d preds: B7
+      normal -> B9
+  B9 0x12b2a1-0x12b2a1 preds: B8
+      normal -> B10
+  B10 0x12b2a8-0x12b2a8 preds: B9
+      normal -> B11
+  B11 0x12b2ad-0x12b2ad preds: B10
+      normal -> B12
+  B12 0x12b2af-0x12b2af preds: B11
+      call -> 0x127298
+  B13 0x12b2b4-0x12b2b4 preds: B12
+      normal -> B14
+  B14 0x12b2b7-0x12b2b7 preds: B13
+      normal -> B15
+  B15 0x12b2b9-0x12b2b9 preds: B14
+      normal -> B16
+  B16 0x12b2bb-0x12b2bb preds: B15
+      normal -> B17
+  B17 0x12b2c0-0x12b2c0 preds: B16, B25
+      normal -> B18
+  B18 0x12b2c7-0x12b2c7 preds: B17
+      normal -> B19
+  B19 0x12b2c8-0x12b2c8 preds: B18
+      call -> 0x11a070
+  B20 0x12b2cd-0x12b2cd preds: B19
+      normal -> B21
+  B21 0x12b2d0-0x12b2d0 preds: B20
+      normal -> B22
+  B22 0x12b2d2-0x12b2d2 preds: B21
+      normal -> B23
+  B23 0x12b2d5-0x12b2d5 preds: B22
+      normal -> B24
+  B24 0x12b2d6-0x12b2d6 preds: B23
+      normal -> B25
+  B25 0x12b2dc-0x12b2dc preds: B24
+      taken when le flags condition (operands unknown) -> 0x12b2c0
+      falls through when not (le flags condition (operands unknown)) -> B26
+  B26 0x12b2de-0x12b2de preds: B25
+      normal -> B27
+  B27 0x12b2e0-0x12b2e0 preds: B26
+      normal -> B28
+  B28 0x12b2e3-0x12b2e3 preds: B27
+      normal -> B29
+  B29 0x12b2e8-0x12b2e8 preds: B28
+      normal -> B30
+  B30 0x12b2eb-0x12b2eb preds: B29
+      normal -> B31
+  B31 0x12b2ec-0x12b2ec preds: B30
+      normal -> B32
+  B32 0x12b2ed-0x12b2ed preds: B31
+      normal -> B33
+  B33 0x12b2ee-0x12b2ee preds: B32
+      normal -> B34
+  B34 0x12b2f0-0x12b2f0 preds: B33
+      normal -> B35
+  B35 0x12b2f1-0x12b2f1 preds: B34
+      return
+
+returns (1)
+  0x12b2f1: eax = ?; reached from B34
+
+constants
+  0x12b2b7 edi = 0x0
+  0x12b2b9 esi = 0x0
+  0x12b2bb ebx = 0x1edd50
+immediates
+  0x4 at 0x12b29a
+  0x1dd0e0 at 0x12b2a8
+  0x4 at 0x12b2ad
+  0x127298 at 0x12b2af
+  0x8 at 0x12b2b4
+  0x1edd50 at 0x12b2bb
+  0x11a070 at 0x12b2c8
+  0x4 at 0x12b2cd
+  0x4 at 0x12b2d2
+  0x1edd5c at 0x12b2d6
+  0x12b2c0 at 0x12b2dc
+  0xff at 0x12b2e3
+instructions
+  0x12b290 55 push ebp
+  0x12b291 89e5 mov ebp, esp
+  0x12b293 57 push edi
+  0x12b294 56 push esi
+  0x12b295 53 push ebx
+  0x12b296 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b299 48 dec eax
+  0x12b29a c1e004 shl eax, 4
+  0x12b29d 668b550c mov dx, word ptr [ebp + 0xc]
+  0x12b2a1 660990e4d01d00 or word ptr [eax + 0x1dd0e4], dx
+  0x12b2a8 68e0d01d00 push 0x1dd0e0
+  0x12b2ad 6a04 push 4
+  0x12b2af e8e4bfffff call 0x127298
+  0x12b2b4 83c408 add esp, 8
+  0x12b2b7 31ff xor edi, edi
+  0x12b2b9 31f6 xor esi, esi
+  0x12b2bb bb50dd1e00 mov ebx, 0x1edd50
+  0x12b2c0 8b04b550dd1e00 mov eax, dword ptr [esi*4 + 0x1edd50]
+  0x12b2c7 50 push eax
+  0x12b2c8 e8a3edfeff call 0x11a070
+  0x12b2cd 83c404 add esp, 4
+  0x12b2d0 01c7 add edi, eax
+  0x12b2d2 83c304 add ebx, 4
+  0x12b2d5 46 inc esi
+  0x12b2d6 81fb5cdd1e00 cmp ebx, 0x1edd5c
+  0x12b2dc 7ee2 jle 0x12b2c0
+  0x12b2de 85ff test edi, edi
+  0x12b2e0 0f9ec0 setle al
+  0x12b2e3 25ff000000 and eax, 0xff
+  0x12b2e8 8d65f4 lea esp, [ebp - 0xc]
+  0x12b2eb 5b pop ebx
+  0x12b2ec 5e pop esi
+  0x12b2ed 5f pop edi
+  0x12b2ee 89ec mov esp, ebp
+  0x12b2f0 5d pop ebp
+  0x12b2f1 c3 ret
+  0x12b2f2 55 push ebp (not reached by known edges)
+  0x12b2f3 6e outsb dx, byte ptr [esi] (not reached by known edges)
+  0x12b2f4 61 popal  (not reached by known edges)
+  0x12b2f5 626c6520 bound ebp, qword ptr [ebp + 0x20] (not reached by known edges)
+  0x12b2f9 746f je 0x12b36a (not reached by known edges)
+  0x12b2fb 206765 and byte ptr [edi + 0x65], ah (not reached by known edges)
+  0x12b2fe 7420 je 0x12b320 (not reached by known edges)
+  0x12b300 6861726477 push 0x77647261 (not reached by known edges)
+  0x12b305 61 popal  (not reached by known edges)
+  0x12b306 7265 jb 0x12b36d (not reached by known edges)
+  0x12b308 20646576 and byte ptr [ebp + 0x76], ah (not reached by known edges)
+  0x12b30c 5f pop edi (not reached by known edges)
+  0x12b30d 6f outsd dx, dword ptr [esi] (not reached by known edges)
+  0x12b30e 7074 jo 0x12b384 (not reached by known edges)
+  0x12b310 696f6e73206f6e imul ebp, dword ptr [edi + 0x6e], 0x6e6f2073 (not reached by known edges)
+  0x12b317 204644 and byte ptr [esi + 0x44], al (not reached by known edges)
+  0x12b31a 20256400556e and byte ptr [0x6e550064], ah (not reached by known edges)
+  0x12b320 61 popal  (not reached by known edges)
+  0x12b321 626c6520 bound ebp, qword ptr [ebp + 0x20] (not reached by known edges)
+  0x12b325 746f je 0x12b396 (not reached by known edges)
+  0x12b327 207365 and byte ptr [ebx + 0x65], dh (not reached by known edges)
+  0x12b32a 7420 je 0x12b34c (not reached by known edges)
+  0x12b32c 6861726477 push 0x77647261 (not reached by known edges)
+  0x12b331 61 popal  (not reached by known edges)
+  0x12b332 7265 jb 0x12b399 (not reached by known edges)
+  0x12b334 206f70 and byte ptr [edi + 0x70], ch (not reached by known edges)
+  0x12b337 7469 je 0x12b3a2 (not reached by known edges)
+  0x12b339 6f outsd dx, dword ptr [esi] (not reached by known edges)
+  0x12b33a 6e outsb dx, byte ptr [esi] (not reached by known edges)
+  0x12b33b 7320 jae 0x12b35d (not reached by known edges)
+  0x12b33d 6f outsd dx, dword ptr [esi] (not reached by known edges)
+  0x12b33e 6e outsb dx, byte ptr [esi] (not reached by known edges)
+  0x12b33f 204644 and byte ptr [esi + 0x44], al (not reached by known edges)
+  0x12b342 202564009090 and byte ptr [0x90900064], ah (not reached by known edges)
+  0x12b348 90 nop  (not reached by known edges)
+  0x12b349 90 nop  (not reached by known edges)
+  0x12b34a 90 nop  (not reached by known edges)
+  0x12b34b 90 nop  (not reached by known edges)
+  0x12b34c 90 nop  (not reached by known edges)
+  0x12b34d 90 nop  (not reached by known edges)
+  0x12b34e 90 nop  (not reached by known edges)
+  0x12b34f 90 nop  (not reached by known edges)
+
+routine _comResetFlag  0x12b220-0x12b290  size 0x70 (112 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b229 dec: unsupported effects invalidated
+  warning: 0x12b231 not: unsupported effects invalidated
+  warning: 0x12b269 inc: unsupported effects invalidated
+  warning: 0x12b274 setle: unsupported effects invalidated
+
+accesses (16)
+  0x12b220 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b223 store w4 push base=esp disp -0x4 => sp -0x8 value edi
+  0x12b224 store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x12b225 store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x12b226 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b22d load w2 mov base=ebp disp +0xc => sp +0x8
+  0x12b234 load w2 and base=eax disp +0x1dd0e4 => ? (unknown effective address)
+  0x12b234 store w2 and base=eax disp +0x1dd0e4 => ? (unknown effective address) value ?
+  0x12b23b store w4 push base=esp disp -0x4 => sp -0x14 value 0x1dd0e0
+  0x12b240 store w4 push base=esp disp -0x4 => sp -0x18 value 0x4
+  0x12b254 load w4 mov base=? disp +0x1edd50 => ? (unknown effective address)
+  0x12b25b store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12b27f load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12b280 load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12b281 load w4 pop base=esp disp +0x0 => sp -0x8
+  0x12b284 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (2)
+  0x12b242 call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b25c call _cmCheckTTYFlags [0x11a070]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (38)
+  B0 0x12b220-0x12b220 preds: entry
+      normal -> B1
+  B1 0x12b221-0x12b221 preds: B0
+      normal -> B2
+  B2 0x12b223-0x12b223 preds: B1
+      normal -> B3
+  B3 0x12b224-0x12b224 preds: B2
+      normal -> B4
+  B4 0x12b225-0x12b225 preds: B3
+      normal -> B5
+  B5 0x12b226-0x12b226 preds: B4
+      normal -> B6
+  B6 0x12b229-0x12b229 preds: B5
+      normal -> B7
+  B7 0x12b22a-0x12b22a preds: B6
+      normal -> B8
+  B8 0x12b22d-0x12b22d preds: B7
+      normal -> B9
+  B9 0x12b231-0x12b231 preds: B8
+      normal -> B10
+  B10 0x12b234-0x12b234 preds: B9
+      normal -> B11
+  B11 0x12b23b-0x12b23b preds: B10
+      normal -> B12
+  B12 0x12b240-0x12b240 preds: B11
+      normal -> B13
+  B13 0x12b242-0x12b242 preds: B12
+      call -> 0x127298
+  B14 0x12b247-0x12b247 preds: B13
+      normal -> B15
+  B15 0x12b24a-0x12b24a preds: B14
+      normal -> B16
+  B16 0x12b24c-0x12b24c preds: B15
+      normal -> B17
+  B17 0x12b24e-0x12b24e preds: B16
+      normal -> B18
+  B18 0x12b253-0x12b253 preds: B17
+      normal -> B19
+  B19 0x12b254-0x12b254 preds: B18, B27
+      normal -> B20
+  B20 0x12b25b-0x12b25b preds: B19
+      normal -> B21
+  B21 0x12b25c-0x12b25c preds: B20
+      call -> 0x11a070
+  B22 0x12b261-0x12b261 preds: B21
+      normal -> B23
+  B23 0x12b264-0x12b264 preds: B22
+      normal -> B24
+  B24 0x12b266-0x12b266 preds: B23
+      normal -> B25
+  B25 0x12b269-0x12b269 preds: B24
+      normal -> B26
+  B26 0x12b26a-0x12b26a preds: B25
+      normal -> B27
+  B27 0x12b270-0x12b270 preds: B26
+      taken when le flags condition (operands unknown) -> 0x12b254
+      falls through when not (le flags condition (operands unknown)) -> B28
+  B28 0x12b272-0x12b272 preds: B27
+      normal -> B29
+  B29 0x12b274-0x12b274 preds: B28
+      normal -> B30
+  B30 0x12b277-0x12b277 preds: B29
+      normal -> B31
+  B31 0x12b27c-0x12b27c preds: B30
+      normal -> B32
+  B32 0x12b27f-0x12b27f preds: B31
+      normal -> B33
+  B33 0x12b280-0x12b280 preds: B32
+      normal -> B34
+  B34 0x12b281-0x12b281 preds: B33
+      normal -> B35
+  B35 0x12b282-0x12b282 preds: B34
+      normal -> B36
+  B36 0x12b284-0x12b284 preds: B35
+      normal -> B37
+  B37 0x12b285-0x12b285 preds: B36
+      return
+
+returns (1)
+  0x12b285: eax = ?; reached from B36
+
+constants
+  0x12b24a edi = 0x0
+  0x12b24c esi = 0x0
+  0x12b24e ebx = 0x1edd50
+immediates
+  0x4 at 0x12b22a
+  0x1dd0e0 at 0x12b23b
+  0x4 at 0x12b240
+  0x127298 at 0x12b242
+  0x8 at 0x12b247
+  0x1edd50 at 0x12b24e
+  0x11a070 at 0x12b25c
+  0x4 at 0x12b261
+  0x4 at 0x12b266
+  0x1edd5c at 0x12b26a
+  0x12b254 at 0x12b270
+  0xff at 0x12b277
+instructions
+  0x12b220 55 push ebp
+  0x12b221 89e5 mov ebp, esp
+  0x12b223 57 push edi
+  0x12b224 56 push esi
+  0x12b225 53 push ebx
+  0x12b226 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b229 48 dec eax
+  0x12b22a c1e004 shl eax, 4
+  0x12b22d 668b550c mov dx, word ptr [ebp + 0xc]
+  0x12b231 66f7d2 not dx
+  0x12b234 662190e4d01d00 and word ptr [eax + 0x1dd0e4], dx
+  0x12b23b 68e0d01d00 push 0x1dd0e0
+  0x12b240 6a04 push 4
+  0x12b242 e851c0ffff call 0x127298
+  0x12b247 83c408 add esp, 8
+  0x12b24a 31ff xor edi, edi
+  0x12b24c 31f6 xor esi, esi
+  0x12b24e bb50dd1e00 mov ebx, 0x1edd50
+  0x12b253 90 nop
+  0x12b254 8b04b550dd1e00 mov eax, dword ptr [esi*4 + 0x1edd50]
+  0x12b25b 50 push eax
+  0x12b25c e80feefeff call 0x11a070
+  0x12b261 83c404 add esp, 4
+  0x12b264 01c7 add edi, eax
+  0x12b266 83c304 add ebx, 4
+  0x12b269 46 inc esi
+  0x12b26a 81fb5cdd1e00 cmp ebx, 0x1edd5c
+  0x12b270 7ee2 jle 0x12b254
+  0x12b272 85ff test edi, edi
+  0x12b274 0f9ec0 setle al
+  0x12b277 25ff000000 and eax, 0xff
+  0x12b27c 8d65f4 lea esp, [ebp - 0xc]
+  0x12b27f 5b pop ebx
+  0x12b280 5e pop esi
+  0x12b281 5f pop edi
+  0x12b282 89ec mov esp, ebp
+  0x12b284 5d pop ebp
+  0x12b285 c3 ret
+  0x12b286 90 nop  (not reached by known edges)
+  0x12b287 90 nop  (not reached by known edges)
+  0x12b288 90 nop  (not reached by known edges)
+  0x12b289 90 nop  (not reached by known edges)
+  0x12b28a 90 nop  (not reached by known edges)
+  0x12b28b 90 nop  (not reached by known edges)
+  0x12b28c 90 nop  (not reached by known edges)
+  0x12b28d 90 nop  (not reached by known edges)
+  0x12b28e 90 nop  (not reached by known edges)
+  0x12b28f 90 nop  (not reached by known edges)
+
+routine _comSetFunction  0x12b4a0-0x12b540  size 0xa0 (160 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b516 inc: unsupported effects invalidated
+
+accesses (24)
+  0x12b4a0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b4a6 store w4 push base=esp disp -0x4 => sp -0xc value edi
+  0x12b4a7 store w4 push base=esp disp -0x4 => sp -0x10 value esi
+  0x12b4a8 store w4 push base=esp disp -0x4 => sp -0x14 value ebx
+  0x12b4a9 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b4ac load w2 mov base=ebp disp +0xc => sp +0x8
+  0x12b4b3 store w4 mov base=ebp disp -0x4 => sp -0x8 value [sp+4]-1
+  0x12b4bb store w2 mov base=eax disp +0x1dd0e6 => ? (unknown effective address) value [sp+8]:2
+  0x12b4c2 load w1 test base=? disp +0x1dccc0 => abs 0x1dccc0
+  0x12b4ce store w4 push base=esp disp -0x4 => sp -0x18 value ?
+  0x12b4cf store w4 push base=esp disp -0x4 => sp -0x1c value [sp+4]
+  0x12b4d0 store w4 push base=esp disp -0x4 => sp -0x20 value 0x12b460
+  0x12b4e9 load w2 cmp base=edi disp +0x6 => ? (unknown effective address)
+  0x12b4f0 load w4 cmp base=ebp disp -0x4 => sp -0x8
+  0x12b4f5 store w2 mov base=edi disp +0x6 => ? (unknown effective address) value 0xffff
+  0x12b4fc load w1 test base=? disp +0x1dccc0 => abs 0x1dccc0
+  0x12b508 store w4 push base=esp disp -0x4 => sp -0x18 value ?
+  0x12b509 store w4 push base=esp disp -0x4 => sp -0x1c value 0x12b47c
+  0x12b51c store w4 push base=esp disp -0x4 => sp -0x18 value 0x1dd0e0
+  0x12b521 store w4 push base=esp disp -0x4 => sp -0x1c value 0x4
+  0x12b530 load w4 pop base=esp disp +0x0 => sp -0x14
+  0x12b531 load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12b532 load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12b535 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (3)
+  0x12b4d5 call _ffscMsg [0x11f040]
+      args: stack arg0=0x12b460, stack arg1=[sp+4], stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b50e call _ffscMsg [0x11f040]
+      args: stack arg0=0x12b47c, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b523 call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (51)
+  B0 0x12b4a0-0x12b4a0 preds: entry
+      normal -> B1
+  B1 0x12b4a1-0x12b4a1 preds: B0
+      normal -> B2
+  B2 0x12b4a3-0x12b4a3 preds: B1
+      normal -> B3
+  B3 0x12b4a6-0x12b4a6 preds: B2
+      normal -> B4
+  B4 0x12b4a7-0x12b4a7 preds: B3
+      normal -> B5
+  B5 0x12b4a8-0x12b4a8 preds: B4
+      normal -> B6
+  B6 0x12b4a9-0x12b4a9 preds: B5
+      normal -> B7
+  B7 0x12b4ac-0x12b4ac preds: B6
+      normal -> B8
+  B8 0x12b4b0-0x12b4b0 preds: B7
+      normal -> B9
+  B9 0x12b4b3-0x12b4b3 preds: B8
+      normal -> B10
+  B10 0x12b4b6-0x12b4b6 preds: B9
+      normal -> B11
+  B11 0x12b4b8-0x12b4b8 preds: B10
+      normal -> B12
+  B12 0x12b4bb-0x12b4bb preds: B11
+      normal -> B13
+  B13 0x12b4c2-0x12b4c2 preds: B12
+      normal -> B14
+  B14 0x12b4c9-0x12b4c9 preds: B13
+      taken when (([0x1dccc0]:1 & 0xff) & 0x4) == 0x0 -> 0x12b4dd
+      falls through when (([0x1dccc0]:1 & 0xff) & 0x4) != 0x0 -> B15
+  B15 0x12b4cb-0x12b4cb preds: B14
+      normal -> B16
+  B16 0x12b4ce-0x12b4ce preds: B15
+      normal -> B17
+  B17 0x12b4cf-0x12b4cf preds: B16
+      normal -> B18
+  B18 0x12b4d0-0x12b4d0 preds: B17
+      normal -> B19
+  B19 0x12b4d5-0x12b4d5 preds: B18
+      call -> 0x11f040
+  B20 0x12b4da-0x12b4da preds: B19
+      normal -> B21
+  B21 0x12b4dd-0x12b4dd preds: B14, B20
+      normal -> B22
+  B22 0x12b4df-0x12b4df preds: B21
+      normal -> B23
+  B23 0x12b4e4-0x12b4e4 preds: B22, B39
+      normal -> B24
+  B24 0x12b4e6-0x12b4e6 preds: B23
+      normal -> B25
+  B25 0x12b4e9-0x12b4e9 preds: B24
+      normal -> B26
+  B26 0x12b4ee-0x12b4ee preds: B25
+      taken when Z == 0 -> 0x12b516
+      falls through when not (Z == 0) -> B27
+  B27 0x12b4f0-0x12b4f0 preds: B26
+      normal -> B28
+  B28 0x12b4f3-0x12b4f3 preds: B27
+      taken when Z == 1 -> 0x12b516
+      falls through when not (Z == 1) -> B29
+  B29 0x12b4f5-0x12b4f5 preds: B28
+      normal -> B30
+  B30 0x12b4fc-0x12b4fc preds: B29
+      normal -> B31
+  B31 0x12b503-0x12b503 preds: B30
+      taken when (([0x1dccc0]:1 & 0xff) & 0x4) == 0x0 -> 0x12b516
+      falls through when (([0x1dccc0]:1 & 0xff) & 0x4) != 0x0 -> B32
+  B32 0x12b505-0x12b505 preds: B31
+      normal -> B33
+  B33 0x12b508-0x12b508 preds: B32
+      normal -> B34
+  B34 0x12b509-0x12b509 preds: B33
+      normal -> B35
+  B35 0x12b50e-0x12b50e preds: B34
+      call -> 0x11f040
+  B36 0x12b513-0x12b513 preds: B35
+      normal -> B37
+  B37 0x12b516-0x12b516 preds: B26, B28, B31, B36
+      normal -> B38
+  B38 0x12b517-0x12b517 preds: B37
+      normal -> B39
+  B39 0x12b51a-0x12b51a preds: B38
+      taken when ? <= 0x5 (signed, 32-bit) -> 0x12b4e4
+      falls through when ? > 0x5 (signed, 32-bit) -> B40
+  B40 0x12b51c-0x12b51c preds: B39
+      normal -> B41
+  B41 0x12b521-0x12b521 preds: B40
+      normal -> B42
+  B42 0x12b523-0x12b523 preds: B41
+      call -> 0x127298
+  B43 0x12b528-0x12b528 preds: B42
+      normal -> B44
+  B44 0x12b52d-0x12b52d preds: B43
+      normal -> B45
+  B45 0x12b530-0x12b530 preds: B44
+      normal -> B46
+  B46 0x12b531-0x12b531 preds: B45
+      normal -> B47
+  B47 0x12b532-0x12b532 preds: B46
+      normal -> B48
+  B48 0x12b533-0x12b533 preds: B47
+      normal -> B49
+  B49 0x12b535-0x12b535 preds: B48
+      normal -> B50
+  B50 0x12b536-0x12b536 preds: B49
+      return
+
+returns (1)
+  0x12b536: eax = 0x1; reached from B49
+
+constants
+  0x12b4dd ebx = 0x0
+  0x12b4df edi = 0x1dd0e0
+  0x12b528 eax = 0x1
+immediates
+  0x4 at 0x12b4a3
+  0x4 at 0x12b4b8
+  0x4 at 0x12b4c2
+  0x12b4dd at 0x12b4c9
+  0x12b460 at 0x12b4d0
+  0x11f040 at 0x12b4d5
+  0xc at 0x12b4da
+  0x1dd0e0 at 0x12b4df
+  0x4 at 0x12b4e6
+  0x12b516 at 0x12b4ee
+  0x12b516 at 0x12b4f3
+  0xffff at 0x12b4f5
+  0x4 at 0x12b4fc
+  0x12b516 at 0x12b503
+  0x12b47c at 0x12b509
+  0x11f040 at 0x12b50e
+  0x8 at 0x12b513
+  0x5 at 0x12b517
+  0x12b4e4 at 0x12b51a
+  0x1dd0e0 at 0x12b51c
+  0x4 at 0x12b521
+  0x127298 at 0x12b523
+  0x1 at 0x12b528
+instructions
+  0x12b4a0 55 push ebp
+  0x12b4a1 89e5 mov ebp, esp
+  0x12b4a3 83ec04 sub esp, 4
+  0x12b4a6 57 push edi
+  0x12b4a7 56 push esi
+  0x12b4a8 53 push ebx
+  0x12b4a9 8b5508 mov edx, dword ptr [ebp + 8]
+  0x12b4ac 668b750c mov si, word ptr [ebp + 0xc]
+  0x12b4b0 8d4aff lea ecx, [edx - 1]
+  0x12b4b3 894dfc mov dword ptr [ebp - 4], ecx
+  0x12b4b6 89c8 mov eax, ecx
+  0x12b4b8 c1e004 shl eax, 4
+  0x12b4bb 6689b0e6d01d00 mov word ptr [eax + 0x1dd0e6], si
+  0x12b4c2 f605c0cc1d0004 test byte ptr [0x1dccc0], 4
+  0x12b4c9 7412 je 0x12b4dd
+  0x12b4cb 0fbfc6 movsx eax, si
+  0x12b4ce 50 push eax
+  0x12b4cf 52 push edx
+  0x12b4d0 6860b41200 push 0x12b460
+  0x12b4d5 e8663bffff call 0x11f040
+  0x12b4da 83c40c add esp, 0xc
+  0x12b4dd 31db xor ebx, ebx
+  0x12b4df bfe0d01d00 mov edi, 0x1dd0e0
+  0x12b4e4 89d8 mov eax, ebx
+  0x12b4e6 c1e004 shl eax, 4
+  0x12b4e9 6639740706 cmp word ptr [edi + eax + 6], si
+  0x12b4ee 7526 jne 0x12b516
+  0x12b4f0 395dfc cmp dword ptr [ebp - 4], ebx
+  0x12b4f3 7421 je 0x12b516
+  0x12b4f5 66c7440706ffff mov word ptr [edi + eax + 6], 0xffff
+  0x12b4fc f605c0cc1d0004 test byte ptr [0x1dccc0], 4
+  0x12b503 7411 je 0x12b516
+  0x12b505 8d4301 lea eax, [ebx + 1]
+  0x12b508 50 push eax
+  0x12b509 687cb41200 push 0x12b47c
+  0x12b50e e82d3bffff call 0x11f040
+  0x12b513 83c408 add esp, 8
+  0x12b516 43 inc ebx
+  0x12b517 83fb05 cmp ebx, 5
+  0x12b51a 7ec8 jle 0x12b4e4
+  0x12b51c 68e0d01d00 push 0x1dd0e0
+  0x12b521 6a04 push 4
+  0x12b523 e870bdffff call 0x127298
+  0x12b528 b801000000 mov eax, 1
+  0x12b52d 8d65f0 lea esp, [ebp - 0x10]
+  0x12b530 5b pop ebx
+  0x12b531 5e pop esi
+  0x12b532 5f pop edi
+  0x12b533 89ec mov esp, ebp
+  0x12b535 5d pop ebp
+  0x12b536 c3 ret
+  0x12b537 90 nop  (not reached by known edges)
+  0x12b538 90 nop  (not reached by known edges)
+  0x12b539 90 nop  (not reached by known edges)
+  0x12b53a 90 nop  (not reached by known edges)
+  0x12b53b 90 nop  (not reached by known edges)
+  0x12b53c 90 nop  (not reached by known edges)
+  0x12b53d 90 nop  (not reached by known edges)
+  0x12b53e 90 nop  (not reached by known edges)
+  0x12b53f 90 nop  (not reached by known edges)
+
+routine _comSetSpeed  0x12b5a0-0x12b610  size 0x70 (112 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (19)
+  0x12b5a0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b5a3 store w4 push base=esp disp -0x4 => sp -0x8 value edi
+  0x12b5a4 store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x12b5a5 store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x12b5a6 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b5a9 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12b5af store w4 push base=esp disp -0x4 => sp -0x14 value [sp+8]
+  0x12b5b0 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b5b7 store w4 push base=esp disp -0x4 => sp -0x18 value ?
+  0x12b5c9 store w4 mov base=eax disp +0x1dd0e0 => ? (unknown effective address) value [sp+8]
+  0x12b5cf store w4 push base=esp disp -0x4 => sp -0x14 value 0x1dd0e0
+  0x12b5d4 store w4 push base=esp disp -0x4 => sp -0x18 value 0x4
+  0x12b5f0 store w4 push base=esp disp -0x4 => sp -0x14 value [sp+4]
+  0x12b5f1 store w4 push base=esp disp -0x4 => sp -0x18 value [sp+8]
+  0x12b5f2 store w4 push base=esp disp -0x4 => sp -0x1c value 0x12b579
+  0x12b604 load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12b605 load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12b606 load w4 pop base=esp disp +0x0 => sp -0x8
+  0x12b609 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (3)
+  0x12b5b8 call _ttySetSpeed [0x12bb00]
+      args: stack arg0=?, stack arg1=[sp+8], stack arg2=ebx, stack arg3=esi, stack arg4=edi, stack arg5=ebp
+  0x12b5d6 call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b5f7 call _ffscMsgS [0x11f110]
+      args: stack arg0=0x12b579, stack arg1=[sp+8], stack arg2=[sp+4], stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (37)
+  B0 0x12b5a0-0x12b5a0 preds: entry
+      normal -> B1
+  B1 0x12b5a1-0x12b5a1 preds: B0
+      normal -> B2
+  B2 0x12b5a3-0x12b5a3 preds: B1
+      normal -> B3
+  B3 0x12b5a4-0x12b5a4 preds: B2
+      normal -> B4
+  B4 0x12b5a5-0x12b5a5 preds: B3
+      normal -> B5
+  B5 0x12b5a6-0x12b5a6 preds: B4
+      normal -> B6
+  B6 0x12b5a9-0x12b5a9 preds: B5
+      normal -> B7
+  B7 0x12b5ac-0x12b5ac preds: B6
+      normal -> B8
+  B8 0x12b5af-0x12b5af preds: B7
+      normal -> B9
+  B9 0x12b5b0-0x12b5b0 preds: B8
+      normal -> B10
+  B10 0x12b5b7-0x12b5b7 preds: B9
+      normal -> B11
+  B11 0x12b5b8-0x12b5b8 preds: B10
+      call -> 0x12bb00
+  B12 0x12b5bd-0x12b5bd preds: B11
+      normal -> B13
+  B13 0x12b5c0-0x12b5c0 preds: B12
+      normal -> B14
+  B14 0x12b5c2-0x12b5c2 preds: B13
+      taken when (ret(_ttySetSpeed) & ret(_ttySetSpeed)) != 0x0 -> 0x12b5f0
+      falls through when (ret(_ttySetSpeed) & ret(_ttySetSpeed)) == 0x0 -> B15
+  B15 0x12b5c4-0x12b5c4 preds: B14
+      normal -> B16
+  B16 0x12b5c6-0x12b5c6 preds: B15
+      normal -> B17
+  B17 0x12b5c9-0x12b5c9 preds: B16
+      normal -> B18
+  B18 0x12b5cf-0x12b5cf preds: B17
+      normal -> B19
+  B19 0x12b5d4-0x12b5d4 preds: B18
+      normal -> B20
+  B20 0x12b5d6-0x12b5d6 preds: B19
+      call -> 0x127298
+  B21 0x12b5db-0x12b5db preds: B20
+      normal -> B22
+  B22 0x12b5dd-0x12b5dd preds: B21
+      taken when (ret(_nvramWrite) & ret(_nvramWrite)) != 0x0 -> 0x12b5fc
+      falls through when (ret(_nvramWrite) & ret(_nvramWrite)) == 0x0 -> B23
+  B23 0x12b5df-0x12b5df preds: B22
+      normal -> B24
+  B24 0x12b5e1-0x12b5e1 preds: B23
+      jump -> 0x12b601
+  B38 0x12b5f0-0x12b5f0 preds: B14
+      normal -> B39
+  B39 0x12b5f1-0x12b5f1 preds: B38
+      normal -> B40
+  B40 0x12b5f2-0x12b5f2 preds: B39
+      normal -> B41
+  B41 0x12b5f7-0x12b5f7 preds: B40
+      call -> 0x11f110
+  B42 0x12b5fc-0x12b5fc preds: B41, B22
+      normal -> B43
+  B43 0x12b601-0x12b601 preds: B42, B24
+      normal -> B44
+  B44 0x12b604-0x12b604 preds: B43
+      normal -> B45
+  B45 0x12b605-0x12b605 preds: B44
+      normal -> B46
+  B46 0x12b606-0x12b606 preds: B45
+      normal -> B47
+  B47 0x12b607-0x12b607 preds: B46
+      normal -> B48
+  B48 0x12b609-0x12b609 preds: B47
+      normal -> B49
+  B49 0x12b60a-0x12b60a preds: B48
+      return
+
+returns (1)
+  0x12b60a: eax = ?; reached from B48
+
+constants
+  0x12b5df eax = 0x0
+  0x12b5fc eax = 0xffffffff
+immediates
+  0x12bb00 at 0x12b5b8
+  0x8 at 0x12b5bd
+  0x12b5f0 at 0x12b5c2
+  0x4 at 0x12b5c6
+  0x1dd0e0 at 0x12b5cf
+  0x4 at 0x12b5d4
+  0x127298 at 0x12b5d6
+  0x12b5fc at 0x12b5dd
+  0x12b601 at 0x12b5e1
+  0x12b579 at 0x12b5f2
+  0x11f110 at 0x12b5f7
+  0xffffffff at 0x12b5fc
+instructions
+  0x12b5a0 55 push ebp
+  0x12b5a1 89e5 mov ebp, esp
+  0x12b5a3 57 push edi
+  0x12b5a4 56 push esi
+  0x12b5a5 53 push ebx
+  0x12b5a6 8b7d08 mov edi, dword ptr [ebp + 8]
+  0x12b5a9 8b750c mov esi, dword ptr [ebp + 0xc]
+  0x12b5ac 8d5fff lea ebx, [edi - 1]
+  0x12b5af 56 push esi
+  0x12b5b0 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b5b7 50 push eax
+  0x12b5b8 e843050000 call 0x12bb00
+  0x12b5bd 83c408 add esp, 8
+  0x12b5c0 85c0 test eax, eax
+  0x12b5c2 752c jne 0x12b5f0
+  0x12b5c4 89d8 mov eax, ebx
+  0x12b5c6 c1e004 shl eax, 4
+  0x12b5c9 89b0e0d01d00 mov dword ptr [eax + 0x1dd0e0], esi
+  0x12b5cf 68e0d01d00 push 0x1dd0e0
+  0x12b5d4 6a04 push 4
+  0x12b5d6 e8bdbcffff call 0x127298
+  0x12b5db 85c0 test eax, eax
+  0x12b5dd 751d jne 0x12b5fc
+  0x12b5df 31c0 xor eax, eax
+  0x12b5e1 eb1e jmp 0x12b601
+  0x12b5e3 90 nop  (not reached by known edges)
+  0x12b5e4 90 nop  (not reached by known edges)
+  0x12b5e5 90 nop  (not reached by known edges)
+  0x12b5e6 90 nop  (not reached by known edges)
+  0x12b5e7 90 nop  (not reached by known edges)
+  0x12b5e8 90 nop  (not reached by known edges)
+  0x12b5e9 90 nop  (not reached by known edges)
+  0x12b5ea 90 nop  (not reached by known edges)
+  0x12b5eb 90 nop  (not reached by known edges)
+  0x12b5ec 90 nop  (not reached by known edges)
+  0x12b5ed 90 nop  (not reached by known edges)
+  0x12b5ee 90 nop  (not reached by known edges)
+  0x12b5ef 90 nop  (not reached by known edges)
+  0x12b5f0 57 push edi
+  0x12b5f1 56 push esi
+  0x12b5f2 6879b51200 push 0x12b579
+  0x12b5f7 e8143bffff call 0x11f110
+  0x12b5fc b8ffffffff mov eax, 0xffffffff
+  0x12b601 8d65f4 lea esp, [ebp - 0xc]
+  0x12b604 5b pop ebx
+  0x12b605 5e pop esi
+  0x12b606 5f pop edi
+  0x12b607 89ec mov esp, ebp
+  0x12b609 5d pop ebp
+  0x12b60a c3 ret
+  0x12b60b 90 nop  (not reached by known edges)
+  0x12b60c 90 nop  (not reached by known edges)
+  0x12b60d 90 nop  (not reached by known edges)
+  0x12b60e 90 nop  (not reached by known edges)
+  0x12b60f 90 nop  (not reached by known edges)
+
+routine _comSetRxBuf  0x12b540-0x12b5a0  size 0x60 (96 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b549 dec: unsupported effects invalidated
+  warning: decoder stopped at 0x12b59d; remaining bytes are not instructions
+
+accesses (8)
+  0x12b540 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b543 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12b546 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b54d store w4 mov base=eax disp +0x1dd0e8 => ? (unknown effective address) value [sp+8]
+  0x12b553 store w4 push base=esp disp -0x4 => sp -0x8 value 0x1dd0e0
+  0x12b558 store w4 push base=esp disp -0x4 => sp -0xc value 0x4
+  0x12b567 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x12b577 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x12b55a call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (20)
+  B0 0x12b540-0x12b540 preds: entry
+      normal -> B1
+  B1 0x12b541-0x12b541 preds: B0
+      normal -> B2
+  B2 0x12b543-0x12b543 preds: B1
+      normal -> B3
+  B3 0x12b546-0x12b546 preds: B2
+      normal -> B4
+  B4 0x12b549-0x12b549 preds: B3
+      normal -> B5
+  B5 0x12b54a-0x12b54a preds: B4
+      normal -> B6
+  B6 0x12b54d-0x12b54d preds: B5
+      normal -> B7
+  B7 0x12b553-0x12b553 preds: B6
+      normal -> B8
+  B8 0x12b558-0x12b558 preds: B7
+      normal -> B9
+  B9 0x12b55a-0x12b55a preds: B8
+      call -> 0x127298
+  B10 0x12b55f-0x12b55f preds: B9
+      normal -> B11
+  B11 0x12b561-0x12b561 preds: B10
+      taken when (ret(_nvramWrite) & ret(_nvramWrite)) != 0x0 -> 0x12b570
+      falls through when (ret(_nvramWrite) & ret(_nvramWrite)) == 0x0 -> B12
+  B12 0x12b563-0x12b563 preds: B11
+      normal -> B13
+  B13 0x12b565-0x12b565 preds: B12
+      normal -> B14
+  B14 0x12b567-0x12b567 preds: B13
+      normal -> B15
+  B15 0x12b568-0x12b568 preds: B14
+      return
+  B23 0x12b570-0x12b570 preds: B11
+      normal -> B24
+  B24 0x12b575-0x12b575 preds: B23
+      normal -> B25
+  B25 0x12b577-0x12b577 preds: B24
+      normal -> B26
+  B26 0x12b578-0x12b578 preds: B25
+      return
+
+returns (2)
+  0x12b568: eax = 0x0; reached from B14
+  0x12b578: eax = 0xffffffff; reached from B25
+
+constants
+  0x12b563 eax = 0x0
+  0x12b570 eax = 0xffffffff
+immediates
+  0x4 at 0x12b54a
+  0x1dd0e0 at 0x12b553
+  0x4 at 0x12b558
+  0x127298 at 0x12b55a
+  0x12b570 at 0x12b561
+  0xffffffff at 0x12b570
+instructions
+  0x12b540 55 push ebp
+  0x12b541 89e5 mov ebp, esp
+  0x12b543 8b550c mov edx, dword ptr [ebp + 0xc]
+  0x12b546 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b549 48 dec eax
+  0x12b54a c1e004 shl eax, 4
+  0x12b54d 8990e8d01d00 mov dword ptr [eax + 0x1dd0e8], edx
+  0x12b553 68e0d01d00 push 0x1dd0e0
+  0x12b558 6a04 push 4
+  0x12b55a e839bdffff call 0x127298
+  0x12b55f 85c0 test eax, eax
+  0x12b561 750d jne 0x12b570
+  0x12b563 31c0 xor eax, eax
+  0x12b565 89ec mov esp, ebp
+  0x12b567 5d pop ebp
+  0x12b568 c3 ret
+  0x12b569 90 nop  (not reached by known edges)
+  0x12b56a 90 nop  (not reached by known edges)
+  0x12b56b 90 nop  (not reached by known edges)
+  0x12b56c 90 nop  (not reached by known edges)
+  0x12b56d 90 nop  (not reached by known edges)
+  0x12b56e 90 nop  (not reached by known edges)
+  0x12b56f 90 nop  (not reached by known edges)
+  0x12b570 b8ffffffff mov eax, 0xffffffff
+  0x12b575 89ec mov esp, ebp
+  0x12b577 5d pop ebp
+  0x12b578 c3 ret
+  0x12b579 55 push ebp (not reached by known edges)
+  0x12b57a 6e outsb dx, byte ptr [esi] (not reached by known edges)
+  0x12b57b 61 popal  (not reached by known edges)
+  0x12b57c 626c6520 bound ebp, qword ptr [ebp + 0x20] (not reached by known edges)
+  0x12b580 746f je 0x12b5f1 (not reached by known edges)
+  0x12b582 207365 and byte ptr [ebx + 0x65], dh (not reached by known edges)
+  0x12b585 7420 je 0x12b5a7 (not reached by known edges)
+  0x12b587 626175 bound esp, qword ptr [ecx + 0x75] (not reached by known edges)
+  0x12b58a 64207261 and byte ptr fs:[edx + 0x61], dh (not reached by known edges)
+  0x12b58e 7465 je 0x12b5f5 (not reached by known edges)
+  0x12b590 20746f20 and byte ptr [edi + ebp*2 + 0x20], dh (not reached by known edges)
+  0x12b594 2564206f6e and eax, 0x6e6f2064 (not reached by known edges)
+  0x12b599 20434f and byte ptr [ebx + 0x4f], al (not reached by known edges)
+  0x12b59c 4d dec ebp (not reached by known edges)
+
+routine _comSetTxBuf  0x12b610-0x12b650  size 0x40 (64 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b619 dec: unsupported effects invalidated
+
+accesses (8)
+  0x12b610 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b613 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12b616 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b61d store w4 mov base=eax disp +0x1dd0ec => ? (unknown effective address) value [sp+8]
+  0x12b623 store w4 push base=esp disp -0x4 => sp -0x8 value 0x1dd0e0
+  0x12b628 store w4 push base=esp disp -0x4 => sp -0xc value 0x4
+  0x12b637 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x12b647 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x12b62a call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (20)
+  B0 0x12b610-0x12b610 preds: entry
+      normal -> B1
+  B1 0x12b611-0x12b611 preds: B0
+      normal -> B2
+  B2 0x12b613-0x12b613 preds: B1
+      normal -> B3
+  B3 0x12b616-0x12b616 preds: B2
+      normal -> B4
+  B4 0x12b619-0x12b619 preds: B3
+      normal -> B5
+  B5 0x12b61a-0x12b61a preds: B4
+      normal -> B6
+  B6 0x12b61d-0x12b61d preds: B5
+      normal -> B7
+  B7 0x12b623-0x12b623 preds: B6
+      normal -> B8
+  B8 0x12b628-0x12b628 preds: B7
+      normal -> B9
+  B9 0x12b62a-0x12b62a preds: B8
+      call -> 0x127298
+  B10 0x12b62f-0x12b62f preds: B9
+      normal -> B11
+  B11 0x12b631-0x12b631 preds: B10
+      taken when (ret(_nvramWrite) & ret(_nvramWrite)) != 0x0 -> 0x12b640
+      falls through when (ret(_nvramWrite) & ret(_nvramWrite)) == 0x0 -> B12
+  B12 0x12b633-0x12b633 preds: B11
+      normal -> B13
+  B13 0x12b635-0x12b635 preds: B12
+      normal -> B14
+  B14 0x12b637-0x12b637 preds: B13
+      normal -> B15
+  B15 0x12b638-0x12b638 preds: B14
+      return
+  B23 0x12b640-0x12b640 preds: B11
+      normal -> B24
+  B24 0x12b645-0x12b645 preds: B23
+      normal -> B25
+  B25 0x12b647-0x12b647 preds: B24
+      normal -> B26
+  B26 0x12b648-0x12b648 preds: B25
+      return
+
+returns (2)
+  0x12b638: eax = 0x0; reached from B14
+  0x12b648: eax = 0xffffffff; reached from B25
+
+constants
+  0x12b633 eax = 0x0
+  0x12b640 eax = 0xffffffff
+immediates
+  0x4 at 0x12b61a
+  0x1dd0e0 at 0x12b623
+  0x4 at 0x12b628
+  0x127298 at 0x12b62a
+  0x12b640 at 0x12b631
+  0xffffffff at 0x12b640
+instructions
+  0x12b610 55 push ebp
+  0x12b611 89e5 mov ebp, esp
+  0x12b613 8b550c mov edx, dword ptr [ebp + 0xc]
+  0x12b616 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b619 48 dec eax
+  0x12b61a c1e004 shl eax, 4
+  0x12b61d 8990ecd01d00 mov dword ptr [eax + 0x1dd0ec], edx
+  0x12b623 68e0d01d00 push 0x1dd0e0
+  0x12b628 6a04 push 4
+  0x12b62a e869bcffff call 0x127298
+  0x12b62f 85c0 test eax, eax
+  0x12b631 750d jne 0x12b640
+  0x12b633 31c0 xor eax, eax
+  0x12b635 89ec mov esp, ebp
+  0x12b637 5d pop ebp
+  0x12b638 c3 ret
+  0x12b639 90 nop  (not reached by known edges)
+  0x12b63a 90 nop  (not reached by known edges)
+  0x12b63b 90 nop  (not reached by known edges)
+  0x12b63c 90 nop  (not reached by known edges)
+  0x12b63d 90 nop  (not reached by known edges)
+  0x12b63e 90 nop  (not reached by known edges)
+  0x12b63f 90 nop  (not reached by known edges)
+  0x12b640 b8ffffffff mov eax, 0xffffffff
+  0x12b645 89ec mov esp, ebp
+  0x12b647 5d pop ebp
+  0x12b648 c3 ret
+  0x12b649 90 nop  (not reached by known edges)
+  0x12b64a 90 nop  (not reached by known edges)
+  0x12b64b 90 nop  (not reached by known edges)
+  0x12b64c 90 nop  (not reached by known edges)
+  0x12b64d 90 nop  (not reached by known edges)
+  0x12b64e 90 nop  (not reached by known edges)
+  0x12b64f 90 nop  (not reached by known edges)
+
+routine _comSetFlowCntl  0x12b350-0x12b4a0  size 0x150 (336 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: decoder stopped at 0x12b49c; remaining bytes are not instructions
+
+accesses (43)
+  0x12b350 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b356 store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x12b357 store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x12b358 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b35b load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12b361 store w4 push base=esp disp -0x4 => sp -0x14 value sp-8
+  0x12b362 store w4 push base=esp disp -0x4 => sp -0x18 value 0x1006
+  0x12b367 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b36e store w4 push base=esp disp -0x4 => sp -0x1c value ?
+  0x12b37b load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b382 store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12b383 store w4 push base=esp disp -0x4 => sp -0x18 value 0x12b2f2
+  0x12b394 load w4 and base=ebp disp -0x4 => sp -0x8
+  0x12b394 store w4 and base=ebp disp -0x4 => sp -0x8 value ?
+  0x12b398 load w1 or base=ebp disp -0x4 => sp -0x8
+  0x12b398 store w1 or base=ebp disp -0x4 => sp -0x8 value ?
+  0x12b39c store w4 push base=esp disp -0x4 => sp -0x14 value 0x800
+  0x12b3a4 store w4 push base=esp disp -0x4 => sp -0x18 value [sp+4]+1
+  0x12b3b0 load w1 or base=ebp disp -0x4 => sp -0x8
+  0x12b3b0 store w1 or base=ebp disp -0x4 => sp -0x8 value ?
+  0x12b3b4 load w4 and base=ebp disp -0x4 => sp -0x8
+  0x12b3b4 store w4 and base=ebp disp -0x4 => sp -0x8 value ?
+  0x12b3b8 store w4 push base=esp disp -0x4 => sp -0x14 value 0x800
+  0x12b3c0 store w4 push base=esp disp -0x4 => sp -0x18 value [sp+4]+1
+  0x12b3c9 load w4 mov base=ebp disp -0x4 => sp -0x8
+  0x12b3cc store w4 push base=esp disp -0x4 => sp -0x14 value [sp-8]
+  0x12b3cd store w4 push base=esp disp -0x4 => sp -0x18 value 0x1005
+  0x12b3d2 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b3d9 store w4 push base=esp disp -0x4 => sp -0x1c value ?
+  0x12b3e6 store w4 push base=esp disp -0x4 => sp -0x14 value 0x0
+  0x12b3e8 store w4 push base=esp disp -0x4 => sp -0x18 value 0x13
+  0x12b3ea load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b3f1 store w4 push base=esp disp -0x4 => sp -0x1c value ?
+  0x12b417 store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12b418 store w4 push base=esp disp -0x4 => sp -0x18 value 0x3
+  0x12b41a load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b421 store w4 push base=esp disp -0x4 => sp -0x1c value ?
+  0x12b440 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b447 store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12b448 store w4 push base=esp disp -0x4 => sp -0x18 value 0x12b31e
+  0x12b45a load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12b45b load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12b45e load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (7)
+  0x12b36f call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x1006, stack arg2=sp-8, stack arg3=ebx, stack arg4=esi, stack arg5=?
+  0x12b3a5 call _comSetFlag [0x12b290]
+      args: stack arg0=[sp+4]+1, stack arg1=0x800, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b3c1 call _comResetFlag [0x12b220]
+      args: stack arg0=[sp+4]+1, stack arg1=0x800, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b3da call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x1005, stack arg2=[sp-8], stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b3f2 call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x13, stack arg2=0x0, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b422 call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x3, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b44d call _ffscMsg [0x11f040]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (78)
+  B0 0x12b350-0x12b350 preds: entry
+      normal -> B1
+  B1 0x12b351-0x12b351 preds: B0
+      normal -> B2
+  B2 0x12b353-0x12b353 preds: B1
+      normal -> B3
+  B3 0x12b356-0x12b356 preds: B2
+      normal -> B4
+  B4 0x12b357-0x12b357 preds: B3
+      normal -> B5
+  B5 0x12b358-0x12b358 preds: B4
+      normal -> B6
+  B6 0x12b35b-0x12b35b preds: B5
+      normal -> B7
+  B7 0x12b35e-0x12b35e preds: B6
+      normal -> B8
+  B8 0x12b361-0x12b361 preds: B7
+      normal -> B9
+  B9 0x12b362-0x12b362 preds: B8
+      normal -> B10
+  B10 0x12b367-0x12b367 preds: B9
+      normal -> B11
+  B11 0x12b36e-0x12b36e preds: B10
+      normal -> B12
+  B12 0x12b36f-0x12b36f preds: B11
+      call -> 0x189340
+  B13 0x12b374-0x12b374 preds: B12
+      normal -> B14
+  B14 0x12b377-0x12b377 preds: B13
+      normal -> B15
+  B15 0x12b379-0x12b379 preds: B14
+      taken when ge flags condition (operands unknown) -> 0x12b390
+      falls through when not (ge flags condition (operands unknown)) -> B16
+  B16 0x12b37b-0x12b37b preds: B15
+      normal -> B17
+  B17 0x12b382-0x12b382 preds: B16
+      normal -> B18
+  B18 0x12b383-0x12b383 preds: B17
+      normal -> B19
+  B19 0x12b388-0x12b388 preds: B18
+      jump -> 0x12b44d
+  B23 0x12b390-0x12b390 preds: B15
+      normal -> B24
+  B24 0x12b392-0x12b392 preds: B23
+      taken when ([sp+8] & [sp+8]) == 0x0 -> 0x12b3b0
+      falls through when ([sp+8] & [sp+8]) != 0x0 -> B25
+  B25 0x12b394-0x12b394 preds: B24
+      normal -> B26
+  B26 0x12b398-0x12b398 preds: B25
+      normal -> B27
+  B27 0x12b39c-0x12b39c preds: B26
+      normal -> B28
+  B28 0x12b3a1-0x12b3a1 preds: B27
+      normal -> B29
+  B29 0x12b3a4-0x12b3a4 preds: B28
+      normal -> B30
+  B30 0x12b3a5-0x12b3a5 preds: B29
+      call -> 0x12b290
+  B31 0x12b3aa-0x12b3aa preds: B30
+      jump -> 0x12b3c6
+  B36 0x12b3b0-0x12b3b0 preds: B24
+      normal -> B37
+  B37 0x12b3b4-0x12b3b4 preds: B36
+      normal -> B38
+  B38 0x12b3b8-0x12b3b8 preds: B37
+      normal -> B39
+  B39 0x12b3bd-0x12b3bd preds: B38
+      normal -> B40
+  B40 0x12b3c0-0x12b3c0 preds: B39
+      normal -> B41
+  B41 0x12b3c1-0x12b3c1 preds: B40
+      call -> 0x12b220
+  B42 0x12b3c6-0x12b3c6 preds: B41, B31
+      normal -> B43
+  B43 0x12b3c9-0x12b3c9 preds: B42
+      normal -> B44
+  B44 0x12b3cc-0x12b3cc preds: B43
+      normal -> B45
+  B45 0x12b3cd-0x12b3cd preds: B44
+      normal -> B46
+  B46 0x12b3d2-0x12b3d2 preds: B45
+      normal -> B47
+  B47 0x12b3d9-0x12b3d9 preds: B46
+      normal -> B48
+  B48 0x12b3da-0x12b3da preds: B47
+      call -> 0x189340
+  B49 0x12b3df-0x12b3df preds: B48
+      normal -> B50
+  B50 0x12b3e2-0x12b3e2 preds: B49
+      normal -> B51
+  B51 0x12b3e4-0x12b3e4 preds: B50
+      taken when l flags condition (operands unknown) -> 0x12b440
+      falls through when not (l flags condition (operands unknown)) -> B52
+  B52 0x12b3e6-0x12b3e6 preds: B51
+      normal -> B53
+  B53 0x12b3e8-0x12b3e8 preds: B52
+      normal -> B54
+  B54 0x12b3ea-0x12b3ea preds: B53
+      normal -> B55
+  B55 0x12b3f1-0x12b3f1 preds: B54
+      normal -> B56
+  B56 0x12b3f2-0x12b3f2 preds: B55
+      call -> 0x189340
+  B57 0x12b3f7-0x12b3f7 preds: B56
+      normal -> B58
+  B58 0x12b3fa-0x12b3fa preds: B57
+      normal -> B59
+  B59 0x12b3fc-0x12b3fc preds: B58
+      taken when ([sp+8] & [sp+8]) == 0x0 -> 0x12b410
+      falls through when ([sp+8] & [sp+8]) != 0x0 -> B60
+  B60 0x12b3fe-0x12b3fe preds: B59
+      normal -> B61
+  B61 0x12b400-0x12b400 preds: B60
+      jump -> 0x12b412
+  B76 0x12b410-0x12b410 preds: B59
+      normal -> B77
+  B77 0x12b412-0x12b412 preds: B76, B61
+      normal -> B78
+  B78 0x12b417-0x12b417 preds: B77
+      normal -> B79
+  B79 0x12b418-0x12b418 preds: B78
+      normal -> B80
+  B80 0x12b41a-0x12b41a preds: B79
+      normal -> B81
+  B81 0x12b421-0x12b421 preds: B80
+      normal -> B82
+  B82 0x12b422-0x12b422 preds: B81
+      call -> 0x189340
+  B83 0x12b427-0x12b427 preds: B82
+      normal -> B84
+  B84 0x12b42a-0x12b42a preds: B83
+      normal -> B85
+  B85 0x12b42c-0x12b42c preds: B84
+      taken when l flags condition (operands unknown) -> 0x12b440
+      falls through when not (l flags condition (operands unknown)) -> B86
+  B86 0x12b42e-0x12b42e preds: B85
+      normal -> B87
+  B87 0x12b430-0x12b430 preds: B86
+      jump -> 0x12b457
+  B102 0x12b440-0x12b440 preds: B51, B85
+      normal -> B103
+  B103 0x12b447-0x12b447 preds: B102
+      normal -> B104
+  B104 0x12b448-0x12b448 preds: B103
+      normal -> B105
+  B105 0x12b44d-0x12b44d preds: B19, B104
+      call -> 0x11f040
+  B106 0x12b452-0x12b452 preds: B105
+      normal -> B107
+  B107 0x12b457-0x12b457 preds: B106, B87
+      normal -> B108
+  B108 0x12b45a-0x12b45a preds: B107
+      normal -> B109
+  B109 0x12b45b-0x12b45b preds: B108
+      normal -> B110
+  B110 0x12b45c-0x12b45c preds: B109
+      normal -> B111
+  B111 0x12b45e-0x12b45e preds: B110
+      normal -> B112
+  B112 0x12b45f-0x12b45f preds: B111
+      return
+
+returns (1)
+  0x12b45f: eax = ?; reached from B111
+
+constants
+  0x12b42e eax = 0x0
+  0x12b452 eax = 0xffffffff
+immediates
+  0x4 at 0x12b353
+  0x1006 at 0x12b362
+  0x189340 at 0x12b36f
+  0xc at 0x12b374
+  0x12b390 at 0x12b379
+  0x12b2f2 at 0x12b383
+  0x12b44d at 0x12b388
+  0x12b3b0 at 0x12b392
+  0xfffffffe at 0x12b394
+  0x10 at 0x12b398
+  0x800 at 0x12b39c
+  0x12b290 at 0x12b3a5
+  0x12b3c6 at 0x12b3aa
+  0x1 at 0x12b3b0
+  0xffffffef at 0x12b3b4
+  0x800 at 0x12b3b8
+  0x12b220 at 0x12b3c1
+  0x8 at 0x12b3c6
+  0x1005 at 0x12b3cd
+  0x189340 at 0x12b3da
+  0xc at 0x12b3df
+  0x12b440 at 0x12b3e4
+  0x0 at 0x12b3e6
+  0x13 at 0x12b3e8
+  0x189340 at 0x12b3f2
+  0xc at 0x12b3f7
+  0x12b410 at 0x12b3fc
+  0x80 at 0x12b3fe
+  0x12b412 at 0x12b400
+  0x7f at 0x12b410
+  0xffff at 0x12b412
+  0x3 at 0x12b418
+  0x189340 at 0x12b422
+  0xc at 0x12b427
+  0x12b440 at 0x12b42c
+  0x12b457 at 0x12b430
+  0x12b31e at 0x12b448
+  0x11f040 at 0x12b44d
+  0xffffffff at 0x12b452
+instructions
+  0x12b350 55 push ebp
+  0x12b351 89e5 mov ebp, esp
+  0x12b353 83ec04 sub esp, 4
+  0x12b356 56 push esi
+  0x12b357 53 push ebx
+  0x12b358 8b5d08 mov ebx, dword ptr [ebp + 8]
+  0x12b35b 8b750c mov esi, dword ptr [ebp + 0xc]
+  0x12b35e 8d45fc lea eax, [ebp - 4]
+  0x12b361 50 push eax
+  0x12b362 6806100000 push 0x1006
+  0x12b367 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b36e 50 push eax
+  0x12b36f e8ccdf0500 call 0x189340
+  0x12b374 83c40c add esp, 0xc
+  0x12b377 85c0 test eax, eax
+  0x12b379 7d15 jge 0x12b390
+  0x12b37b 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b382 50 push eax
+  0x12b383 68f2b21200 push 0x12b2f2
+  0x12b388 e9c0000000 jmp 0x12b44d
+  0x12b38d 90 nop  (not reached by known edges)
+  0x12b38e 90 nop  (not reached by known edges)
+  0x12b38f 90 nop  (not reached by known edges)
+  0x12b390 85f6 test esi, esi
+  0x12b392 741c je 0x12b3b0
+  0x12b394 8365fcfe and dword ptr [ebp - 4], 0xfffffffe
+  0x12b398 804dfc10 or byte ptr [ebp - 4], 0x10
+  0x12b39c 6800080000 push 0x800
+  0x12b3a1 8d4301 lea eax, [ebx + 1]
+  0x12b3a4 50 push eax
+  0x12b3a5 e8e6feffff call 0x12b290
+  0x12b3aa eb1a jmp 0x12b3c6
+  0x12b3ac 90 nop  (not reached by known edges)
+  0x12b3ad 90 nop  (not reached by known edges)
+  0x12b3ae 90 nop  (not reached by known edges)
+  0x12b3af 90 nop  (not reached by known edges)
+  0x12b3b0 804dfc01 or byte ptr [ebp - 4], 1
+  0x12b3b4 8365fcef and dword ptr [ebp - 4], 0xffffffef
+  0x12b3b8 6800080000 push 0x800
+  0x12b3bd 8d4301 lea eax, [ebx + 1]
+  0x12b3c0 50 push eax
+  0x12b3c1 e85afeffff call 0x12b220
+  0x12b3c6 83c408 add esp, 8
+  0x12b3c9 8b45fc mov eax, dword ptr [ebp - 4]
+  0x12b3cc 50 push eax
+  0x12b3cd 6805100000 push 0x1005
+  0x12b3d2 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b3d9 50 push eax
+  0x12b3da e861df0500 call 0x189340
+  0x12b3df 83c40c add esp, 0xc
+  0x12b3e2 85c0 test eax, eax
+  0x12b3e4 7c5a jl 0x12b440
+  0x12b3e6 6a00 push 0
+  0x12b3e8 6a13 push 0x13
+  0x12b3ea 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b3f1 50 push eax
+  0x12b3f2 e849df0500 call 0x189340
+  0x12b3f7 83c40c add esp, 0xc
+  0x12b3fa 85f6 test esi, esi
+  0x12b3fc 7412 je 0x12b410
+  0x12b3fe 0c80 or al, 0x80
+  0x12b400 eb10 jmp 0x12b412
+  0x12b402 90 nop  (not reached by known edges)
+  0x12b403 90 nop  (not reached by known edges)
+  0x12b404 90 nop  (not reached by known edges)
+  0x12b405 90 nop  (not reached by known edges)
+  0x12b406 90 nop  (not reached by known edges)
+  0x12b407 90 nop  (not reached by known edges)
+  0x12b408 90 nop  (not reached by known edges)
+  0x12b409 90 nop  (not reached by known edges)
+  0x12b40a 90 nop  (not reached by known edges)
+  0x12b40b 90 nop  (not reached by known edges)
+  0x12b40c 90 nop  (not reached by known edges)
+  0x12b40d 90 nop  (not reached by known edges)
+  0x12b40e 90 nop  (not reached by known edges)
+  0x12b40f 90 nop  (not reached by known edges)
+  0x12b410 247f and al, 0x7f
+  0x12b412 25ffff0000 and eax, 0xffff
+  0x12b417 50 push eax
+  0x12b418 6a03 push 3
+  0x12b41a 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b421 50 push eax
+  0x12b422 e819df0500 call 0x189340
+  0x12b427 83c40c add esp, 0xc
+  0x12b42a 85c0 test eax, eax
+  0x12b42c 7c12 jl 0x12b440
+  0x12b42e 31c0 xor eax, eax
+  0x12b430 eb25 jmp 0x12b457
+  0x12b432 90 nop  (not reached by known edges)
+  0x12b433 90 nop  (not reached by known edges)
+  0x12b434 90 nop  (not reached by known edges)
+  0x12b435 90 nop  (not reached by known edges)
+  0x12b436 90 nop  (not reached by known edges)
+  0x12b437 90 nop  (not reached by known edges)
+  0x12b438 90 nop  (not reached by known edges)
+  0x12b439 90 nop  (not reached by known edges)
+  0x12b43a 90 nop  (not reached by known edges)
+  0x12b43b 90 nop  (not reached by known edges)
+  0x12b43c 90 nop  (not reached by known edges)
+  0x12b43d 90 nop  (not reached by known edges)
+  0x12b43e 90 nop  (not reached by known edges)
+  0x12b43f 90 nop  (not reached by known edges)
+  0x12b440 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12b447 50 push eax
+  0x12b448 681eb31200 push 0x12b31e
+  0x12b44d e8ee3bffff call 0x11f040
+  0x12b452 b8ffffffff mov eax, 0xffffffff
+  0x12b457 8d65f4 lea esp, [ebp - 0xc]
+  0x12b45a 5b pop ebx
+  0x12b45b 5e pop esi
+  0x12b45c 89ec mov esp, ebp
+  0x12b45e 5d pop ebp
+  0x12b45f c3 ret
+  0x12b460 43 inc ebx (not reached by known edges)
+  0x12b461 68616e6765 push 0x65676e61 (not reached by known edges)
+  0x12b466 6420706f and byte ptr fs:[eax + 0x6f], dh (not reached by known edges)
+  0x12b46a 7274 jb 0x12b4e0 (not reached by known edges)
+  0x12b46c 206f66 and byte ptr [edi + 0x66], ch (not reached by known edges)
+  0x12b46f 20434f and byte ptr [ebx + 0x4f], al (not reached by known edges)
+  0x12b472 4d dec ebp (not reached by known edges)
+  0x12b473 256420746f and eax, 0x6f742064 (not reached by known edges)
+  0x12b478 20256400506f and byte ptr [0x6f500064], ah (not reached by known edges)
+  0x12b47e 7274 jb 0x12b4f4 (not reached by known edges)
+  0x12b480 20666f and byte ptr [esi + 0x6f], ah (not reached by known edges)
+  0x12b483 7220 jb 0x12b4a5 (not reached by known edges)
+  0x12b485 43 inc ebx (not reached by known edges)
+  0x12b486 4f dec edi (not reached by known edges)
+  0x12b487 4d dec ebp (not reached by known edges)
+  0x12b488 2564206973 and eax, 0x73692064 (not reached by known edges)
+  0x12b48d 206e6f and byte ptr [esi + 0x6f], ch (not reached by known edges)
+  0x12b490 7720 ja 0x12b4b2 (not reached by known edges)
+  0x12b492 55 push ebp (not reached by known edges)
+  0x12b493 4e dec esi (not reached by known edges)
+  0x12b494 41 inc ecx (not reached by known edges)
+  0x12b495 53 push ebx (not reached by known edges)
+  0x12b496 53 push ebx (not reached by known edges)
+  0x12b497 49 dec ecx (not reached by known edges)
+  0x12b498 47 inc edi (not reached by known edges)
+  0x12b499 4e dec esi (not reached by known edges)
+  0x12b49a 45 inc ebp (not reached by known edges)
+  0x12b49b 44 inc esp (not reached by known edges)
+
+routine _ttyGetRxBuf  0x12b690-0x12b6e0  size 0x50 (80 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (8)
+  0x12b690 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b693 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b6a2 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x12b6ba load w4 cmp base=eax disp +0x8 => ? (unknown effective address)
+  0x12b6c1 load w4 mov base=eax disp +0x8 => ? (unknown effective address)
+  0x12b6c7 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x12b6d5 load w4 mov base=eax disp +0x8 => ? (unknown effective address)
+  0x12b6db load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (23)
+  B0 0x12b690-0x12b690 preds: entry
+      normal -> B1
+  B1 0x12b691-0x12b691 preds: B0
+      normal -> B2
+  B2 0x12b693-0x12b693 preds: B1
+      normal -> B3
+  B3 0x12b696-0x12b696 preds: B2
+      normal -> B4
+  B4 0x12b699-0x12b699 preds: B3
+      taken when [sp+4] <= 0x5 (unsigned, 32-bit) -> 0x12b6b0
+      falls through when [sp+4] > 0x5 (unsigned, 32-bit) -> B5
+  B5 0x12b69b-0x12b69b preds: B4
+      normal -> B6
+  B6 0x12b6a0-0x12b6a0 preds: B5
+      normal -> B7
+  B7 0x12b6a2-0x12b6a2 preds: B6
+      normal -> B8
+  B8 0x12b6a3-0x12b6a3 preds: B7
+      return
+  B21 0x12b6b0-0x12b6b0 preds: B4
+      normal -> B22
+  B22 0x12b6b2-0x12b6b2 preds: B21
+      normal -> B23
+  B23 0x12b6b5-0x12b6b5 preds: B22
+      normal -> B24
+  B24 0x12b6ba-0x12b6ba preds: B23
+      normal -> B25
+  B25 0x12b6bf-0x12b6bf preds: B24
+      taken when ? == 0x0 -> 0x12b6d0
+      falls through when ? != 0x0 -> B26
+  B26 0x12b6c1-0x12b6c1 preds: B25
+      normal -> B27
+  B27 0x12b6c5-0x12b6c5 preds: B26
+      normal -> B28
+  B28 0x12b6c7-0x12b6c7 preds: B27
+      normal -> B29
+  B29 0x12b6c8-0x12b6c8 preds: B28
+      return
+  B37 0x12b6d0-0x12b6d0 preds: B25
+      normal -> B38
+  B38 0x12b6d5-0x12b6d5 preds: B37
+      normal -> B39
+  B39 0x12b6d9-0x12b6d9 preds: B38
+      normal -> B40
+  B40 0x12b6db-0x12b6db preds: B39
+      normal -> B41
+  B41 0x12b6dc-0x12b6dc preds: B40
+      return
+
+returns (3)
+  0x12b6a3: eax = 0xffffffff; reached from B7
+  0x12b6c8: eax = ?; reached from B28
+  0x12b6dc: eax = ?; reached from B40
+
+constants
+  0x12b69b eax = 0xffffffff
+  0x12b6b5 eax = 0x1dd0e0
+  0x12b6d0 eax = 0x12b160
+immediates
+  0x5 at 0x12b696
+  0x12b6b0 at 0x12b699
+  0xffffffff at 0x12b69b
+  0x4 at 0x12b6b2
+  0x1dd0e0 at 0x12b6b5
+  0x0 at 0x12b6ba
+  0x12b6d0 at 0x12b6bf
+  0x12b160 at 0x12b6d0
+instructions
+  0x12b690 55 push ebp
+  0x12b691 89e5 mov ebp, esp
+  0x12b693 8b4508 mov eax, dword ptr [ebp + 8]
+  0x12b696 83f805 cmp eax, 5
+  0x12b699 7615 jbe 0x12b6b0
+  0x12b69b b8ffffffff mov eax, 0xffffffff
+  0x12b6a0 89ec mov esp, ebp
+  0x12b6a2 5d pop ebp
+  0x12b6a3 c3 ret
+  0x12b6a4 90 nop  (not reached by known edges)
+  0x12b6a5 90 nop  (not reached by known edges)
+  0x12b6a6 90 nop  (not reached by known edges)
+  0x12b6a7 90 nop  (not reached by known edges)
+  0x12b6a8 90 nop  (not reached by known edges)
+  0x12b6a9 90 nop  (not reached by known edges)
+  0x12b6aa 90 nop  (not reached by known edges)
+  0x12b6ab 90 nop  (not reached by known edges)
+  0x12b6ac 90 nop  (not reached by known edges)
+  0x12b6ad 90 nop  (not reached by known edges)
+  0x12b6ae 90 nop  (not reached by known edges)
+  0x12b6af 90 nop  (not reached by known edges)
+  0x12b6b0 89c2 mov edx, eax
+  0x12b6b2 c1e204 shl edx, 4
+  0x12b6b5 b8e0d01d00 mov eax, 0x1dd0e0
+  0x12b6ba 837c100800 cmp dword ptr [eax + edx + 8], 0
+  0x12b6bf 740f je 0x12b6d0
+  0x12b6c1 8b441008 mov eax, dword ptr [eax + edx + 8]
+  0x12b6c5 89ec mov esp, ebp
+  0x12b6c7 5d pop ebp
+  0x12b6c8 c3 ret
+  0x12b6c9 90 nop  (not reached by known edges)
+  0x12b6ca 90 nop  (not reached by known edges)
+  0x12b6cb 90 nop  (not reached by known edges)
+  0x12b6cc 90 nop  (not reached by known edges)
+  0x12b6cd 90 nop  (not reached by known edges)
+  0x12b6ce 90 nop  (not reached by known edges)
+  0x12b6cf 90 nop  (not reached by known edges)
+  0x12b6d0 b860b11200 mov eax, 0x12b160
+  0x12b6d5 8b441008 mov eax, dword ptr [eax + edx + 8]
+  0x12b6d9 89ec mov esp, ebp
+  0x12b6db 5d pop ebp
+  0x12b6dc c3 ret
+  0x12b6dd 90 nop  (not reached by known edges)
+  0x12b6de 90 nop  (not reached by known edges)
+  0x12b6df 90 nop  (not reached by known edges)
+
+routine _ttyReInit  0x12baa0-0x12bb00  size 0x60 (96 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12baeb inc: unsupported effects invalidated
+
+accesses (15)
+  0x12baa0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12baa3 store w4 push base=esp disp -0x4 => sp -0x8 value edi
+  0x12baa4 store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x12baa5 store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x12bab8 store w4 push base=esp disp -0x4 => sp -0x14 value 0x2
+  0x12baba store w4 push base=esp disp -0x4 => sp -0x18 value 0x1007
+  0x12babf load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12bac6 store w4 push base=esp disp -0x4 => sp -0x1c value ?
+  0x12bad3 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12bada store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x12badb store w4 push base=esp disp -0x4 => sp -0x18 value 0x12ba7e
+  0x12baf5 load w4 pop base=esp disp +0x0 => sp -0x10
+  0x12baf6 load w4 pop base=esp disp +0x0 => sp -0xc
+  0x12baf7 load w4 pop base=esp disp +0x0 => sp -0x8
+  0x12bafa load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (3)
+  0x12baa6 call _sysSerialHwInit [0x10b618]
+      args: stack arg0=ebx, stack arg1=esi, stack arg2=edi, stack arg3=ebp, stack arg4=?, stack arg5=?
+  0x12bac7 call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x1007, stack arg2=0x2, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12bae0 call _ffscMsg [0x11f040]
+      args: stack arg0=0x12ba7e, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (35)
+  B0 0x12baa0-0x12baa0 preds: entry
+      normal -> B1
+  B1 0x12baa1-0x12baa1 preds: B0
+      normal -> B2
+  B2 0x12baa3-0x12baa3 preds: B1
+      normal -> B3
+  B3 0x12baa4-0x12baa4 preds: B2
+      normal -> B4
+  B4 0x12baa5-0x12baa5 preds: B3
+      normal -> B5
+  B5 0x12baa6-0x12baa6 preds: B4
+      call -> 0x10b618
+  B6 0x12baab-0x12baab preds: B5
+      normal -> B7
+  B7 0x12baad-0x12baad preds: B6
+      normal -> B8
+  B8 0x12bab2-0x12bab2 preds: B7
+      normal -> B9
+  B9 0x12bab7-0x12bab7 preds: B8
+      normal -> B10
+  B10 0x12bab8-0x12bab8 preds: B9, B26
+      normal -> B11
+  B11 0x12baba-0x12baba preds: B10
+      normal -> B12
+  B12 0x12babf-0x12babf preds: B11
+      normal -> B13
+  B13 0x12bac6-0x12bac6 preds: B12
+      normal -> B14
+  B14 0x12bac7-0x12bac7 preds: B13
+      call -> 0x189340
+  B15 0x12bacc-0x12bacc preds: B14
+      normal -> B16
+  B16 0x12bacf-0x12bacf preds: B15
+      normal -> B17
+  B17 0x12bad1-0x12bad1 preds: B16
+      taken when (ret(_ioctl) & ret(_ioctl)) == 0x0 -> 0x12bae8
+      falls through when (ret(_ioctl) & ret(_ioctl)) != 0x0 -> B18
+  B18 0x12bad3-0x12bad3 preds: B17
+      normal -> B19
+  B19 0x12bada-0x12bada preds: B18
+      normal -> B20
+  B20 0x12badb-0x12badb preds: B19
+      normal -> B21
+  B21 0x12bae0-0x12bae0 preds: B20
+      call -> 0x11f040
+  B22 0x12bae5-0x12bae5 preds: B21
+      normal -> B23
+  B23 0x12bae8-0x12bae8 preds: B17, B22
+      normal -> B24
+  B24 0x12baeb-0x12baeb preds: B23
+      normal -> B25
+  B25 0x12baec-0x12baec preds: B24
+      normal -> B26
+  B26 0x12baee-0x12baee preds: B25
+      taken when le flags condition (operands unknown) -> 0x12bab8
+      falls through when not (le flags condition (operands unknown)) -> B27
+  B27 0x12baf0-0x12baf0 preds: B26
+      normal -> B28
+  B28 0x12baf2-0x12baf2 preds: B27
+      normal -> B29
+  B29 0x12baf5-0x12baf5 preds: B28
+      normal -> B30
+  B30 0x12baf6-0x12baf6 preds: B29
+      normal -> B31
+  B31 0x12baf7-0x12baf7 preds: B30
+      normal -> B32
+  B32 0x12baf8-0x12baf8 preds: B31
+      normal -> B33
+  B33 0x12bafa-0x12bafa preds: B32
+      normal -> B34
+  B34 0x12bafb-0x12bafb preds: B33
+      return
+
+returns (1)
+  0x12bafb: eax = 0x0; reached from B33
+
+constants
+  0x12baab ebx = 0x0
+  0x12baad esi = 0x1dc708
+  0x12bab2 edi = 0x1dc71c
+  0x12baf0 eax = 0x0
+immediates
+  0x10b618 at 0x12baa6
+  0x1dc708 at 0x12baad
+  0x1dc71c at 0x12bab2
+  0x2 at 0x12bab8
+  0x1007 at 0x12baba
+  0x189340 at 0x12bac7
+  0xc at 0x12bacc
+  0x12bae8 at 0x12bad1
+  0x12ba7e at 0x12badb
+  0x11f040 at 0x12bae0
+  0x8 at 0x12bae5
+  0x4 at 0x12bae8
+  0x12bab8 at 0x12baee
+instructions
+  0x12baa0 55 push ebp
+  0x12baa1 89e5 mov ebp, esp
+  0x12baa3 57 push edi
+  0x12baa4 56 push esi
+  0x12baa5 53 push ebx
+  0x12baa6 e86dfbfdff call 0x10b618
+  0x12baab 31db xor ebx, ebx
+  0x12baad be08c71d00 mov esi, 0x1dc708
+  0x12bab2 bf1cc71d00 mov edi, 0x1dc71c
+  0x12bab7 90 nop
+  0x12bab8 6a02 push 2
+  0x12baba 6807100000 push 0x1007
+  0x12babf 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12bac6 50 push eax
+  0x12bac7 e874d80500 call 0x189340
+  0x12bacc 83c40c add esp, 0xc
+  0x12bacf 85c0 test eax, eax
+  0x12bad1 7415 je 0x12bae8
+  0x12bad3 8b049d08c71d00 mov eax, dword ptr [ebx*4 + 0x1dc708]
+  0x12bada 50 push eax
+  0x12badb 687eba1200 push 0x12ba7e
+  0x12bae0 e85b35ffff call 0x11f040
+  0x12bae5 83c408 add esp, 8
+  0x12bae8 83c604 add esi, 4
+  0x12baeb 43 inc ebx
+  0x12baec 39fe cmp esi, edi
+  0x12baee 7ec8 jle 0x12bab8
+  0x12baf0 31c0 xor eax, eax
+  0x12baf2 8d65f4 lea esp, [ebp - 0xc]
+  0x12baf5 5b pop ebx
+  0x12baf6 5e pop esi
+  0x12baf7 5f pop edi
+  0x12baf8 89ec mov esp, ebp
+  0x12bafa 5d pop ebp
+  0x12bafb c3 ret
+  0x12bafc 90 nop  (not reached by known edges)
+  0x12bafd 90 nop  (not reached by known edges)
+  0x12bafe 90 nop  (not reached by known edges)
+  0x12baff 90 nop  (not reached by known edges)
+
+routine _ttyGetInfo  0x12b650-0x12b690  size 0x40 (64 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x12b650 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b653 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12b656 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12b662 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x12b674 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b67b store w4 mov base=ecx disp +0x0 => [sp+8] +0x0 value ?
+  0x12b689 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (20)
+  B0 0x12b650-0x12b650 preds: entry
+      normal -> B1
+  B1 0x12b651-0x12b651 preds: B0
+      normal -> B2
+  B2 0x12b653-0x12b653 preds: B1
+      normal -> B3
+  B3 0x12b656-0x12b656 preds: B2
+      normal -> B4
+  B4 0x12b659-0x12b659 preds: B3
+      normal -> B5
+  B5 0x12b65c-0x12b65c preds: B4
+      taken when [sp+4] <= 0x5 (unsigned, 32-bit) -> 0x12b670
+      falls through when [sp+4] > 0x5 (unsigned, 32-bit) -> B6
+  B6 0x12b65e-0x12b65e preds: B5
+      normal -> B7
+  B7 0x12b660-0x12b660 preds: B6
+      normal -> B8
+  B8 0x12b662-0x12b662 preds: B7
+      normal -> B9
+  B9 0x12b663-0x12b663 preds: B8
+      return
+  B22 0x12b670-0x12b670 preds: B5
+      normal -> B23
+  B23 0x12b672-0x12b672 preds: B22
+      taken when ([sp+8] & [sp+8]) == 0x0 -> 0x12b67d
+      falls through when ([sp+8] & [sp+8]) != 0x0 -> B24
+  B24 0x12b674-0x12b674 preds: B23
+      normal -> B25
+  B25 0x12b67b-0x12b67b preds: B24
+      normal -> B26
+  B26 0x12b67d-0x12b67d preds: B23, B25
+      normal -> B27
+  B27 0x12b67f-0x12b67f preds: B26
+      normal -> B28
+  B28 0x12b682-0x12b682 preds: B27
+      normal -> B29
+  B29 0x12b687-0x12b687 preds: B28
+      normal -> B30
+  B30 0x12b689-0x12b689 preds: B29
+      normal -> B31
+  B31 0x12b68a-0x12b68a preds: B30
+      return
+
+returns (2)
+  0x12b663: eax = 0x0; reached from B8
+  0x12b68a: eax = ?; reached from B30
+
+constants
+  0x12b65e eax = 0x0
+immediates
+  0x5 at 0x12b659
+  0x12b670 at 0x12b65c
+  0x12b67d at 0x12b672
+  0x4 at 0x12b67f
+  0x1dd0e0 at 0x12b682
+instructions
+  0x12b650 55 push ebp
+  0x12b651 89e5 mov ebp, esp
+  0x12b653 8b5508 mov edx, dword ptr [ebp + 8]
+  0x12b656 8b4d0c mov ecx, dword ptr [ebp + 0xc]
+  0x12b659 83fa05 cmp edx, 5
+  0x12b65c 7612 jbe 0x12b670
+  0x12b65e 31c0 xor eax, eax
+  0x12b660 89ec mov esp, ebp
+  0x12b662 5d pop ebp
+  0x12b663 c3 ret
+  0x12b664 90 nop  (not reached by known edges)
+  0x12b665 90 nop  (not reached by known edges)
+  0x12b666 90 nop  (not reached by known edges)
+  0x12b667 90 nop  (not reached by known edges)
+  0x12b668 90 nop  (not reached by known edges)
+  0x12b669 90 nop  (not reached by known edges)
+  0x12b66a 90 nop  (not reached by known edges)
+  0x12b66b 90 nop  (not reached by known edges)
+  0x12b66c 90 nop  (not reached by known edges)
+  0x12b66d 90 nop  (not reached by known edges)
+  0x12b66e 90 nop  (not reached by known edges)
+  0x12b66f 90 nop  (not reached by known edges)
+  0x12b670 85c9 test ecx, ecx
+  0x12b672 7409 je 0x12b67d
+  0x12b674 8b049508c71d00 mov eax, dword ptr [edx*4 + 0x1dc708]
+  0x12b67b 8901 mov dword ptr [ecx], eax
+  0x12b67d 89d0 mov eax, edx
+  0x12b67f c1e004 shl eax, 4
+  0x12b682 05e0d01d00 add eax, 0x1dd0e0
+  0x12b687 89ec mov esp, ebp
+  0x12b689 5d pop ebp
+  0x12b68a c3 ret
+  0x12b68b 90 nop  (not reached by known edges)
+  0x12b68c 90 nop  (not reached by known edges)
+  0x12b68d 90 nop  (not reached by known edges)
+  0x12b68e 90 nop  (not reached by known edges)
+  0x12b68f 90 nop  (not reached by known edges)
+
+routine _ttySetSpeed  0x12bb00-0x12bb24  size 0x24 (36 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x12bb00 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12bb03 load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x12bb06 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x12bb09 store w4 push base=esp disp -0x4 => sp -0x8 value [sp+8]
+  0x12bb0a store w4 push base=esp disp -0x4 => sp -0xc value 0x4
+  0x12bb0c store w4 push base=esp disp -0x4 => sp -0x10 value [sp+4]
+  0x12bb21 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x12bb0d call _ioctl [0x189340]
+      args: stack arg0=[sp+4], stack arg1=0x4, stack arg2=[sp+8], stack arg3=ebp, stack arg4=?, stack arg5=?
+
+blocks (16)
+  B0 0x12bb00-0x12bb00 preds: entry
+      normal -> B1
+  B1 0x12bb01-0x12bb01 preds: B0
+      normal -> B2
+  B2 0x12bb03-0x12bb03 preds: B1
+      normal -> B3
+  B3 0x12bb06-0x12bb06 preds: B2
+      normal -> B4
+  B4 0x12bb09-0x12bb09 preds: B3
+      normal -> B5
+  B5 0x12bb0a-0x12bb0a preds: B4
+      normal -> B6
+  B6 0x12bb0c-0x12bb0c preds: B5
+      normal -> B7
+  B7 0x12bb0d-0x12bb0d preds: B6
+      call -> 0x189340
+  B8 0x12bb12-0x12bb12 preds: B7
+      normal -> B9
+  B9 0x12bb14-0x12bb14 preds: B8
+      normal -> B10
+  B10 0x12bb16-0x12bb16 preds: B9
+      taken when ge flags condition (operands unknown) -> 0x12bb1d
+      falls through when not (ge flags condition (operands unknown)) -> B11
+  B11 0x12bb18-0x12bb18 preds: B10
+      normal -> B12
+  B12 0x12bb1d-0x12bb1d preds: B10, B11
+      normal -> B13
+  B13 0x12bb1f-0x12bb1f preds: B12
+      normal -> B14
+  B14 0x12bb21-0x12bb21 preds: B13
+      normal -> B15
+  B15 0x12bb22-0x12bb22 preds: B14
+      return
+
+returns (1)
+  0x12bb22: eax = ?; reached from B14
+
+constants
+  0x12bb12 edx = 0x0
+  0x12bb18 edx = 0xffffffff
+immediates
+  0x4 at 0x12bb0a
+  0x189340 at 0x12bb0d
+  0x12bb1d at 0x12bb16
+  0xffffffff at 0x12bb18
+instructions
+  0x12bb00 55 push ebp
+  0x12bb01 89e5 mov ebp, esp
+  0x12bb03 8b5508 mov edx, dword ptr [ebp + 8]
+  0x12bb06 8b450c mov eax, dword ptr [ebp + 0xc]
+  0x12bb09 50 push eax
+  0x12bb0a 6a04 push 4
+  0x12bb0c 52 push edx
+  0x12bb0d e82ed80500 call 0x189340
+  0x12bb12 31d2 xor edx, edx
+  0x12bb14 85c0 test eax, eax
+  0x12bb16 7d05 jge 0x12bb1d
+  0x12bb18 baffffffff mov edx, 0xffffffff
+  0x12bb1d 89d0 mov eax, edx
+  0x12bb1f 89ec mov esp, ebp
+  0x12bb21 5d pop ebp
+  0x12bb22 c3 ret
+  0x12bb23 90 nop  (not reached by known edges)
+
+routine _ttyInit  0x12b7d0-0x12baa0  size 0x2d0 (720 bytes)
+  file root/patches/SG0002378/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x12b8bf inc: unsupported effects invalidated
+  warning: 0x12b8f6 inc: unsupported effects invalidated
+  warning: 0x12ba5a inc: unsupported effects invalidated
+  warning: 0x12ba68 inc: unsupported effects invalidated
+
+accesses (96)
+  0x12b7d0 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x12b7d6 store w4 push base=esp disp -0x4 => sp -0x28 value edi
+  0x12b7d7 store w4 push base=esp disp -0x4 => sp -0x2c value esi
+  0x12b7d8 store w4 push base=esp disp -0x4 => sp -0x30 value ebx
+  0x12b7d9 store w4 mov base=ebp disp -0x1c => sp -0x20 value 0x0
+  0x12b7e9 store w4 push base=esp disp -0x4 => sp -0x34 value 0x12b72d
+  0x12b7f3 load w4 mov base=eax disp +0x0 => ret(___stderr) +0x0
+  0x12b7f5 store w4 push base=esp disp -0x4 => sp -0x38 value [ret(___stderr)]
+  0x12b7fe store w4 push base=esp disp -0x4 => sp -0x34 value 0x1dd0e0
+  0x12b803 store w4 push base=esp disp -0x4 => sp -0x38 value 0x4
+  0x12b811 store w4 push base=esp disp -0x4 => sp -0x34 value 0x60
+  0x12b813 store w4 push base=esp disp -0x4 => sp -0x38 value 0x1dd0e0
+  0x12b82c load w4 mov base=edx disp +0x12b160 => ? (unknown effective address)
+  0x12b832 store w4 mov base=edx disp +0x1dd0e0 => ? (unknown effective address) value ?
+  0x12b838 load w4 mov base=esi disp +0x4 => ? (unknown effective address)
+  0x12b83c store w4 mov base=ecx disp +0x4 => ? (unknown effective address) value ?
+  0x12b840 load w4 mov base=esi disp +0x8 => ? (unknown effective address)
+  0x12b844 store w4 mov base=ecx disp +0x8 => ? (unknown effective address) value ?
+  0x12b848 load w4 mov base=esi disp +0xc => ? (unknown effective address)
+  0x12b84c store w4 mov base=ecx disp +0xc => ? (unknown effective address) value ?
+  0x12b850 store w4 mov base=ecx disp +0x8 => ? (unknown effective address) value 0x0
+  0x12b858 store w4 mov base=ecx disp +0xc => ? (unknown effective address) value 0x0
+  0x12b868 store w4 mov base=ebp disp -0x1c => sp -0x20 value 0x1
+  0x12b881 load w2 cmp base=ecx disp +0x4 => ? (unknown effective address)
+  0x12b889 load w2 mov base=edi disp +0x4 => ? (unknown effective address)
+  0x12b88e store w2 mov base=ecx disp +0x4 => ? (unknown effective address) value ?
+  0x12b8a0 load w1 test base=ecx disp +0x5 => ? (unknown effective address)
+  0x12b8a7 load w2 or base=ecx disp +0x4 => ? (unknown effective address)
+  0x12b8a7 store w2 or base=ecx disp +0x4 => ? (unknown effective address) value ?
+  0x12b8ae load w2 mov base=edi disp +0x6 => ? (unknown effective address)
+  0x12b8b3 store w2 mov base=ecx disp +0x6 => ? (unknown effective address) value ?
+  0x12b8b8 store w4 mov base=ebp disp -0x1c => sp -0x20 value 0x1
+  0x12b8c5 load w4 cmp base=ebp disp -0x1c => sp -0x20
+  0x12b8cb store w4 push base=esp disp -0x4 => sp -0x34 value 0x1dd0e0
+  0x12b8d0 store w4 push base=esp disp -0x4 => sp -0x38 value 0x4
+  0x12b8e8 store w4 mov base=? disp +0x1ee288 => ? (unknown effective address) value 0xffffffff
+  0x12b900 store w4 mov base=ebp disp -0x18 => sp -0x1c value sp-24
+  0x12b908 store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b909 store w4 push base=esp disp -0x4 => sp -0x38 value 0x12b74b
+  0x12b90e load w4 mov base=ebp disp -0x18 => sp -0x1c
+  0x12b911 store w4 push base=esp disp -0x4 => sp -0x3c value ?
+  0x12b91a store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b923 store w4 push base=esp disp -0x4 => sp -0x34 value ret(_ttyGetTxBuf)
+  0x12b924 store w4 push base=esp disp -0x4 => sp -0x38 value ?
+  0x12b92d store w4 push base=esp disp -0x4 => sp -0x38 value ret(_ttyGetRxBuf)
+  0x12b92e store w4 push base=esp disp -0x4 => sp -0x3c value ?
+  0x12b937 store w4 push base=esp disp -0x4 => sp -0x3c value ret(_sysSerialChanGet)
+  0x12b938 store w4 push base=esp disp -0x4 => sp -0x40 value ?
+  0x12b945 store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b946 store w4 push base=esp disp -0x4 => sp -0x38 value 0x12b754
+  0x12b950 store w4 push base=esp disp -0x4 => sp -0x34 value 0x0
+  0x12b952 store w4 push base=esp disp -0x4 => sp -0x38 value 0x2
+  0x12b954 load w4 mov base=ebp disp -0x18 => sp -0x1c
+  0x12b957 store w4 push base=esp disp -0x4 => sp -0x3c value [sp-28]
+  0x12b960 store w4 mov base=? disp +0x1dc708 => ? (unknown effective address) value ret(_open)
+  0x12b967 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b972 store w4 push base=esp disp -0x4 => sp -0x34 value [sp-28]
+  0x12b973 store w4 push base=esp disp -0x4 => sp -0x38 value 0x12b771
+  0x12b97d load w4 mov base=eax disp +0x0 => ret(___stderr) +0x0
+  0x12b97f store w4 push base=esp disp -0x4 => sp -0x3c value [ret(___stderr)]
+  0x12b990 load w4 mov base=edi disp +0x1dd0e0 => ? (unknown effective address)
+  0x12b996 store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b997 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b99e store w4 push base=esp disp -0x4 => sp -0x38 value ?
+  0x12b9ab load w4 mov base=edi disp +0x1dd0e0 => ? (unknown effective address)
+  0x12b9b1 store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b9b2 load w4 mov base=ebp disp -0x18 => sp -0x1c
+  0x12b9b5 store w4 push base=esp disp -0x4 => sp -0x38 value [sp-28]
+  0x12b9b6 store w4 push base=esp disp -0x4 => sp -0x3c value 0x12b784
+  0x12b9c2 load w2 cmp base=edi disp +0x1dd0e6 => ? (unknown effective address)
+  0x12b9d1 store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12b9d2 store w4 push base=esp disp -0x4 => sp -0x38 value 0x3
+  0x12b9d4 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12b9db store w4 push base=esp disp -0x4 => sp -0x3c value ?
+  0x12b9dc store w4 mov base=ebp disp -0x20 => sp -0x24 value ?
+  0x12b9e7 load w4 mov base=ebp disp -0x20 => sp -0x24
+  0x12b9ee store w4 push base=esp disp -0x4 => sp -0x34 value [sp-36]
+  0x12b9ef load w4 mov base=ebp disp -0x18 => sp -0x1c
+  0x12b9f2 store w4 push base=esp disp -0x4 => sp -0x38 value [sp-28]
+  0x12b9f3 store w4 push base=esp disp -0x4 => sp -0x3c value 0x12b7aa
+  0x12b9fd load w4 mov base=eax disp +0x0 => ret(___stderr) +0x0
+  0x12b9ff store w4 push base=esp disp -0x4 => sp -0x40 value [ret(___stderr)]
+  0x12ba08 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12ba0f store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12ba18 store w4 mov base=? disp +0x1dc708 => ? (unknown effective address) value 0xffffffff
+  0x12ba30 load w2 cmp base=edi disp +0x1dd0e6 => ? (unknown effective address)
+  0x12ba3a load w2 movsx base=edi disp +0x1dd0e6 => ? (unknown effective address)
+  0x12ba41 load w4 mov base=? disp +0x1dc708 => ? (unknown effective address)
+  0x12ba48 store w4 mov base=? disp +0x1ee288 => ? (unknown effective address) value ?
+  0x12ba51 load w1 test base=edi disp +0x1dd0e5 => ? (unknown effective address)
+  0x12ba5b store w4 push base=esp disp -0x4 => sp -0x34 value ?
+  0x12ba5c store w4 push base=esp disp -0x4 => sp -0x38 value ?
+  0x12ba77 load w4 pop base=esp disp +0x0 => sp -0x30
+  0x12ba78 load w4 pop base=esp disp +0x0 => sp -0x2c
+  0x12ba79 load w4 pop base=esp disp +0x0 => sp -0x28
+  0x12ba7c load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (20)
+  0x12b7e0 call _ttyDrv [0x19334c]
+      args: stack arg0=ebx, stack arg1=esi, stack arg2=edi, stack arg3=?, stack arg4=0x0, stack arg5=?
+  0x12b7ee call ___stderr [0x18e17c]
+      args: stack arg0=0x12b72d, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b7f6 call _fprintf [0x17c4ec]
+      args: stack arg0=[ret(___stderr)], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b805 call _nvramRead [0x127108]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b818 call _bzero [0x172678]
+      args: stack arg0=0x1dd0e0, stack arg1=0x60, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b8d2 call _nvramWrite [0x127298]
+      args: stack arg0=0x4, stack arg1=0x1dd0e0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b912 call _sprintf [0x172dd8]
+      args: stack arg0=?, stack arg1=0x12b74b, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b91b call _ttyGetTxBuf [0x12b6e0]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b925 call _ttyGetRxBuf [0x12b690]
+      args: stack arg0=?, stack arg1=ret(_ttyGetTxBuf), stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b92f call _sysSerialChanGet [0x10b7c8]
+      args: stack arg0=?, stack arg1=ret(_ttyGetRxBuf), stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b939 call _ttyDevCreate [0x1933ac]
+      args: stack arg0=?, stack arg1=ret(_sysSerialChanGet), stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b958 call _open [0x1890e0]
+      args: stack arg0=[sp-28], stack arg1=0x2, stack arg2=0x0, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b978 call ___stderr [0x18e17c]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b980 call _fprintf [0x17c4ec]
+      args: stack arg0=[ret(___stderr)], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b99f call _ttySetSpeed [0x12bb00]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b9df call _ioctl [0x189340]
+      args: stack arg0=?, stack arg1=0x3, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12b9f8 call ___stderr [0x18e17c]
+      args: stack arg0=?, stack arg1=[sp-28], stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12ba00 call _fprintf [0x17c4ec]
+      args: stack arg0=[ret(___stderr)], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12ba10 call _close [0x189280]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x12ba5d call _comSetFlowCntl [0x12b350]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (198)
+  B0 0x12b7d0-0x12b7d0 preds: entry
+      normal -> B1
+  B1 0x12b7d1-0x12b7d1 preds: B0
+      normal -> B2
+  B2 0x12b7d3-0x12b7d3 preds: B1
+      normal -> B3
+  B3 0x12b7d6-0x12b7d6 preds: B2
+      normal -> B4
+  B4 0x12b7d7-0x12b7d7 preds: B3
+      normal -> B5
+  B5 0x12b7d8-0x12b7d8 preds: B4
+      normal -> B6
+  B6 0x12b7d9-0x12b7d9 preds: B5
+      normal -> B7
+  B7 0x12b7e0-0x12b7e0 preds: B6
+      call -> 0x19334c
+  B8 0x12b7e5-0x12b7e5 preds: B7
+      normal -> B9
+  B9 0x12b7e7-0x12b7e7 preds: B8
+      taken when (ret(_ttyDrv) & ret(_ttyDrv)) == 0x0 -> 0x12b7fe
+      falls through when (ret(_ttyDrv) & ret(_ttyDrv)) != 0x0 -> B10
+  B10 0x12b7e9-0x12b7e9 preds: B9
+      normal -> B11
+  B11 0x12b7ee-0x12b7ee preds: B10
+      call -> 0x18e17c
+  B12 0x12b7f3-0x12b7f3 preds: B11
+      normal -> B13
+  B13 0x12b7f5-0x12b7f5 preds: B12
+      normal -> B14
+  B14 0x12b7f6-0x12b7f6 preds: B13
+      call -> 0x17c4ec
+  B15 0x12b7fb-0x12b7fb preds: B14
+      normal -> B16
+  B16 0x12b7fe-0x12b7fe preds: B9, B15
+      normal -> B17
+  B17 0x12b803-0x12b803 preds: B16
+      normal -> B18
+  B18 0x12b805-0x12b805 preds: B17
+      call -> 0x127108
+  B19 0x12b80a-0x12b80a preds: B18
+      normal -> B20
+  B20 0x12b80d-0x12b80d preds: B19
+      normal -> B21
+  B21 0x12b80f-0x12b80f preds: B20
+      taken when (ret(_nvramRead) & ret(_nvramRead)) == 0x0 -> 0x12b86f
+      falls through when (ret(_nvramRead) & ret(_nvramRead)) != 0x0 -> B22
+  B22 0x12b811-0x12b811 preds: B21
+      normal -> B23
+  B23 0x12b813-0x12b813 preds: B22
+      normal -> B24
+  B24 0x12b818-0x12b818 preds: B23
+      call -> 0x172678
+  B25 0x12b81d-0x12b81d preds: B24
+      normal -> B26
+  B26 0x12b820-0x12b820 preds: B25
+      normal -> B27
+  B27 0x12b825-0x12b825 preds: B26
+      normal -> B28
+  B28 0x12b82a-0x12b82a preds: B27
+      normal -> B29
+  B29 0x12b82c-0x12b82c preds: B28, B41
+      normal -> B30
+  B30 0x12b832-0x12b832 preds: B29
+      normal -> B31
+  B31 0x12b838-0x12b838 preds: B30
+      normal -> B32
+  B32 0x12b83c-0x12b83c preds: B31
+      normal -> B33
+  B33 0x12b840-0x12b840 preds: B32
+      normal -> B34
+  B34 0x12b844-0x12b844 preds: B33
+      normal -> B35
+  B35 0x12b848-0x12b848 preds: B34
+      normal -> B36
+  B36 0x12b84c-0x12b84c preds: B35
+      normal -> B37
+  B37 0x12b850-0x12b850 preds: B36
+      normal -> B38
+  B38 0x12b858-0x12b858 preds: B37
+      normal -> B39
+  B39 0x12b860-0x12b860 preds: B38
+      normal -> B40
+  B40 0x12b863-0x12b863 preds: B39
+      normal -> B41
+  B41 0x12b866-0x12b866 preds: B40
+      taken when le flags condition (operands unknown) -> 0x12b82c
+      falls through when not (le flags condition (operands unknown)) -> B42
+  B42 0x12b868-0x12b868 preds: B41
+      normal -> B43
+  B43 0x12b86f-0x12b86f preds: B21, B42
+      normal -> B44
+  B44 0x12b871-0x12b871 preds: B43
+      normal -> B45
+  B45 0x12b876-0x12b876 preds: B44
+      normal -> B46
+  B46 0x12b87b-0x12b87b preds: B45
+      normal -> B47
+  B47 0x12b87c-0x12b87c preds: B46, B73
+      normal -> B48
+  B48 0x12b87e-0x12b87e preds: B47
+      normal -> B49
+  B49 0x12b881-0x12b881 preds: B48
+      normal -> B50
+  B50 0x12b887-0x12b887 preds: B49
+      taken when l flags condition (operands unknown) -> 0x12b8a0
+      falls through when not (l flags condition (operands unknown)) -> B51
+  B51 0x12b889-0x12b889 preds: B50
+      normal -> B52
+  B52 0x12b88e-0x12b88e preds: B51
+      normal -> B53
+  B53 0x12b893-0x12b893 preds: B52
+      jump -> 0x12b8ae
+  B65 0x12b8a0-0x12b8a0 preds: B50
+      normal -> B66
+  B66 0x12b8a5-0x12b8a5 preds: B65
+      taken when Z == 0 -> 0x12b8bf
+      falls through when not (Z == 0) -> B67
+  B67 0x12b8a7-0x12b8a7 preds: B66
+      normal -> B68
+  B68 0x12b8ae-0x12b8ae preds: B53, B67
+      normal -> B69
+  B69 0x12b8b3-0x12b8b3 preds: B68
+      normal -> B70
+  B70 0x12b8b8-0x12b8b8 preds: B69
+      normal -> B71
+  B71 0x12b8bf-0x12b8bf preds: B66, B70
+      normal -> B72
+  B72 0x12b8c0-0x12b8c0 preds: B71
+      normal -> B73
+  B73 0x12b8c3-0x12b8c3 preds: B72
+      taken when ? <= 0x5 (signed, 32-bit) -> 0x12b87c
+      falls through when ? > 0x5 (signed, 32-bit) -> B74
+  B74 0x12b8c5-0x12b8c5 preds: B73
+      normal -> B75
+  B75 0x12b8c9-0x12b8c9 preds: B74
+      taken when [sp-32] == 0x0 -> 0x12b8da
+      falls through when [sp-32] != 0x0 -> B76
+  B76 0x12b8cb-0x12b8cb preds: B75
+      normal -> B77
+  B77 0x12b8d0-0x12b8d0 preds: B76
+      normal -> B78
+  B78 0x12b8d2-0x12b8d2 preds: B77
+      call -> 0x127298
+  B79 0x12b8d7-0x12b8d7 preds: B78
+      normal -> B80
+  B80 0x12b8da-0x12b8da preds: B75, B79
+      normal -> B81
+  B81 0x12b8dc-0x12b8dc preds: B80
+      normal -> B82
+  B82 0x12b8e1-0x12b8e1 preds: B81
+      normal -> B83
+  B83 0x12b8e6-0x12b8e6 preds: B82
+      normal -> B84
+  B84 0x12b8e7-0x12b8e7 preds: B83
+      normal -> B85
+  B85 0x12b8e8-0x12b8e8 preds: B84, B89
+      normal -> B86
+  B86 0x12b8f3-0x12b8f3 preds: B85
+      normal -> B87
+  B87 0x12b8f6-0x12b8f6 preds: B86
+      normal -> B88
+  B88 0x12b8f7-0x12b8f7 preds: B87
+      normal -> B89
+  B89 0x12b8f9-0x12b8f9 preds: B88
+      taken when le flags condition (operands unknown) -> 0x12b8e8
+      falls through when not (le flags condition (operands unknown)) -> B90
+  B90 0x12b8fb-0x12b8fb preds: B89
+      normal -> B91
+  B91 0x12b8fd-0x12b8fd preds: B90
+      normal -> B92
+  B92 0x12b900-0x12b900 preds: B91
+      normal -> B93
+  B93 0x12b903-0x12b903 preds: B92
+      normal -> B94
+  B94 0x12b905-0x12b905 preds: B93
+      normal -> B95
+  B95 0x12b906-0x12b906 preds: B94
+      normal -> B96
+  B96 0x12b907-0x12b907 preds: B95
+      normal -> B97
+  B97 0x12b908-0x12b908 preds: B96, B220
+      normal -> B98
+  B98 0x12b909-0x12b909 preds: B97
+      normal -> B99
+  B99 0x12b90e-0x12b90e preds: B98
+      normal -> B100
+  B100 0x12b911-0x12b911 preds: B99
+      normal -> B101
+  B101 0x12b912-0x12b912 preds: B100
+      call -> 0x172dd8
+  B102 0x12b917-0x12b917 preds: B101
+      normal -> B103
+  B103 0x12b91a-0x12b91a preds: B102
+      normal -> B104
+  B104 0x12b91b-0x12b91b preds: B103
+      call -> 0x12b6e0
+  B105 0x12b920-0x12b920 preds: B104
+      normal -> B106
+  B106 0x12b923-0x12b923 preds: B105
+      normal -> B107
+  B107 0x12b924-0x12b924 preds: B106
+      normal -> B108
+  B108 0x12b925-0x12b925 preds: B107
+      call -> 0x12b690
+  B109 0x12b92a-0x12b92a preds: B108
+      normal -> B110
+  B110 0x12b92d-0x12b92d preds: B109
+      normal -> B111
+  B111 0x12b92e-0x12b92e preds: B110
+      normal -> B112
+  B112 0x12b92f-0x12b92f preds: B111
+      call -> 0x10b7c8
+  B113 0x12b934-0x12b934 preds: B112
+      normal -> B114
+  B114 0x12b937-0x12b937 preds: B113
+      normal -> B115
+  B115 0x12b938-0x12b938 preds: B114
+      normal -> B116
+  B116 0x12b939-0x12b939 preds: B115
+      call -> 0x1933ac
+  B117 0x12b93e-0x12b93e preds: B116
+      normal -> B118
+  B118 0x12b941-0x12b941 preds: B117
+      normal -> B119
+  B119 0x12b943-0x12b943 preds: B118
+      taken when (ret(_ttyDevCreate) & ret(_ttyDevCreate)) == 0x0 -> 0x12b950
+      falls through when (ret(_ttyDevCreate) & ret(_ttyDevCreate)) != 0x0 -> B120
+  B120 0x12b945-0x12b945 preds: B119
+      normal -> B121
+  B121 0x12b946-0x12b946 preds: B120
+      normal -> B122
+  B122 0x12b94b-0x12b94b preds: B121
+      jump -> 0x12b978
+  B126 0x12b950-0x12b950 preds: B119
+      normal -> B127
+  B127 0x12b952-0x12b952 preds: B126
+      normal -> B128
+  B128 0x12b954-0x12b954 preds: B127
+      normal -> B129
+  B129 0x12b957-0x12b957 preds: B128
+      normal -> B130
+  B130 0x12b958-0x12b958 preds: B129
+      call -> 0x1890e0
+  B131 0x12b95d-0x12b95d preds: B130
+      normal -> B132
+  B132 0x12b960-0x12b960 preds: B131
+      normal -> B133
+  B133 0x12b967-0x12b967 preds: B132
+      normal -> B134
+  B134 0x12b96e-0x12b96e preds: B133
+      normal -> B135
+  B135 0x12b970-0x12b970 preds: B134
+      taken when ge flags condition (operands unknown) -> 0x12b990
+      falls through when not (ge flags condition (operands unknown)) -> B136
+  B136 0x12b972-0x12b972 preds: B135
+      normal -> B137
+  B137 0x12b973-0x12b973 preds: B136
+      normal -> B138
+  B138 0x12b978-0x12b978 preds: B122, B137
+      call -> 0x18e17c
+  B139 0x12b97d-0x12b97d preds: B138
+      normal -> B140
+  B140 0x12b97f-0x12b97f preds: B139
+      normal -> B141
+  B141 0x12b980-0x12b980 preds: B140
+      call -> 0x17c4ec
+  B142 0x12b985-0x12b985 preds: B141
+      normal -> B143
+  B143 0x12b988-0x12b988 preds: B142
+      jump -> 0x12ba65
+  B147 0x12b990-0x12b990 preds: B135
+      normal -> B148
+  B148 0x12b996-0x12b996 preds: B147
+      normal -> B149
+  B149 0x12b997-0x12b997 preds: B148
+      normal -> B150
+  B150 0x12b99e-0x12b99e preds: B149
+      normal -> B151
+  B151 0x12b99f-0x12b99f preds: B150
+      call -> 0x12bb00
+  B152 0x12b9a4-0x12b9a4 preds: B151
+      normal -> B153
+  B153 0x12b9a7-0x12b9a7 preds: B152
+      normal -> B154
+  B154 0x12b9a9-0x12b9a9 preds: B153
+      taken when (ret(_ttySetSpeed) & ret(_ttySetSpeed)) == 0x0 -> 0x12b9c0
+      falls through when (ret(_ttySetSpeed) & ret(_ttySetSpeed)) != 0x0 -> B155
+  B155 0x12b9ab-0x12b9ab preds: B154
+      normal -> B156
+  B156 0x12b9b1-0x12b9b1 preds: B155
+      normal -> B157
+  B157 0x12b9b2-0x12b9b2 preds: B156
+      normal -> B158
+  B158 0x12b9b5-0x12b9b5 preds: B157
+      normal -> B159
+  B159 0x12b9b6-0x12b9b6 preds: B158
+      normal -> B160
+  B160 0x12b9bb-0x12b9bb preds: B159
+      jump -> 0x12b9f8
+  B164 0x12b9c0-0x12b9c0 preds: B154
+      normal -> B165
+  B165 0x12b9c2-0x12b9c2 preds: B164
+      normal -> B166
+  B166 0x12b9ca-0x12b9ca preds: B165
+      taken when Z == 0 -> 0x12b9d1
+      falls through when not (Z == 0) -> B167
+  B167 0x12b9cc-0x12b9cc preds: B166
+      normal -> B168
+  B168 0x12b9d1-0x12b9d1 preds: B166, B167
+      normal -> B169
+  B169 0x12b9d2-0x12b9d2 preds: B168
+      normal -> B170
+  B170 0x12b9d4-0x12b9d4 preds: B169
+      normal -> B171
+  B171 0x12b9db-0x12b9db preds: B170
+      normal -> B172
+  B172 0x12b9dc-0x12b9dc preds: B171
+      normal -> B173
+  B173 0x12b9df-0x12b9df preds: B172
+      call -> 0x189340
+  B174 0x12b9e4-0x12b9e4 preds: B173
+      normal -> B175
+  B175 0x12b9e7-0x12b9e7 preds: B174
+      normal -> B176
+  B176 0x12b9ea-0x12b9ea preds: B175
+      normal -> B177
+  B177 0x12b9ec-0x12b9ec preds: B176
+      taken when ge flags condition (operands unknown) -> 0x12ba30
+      falls through when not (ge flags condition (operands unknown)) -> B178
+  B178 0x12b9ee-0x12b9ee preds: B177
+      normal -> B179
+  B179 0x12b9ef-0x12b9ef preds: B178
+      normal -> B180
+  B180 0x12b9f2-0x12b9f2 preds: B179
+      normal -> B181
+  B181 0x12b9f3-0x12b9f3 preds: B180
+      normal -> B182
+  B182 0x12b9f8-0x12b9f8 preds: B160, B181
+      call -> 0x18e17c
+  B183 0x12b9fd-0x12b9fd preds: B182
+      normal -> B184
+  B184 0x12b9ff-0x12b9ff preds: B183
+      normal -> B185
+  B185 0x12ba00-0x12ba00 preds: B184
+      call -> 0x17c4ec
+  B186 0x12ba05-0x12ba05 preds: B185
+      normal -> B187
+  B187 0x12ba08-0x12ba08 preds: B186
+      normal -> B188
+  B188 0x12ba0f-0x12ba0f preds: B187
+      normal -> B189
+  B189 0x12ba10-0x12ba10 preds: B188
+      call -> 0x189280
+  B190 0x12ba15-0x12ba15 preds: B189
+      normal -> B191
+  B191 0x12ba18-0x12ba18 preds: B190
+      normal -> B192
+  B192 0x12ba23-0x12ba23 preds: B191
+      jump -> 0x12ba65
+  B204 0x12ba30-0x12ba30 preds: B177
+      normal -> B205
+  B205 0x12ba38-0x12ba38 preds: B204
+      taken when l flags condition (operands unknown) -> 0x12ba4f
+      falls through when not (l flags condition (operands unknown)) -> B206
+  B206 0x12ba3a-0x12ba3a preds: B205
+      normal -> B207
+  B207 0x12ba41-0x12ba41 preds: B206
+      normal -> B208
+  B208 0x12ba48-0x12ba48 preds: B207
+      normal -> B209
+  B209 0x12ba4f-0x12ba4f preds: B205, B208
+      normal -> B210
+  B210 0x12ba51-0x12ba51 preds: B209
+      normal -> B211
+  B211 0x12ba58-0x12ba58 preds: B210
+      taken when Z == 1 -> 0x12ba5b
+      falls through when not (Z == 1) -> B212
+  B212 0x12ba5a-0x12ba5a preds: B211
+      normal -> B213
+  B213 0x12ba5b-0x12ba5b preds: B211, B212
+      normal -> B214
+  B214 0x12ba5c-0x12ba5c preds: B213
+      normal -> B215
+  B215 0x12ba5d-0x12ba5d preds: B214
+      call -> 0x12b350
+  B216 0x12ba62-0x12ba62 preds: B215
+      normal -> B217
+  B217 0x12ba65-0x12ba65 preds: B143, B192, B216
+      normal -> B218
+  B218 0x12ba68-0x12ba68 preds: B217
+      normal -> B219
+  B219 0x12ba69-0x12ba69 preds: B218
+      normal -> B220
+  B220 0x12ba6c-0x12ba6c preds: B219
+      taken when ? <= 0x5 (signed, 32-bit) -> 0x12b908
+      falls through when ? > 0x5 (signed, 32-bit) -> B221
+  B221 0x12ba72-0x12ba72 preds: B220
+      normal -> B222
+  B222 0x12ba74-0x12ba74 preds: B221
+      normal -> B223
+  B223 0x12ba77-0x12ba77 preds: B222
+      normal -> B224
+  B224 0x12ba78-0x12ba78 preds: B223
+      normal -> B225
+  B225 0x12ba79-0x12ba79 preds: B224
+      normal -> B226
+  B226 0x12ba7a-0x12ba7a preds: B225
+      normal -> B227
+  B227 0x12ba7c-0x12ba7c preds: B226
+      normal -> B228
+  B228 0x12ba7d-0x12ba7d preds: B227
+      return
+
+returns (1)
+  0x12ba7d: eax = 0x0; reached from B227
+
+constants
+  0x12b820 ecx = 0x1dd0e0
+  0x12b825 esi = 0x12b160
+  0x12b82a edx = 0x0
+  0x12b86f esi = 0x0
+  0x12b871 ecx = 0x1dd0e0
+  0x12b876 edi = 0x12b160
+  0x12b8da esi = 0x0
+  0x12b8dc eax = 0x1ee288
+  0x12b8e1 edx = 0x1ee2a0
+  0x12b8fb esi = 0x0
+  0x12b903 edi = 0x0
+  0x12b9c0 edx = 0x0
+  0x12b9cc edx = 0x7f
+  0x12ba4f eax = 0x0
+  0x12ba72 eax = 0x0
+immediates
+  0x20 at 0x12b7d3
+  0x0 at 0x12b7d9
+  0x19334c at 0x12b7e0
+  0x12b7fe at 0x12b7e7
+  0x12b72d at 0x12b7e9
+  0x18e17c at 0x12b7ee
+  0x17c4ec at 0x12b7f6
+  0x8 at 0x12b7fb
+  0x1dd0e0 at 0x12b7fe
+  0x4 at 0x12b803
+  0x127108 at 0x12b805
+  0x8 at 0x12b80a
+  0x12b86f at 0x12b80f
+  0x60 at 0x12b811
+  0x1dd0e0 at 0x12b813
+  0x172678 at 0x12b818
+  0x8 at 0x12b81d
+  0x1dd0e0 at 0x12b820
+  0x12b160 at 0x12b825
+  0x0 at 0x12b850
+  0x0 at 0x12b858
+  0x10 at 0x12b860
+  0x50 at 0x12b863
+  0x12b82c at 0x12b866
+  0x1 at 0x12b868
+  0x1dd0e0 at 0x12b871
+  0x12b160 at 0x12b876
+  0x4 at 0x12b87e
+  0x0 at 0x12b881
+  0x12b8a0 at 0x12b887
+  0x12b8ae at 0x12b893
+  0x40 at 0x12b8a0
+  0x12b8bf at 0x12b8a5
+  0x4000 at 0x12b8a7
+  0x1 at 0x12b8b8
+  0x5 at 0x12b8c0
+  0x12b87c at 0x12b8c3
+  0x0 at 0x12b8c5
+  0x12b8da at 0x12b8c9
+  0x1dd0e0 at 0x12b8cb
+  0x4 at 0x12b8d0
+  0x127298 at 0x12b8d2
+  0x8 at 0x12b8d7
+  0x1ee288 at 0x12b8dc
+  0x1ee2a0 at 0x12b8e1
+  0xffffffff at 0x12b8e8
+  0x4 at 0x12b8f3
+  0x12b8e8 at 0x12b8f9
+  0x12b74b at 0x12b909
+  0x172dd8 at 0x12b912
+  0xc at 0x12b917
+  0x12b6e0 at 0x12b91b
+  0x4 at 0x12b920
+  0x12b690 at 0x12b925
+  0x4 at 0x12b92a
+  0x10b7c8 at 0x12b92f
+  0x4 at 0x12b934
+  0x1933ac at 0x12b939
+  0x10 at 0x12b93e
+  0x12b950 at 0x12b943
+  0x12b754 at 0x12b946
+  0x12b978 at 0x12b94b
+  0x0 at 0x12b950
+  0x2 at 0x12b952
+  0x1890e0 at 0x12b958
+  0xc at 0x12b95d
+  0x12b990 at 0x12b970
+  0x12b771 at 0x12b973
+  0x18e17c at 0x12b978
+  0x17c4ec at 0x12b980
+  0xc at 0x12b985
+  0x12ba65 at 0x12b988
+  0x12bb00 at 0x12b99f
+  0x8 at 0x12b9a4
+  0x12b9c0 at 0x12b9a9
+  0x12b784 at 0x12b9b6
+  0x12b9f8 at 0x12b9bb
+  0x5 at 0x12b9c2
+  0x12b9d1 at 0x12b9ca
+  0x7f at 0x12b9cc
+  0x3 at 0x12b9d2
+  0x189340 at 0x12b9df
+  0xc at 0x12b9e4
+  0x12ba30 at 0x12b9ec
+  0x12b7aa at 0x12b9f3
+  0x18e17c at 0x12b9f8
+  0x17c4ec at 0x12ba00
+  0x10 at 0x12ba05
+  0x189280 at 0x12ba10
+  0x4 at 0x12ba15
+  0xffffffff at 0x12ba18
+  0x12ba65 at 0x12ba23
+  0x0 at 0x12ba30
+  0x12ba4f at 0x12ba38
+  0x8 at 0x12ba51
+  0x12ba5b at 0x12ba58
+  0x12b350 at 0x12ba5d
+  0x8 at 0x12ba62
+  0x10 at 0x12ba65
+  0x5 at 0x12ba69
+  0x12b908 at 0x12ba6c
+instructions
+  0x12b7d0 55 push ebp
+  0x12b7d1 89e5 mov ebp, esp
+  0x12b7d3 83ec20 sub esp, 0x20
+  0x12b7d6 57 push edi
+  0x12b7d7 56 push esi
+  0x12b7d8 53 push ebx
+  0x12b7d9 c745e400000000 mov dword ptr [ebp - 0x1c], 0
+  0x12b7e0 e8677b0600 call 0x19334c
+  0x12b7e5 85c0 test eax, eax
+  0x12b7e7 7415 je 0x12b7fe
+  0x12b7e9 682db71200 push 0x12b72d
+  0x12b7ee e889290600 call 0x18e17c
+  0x12b7f3 8b00 mov eax, dword ptr [eax]
+  0x12b7f5 50 push eax
+  0x12b7f6 e8f10c0500 call 0x17c4ec
+  0x12b7fb 83c408 add esp, 8
+  0x12b7fe 68e0d01d00 push 0x1dd0e0
+  0x12b803 6a04 push 4
+  0x12b805 e8feb8ffff call 0x127108
+  0x12b80a 83c408 add esp, 8
+  0x12b80d 85c0 test eax, eax
+  0x12b80f 745e je 0x12b86f
+  0x12b811 6a60 push 0x60
+  0x12b813 68e0d01d00 push 0x1dd0e0
+  0x12b818 e85b6e0400 call 0x172678
+  0x12b81d 83c408 add esp, 8
+  0x12b820 b9e0d01d00 mov ecx, 0x1dd0e0
+  0x12b825 be60b11200 mov esi, 0x12b160
+  0x12b82a 31d2 xor edx, edx
+  0x12b82c 8b8260b11200 mov eax, dword ptr [edx + 0x12b160]
+  0x12b832 8982e0d01d00 mov dword ptr [edx + 0x1dd0e0], eax
+  0x12b838 8b441604 mov eax, dword ptr [esi + edx + 4]
+  0x12b83c 89441104 mov dword ptr [ecx + edx + 4], eax
+  0x12b840 8b441608 mov eax, dword ptr [esi + edx + 8]
+  0x12b844 89441108 mov dword ptr [ecx + edx + 8], eax
+  0x12b848 8b44160c mov eax, dword ptr [esi + edx + 0xc]
+  0x12b84c 8944110c mov dword ptr [ecx + edx + 0xc], eax
+  0x12b850 c744110800000000 mov dword ptr [ecx + edx + 8], 0
+  0x12b858 c744110c00000000 mov dword ptr [ecx + edx + 0xc], 0
+  0x12b860 83c210 add edx, 0x10
+  0x12b863 83fa50 cmp edx, 0x50
+  0x12b866 7ec4 jle 0x12b82c
+  0x12b868 c745e401000000 mov dword ptr [ebp - 0x1c], 1
+  0x12b86f 31f6 xor esi, esi
+  0x12b871 b9e0d01d00 mov ecx, 0x1dd0e0
+  0x12b876 bf60b11200 mov edi, 0x12b160
+  0x12b87b 90 nop
+  0x12b87c 89f2 mov edx, esi
+  0x12b87e c1e204 shl edx, 4
+  0x12b881 66837c110400 cmp word ptr [ecx + edx + 4], 0
+  0x12b887 7c17 jl 0x12b8a0
+  0x12b889 668b441704 mov ax, word ptr [edi + edx + 4]
+  0x12b88e 6689441104 mov word ptr [ecx + edx + 4], ax
+  0x12b893 eb19 jmp 0x12b8ae
+  0x12b895 90 nop  (not reached by known edges)
+  0x12b896 90 nop  (not reached by known edges)
+  0x12b897 90 nop  (not reached by known edges)
+  0x12b898 90 nop  (not reached by known edges)
+  0x12b899 90 nop  (not reached by known edges)
+  0x12b89a 90 nop  (not reached by known edges)
+  0x12b89b 90 nop  (not reached by known edges)
+  0x12b89c 90 nop  (not reached by known edges)
+  0x12b89d 90 nop  (not reached by known edges)
+  0x12b89e 90 nop  (not reached by known edges)
+  0x12b89f 90 nop  (not reached by known edges)
+  0x12b8a0 f644110540 test byte ptr [ecx + edx + 5], 0x40
+  0x12b8a5 7518 jne 0x12b8bf
+  0x12b8a7 66814c11040040 or word ptr [ecx + edx + 4], 0x4000
+  0x12b8ae 668b441706 mov ax, word ptr [edi + edx + 6]
+  0x12b8b3 6689441106 mov word ptr [ecx + edx + 6], ax
+  0x12b8b8 c745e401000000 mov dword ptr [ebp - 0x1c], 1
+  0x12b8bf 46 inc esi
+  0x12b8c0 83fe05 cmp esi, 5
+  0x12b8c3 7eb7 jle 0x12b87c
+  0x12b8c5 837de400 cmp dword ptr [ebp - 0x1c], 0
+  0x12b8c9 740f je 0x12b8da
+  0x12b8cb 68e0d01d00 push 0x1dd0e0
+  0x12b8d0 6a04 push 4
+  0x12b8d2 e8c1b9ffff call 0x127298
+  0x12b8d7 83c408 add esp, 8
+  0x12b8da 31f6 xor esi, esi
+  0x12b8dc b888e21e00 mov eax, 0x1ee288
+  0x12b8e1 baa0e21e00 mov edx, 0x1ee2a0
+  0x12b8e6 90 nop
+  0x12b8e7 90 nop
+  0x12b8e8 c704b588e21e00ffffffff mov dword ptr [esi*4 + 0x1ee288], 0xffffffff
+  0x12b8f3 83c004 add eax, 4
+  0x12b8f6 46 inc esi
+  0x12b8f7 39d0 cmp eax, edx
+  0x12b8f9 7eed jle 0x12b8e8
+  0x12b8fb 31f6 xor esi, esi
+  0x12b8fd 8d5dec lea ebx, [ebp - 0x14]
+  0x12b900 895de8 mov dword ptr [ebp - 0x18], ebx
+  0x12b903 31ff xor edi, edi
+  0x12b905 90 nop
+  0x12b906 90 nop
+  0x12b907 90 nop
+  0x12b908 56 push esi
+  0x12b909 684bb71200 push 0x12b74b
+  0x12b90e 8b5de8 mov ebx, dword ptr [ebp - 0x18]
+  0x12b911 53 push ebx
+  0x12b912 e8c1740400 call 0x172dd8
+  0x12b917 83c40c add esp, 0xc
+  0x12b91a 56 push esi
+  0x12b91b e8c0fdffff call 0x12b6e0
+  0x12b920 83c404 add esp, 4
+  0x12b923 50 push eax
+  0x12b924 56 push esi
+  0x12b925 e866fdffff call 0x12b690
+  0x12b92a 83c404 add esp, 4
+  0x12b92d 50 push eax
+  0x12b92e 56 push esi
+  0x12b92f e894fefdff call 0x10b7c8
+  0x12b934 83c404 add esp, 4
+  0x12b937 50 push eax
+  0x12b938 53 push ebx
+  0x12b939 e86e7a0600 call 0x1933ac
+  0x12b93e 83c410 add esp, 0x10
+  0x12b941 85c0 test eax, eax
+  0x12b943 740b je 0x12b950
+  0x12b945 53 push ebx
+  0x12b946 6854b71200 push 0x12b754
+  0x12b94b eb2b jmp 0x12b978
+  0x12b94d 90 nop  (not reached by known edges)
+  0x12b94e 90 nop  (not reached by known edges)
+  0x12b94f 90 nop  (not reached by known edges)
+  0x12b950 6a00 push 0
+  0x12b952 6a02 push 2
+  0x12b954 8b5de8 mov ebx, dword ptr [ebp - 0x18]
+  0x12b957 53 push ebx
+  0x12b958 e883d70500 call 0x1890e0
+  0x12b95d 83c40c add esp, 0xc
+  0x12b960 8904b508c71d00 mov dword ptr [esi*4 + 0x1dc708], eax
+  0x12b967 8b04b508c71d00 mov eax, dword ptr [esi*4 + 0x1dc708]
+  0x12b96e 85c0 test eax, eax
+  0x12b970 7d1e jge 0x12b990
+  0x12b972 53 push ebx
+  0x12b973 6871b71200 push 0x12b771
+  0x12b978 e8ff270600 call 0x18e17c
+  0x12b97d 8b00 mov eax, dword ptr [eax]
+  0x12b97f 50 push eax
+  0x12b980 e8670b0500 call 0x17c4ec
+  0x12b985 83c40c add esp, 0xc
+  0x12b988 e9d8000000 jmp 0x12ba65
+  0x12b98d 90 nop  (not reached by known edges)
+  0x12b98e 90 nop  (not reached by known edges)
+  0x12b98f 90 nop  (not reached by known edges)
+  0x12b990 8b87e0d01d00 mov eax, dword ptr [edi + 0x1dd0e0]
+  0x12b996 50 push eax
+  0x12b997 8b04b508c71d00 mov eax, dword ptr [esi*4 + 0x1dc708]
+  0x12b99e 50 push eax
+  0x12b99f e85c010000 call 0x12bb00
+  0x12b9a4 83c408 add esp, 8
+  0x12b9a7 85c0 test eax, eax
+  0x12b9a9 7415 je 0x12b9c0
+  0x12b9ab 8b87e0d01d00 mov eax, dword ptr [edi + 0x1dd0e0]
+  0x12b9b1 50 push eax
+  0x12b9b2 8b5de8 mov ebx, dword ptr [ebp - 0x18]
+  0x12b9b5 53 push ebx
+  0x12b9b6 6884b71200 push 0x12b784
+  0x12b9bb eb3b jmp 0x12b9f8
+  0x12b9bd 90 nop  (not reached by known edges)
+  0x12b9be 90 nop  (not reached by known edges)
+  0x12b9bf 90 nop  (not reached by known edges)
+  0x12b9c0 31d2 xor edx, edx
+  0x12b9c2 6683bfe6d01d0005 cmp word ptr [edi + 0x1dd0e6], 5
+  0x12b9ca 7505 jne 0x12b9d1
+  0x12b9cc ba7f000000 mov edx, 0x7f
+  0x12b9d1 52 push edx
+  0x12b9d2 6a03 push 3
+  0x12b9d4 8b04b508c71d00 mov eax, dword ptr [esi*4 + 0x1dc708]
+  0x12b9db 50 push eax
+  0x12b9dc 8955e0 mov dword ptr [ebp - 0x20], edx
+  0x12b9df e85cd90500 call 0x189340
+  0x12b9e4 83c40c add esp, 0xc
+  0x12b9e7 8b55e0 mov edx, dword ptr [ebp - 0x20]
+  0x12b9ea 85c0 test eax, eax
+  0x12b9ec 7d42 jge 0x12ba30
+  0x12b9ee 52 push edx
+  0x12b9ef 8b5de8 mov ebx, dword ptr [ebp - 0x18]
+  0x12b9f2 53 push ebx
+  0x12b9f3 68aab71200 push 0x12b7aa
+  0x12b9f8 e87f270600 call 0x18e17c
+  0x12b9fd 8b00 mov eax, dword ptr [eax]
+  0x12b9ff 50 push eax
+  0x12ba00 e8e70a0500 call 0x17c4ec
+  0x12ba05 83c410 add esp, 0x10
+  0x12ba08 8b04b508c71d00 mov eax, dword ptr [esi*4 + 0x1dc708]
+  0x12ba0f 50 push eax
+  0x12ba10 e86bd80500 call 0x189280
+  0x12ba15 83c404 add esp, 4
+  0x12ba18 c704b508c71d00ffffffff mov dword ptr [esi*4 + 0x1dc708], 0xffffffff
+  0x12ba23 eb40 jmp 0x12ba65
+  0x12ba25 90 nop  (not reached by known edges)
+  0x12ba26 90 nop  (not reached by known edges)
+  0x12ba27 90 nop  (not reached by known edges)
+  0x12ba28 90 nop  (not reached by known edges)
+  0x12ba29 90 nop  (not reached by known edges)
+  0x12ba2a 90 nop  (not reached by known edges)
+  0x12ba2b 90 nop  (not reached by known edges)
+  0x12ba2c 90 nop  (not reached by known edges)
+  0x12ba2d 90 nop  (not reached by known edges)
+  0x12ba2e 90 nop  (not reached by known edges)
+  0x12ba2f 90 nop  (not reached by known edges)
+  0x12ba30 6683bfe6d01d0000 cmp word ptr [edi + 0x1dd0e6], 0
+  0x12ba38 7c15 jl 0x12ba4f
+  0x12ba3a 0fbf97e6d01d00 movsx edx, word ptr [edi + 0x1dd0e6]
+  0x12ba41 8b04b508c71d00 mov eax, dword ptr [esi*4 + 0x1dc708]
+  0x12ba48 89049588e21e00 mov dword ptr [edx*4 + 0x1ee288], eax
+  0x12ba4f 31c0 xor eax, eax
+  0x12ba51 f687e5d01d0008 test byte ptr [edi + 0x1dd0e5], 8
+  0x12ba58 7401 je 0x12ba5b
+  0x12ba5a 40 inc eax
+  0x12ba5b 50 push eax
+  0x12ba5c 56 push esi
+  0x12ba5d e8eef8ffff call 0x12b350
+  0x12ba62 83c408 add esp, 8
+  0x12ba65 83c710 add edi, 0x10
+  0x12ba68 46 inc esi
+  0x12ba69 83fe05 cmp esi, 5
+  0x12ba6c 0f8e96feffff jle 0x12b908
+  0x12ba72 31c0 xor eax, eax
+  0x12ba74 8d65d4 lea esp, [ebp - 0x2c]
+  0x12ba77 5b pop ebx
+  0x12ba78 5e pop esi
+  0x12ba79 5f pop edi
+  0x12ba7a 89ec mov esp, ebp
+  0x12ba7c 5d pop ebp
+  0x12ba7d c3 ret
+  0x12ba7e 55 push ebp (not reached by known edges)
+  0x12ba7f 6e outsb dx, byte ptr [esi] (not reached by known edges)
+  0x12ba80 61 popal  (not reached by known edges)
+  0x12ba81 626c6520 bound ebp, qword ptr [ebp + 0x20] (not reached by known edges)
+  0x12ba85 746f je 0x12baf6 (not reached by known edges)
+  0x12ba87 207365 and byte ptr [ebx + 0x65], dh (not reached by known edges)
+  0x12ba8a 7420 je 0x12baac (not reached by known edges)
+  0x12ba8c 6d insd dword ptr es:[edi], dx (not reached by known edges)
+  0x12ba8d 6f outsd dx, dword ptr [esi] (not reached by known edges)
+  0x12ba8e 6465206f6e and byte ptr gs:[edi + 0x6e], ch (not reached by known edges)
+  0x12ba93 204644 and byte ptr [esi + 0x44], al (not reached by known edges)
+  0x12ba96 202564009090 and byte ptr [0x90900064], ah (not reached by known edges)
+  0x12ba9c 90 nop  (not reached by known edges)
+  0x12ba9d 90 nop  (not reached by known edges)
+  0x12ba9e 90 nop  (not reached by known edges)
+  0x12ba9f 90 nop  (not reached by known edges)
