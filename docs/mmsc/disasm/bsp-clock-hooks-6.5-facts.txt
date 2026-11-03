@@ -1,0 +1,1601 @@
+routine _sysClkInt  0x108498-0x1084b8  size 0x20 (32 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (6)
+  0x108498 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10849b load w4 cmp base=? disp +0x1ae7a4 => abs 0x1ae7a4
+  0x1084a4 load w4 mov base=? disp +0x1ae7a8 => abs 0x1ae7a8
+  0x1084a9 store w4 push base=esp disp -0x4 => sp -0x8 value [0x1ae7a8]
+  0x1084aa load w4 mov base=? disp +0x1ae7a4 => abs 0x1ae7a4
+  0x1084b3 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x1084af call (unknown callee) [unknown target]
+      args: stack arg0=[0x1ae7a8], stack arg1=ebp, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (11)
+  B0 0x108498-0x108498 preds: entry
+      normal -> B1
+  B1 0x108499-0x108499 preds: B0
+      normal -> B2
+  B2 0x10849b-0x10849b preds: B1
+      normal -> B3
+  B3 0x1084a2-0x1084a2 preds: B2
+      taken when [0x1ae7a4] == 0x0 -> 0x1084b1
+      falls through when [0x1ae7a4] != 0x0 -> B4
+  B4 0x1084a4-0x1084a4 preds: B3
+      normal -> B5
+  B5 0x1084a9-0x1084a9 preds: B4
+      normal -> B6
+  B6 0x1084aa-0x1084aa preds: B5
+      normal -> B7
+  B7 0x1084af-0x1084af preds: B6
+      call -> B8
+  B8 0x1084b1-0x1084b1 preds: B3, B7
+      normal -> B9
+  B9 0x1084b3-0x1084b3 preds: B8
+      normal -> B10
+  B10 0x1084b4-0x1084b4 preds: B9
+      return
+
+returns (1)
+  0x1084b4: eax = ?; reached from B9
+
+constants
+immediates
+  0x0 at 0x10849b
+  0x1084b1 at 0x1084a2
+instructions
+  0x108498 55 push ebp
+  0x108499 89e5 mov ebp, esp
+  0x10849b 833da4e71a0000 cmp dword ptr [0x1ae7a4], 0
+  0x1084a2 740d je 0x1084b1
+  0x1084a4 a1a8e71a00 mov eax, dword ptr [0x1ae7a8]
+  0x1084a9 50 push eax
+  0x1084aa a1a4e71a00 mov eax, dword ptr [0x1ae7a4]
+  0x1084af ffd0 call eax
+  0x1084b1 89ec mov esp, ebp
+  0x1084b3 5d pop ebp
+  0x1084b4 c3 ret
+  0x1084b5 90 nop  (not reached by known edges)
+  0x1084b6 90 nop  (not reached by known edges)
+  0x1084b7 90 nop  (not reached by known edges)
+
+routine _sysClkConnect  0x1084b8-0x1084f8  size 0x40 (64 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (11)
+  0x1084b8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1084bb store w4 push base=esp disp -0x4 => sp -0x8 value esi
+  0x1084bc store w4 push base=esp disp -0x4 => sp -0xc value ebx
+  0x1084bd load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x1084c0 load w4 mov base=ebp disp +0xc => sp +0x8
+  0x1084c8 store w4 mov base=? disp +0x1ae7a4 => abs 0x1ae7a4 value [sp+4]
+  0x1084ce store w4 mov base=? disp +0x1ae7a8 => abs 0x1ae7a8 value [sp+8]
+  0x1084d4 store w4 mov base=? disp +0x1ae7b0 => abs 0x1ae7b0 value 0x1
+  0x1084e3 load w4 pop base=esp disp +0x0 => sp -0xc
+  0x1084e4 load w4 pop base=esp disp +0x0 => sp -0x8
+  0x1084e7 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x1084c3 call _sysHwInit2 [0x10b858]
+      args: stack arg0=ebx, stack arg1=esi, stack arg2=ebp, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (17)
+  B0 0x1084b8-0x1084b8 preds: entry
+      normal -> B1
+  B1 0x1084b9-0x1084b9 preds: B0
+      normal -> B2
+  B2 0x1084bb-0x1084bb preds: B1
+      normal -> B3
+  B3 0x1084bc-0x1084bc preds: B2
+      normal -> B4
+  B4 0x1084bd-0x1084bd preds: B3
+      normal -> B5
+  B5 0x1084c0-0x1084c0 preds: B4
+      normal -> B6
+  B6 0x1084c3-0x1084c3 preds: B5
+      call -> 0x10b858
+  B7 0x1084c8-0x1084c8 preds: B6
+      normal -> B8
+  B8 0x1084ce-0x1084ce preds: B7
+      normal -> B9
+  B9 0x1084d4-0x1084d4 preds: B8
+      normal -> B10
+  B10 0x1084de-0x1084de preds: B9
+      normal -> B11
+  B11 0x1084e0-0x1084e0 preds: B10
+      normal -> B12
+  B12 0x1084e3-0x1084e3 preds: B11
+      normal -> B13
+  B13 0x1084e4-0x1084e4 preds: B12
+      normal -> B14
+  B14 0x1084e5-0x1084e5 preds: B13
+      normal -> B15
+  B15 0x1084e7-0x1084e7 preds: B14
+      normal -> B16
+  B16 0x1084e8-0x1084e8 preds: B15
+      return
+
+returns (1)
+  0x1084e8: eax = 0x0; reached from B15
+
+constants
+  0x1084de eax = 0x0
+immediates
+  0x10b858 at 0x1084c3
+  0x1 at 0x1084d4
+instructions
+  0x1084b8 55 push ebp
+  0x1084b9 89e5 mov ebp, esp
+  0x1084bb 56 push esi
+  0x1084bc 53 push ebx
+  0x1084bd 8b5d08 mov ebx, dword ptr [ebp + 8]
+  0x1084c0 8b750c mov esi, dword ptr [ebp + 0xc]
+  0x1084c3 e890330000 call 0x10b858
+  0x1084c8 891da4e71a00 mov dword ptr [0x1ae7a4], ebx
+  0x1084ce 8935a8e71a00 mov dword ptr [0x1ae7a8], esi
+  0x1084d4 c705b0e71a0001000000 mov dword ptr [0x1ae7b0], 1
+  0x1084de 31c0 xor eax, eax
+  0x1084e0 8d65f8 lea esp, [ebp - 8]
+  0x1084e3 5b pop ebx
+  0x1084e4 5e pop esi
+  0x1084e5 89ec mov esp, ebp
+  0x1084e7 5d pop ebp
+  0x1084e8 c3 ret
+  0x1084e9 90 nop  (not reached by known edges)
+  0x1084ea 90 nop  (not reached by known edges)
+  0x1084eb 90 nop  (not reached by known edges)
+  0x1084ec 90 nop  (not reached by known edges)
+  0x1084ed 90 nop  (not reached by known edges)
+  0x1084ee 90 nop  (not reached by known edges)
+  0x1084ef 90 nop  (not reached by known edges)
+  0x1084f0 90 nop  (not reached by known edges)
+  0x1084f1 90 nop  (not reached by known edges)
+  0x1084f2 90 nop  (not reached by known edges)
+  0x1084f3 90 nop  (not reached by known edges)
+  0x1084f4 90 nop  (not reached by known edges)
+  0x1084f5 90 nop  (not reached by known edges)
+  0x1084f6 90 nop  (not reached by known edges)
+  0x1084f7 90 nop  (not reached by known edges)
+
+routine _sysClkDisable  0x1084f8-0x108548  size 0x50 (80 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (11)
+  0x1084f8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1084fb load w4 cmp base=? disp +0x1ae7ac => abs 0x1ae7ac
+  0x108504 store w4 push base=esp disp -0x4 => sp -0x8 value 0x38
+  0x108506 store w4 push base=esp disp -0x4 => sp -0xc value 0x43
+  0x108510 store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x108512 store w4 push base=esp disp -0x4 => sp -0xc value 0x40
+  0x10851c store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10851e store w4 push base=esp disp -0x4 => sp -0xc value 0x40
+  0x108528 store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10852f store w4 mov base=? disp +0x1ae7ac => abs 0x1ae7ac value 0x0
+  0x10853b load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (4)
+  0x108508 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x43, stack arg1=0x38, stack arg2=ebp, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108514 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x40, stack arg1=0x0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108520 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x40, stack arg1=0x0, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10852a call _sysIntDisablePIC [0x1083b8]
+      args: stack arg0=0x0, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (22)
+  B0 0x1084f8-0x1084f8 preds: entry
+      normal -> B1
+  B1 0x1084f9-0x1084f9 preds: B0
+      normal -> B2
+  B2 0x1084fb-0x1084fb preds: B1
+      normal -> B3
+  B3 0x108502-0x108502 preds: B2
+      taken when [0x1ae7ac] == 0x0 -> 0x108539
+      falls through when [0x1ae7ac] != 0x0 -> B4
+  B4 0x108504-0x108504 preds: B3
+      normal -> B5
+  B5 0x108506-0x108506 preds: B4
+      normal -> B6
+  B6 0x108508-0x108508 preds: B5
+      call -> 0x1081d0
+  B7 0x10850d-0x10850d preds: B6
+      normal -> B8
+  B8 0x108510-0x108510 preds: B7
+      normal -> B9
+  B9 0x108512-0x108512 preds: B8
+      normal -> B10
+  B10 0x108514-0x108514 preds: B9
+      call -> 0x1081d0
+  B11 0x108519-0x108519 preds: B10
+      normal -> B12
+  B12 0x10851c-0x10851c preds: B11
+      normal -> B13
+  B13 0x10851e-0x10851e preds: B12
+      normal -> B14
+  B14 0x108520-0x108520 preds: B13
+      call -> 0x1081d0
+  B15 0x108525-0x108525 preds: B14
+      normal -> B16
+  B16 0x108528-0x108528 preds: B15
+      normal -> B17
+  B17 0x10852a-0x10852a preds: B16
+      call -> 0x1083b8
+  B18 0x10852f-0x10852f preds: B17
+      normal -> B19
+  B19 0x108539-0x108539 preds: B3, B18
+      normal -> B20
+  B20 0x10853b-0x10853b preds: B19
+      normal -> B21
+  B21 0x10853c-0x10853c preds: B20
+      return
+
+returns (1)
+  0x10853c: eax = ?; reached from B20
+
+constants
+immediates
+  0x0 at 0x1084fb
+  0x108539 at 0x108502
+  0x38 at 0x108504
+  0x43 at 0x108506
+  0x1081d0 at 0x108508
+  0x8 at 0x10850d
+  0x0 at 0x108510
+  0x40 at 0x108512
+  0x1081d0 at 0x108514
+  0x8 at 0x108519
+  0x0 at 0x10851c
+  0x40 at 0x10851e
+  0x1081d0 at 0x108520
+  0x8 at 0x108525
+  0x0 at 0x108528
+  0x1083b8 at 0x10852a
+  0x0 at 0x10852f
+instructions
+  0x1084f8 55 push ebp
+  0x1084f9 89e5 mov ebp, esp
+  0x1084fb 833dace71a0000 cmp dword ptr [0x1ae7ac], 0
+  0x108502 7435 je 0x108539
+  0x108504 6a38 push 0x38
+  0x108506 6a43 push 0x43
+  0x108508 e8c3fcffff call 0x1081d0
+  0x10850d 83c408 add esp, 8
+  0x108510 6a00 push 0
+  0x108512 6a40 push 0x40
+  0x108514 e8b7fcffff call 0x1081d0
+  0x108519 83c408 add esp, 8
+  0x10851c 6a00 push 0
+  0x10851e 6a40 push 0x40
+  0x108520 e8abfcffff call 0x1081d0
+  0x108525 83c408 add esp, 8
+  0x108528 6a00 push 0
+  0x10852a e889feffff call 0x1083b8
+  0x10852f c705ace71a0000000000 mov dword ptr [0x1ae7ac], 0
+  0x108539 89ec mov esp, ebp
+  0x10853b 5d pop ebp
+  0x10853c c3 ret
+  0x10853d 90 nop  (not reached by known edges)
+  0x10853e 90 nop  (not reached by known edges)
+  0x10853f 90 nop  (not reached by known edges)
+  0x108540 90 nop  (not reached by known edges)
+  0x108541 90 nop  (not reached by known edges)
+  0x108542 90 nop  (not reached by known edges)
+  0x108543 90 nop  (not reached by known edges)
+  0x108544 90 nop  (not reached by known edges)
+  0x108545 90 nop  (not reached by known edges)
+  0x108546 90 nop  (not reached by known edges)
+  0x108547 90 nop  (not reached by known edges)
+
+routine _sysClkEnable  0x108548-0x1085a8  size 0x60 (96 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x10855a cdq: unsupported effects invalidated
+  warning: 0x10855b idiv: unsupported effects invalidated
+
+accesses (14)
+  0x108548 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10854b store w4 push base=esp disp -0x4 => sp -0x8 value ebx
+  0x10854c load w4 cmp base=? disp +0x1ae7ac => abs 0x1ae7ac
+  0x10855b load w4 idiv base=? disp +0x1ae7b4 => abs 0x1ae7b4
+  0x108563 store w4 push base=esp disp -0x4 => sp -0xc value 0x36
+  0x108565 store w4 push base=esp disp -0x4 => sp -0x10 value 0x43
+  0x108572 store w4 push base=esp disp -0x4 => sp -0xc value ?
+  0x108573 store w4 push base=esp disp -0x4 => sp -0x10 value 0x40
+  0x108585 store w4 push base=esp disp -0x4 => sp -0xc value ?
+  0x108586 store w4 push base=esp disp -0x4 => sp -0x10 value 0x40
+  0x108590 store w4 push base=esp disp -0x4 => sp -0xc value 0x0
+  0x108597 store w4 mov base=? disp +0x1ae7ac => abs 0x1ae7ac value 0x1
+  0x1085a1 load w4 mov base=ebp disp -0x4 => sp -0x8
+  0x1085a6 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (4)
+  0x108567 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x43, stack arg1=0x36, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108575 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x40, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108588 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x40, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108592 call _sysIntEnablePIC [0x108428]
+      args: stack arg0=0x0, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (32)
+  B0 0x108548-0x108548 preds: entry
+      normal -> B1
+  B1 0x108549-0x108549 preds: B0
+      normal -> B2
+  B2 0x10854b-0x10854b preds: B1
+      normal -> B3
+  B3 0x10854c-0x10854c preds: B2
+      normal -> B4
+  B4 0x108553-0x108553 preds: B3
+      taken when [0x1ae7ac] != 0x0 -> 0x1085a1
+      falls through when [0x1ae7ac] == 0x0 -> B5
+  B5 0x108555-0x108555 preds: B4
+      normal -> B6
+  B6 0x10855a-0x10855a preds: B5
+      normal -> B7
+  B7 0x10855b-0x10855b preds: B6
+      normal -> B8
+  B8 0x108561-0x108561 preds: B7
+      normal -> B9
+  B9 0x108563-0x108563 preds: B8
+      normal -> B10
+  B10 0x108565-0x108565 preds: B9
+      normal -> B11
+  B11 0x108567-0x108567 preds: B10
+      call -> 0x1081d0
+  B12 0x10856c-0x10856c preds: B11
+      normal -> B13
+  B13 0x10856f-0x10856f preds: B12
+      normal -> B14
+  B14 0x108572-0x108572 preds: B13
+      normal -> B15
+  B15 0x108573-0x108573 preds: B14
+      normal -> B16
+  B16 0x108575-0x108575 preds: B15
+      call -> 0x1081d0
+  B17 0x10857a-0x10857a preds: B16
+      normal -> B18
+  B18 0x10857d-0x10857d preds: B17
+      normal -> B19
+  B19 0x10857f-0x10857f preds: B18
+      normal -> B20
+  B20 0x108582-0x108582 preds: B19
+      normal -> B21
+  B21 0x108585-0x108585 preds: B20
+      normal -> B22
+  B22 0x108586-0x108586 preds: B21
+      normal -> B23
+  B23 0x108588-0x108588 preds: B22
+      call -> 0x1081d0
+  B24 0x10858d-0x10858d preds: B23
+      normal -> B25
+  B25 0x108590-0x108590 preds: B24
+      normal -> B26
+  B26 0x108592-0x108592 preds: B25
+      call -> 0x108428
+  B27 0x108597-0x108597 preds: B26
+      normal -> B28
+  B28 0x1085a1-0x1085a1 preds: B4, B27
+      normal -> B29
+  B29 0x1085a4-0x1085a4 preds: B28
+      normal -> B30
+  B30 0x1085a6-0x1085a6 preds: B29
+      normal -> B31
+  B31 0x1085a7-0x1085a7 preds: B30
+      return
+
+returns (1)
+  0x1085a7: eax = ?; reached from B30
+
+constants
+  0x108555 eax = 0x1234dc
+immediates
+  0x0 at 0x10854c
+  0x1085a1 at 0x108553
+  0x1234dc at 0x108555
+  0x36 at 0x108563
+  0x43 at 0x108565
+  0x1081d0 at 0x108567
+  0x8 at 0x10856c
+  0x40 at 0x108573
+  0x1081d0 at 0x108575
+  0x8 at 0x10857a
+  0x8 at 0x10857f
+  0x40 at 0x108586
+  0x1081d0 at 0x108588
+  0x8 at 0x10858d
+  0x0 at 0x108590
+  0x108428 at 0x108592
+  0x1 at 0x108597
+instructions
+  0x108548 55 push ebp
+  0x108549 89e5 mov ebp, esp
+  0x10854b 53 push ebx
+  0x10854c 833dace71a0000 cmp dword ptr [0x1ae7ac], 0
+  0x108553 754c jne 0x1085a1
+  0x108555 b8dc341200 mov eax, 0x1234dc
+  0x10855a 99 cdq
+  0x10855b f73db4e71a00 idiv dword ptr [0x1ae7b4]
+  0x108561 89c3 mov ebx, eax
+  0x108563 6a36 push 0x36
+  0x108565 6a43 push 0x43
+  0x108567 e864fcffff call 0x1081d0
+  0x10856c 83c408 add esp, 8
+  0x10856f 0fbec3 movsx eax, bl
+  0x108572 50 push eax
+  0x108573 6a40 push 0x40
+  0x108575 e856fcffff call 0x1081d0
+  0x10857a 83c408 add esp, 8
+  0x10857d 89d8 mov eax, ebx
+  0x10857f c1e808 shr eax, 8
+  0x108582 0fbec0 movsx eax, al
+  0x108585 50 push eax
+  0x108586 6a40 push 0x40
+  0x108588 e843fcffff call 0x1081d0
+  0x10858d 83c408 add esp, 8
+  0x108590 6a00 push 0
+  0x108592 e891feffff call 0x108428
+  0x108597 c705ace71a0001000000 mov dword ptr [0x1ae7ac], 1
+  0x1085a1 8b5dfc mov ebx, dword ptr [ebp - 4]
+  0x1085a4 89ec mov esp, ebp
+  0x1085a6 5d pop ebp
+  0x1085a7 c3 ret
+
+routine _sysClkRateGet  0x1085a8-0x1085b8  size 0x10 (16 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (3)
+  0x1085a8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1085ab load w4 mov base=? disp +0x1ae7b4 => abs 0x1ae7b4
+  0x1085b2 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (6)
+  B0 0x1085a8-0x1085a8 preds: entry
+      normal -> B1
+  B1 0x1085a9-0x1085a9 preds: B0
+      normal -> B2
+  B2 0x1085ab-0x1085ab preds: B1
+      normal -> B3
+  B3 0x1085b0-0x1085b0 preds: B2
+      normal -> B4
+  B4 0x1085b2-0x1085b2 preds: B3
+      normal -> B5
+  B5 0x1085b3-0x1085b3 preds: B4
+      return
+
+returns (1)
+  0x1085b3: eax = [0x1ae7b4]; reached from B4
+
+constants
+immediates
+instructions
+  0x1085a8 55 push ebp
+  0x1085a9 89e5 mov ebp, esp
+  0x1085ab a1b4e71a00 mov eax, dword ptr [0x1ae7b4]
+  0x1085b0 89ec mov esp, ebp
+  0x1085b2 5d pop ebp
+  0x1085b3 c3 ret
+  0x1085b4 90 nop  (not reached by known edges)
+  0x1085b5 90 nop  (not reached by known edges)
+  0x1085b6 90 nop  (not reached by known edges)
+  0x1085b7 90 nop  (not reached by known edges)
+
+routine _sysClkRateSet  0x1085b8-0x1085f8  size 0x40 (64 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (6)
+  0x1085b8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1085bb load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x1085cf load w4 pop base=esp disp +0x0 => sp -0x4
+  0x1085d8 store w4 mov base=? disp +0x1ae7b4 => abs 0x1ae7b4 value [sp+4]
+  0x1085de load w4 cmp base=? disp +0x1ae7ac => abs 0x1ae7ac
+  0x1085f5 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (2)
+  0x1085e7 call _sysClkDisable [0x1084f8]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x1085ec call _sysClkEnable [0x108548]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (19)
+  B0 0x1085b8-0x1085b8 preds: entry
+      normal -> B1
+  B1 0x1085b9-0x1085b9 preds: B0
+      normal -> B2
+  B2 0x1085bb-0x1085bb preds: B1
+      normal -> B3
+  B3 0x1085be-0x1085be preds: B2
+      normal -> B4
+  B4 0x1085c1-0x1085c1 preds: B3
+      normal -> B5
+  B5 0x1085c6-0x1085c6 preds: B4
+      taken when [sp+4]-19 <= 0x1221 (unsigned, 32-bit) -> 0x1085d8
+      falls through when [sp+4]-19 > 0x1221 (unsigned, 32-bit) -> B6
+  B6 0x1085c8-0x1085c8 preds: B5
+      normal -> B7
+  B7 0x1085cd-0x1085cd preds: B6
+      normal -> B8
+  B8 0x1085cf-0x1085cf preds: B7
+      normal -> B9
+  B9 0x1085d0-0x1085d0 preds: B8
+      return
+  B17 0x1085d8-0x1085d8 preds: B5
+      normal -> B18
+  B18 0x1085de-0x1085de preds: B17
+      normal -> B19
+  B19 0x1085e5-0x1085e5 preds: B18
+      taken when [0x1ae7ac] == 0x0 -> 0x1085f1
+      falls through when [0x1ae7ac] != 0x0 -> B20
+  B20 0x1085e7-0x1085e7 preds: B19
+      call -> 0x1084f8
+  B21 0x1085ec-0x1085ec preds: B20
+      call -> 0x108548
+  B22 0x1085f1-0x1085f1 preds: B19, B21
+      normal -> B23
+  B23 0x1085f3-0x1085f3 preds: B22
+      normal -> B24
+  B24 0x1085f5-0x1085f5 preds: B23
+      normal -> B25
+  B25 0x1085f6-0x1085f6 preds: B24
+      return
+
+returns (2)
+  0x1085d0: eax = 0xffffffff; reached from B8
+  0x1085f6: eax = 0x0; reached from B24
+
+constants
+  0x1085c8 eax = 0xffffffff
+  0x1085f1 eax = 0x0
+immediates
+  0x1221 at 0x1085c1
+  0x1085d8 at 0x1085c6
+  0xffffffff at 0x1085c8
+  0x0 at 0x1085de
+  0x1085f1 at 0x1085e5
+  0x1084f8 at 0x1085e7
+  0x108548 at 0x1085ec
+instructions
+  0x1085b8 55 push ebp
+  0x1085b9 89e5 mov ebp, esp
+  0x1085bb 8b5508 mov edx, dword ptr [ebp + 8]
+  0x1085be 8d42ed lea eax, [edx - 0x13]
+  0x1085c1 3d21120000 cmp eax, 0x1221
+  0x1085c6 7610 jbe 0x1085d8
+  0x1085c8 b8ffffffff mov eax, 0xffffffff
+  0x1085cd 89ec mov esp, ebp
+  0x1085cf 5d pop ebp
+  0x1085d0 c3 ret
+  0x1085d1 90 nop  (not reached by known edges)
+  0x1085d2 90 nop  (not reached by known edges)
+  0x1085d3 90 nop  (not reached by known edges)
+  0x1085d4 90 nop  (not reached by known edges)
+  0x1085d5 90 nop  (not reached by known edges)
+  0x1085d6 90 nop  (not reached by known edges)
+  0x1085d7 90 nop  (not reached by known edges)
+  0x1085d8 8915b4e71a00 mov dword ptr [0x1ae7b4], edx
+  0x1085de 833dace71a0000 cmp dword ptr [0x1ae7ac], 0
+  0x1085e5 740a je 0x1085f1
+  0x1085e7 e80cffffff call 0x1084f8
+  0x1085ec e857ffffff call 0x108548
+  0x1085f1 31c0 xor eax, eax
+  0x1085f3 89ec mov esp, ebp
+  0x1085f5 5d pop ebp
+  0x1085f6 c3 ret
+  0x1085f7 90 nop  (not reached by known edges)
+
+routine _sysAuxClkInt  0x1085f8-0x108638  size 0x40 (64 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (9)
+  0x1085f8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1085fb store w4 push base=esp disp -0x4 => sp -0x8 value 0xc
+  0x1085fd store w4 push base=esp disp -0x4 => sp -0xc value 0x70
+  0x108607 store w4 push base=esp disp -0x4 => sp -0x8 value 0x71
+  0x108611 load w4 cmp base=? disp +0x1ae7b8 => abs 0x1ae7b8
+  0x10861a load w4 mov base=? disp +0x1ae7bc => abs 0x1ae7bc
+  0x10861f store w4 push base=esp disp -0x4 => sp -0x8 value [0x1ae7bc]
+  0x108620 load w4 mov base=? disp +0x1ae7b8 => abs 0x1ae7b8
+  0x108629 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (3)
+  0x1085ff call _sysOutByte [0x1081d0]
+      args: stack arg0=0x70, stack arg1=0xc, stack arg2=ebp, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108609 call _sysInByte [0x1081b0]
+      args: stack arg0=0x71, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108625 call (unknown callee) [unknown target]
+      args: stack arg0=[0x1ae7bc], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (18)
+  B0 0x1085f8-0x1085f8 preds: entry
+      normal -> B1
+  B1 0x1085f9-0x1085f9 preds: B0
+      normal -> B2
+  B2 0x1085fb-0x1085fb preds: B1
+      normal -> B3
+  B3 0x1085fd-0x1085fd preds: B2
+      normal -> B4
+  B4 0x1085ff-0x1085ff preds: B3
+      call -> 0x1081d0
+  B5 0x108604-0x108604 preds: B4
+      normal -> B6
+  B6 0x108607-0x108607 preds: B5
+      normal -> B7
+  B7 0x108609-0x108609 preds: B6
+      call -> 0x1081b0
+  B8 0x10860e-0x10860e preds: B7
+      normal -> B9
+  B9 0x108611-0x108611 preds: B8
+      normal -> B10
+  B10 0x108618-0x108618 preds: B9
+      taken when [0x1ae7b8] == 0x0 -> 0x108627
+      falls through when [0x1ae7b8] != 0x0 -> B11
+  B11 0x10861a-0x10861a preds: B10
+      normal -> B12
+  B12 0x10861f-0x10861f preds: B11
+      normal -> B13
+  B13 0x108620-0x108620 preds: B12
+      normal -> B14
+  B14 0x108625-0x108625 preds: B13
+      call -> B15
+  B15 0x108627-0x108627 preds: B10, B14
+      normal -> B16
+  B16 0x108629-0x108629 preds: B15
+      normal -> B17
+  B17 0x10862a-0x10862a preds: B16
+      return
+
+returns (1)
+  0x10862a: eax = ?; reached from B16
+
+constants
+immediates
+  0xc at 0x1085fb
+  0x70 at 0x1085fd
+  0x1081d0 at 0x1085ff
+  0x8 at 0x108604
+  0x71 at 0x108607
+  0x1081b0 at 0x108609
+  0x4 at 0x10860e
+  0x0 at 0x108611
+  0x108627 at 0x108618
+instructions
+  0x1085f8 55 push ebp
+  0x1085f9 89e5 mov ebp, esp
+  0x1085fb 6a0c push 0xc
+  0x1085fd 6a70 push 0x70
+  0x1085ff e8ccfbffff call 0x1081d0
+  0x108604 83c408 add esp, 8
+  0x108607 6a71 push 0x71
+  0x108609 e8a2fbffff call 0x1081b0
+  0x10860e 83c404 add esp, 4
+  0x108611 833db8e71a0000 cmp dword ptr [0x1ae7b8], 0
+  0x108618 740d je 0x108627
+  0x10861a a1bce71a00 mov eax, dword ptr [0x1ae7bc]
+  0x10861f 50 push eax
+  0x108620 a1b8e71a00 mov eax, dword ptr [0x1ae7b8]
+  0x108625 ffd0 call eax
+  0x108627 89ec mov esp, ebp
+  0x108629 5d pop ebp
+  0x10862a c3 ret
+  0x10862b 90 nop  (not reached by known edges)
+  0x10862c 90 nop  (not reached by known edges)
+  0x10862d 90 nop  (not reached by known edges)
+  0x10862e 90 nop  (not reached by known edges)
+  0x10862f 90 nop  (not reached by known edges)
+  0x108630 90 nop  (not reached by known edges)
+  0x108631 90 nop  (not reached by known edges)
+  0x108632 90 nop  (not reached by known edges)
+  0x108633 90 nop  (not reached by known edges)
+  0x108634 90 nop  (not reached by known edges)
+  0x108635 90 nop  (not reached by known edges)
+  0x108636 90 nop  (not reached by known edges)
+  0x108637 90 nop  (not reached by known edges)
+
+routine _sysAuxClkConnect  0x108638-0x108668  size 0x30 (48 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108638 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10863b load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x10863e load w4 mov base=ebp disp +0xc => sp +0x8
+  0x108641 store w4 mov base=? disp +0x1ae7b8 => abs 0x1ae7b8 value [sp+4]
+  0x108646 store w4 mov base=? disp +0x1ae7bc => abs 0x1ae7bc value [sp+8]
+  0x10864c store w4 mov base=? disp +0x1ae7c4 => abs 0x1ae7c4 value 0x1
+  0x10865a load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (11)
+  B0 0x108638-0x108638 preds: entry
+      normal -> B1
+  B1 0x108639-0x108639 preds: B0
+      normal -> B2
+  B2 0x10863b-0x10863b preds: B1
+      normal -> B3
+  B3 0x10863e-0x10863e preds: B2
+      normal -> B4
+  B4 0x108641-0x108641 preds: B3
+      normal -> B5
+  B5 0x108646-0x108646 preds: B4
+      normal -> B6
+  B6 0x10864c-0x10864c preds: B5
+      normal -> B7
+  B7 0x108656-0x108656 preds: B6
+      normal -> B8
+  B8 0x108658-0x108658 preds: B7
+      normal -> B9
+  B9 0x10865a-0x10865a preds: B8
+      normal -> B10
+  B10 0x10865b-0x10865b preds: B9
+      return
+
+returns (1)
+  0x10865b: eax = 0x0; reached from B9
+
+constants
+  0x108656 eax = 0x0
+immediates
+  0x1 at 0x10864c
+instructions
+  0x108638 55 push ebp
+  0x108639 89e5 mov ebp, esp
+  0x10863b 8b4508 mov eax, dword ptr [ebp + 8]
+  0x10863e 8b550c mov edx, dword ptr [ebp + 0xc]
+  0x108641 a3b8e71a00 mov dword ptr [0x1ae7b8], eax
+  0x108646 8915bce71a00 mov dword ptr [0x1ae7bc], edx
+  0x10864c c705c4e71a0001000000 mov dword ptr [0x1ae7c4], 1
+  0x108656 31c0 xor eax, eax
+  0x108658 89ec mov esp, ebp
+  0x10865a 5d pop ebp
+  0x10865b c3 ret
+  0x10865c 90 nop  (not reached by known edges)
+  0x10865d 90 nop  (not reached by known edges)
+  0x10865e 90 nop  (not reached by known edges)
+  0x10865f 90 nop  (not reached by known edges)
+  0x108660 90 nop  (not reached by known edges)
+  0x108661 90 nop  (not reached by known edges)
+  0x108662 90 nop  (not reached by known edges)
+  0x108663 90 nop  (not reached by known edges)
+  0x108664 90 nop  (not reached by known edges)
+  0x108665 90 nop  (not reached by known edges)
+  0x108666 90 nop  (not reached by known edges)
+  0x108667 90 nop  (not reached by known edges)
+
+routine _sysAuxClkDisable  0x108668-0x1086a8  size 0x40 (64 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (9)
+  0x108668 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10866b load w4 cmp base=? disp +0x1ae7c0 => abs 0x1ae7c0
+  0x108674 store w4 push base=esp disp -0x4 => sp -0x8 value 0xb
+  0x108676 store w4 push base=esp disp -0x4 => sp -0xc value 0x70
+  0x108680 store w4 push base=esp disp -0x4 => sp -0x8 value 0x2
+  0x108682 store w4 push base=esp disp -0x4 => sp -0xc value 0x71
+  0x10868c store w4 push base=esp disp -0x4 => sp -0x8 value 0x8
+  0x108693 store w4 mov base=? disp +0x1ae7c0 => abs 0x1ae7c0 value 0x0
+  0x10869f load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (3)
+  0x108678 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x70, stack arg1=0xb, stack arg2=ebp, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108684 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x71, stack arg1=0x2, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10868e call _sysIntDisablePIC [0x1083b8]
+      args: stack arg0=0x8, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (18)
+  B0 0x108668-0x108668 preds: entry
+      normal -> B1
+  B1 0x108669-0x108669 preds: B0
+      normal -> B2
+  B2 0x10866b-0x10866b preds: B1
+      normal -> B3
+  B3 0x108672-0x108672 preds: B2
+      taken when [0x1ae7c0] == 0x0 -> 0x10869d
+      falls through when [0x1ae7c0] != 0x0 -> B4
+  B4 0x108674-0x108674 preds: B3
+      normal -> B5
+  B5 0x108676-0x108676 preds: B4
+      normal -> B6
+  B6 0x108678-0x108678 preds: B5
+      call -> 0x1081d0
+  B7 0x10867d-0x10867d preds: B6
+      normal -> B8
+  B8 0x108680-0x108680 preds: B7
+      normal -> B9
+  B9 0x108682-0x108682 preds: B8
+      normal -> B10
+  B10 0x108684-0x108684 preds: B9
+      call -> 0x1081d0
+  B11 0x108689-0x108689 preds: B10
+      normal -> B12
+  B12 0x10868c-0x10868c preds: B11
+      normal -> B13
+  B13 0x10868e-0x10868e preds: B12
+      call -> 0x1083b8
+  B14 0x108693-0x108693 preds: B13
+      normal -> B15
+  B15 0x10869d-0x10869d preds: B3, B14
+      normal -> B16
+  B16 0x10869f-0x10869f preds: B15
+      normal -> B17
+  B17 0x1086a0-0x1086a0 preds: B16
+      return
+
+returns (1)
+  0x1086a0: eax = ?; reached from B16
+
+constants
+immediates
+  0x0 at 0x10866b
+  0x10869d at 0x108672
+  0xb at 0x108674
+  0x70 at 0x108676
+  0x1081d0 at 0x108678
+  0x8 at 0x10867d
+  0x2 at 0x108680
+  0x71 at 0x108682
+  0x1081d0 at 0x108684
+  0x8 at 0x108689
+  0x8 at 0x10868c
+  0x1083b8 at 0x10868e
+  0x0 at 0x108693
+instructions
+  0x108668 55 push ebp
+  0x108669 89e5 mov ebp, esp
+  0x10866b 833dc0e71a0000 cmp dword ptr [0x1ae7c0], 0
+  0x108672 7429 je 0x10869d
+  0x108674 6a0b push 0xb
+  0x108676 6a70 push 0x70
+  0x108678 e853fbffff call 0x1081d0
+  0x10867d 83c408 add esp, 8
+  0x108680 6a02 push 2
+  0x108682 6a71 push 0x71
+  0x108684 e847fbffff call 0x1081d0
+  0x108689 83c408 add esp, 8
+  0x10868c 6a08 push 8
+  0x10868e e825fdffff call 0x1083b8
+  0x108693 c705c0e71a0000000000 mov dword ptr [0x1ae7c0], 0
+  0x10869d 89ec mov esp, ebp
+  0x10869f 5d pop ebp
+  0x1086a0 c3 ret
+  0x1086a1 90 nop  (not reached by known edges)
+  0x1086a2 90 nop  (not reached by known edges)
+  0x1086a3 90 nop  (not reached by known edges)
+  0x1086a4 90 nop  (not reached by known edges)
+  0x1086a5 90 nop  (not reached by known edges)
+  0x1086a6 90 nop  (not reached by known edges)
+  0x1086a7 90 nop  (not reached by known edges)
+
+routine _sysAuxClkEnable  0x1086a8-0x108758  size 0xb0 (176 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (25)
+  0x1086a8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x1086ab store w4 push base=esp disp -0x4 => sp -0x8 value edi
+  0x1086ac store w4 push base=esp disp -0x4 => sp -0xc value esi
+  0x1086ad store w4 push base=esp disp -0x4 => sp -0x10 value ebx
+  0x1086ae load w4 cmp base=? disp +0x1ae7c0 => abs 0x1ae7c0
+  0x1086c4 load w4 mov base=esi disp +0x1ae7cc => ? (unknown effective address)
+  0x1086ca load w4 cmp base=? disp +0x1ae7c8 => abs 0x1ae7c8
+  0x1086d2 store w4 push base=esp disp -0x4 => sp -0x14 value 0xa
+  0x1086d4 store w4 push base=esp disp -0x4 => sp -0x18 value 0x70
+  0x1086de store w4 push base=esp disp -0x4 => sp -0x14 value 0x71
+  0x1086ed store w4 push base=esp disp -0x4 => sp -0x14 value 0xa
+  0x1086ef store w4 push base=esp disp -0x4 => sp -0x18 value 0x70
+  0x1086f9 load w1 or base=edi disp +0x4 => ? (unknown effective address)
+  0x108700 store w4 push base=esp disp -0x4 => sp -0x14 value ?
+  0x108701 store w4 push base=esp disp -0x4 => sp -0x18 value 0x71
+  0x108720 store w4 push base=esp disp -0x4 => sp -0x14 value 0xb
+  0x108722 store w4 push base=esp disp -0x4 => sp -0x18 value 0x70
+  0x10872c store w4 push base=esp disp -0x4 => sp -0x14 value 0x42
+  0x10872e store w4 push base=esp disp -0x4 => sp -0x18 value 0x71
+  0x108738 store w4 push base=esp disp -0x4 => sp -0x14 value 0x8
+  0x10873f store w4 mov base=? disp +0x1ae7c0 => abs 0x1ae7c0 value 0x1
+  0x10874c load w4 pop base=esp disp +0x0 => sp -0x10
+  0x10874d load w4 pop base=esp disp +0x0 => sp -0xc
+  0x10874e load w4 pop base=esp disp +0x0 => sp -0x8
+  0x108751 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (7)
+  0x1086d6 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x70, stack arg1=0xa, stack arg2=ebx, stack arg3=esi, stack arg4=edi, stack arg5=ebp
+  0x1086e0 call _sysInByte [0x1081b0]
+      args: stack arg0=0x71, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x1086f1 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x70, stack arg1=0xa, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108703 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x71, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108724 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x70, stack arg1=0xb, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x108730 call _sysOutByte [0x1081d0]
+      args: stack arg0=0x71, stack arg1=0x42, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10873a call _sysIntEnablePIC [0x108428]
+      args: stack arg0=0x8, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (55)
+  B0 0x1086a8-0x1086a8 preds: entry
+      normal -> B1
+  B1 0x1086a9-0x1086a9 preds: B0
+      normal -> B2
+  B2 0x1086ab-0x1086ab preds: B1
+      normal -> B3
+  B3 0x1086ac-0x1086ac preds: B2
+      normal -> B4
+  B4 0x1086ad-0x1086ad preds: B3
+      normal -> B5
+  B5 0x1086ae-0x1086ae preds: B4
+      normal -> B6
+  B6 0x1086b5-0x1086b5 preds: B5
+      taken when [0x1ae7c0] != 0x0 -> 0x108749
+      falls through when [0x1ae7c0] == 0x0 -> B7
+  B7 0x1086bb-0x1086bb preds: B6
+      normal -> B8
+  B8 0x1086c0-0x1086c0 preds: B7
+      normal -> B9
+  B9 0x1086c2-0x1086c2 preds: B8
+      normal -> B10
+  B10 0x1086c3-0x1086c3 preds: B9
+      normal -> B11
+  B11 0x1086c4-0x1086c4 preds: B10, B47
+      normal -> B12
+  B12 0x1086ca-0x1086ca preds: B11
+      normal -> B13
+  B13 0x1086d0-0x1086d0 preds: B12
+      taken when Z == 0 -> 0x108718
+      falls through when not (Z == 0) -> B14
+  B14 0x1086d2-0x1086d2 preds: B13
+      normal -> B15
+  B15 0x1086d4-0x1086d4 preds: B14
+      normal -> B16
+  B16 0x1086d6-0x1086d6 preds: B15
+      call -> 0x1081d0
+  B17 0x1086db-0x1086db preds: B16
+      normal -> B18
+  B18 0x1086de-0x1086de preds: B17
+      normal -> B19
+  B19 0x1086e0-0x1086e0 preds: B18
+      call -> 0x1081b0
+  B20 0x1086e5-0x1086e5 preds: B19
+      normal -> B21
+  B21 0x1086e8-0x1086e8 preds: B20
+      normal -> B22
+  B22 0x1086ea-0x1086ea preds: B21
+      normal -> B23
+  B23 0x1086ed-0x1086ed preds: B22
+      normal -> B24
+  B24 0x1086ef-0x1086ef preds: B23
+      normal -> B25
+  B25 0x1086f1-0x1086f1 preds: B24
+      call -> 0x1081d0
+  B26 0x1086f6-0x1086f6 preds: B25
+      normal -> B27
+  B27 0x1086f9-0x1086f9 preds: B26
+      normal -> B28
+  B28 0x1086fd-0x1086fd preds: B27
+      normal -> B29
+  B29 0x108700-0x108700 preds: B28
+      normal -> B30
+  B30 0x108701-0x108701 preds: B29
+      normal -> B31
+  B31 0x108703-0x108703 preds: B30
+      call -> 0x1081d0
+  B32 0x108708-0x108708 preds: B31
+      normal -> B33
+  B33 0x10870b-0x10870b preds: B32
+      jump -> 0x108720
+  B45 0x108718-0x108718 preds: B13
+      normal -> B46
+  B46 0x10871b-0x10871b preds: B45
+      normal -> B47
+  B47 0x10871e-0x10871e preds: B46
+      taken when be flags condition (operands unknown) -> 0x1086c4
+      falls through when not (be flags condition (operands unknown)) -> B48
+  B48 0x108720-0x108720 preds: B47, B33
+      normal -> B49
+  B49 0x108722-0x108722 preds: B48
+      normal -> B50
+  B50 0x108724-0x108724 preds: B49
+      call -> 0x1081d0
+  B51 0x108729-0x108729 preds: B50
+      normal -> B52
+  B52 0x10872c-0x10872c preds: B51
+      normal -> B53
+  B53 0x10872e-0x10872e preds: B52
+      normal -> B54
+  B54 0x108730-0x108730 preds: B53
+      call -> 0x1081d0
+  B55 0x108735-0x108735 preds: B54
+      normal -> B56
+  B56 0x108738-0x108738 preds: B55
+      normal -> B57
+  B57 0x10873a-0x10873a preds: B56
+      call -> 0x108428
+  B58 0x10873f-0x10873f preds: B57
+      normal -> B59
+  B59 0x108749-0x108749 preds: B6, B58
+      normal -> B60
+  B60 0x10874c-0x10874c preds: B59
+      normal -> B61
+  B61 0x10874d-0x10874d preds: B60
+      normal -> B62
+  B62 0x10874e-0x10874e preds: B61
+      normal -> B63
+  B63 0x10874f-0x10874f preds: B62
+      normal -> B64
+  B64 0x108751-0x108751 preds: B63
+      normal -> B65
+  B65 0x108752-0x108752 preds: B64
+      return
+
+returns (1)
+  0x108752: eax = ?; reached from B64
+
+constants
+  0x1086bb edi = 0x1ae7cc
+  0x1086c0 esi = 0x0
+immediates
+  0x0 at 0x1086ae
+  0x108749 at 0x1086b5
+  0x1ae7cc at 0x1086bb
+  0x108718 at 0x1086d0
+  0xa at 0x1086d2
+  0x70 at 0x1086d4
+  0x1081d0 at 0x1086d6
+  0x8 at 0x1086db
+  0x71 at 0x1086de
+  0x1081b0 at 0x1086e0
+  0x4 at 0x1086e5
+  0xf0 at 0x1086ea
+  0xa at 0x1086ed
+  0x70 at 0x1086ef
+  0x1081d0 at 0x1086f1
+  0x8 at 0x1086f6
+  0x71 at 0x108701
+  0x1081d0 at 0x108703
+  0x8 at 0x108708
+  0x108720 at 0x10870b
+  0x8 at 0x108718
+  0x60 at 0x10871b
+  0x1086c4 at 0x10871e
+  0xb at 0x108720
+  0x70 at 0x108722
+  0x1081d0 at 0x108724
+  0x8 at 0x108729
+  0x42 at 0x10872c
+  0x71 at 0x10872e
+  0x1081d0 at 0x108730
+  0x8 at 0x108735
+  0x8 at 0x108738
+  0x108428 at 0x10873a
+  0x1 at 0x10873f
+instructions
+  0x1086a8 55 push ebp
+  0x1086a9 89e5 mov ebp, esp
+  0x1086ab 57 push edi
+  0x1086ac 56 push esi
+  0x1086ad 53 push ebx
+  0x1086ae 833dc0e71a0000 cmp dword ptr [0x1ae7c0], 0
+  0x1086b5 0f858e000000 jne 0x108749
+  0x1086bb bfcce71a00 mov edi, 0x1ae7cc
+  0x1086c0 31f6 xor esi, esi
+  0x1086c2 90 nop
+  0x1086c3 90 nop
+  0x1086c4 8b86cce71a00 mov eax, dword ptr [esi + 0x1ae7cc]
+  0x1086ca 3905c8e71a00 cmp dword ptr [0x1ae7c8], eax
+  0x1086d0 7546 jne 0x108718
+  0x1086d2 6a0a push 0xa
+  0x1086d4 6a70 push 0x70
+  0x1086d6 e8f5faffff call 0x1081d0
+  0x1086db 83c408 add esp, 8
+  0x1086de 6a71 push 0x71
+  0x1086e0 e8cbfaffff call 0x1081b0
+  0x1086e5 83c404 add esp, 4
+  0x1086e8 88c3 mov bl, al
+  0x1086ea 80e3f0 and bl, 0xf0
+  0x1086ed 6a0a push 0xa
+  0x1086ef 6a70 push 0x70
+  0x1086f1 e8dafaffff call 0x1081d0
+  0x1086f6 83c408 add esp, 8
+  0x1086f9 0a5c3704 or bl, byte ptr [edi + esi + 4]
+  0x1086fd 0fbec3 movsx eax, bl
+  0x108700 50 push eax
+  0x108701 6a71 push 0x71
+  0x108703 e8c8faffff call 0x1081d0
+  0x108708 83c408 add esp, 8
+  0x10870b eb13 jmp 0x108720
+  0x10870d 90 nop  (not reached by known edges)
+  0x10870e 90 nop  (not reached by known edges)
+  0x10870f 90 nop  (not reached by known edges)
+  0x108710 90 nop  (not reached by known edges)
+  0x108711 90 nop  (not reached by known edges)
+  0x108712 90 nop  (not reached by known edges)
+  0x108713 90 nop  (not reached by known edges)
+  0x108714 90 nop  (not reached by known edges)
+  0x108715 90 nop  (not reached by known edges)
+  0x108716 90 nop  (not reached by known edges)
+  0x108717 90 nop  (not reached by known edges)
+  0x108718 83c608 add esi, 8
+  0x10871b 83fe60 cmp esi, 0x60
+  0x10871e 76a4 jbe 0x1086c4
+  0x108720 6a0b push 0xb
+  0x108722 6a70 push 0x70
+  0x108724 e8a7faffff call 0x1081d0
+  0x108729 83c408 add esp, 8
+  0x10872c 6a42 push 0x42
+  0x10872e 6a71 push 0x71
+  0x108730 e89bfaffff call 0x1081d0
+  0x108735 83c408 add esp, 8
+  0x108738 6a08 push 8
+  0x10873a e8e9fcffff call 0x108428
+  0x10873f c705c0e71a0001000000 mov dword ptr [0x1ae7c0], 1
+  0x108749 8d65f4 lea esp, [ebp - 0xc]
+  0x10874c 5b pop ebx
+  0x10874d 5e pop esi
+  0x10874e 5f pop edi
+  0x10874f 89ec mov esp, ebp
+  0x108751 5d pop ebp
+  0x108752 c3 ret
+  0x108753 90 nop  (not reached by known edges)
+  0x108754 90 nop  (not reached by known edges)
+  0x108755 90 nop  (not reached by known edges)
+  0x108756 90 nop  (not reached by known edges)
+  0x108757 90 nop  (not reached by known edges)
+
+routine _sysAuxClkRateGet  0x108758-0x108768  size 0x10 (16 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (3)
+  0x108758 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10875b load w4 mov base=? disp +0x1ae7c8 => abs 0x1ae7c8
+  0x108762 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (6)
+  B0 0x108758-0x108758 preds: entry
+      normal -> B1
+  B1 0x108759-0x108759 preds: B0
+      normal -> B2
+  B2 0x10875b-0x10875b preds: B1
+      normal -> B3
+  B3 0x108760-0x108760 preds: B2
+      normal -> B4
+  B4 0x108762-0x108762 preds: B3
+      normal -> B5
+  B5 0x108763-0x108763 preds: B4
+      return
+
+returns (1)
+  0x108763: eax = [0x1ae7c8]; reached from B4
+
+constants
+immediates
+instructions
+  0x108758 55 push ebp
+  0x108759 89e5 mov ebp, esp
+  0x10875b a1c8e71a00 mov eax, dword ptr [0x1ae7c8]
+  0x108760 89ec mov esp, ebp
+  0x108762 5d pop ebp
+  0x108763 c3 ret
+  0x108764 90 nop  (not reached by known edges)
+  0x108765 90 nop  (not reached by known edges)
+  0x108766 90 nop  (not reached by known edges)
+  0x108767 90 nop  (not reached by known edges)
+
+routine _sysAuxClkRateSet  0x108768-0x1087c8  size 0x60 (96 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108768 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10876b load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x10877c load w4 cmp base=eax disp +0x1ae7cc => ? (unknown effective address)
+  0x108797 load w4 pop base=esp disp +0x0 => sp -0x4
+  0x1087a8 store w4 mov base=? disp +0x1ae7c8 => abs 0x1ae7c8 value [sp+4]
+  0x1087ae load w4 cmp base=? disp +0x1ae7c0 => abs 0x1ae7c0
+  0x1087c5 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (2)
+  0x1087b7 call _sysAuxClkDisable [0x108668]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x1087bc call _sysAuxClkEnable [0x1086a8]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (28)
+  B0 0x108768-0x108768 preds: entry
+      normal -> B1
+  B1 0x108769-0x108769 preds: B0
+      normal -> B2
+  B2 0x10876b-0x10876b preds: B1
+      normal -> B3
+  B3 0x10876e-0x10876e preds: B2
+      normal -> B4
+  B4 0x108770-0x108770 preds: B3
+      normal -> B5
+  B5 0x108773-0x108773 preds: B4
+      normal -> B6
+  B6 0x108778-0x108778 preds: B5
+      taken when [sp+4]-2 > 0x1ffe (unsigned, 32-bit) -> 0x108790
+      falls through when [sp+4]-2 <= 0x1ffe (unsigned, 32-bit) -> B7
+  B7 0x10877a-0x10877a preds: B6
+      normal -> B8
+  B8 0x10877c-0x10877c preds: B7, B12
+      normal -> B9
+  B9 0x108782-0x108782 preds: B8
+      taken when Z == 1 -> 0x1087a8
+      falls through when not (Z == 1) -> B10
+  B10 0x108784-0x108784 preds: B9
+      normal -> B11
+  B11 0x108787-0x108787 preds: B10
+      normal -> B12
+  B12 0x10878a-0x10878a preds: B11
+      taken when be flags condition (operands unknown) -> 0x10877c
+      falls through when not (be flags condition (operands unknown)) -> B13
+  B13 0x10878c-0x10878c preds: B12
+      normal -> B14
+  B14 0x10878e-0x10878e preds: B13
+      taken when (0x0 & 0x0) != 0x0 -> 0x1087ae
+      falls through when (0x0 & 0x0) == 0x0 -> B15
+  B15 0x108790-0x108790 preds: B6, B14
+      normal -> B16
+  B16 0x108795-0x108795 preds: B15
+      normal -> B17
+  B17 0x108797-0x108797 preds: B16
+      normal -> B18
+  B18 0x108798-0x108798 preds: B17
+      return
+  B34 0x1087a8-0x1087a8 preds: B9
+      normal -> B35
+  B35 0x1087ae-0x1087ae preds: B34, B14
+      normal -> B36
+  B36 0x1087b5-0x1087b5 preds: B35
+      taken when [0x1ae7c0] == 0x0 -> 0x1087c1
+      falls through when [0x1ae7c0] != 0x0 -> B37
+  B37 0x1087b7-0x1087b7 preds: B36
+      call -> 0x108668
+  B38 0x1087bc-0x1087bc preds: B37
+      call -> 0x1086a8
+  B39 0x1087c1-0x1087c1 preds: B36, B38
+      normal -> B40
+  B40 0x1087c3-0x1087c3 preds: B39
+      normal -> B41
+  B41 0x1087c5-0x1087c5 preds: B40
+      normal -> B42
+  B42 0x1087c6-0x1087c6 preds: B41
+      return
+
+returns (2)
+  0x108798: eax = 0xffffffff; reached from B17
+  0x1087c6: eax = 0x0; reached from B41
+
+constants
+  0x10876e ecx = 0x0
+  0x10877a eax = 0x0
+  0x108790 eax = 0xffffffff
+  0x1087c1 eax = 0x0
+immediates
+  0x1ffe at 0x108773
+  0x108790 at 0x108778
+  0x1087a8 at 0x108782
+  0x8 at 0x108784
+  0x60 at 0x108787
+  0x10877c at 0x10878a
+  0x1087ae at 0x10878e
+  0xffffffff at 0x108790
+  0x0 at 0x1087ae
+  0x1087c1 at 0x1087b5
+  0x108668 at 0x1087b7
+  0x1086a8 at 0x1087bc
+instructions
+  0x108768 55 push ebp
+  0x108769 89e5 mov ebp, esp
+  0x10876b 8b5508 mov edx, dword ptr [ebp + 8]
+  0x10876e 31c9 xor ecx, ecx
+  0x108770 8d42fe lea eax, [edx - 2]
+  0x108773 3dfe1f0000 cmp eax, 0x1ffe
+  0x108778 7716 ja 0x108790
+  0x10877a 31c0 xor eax, eax
+  0x10877c 3990cce71a00 cmp dword ptr [eax + 0x1ae7cc], edx
+  0x108782 7424 je 0x1087a8
+  0x108784 83c008 add eax, 8
+  0x108787 83f860 cmp eax, 0x60
+  0x10878a 76f0 jbe 0x10877c
+  0x10878c 85c9 test ecx, ecx
+  0x10878e 751e jne 0x1087ae
+  0x108790 b8ffffffff mov eax, 0xffffffff
+  0x108795 89ec mov esp, ebp
+  0x108797 5d pop ebp
+  0x108798 c3 ret
+  0x108799 90 nop  (not reached by known edges)
+  0x10879a 90 nop  (not reached by known edges)
+  0x10879b 90 nop  (not reached by known edges)
+  0x10879c 90 nop  (not reached by known edges)
+  0x10879d 90 nop  (not reached by known edges)
+  0x10879e 90 nop  (not reached by known edges)
+  0x10879f 90 nop  (not reached by known edges)
+  0x1087a0 90 nop  (not reached by known edges)
+  0x1087a1 90 nop  (not reached by known edges)
+  0x1087a2 90 nop  (not reached by known edges)
+  0x1087a3 90 nop  (not reached by known edges)
+  0x1087a4 90 nop  (not reached by known edges)
+  0x1087a5 90 nop  (not reached by known edges)
+  0x1087a6 90 nop  (not reached by known edges)
+  0x1087a7 90 nop  (not reached by known edges)
+  0x1087a8 8915c8e71a00 mov dword ptr [0x1ae7c8], edx
+  0x1087ae 833dc0e71a0000 cmp dword ptr [0x1ae7c0], 0
+  0x1087b5 740a je 0x1087c1
+  0x1087b7 e8acfeffff call 0x108668
+  0x1087bc e8e7feffff call 0x1086a8
+  0x1087c1 31c0 xor eax, eax
+  0x1087c3 89ec mov esp, ebp
+  0x1087c5 5d pop ebp
+  0x1087c6 c3 ret
+  0x1087c7 90 nop  (not reached by known edges)
+
+routine _sysHwInit2  0x10b858-0x10b8b8  size 0x60 (96 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (14)
+  0x10b858 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10b85b store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10b85d store w4 push base=esp disp -0x4 => sp -0xc value 0x108498
+  0x10b862 store w4 push base=esp disp -0x4 => sp -0x10 value 0x100
+  0x10b86f store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10b871 store w4 push base=esp disp -0x4 => sp -0xc value 0x1085f8
+  0x10b876 store w4 push base=esp disp -0x4 => sp -0x10 value 0x140
+  0x10b888 store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10b88a store w4 push base=esp disp -0x4 => sp -0xc value 0x10bbc8
+  0x10b88f store w4 push base=esp disp -0x4 => sp -0x10 value 0x138
+  0x10b89c store w4 push base=esp disp -0x4 => sp -0x8 value 0x0
+  0x10b89e store w4 push base=esp disp -0x4 => sp -0xc value 0x10ae88
+  0x10b8a3 store w4 push base=esp disp -0x4 => sp -0x10 value 0x108
+  0x10b8af load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (5)
+  0x10b867 call _intConnect [0x178b60]
+      args: stack arg0=0x100, stack arg1=0x108498, stack arg2=0x0, stack arg3=ebp, stack arg4=?, stack arg5=?
+  0x10b87b call _intConnect [0x178b60]
+      args: stack arg0=0x140, stack arg1=0x1085f8, stack arg2=0x0, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10b883 call _sysSerialHwInit2 [0x10b758]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10b894 call _intConnect [0x178b60]
+      args: stack arg0=0x138, stack arg1=0x10bbc8, stack arg2=0x0, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10b8a8 call _intConnect [0x178b60]
+      args: stack arg0=0x108, stack arg1=0x10ae88, stack arg2=0x0, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (25)
+  B0 0x10b858-0x10b858 preds: entry
+      normal -> B1
+  B1 0x10b859-0x10b859 preds: B0
+      normal -> B2
+  B2 0x10b85b-0x10b85b preds: B1
+      normal -> B3
+  B3 0x10b85d-0x10b85d preds: B2
+      normal -> B4
+  B4 0x10b862-0x10b862 preds: B3
+      normal -> B5
+  B5 0x10b867-0x10b867 preds: B4
+      call -> 0x178b60
+  B6 0x10b86c-0x10b86c preds: B5
+      normal -> B7
+  B7 0x10b86f-0x10b86f preds: B6
+      normal -> B8
+  B8 0x10b871-0x10b871 preds: B7
+      normal -> B9
+  B9 0x10b876-0x10b876 preds: B8
+      normal -> B10
+  B10 0x10b87b-0x10b87b preds: B9
+      call -> 0x178b60
+  B11 0x10b880-0x10b880 preds: B10
+      normal -> B12
+  B12 0x10b883-0x10b883 preds: B11
+      call -> 0x10b758
+  B13 0x10b888-0x10b888 preds: B12
+      normal -> B14
+  B14 0x10b88a-0x10b88a preds: B13
+      normal -> B15
+  B15 0x10b88f-0x10b88f preds: B14
+      normal -> B16
+  B16 0x10b894-0x10b894 preds: B15
+      call -> 0x178b60
+  B17 0x10b899-0x10b899 preds: B16
+      normal -> B18
+  B18 0x10b89c-0x10b89c preds: B17
+      normal -> B19
+  B19 0x10b89e-0x10b89e preds: B18
+      normal -> B20
+  B20 0x10b8a3-0x10b8a3 preds: B19
+      normal -> B21
+  B21 0x10b8a8-0x10b8a8 preds: B20
+      call -> 0x178b60
+  B22 0x10b8ad-0x10b8ad preds: B21
+      normal -> B23
+  B23 0x10b8af-0x10b8af preds: B22
+      normal -> B24
+  B24 0x10b8b0-0x10b8b0 preds: B23
+      return
+
+returns (1)
+  0x10b8b0: eax = ret(_intConnect); reached from B23
+
+constants
+immediates
+  0x0 at 0x10b85b
+  0x108498 at 0x10b85d
+  0x100 at 0x10b862
+  0x178b60 at 0x10b867
+  0xc at 0x10b86c
+  0x0 at 0x10b86f
+  0x1085f8 at 0x10b871
+  0x140 at 0x10b876
+  0x178b60 at 0x10b87b
+  0xc at 0x10b880
+  0x10b758 at 0x10b883
+  0x0 at 0x10b888
+  0x10bbc8 at 0x10b88a
+  0x138 at 0x10b88f
+  0x178b60 at 0x10b894
+  0xc at 0x10b899
+  0x0 at 0x10b89c
+  0x10ae88 at 0x10b89e
+  0x108 at 0x10b8a3
+  0x178b60 at 0x10b8a8
+instructions
+  0x10b858 55 push ebp
+  0x10b859 89e5 mov ebp, esp
+  0x10b85b 6a00 push 0
+  0x10b85d 6898841000 push 0x108498
+  0x10b862 6800010000 push 0x100
+  0x10b867 e8f4d20600 call 0x178b60
+  0x10b86c 83c40c add esp, 0xc
+  0x10b86f 6a00 push 0
+  0x10b871 68f8851000 push 0x1085f8
+  0x10b876 6840010000 push 0x140
+  0x10b87b e8e0d20600 call 0x178b60
+  0x10b880 83c40c add esp, 0xc
+  0x10b883 e8d0feffff call 0x10b758
+  0x10b888 6a00 push 0
+  0x10b88a 68c8bb1000 push 0x10bbc8
+  0x10b88f 6838010000 push 0x138
+  0x10b894 e8c7d20600 call 0x178b60
+  0x10b899 83c40c add esp, 0xc
+  0x10b89c 6a00 push 0
+  0x10b89e 6888ae1000 push 0x10ae88
+  0x10b8a3 6808010000 push 0x108
+  0x10b8a8 e8b3d20600 call 0x178b60
+  0x10b8ad 89ec mov esp, ebp
+  0x10b8af 5d pop ebp
+  0x10b8b0 c3 ret
+  0x10b8b1 90 nop  (not reached by known edges)
+  0x10b8b2 90 nop  (not reached by known edges)
+  0x10b8b3 90 nop  (not reached by known edges)
+  0x10b8b4 90 nop  (not reached by known edges)
+  0x10b8b5 90 nop  (not reached by known edges)
+  0x10b8b6 90 nop  (not reached by known edges)
+  0x10b8b7 90 nop  (not reached by known edges)
+
+routine _sysHwInit  0x10b838-0x10b858  size 0x20 (32 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (3)
+  0x10b838 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x10b840 store w4 mov base=? disp +0x1d5568 => abs 0x1d5568 value 0x108398
+  0x10b851 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (2)
+  0x10b83b call _sysIntInitPIC [0x1082f8]
+      args: stack arg0=ebp, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0x10b84a call _sysSerialHwInit [0x10b618]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (8)
+  B0 0x10b838-0x10b838 preds: entry
+      normal -> B1
+  B1 0x10b839-0x10b839 preds: B0
+      normal -> B2
+  B2 0x10b83b-0x10b83b preds: B1
+      call -> 0x1082f8
+  B3 0x10b840-0x10b840 preds: B2
+      normal -> B4
+  B4 0x10b84a-0x10b84a preds: B3
+      call -> 0x10b618
+  B5 0x10b84f-0x10b84f preds: B4
+      normal -> B6
+  B6 0x10b851-0x10b851 preds: B5
+      normal -> B7
+  B7 0x10b852-0x10b852 preds: B6
+      return
+
+returns (1)
+  0x10b852: eax = ret(_sysSerialHwInit); reached from B6
+
+constants
+immediates
+  0x1082f8 at 0x10b83b
+  0x108398 at 0x10b840
+  0x10b618 at 0x10b84a
+instructions
+  0x10b838 55 push ebp
+  0x10b839 89e5 mov ebp, esp
+  0x10b83b e8b8caffff call 0x1082f8
+  0x10b840 c70568551d0098831000 mov dword ptr [0x1d5568], 0x108398
+  0x10b84a e8c9fdffff call 0x10b618
+  0x10b84f 89ec mov esp, ebp
+  0x10b851 5d pop ebp
+  0x10b852 c3 ret
+  0x10b853 90 nop  (not reached by known edges)
+  0x10b854 90 nop  (not reached by known edges)
+  0x10b855 90 nop  (not reached by known edges)
+  0x10b856 90 nop  (not reached by known edges)
+  0x10b857 90 nop  (not reached by known edges)
+
+routine _sysReboot  0x108230-0x108240  size 0x10 (16 bytes)
+  file root/6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x108235 lgdt: unsupported effects invalidated
+
+accesses (1)
+  0x108235 load w6 lgdt base=eax disp +0x0 => abs 0x0
+
+calls (0)
+
+blocks (3)
+  B0 0x108230-0x108230 preds: entry
+      normal -> B1
+  B1 0x108235-0x108235 preds: B0
+      normal -> B2
+  B2 0x108238-0x108238 preds: B1
+      return
+
+returns (1)
+  0x108238: eax = 0x0; reached from B1
+
+constants
+  0x108230 eax = 0x0
+immediates
+  0x0 at 0x108230
+instructions
+  0x108230 b800000000 mov eax, 0
+  0x108235 0f0110 lgdt [eax]
+  0x108238 c3 ret
+  0x108239 90 nop  (not reached by known edges)
+  0x10823a 90 nop  (not reached by known edges)
+  0x10823b 90 nop  (not reached by known edges)
+  0x10823c 90 nop  (not reached by known edges)
+  0x10823d 90 nop  (not reached by known edges)
+  0x10823e 90 nop  (not reached by known edges)
+  0x10823f 90 nop  (not reached by known edges)
