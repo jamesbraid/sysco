@@ -1,0 +1,4497 @@
+routine (unnamed)  0xbc854-0xbc8d8  size 0x84 (132 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (17)
+  0xbc858 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbc858 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbc858 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbc858 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbc864 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbc868 load w4 ldr base=pc disp +0x58 => abs 0xbc8c8
+  0xbc878 load w4 ldr base=pc disp +0x4c => abs 0xbc8cc
+  0xbc87c store w4 str base=r3 disp +0x0 => abs 0x12d918 value ret(0x1967c)
+  0xbc880 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbc894 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbc8a0 load w4 ldr base=pc disp +0x28 => abs 0xbc8d0
+  0xbc8a4 store w4 str base=sp disp +0x0 => sp -0x1c value 0x11f1e8
+  0xbc8a8 store w4 str base=sp disp +0x4 => sp -0x18 value ret(0x193ac)
+  0xbc8b0 load w4 ldr base=pc disp +0x1c => abs 0xbc8d4
+  0xbc8c4 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbc8c4 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbc8c4 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (4)
+  0xbc870 bl (unknown callee) [0x1967c]
+      args: r0=0x11f1d8, r1=0x2, r2=r2, r3=r3
+  0xbc88c bl (unknown callee) [0x193d0]
+      args: r0=ret(0x1967c), r1=?, r2=ret(0x1967c), r3=[0x12d918]
+  0xbc898 bl (unknown callee) [0x193ac]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+  0xbc8bc bl (unknown callee) [0x200a0]
+      args: r0=0x1, r1=0x11f200, r2=0x34, r3=0x0
+
+blocks (29)
+  B0 0xbc854-0xbc854 preds: entry
+      normal -> B1
+  B1 0xbc858-0xbc858 preds: B0
+      normal -> B2
+  B2 0xbc85c-0xbc85c preds: B1
+      normal -> B3
+  B3 0xbc860-0xbc860 preds: B2
+      normal -> B4
+  B4 0xbc864-0xbc864 preds: B3
+      normal -> B5
+  B5 0xbc868-0xbc868 preds: B4
+      normal -> B6
+  B6 0xbc86c-0xbc86c preds: B5
+      normal -> B7
+  B7 0xbc870-0xbc870 preds: B6
+      call -> 0x1967c
+  B8 0xbc874-0xbc874 preds: B7
+      normal -> B9
+  B9 0xbc878-0xbc878 preds: B8
+      normal -> B10
+  B10 0xbc87c-0xbc87c preds: B9
+      normal -> B11
+  B11 0xbc880-0xbc880 preds: B10
+      normal -> B12
+  B12 0xbc884-0xbc884 preds: B11
+      normal -> B13
+  B13 0xbc888-0xbc888 preds: B12
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbc8c0
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B14
+  B14 0xbc88c-0xbc88c preds: B13
+      call -> 0x193d0
+  B15 0xbc890-0xbc890 preds: B14
+      normal -> B16
+  B16 0xbc894-0xbc894 preds: B15
+      normal -> B17
+  B17 0xbc898-0xbc898 preds: B16
+      call -> 0x193ac
+  B18 0xbc89c-0xbc89c preds: B17
+      normal -> B19
+  B19 0xbc8a0-0xbc8a0 preds: B18
+      normal -> B20
+  B20 0xbc8a4-0xbc8a4 preds: B19
+      normal -> B21
+  B21 0xbc8a8-0xbc8a8 preds: B20
+      normal -> B22
+  B22 0xbc8ac-0xbc8ac preds: B21
+      normal -> B23
+  B23 0xbc8b0-0xbc8b0 preds: B22
+      normal -> B24
+  B24 0xbc8b4-0xbc8b4 preds: B23
+      normal -> B25
+  B25 0xbc8b8-0xbc8b8 preds: B24
+      normal -> B26
+  B26 0xbc8bc-0xbc8bc preds: B25
+      call -> 0x200a0
+  B27 0xbc8c0-0xbc8c0 preds: B13, B26
+      normal -> B28
+  B28 0xbc8c4-0xbc8c4 preds: B27
+      return
+
+returns (1)
+  0xbc8c4: r0 = ?; reached from B27
+
+constants
+  0xbc868 r0 = 0x11f1d8
+  0xbc86c r1 = 0x2
+  0xbc878 r3 = 0x12d918
+  0xbc8a0 r3 = 0x11f1e8
+  0xbc8ac r0 = 0x1
+  0xbc8b0 r1 = 0x11f200
+  0xbc8b4 r2 = 0x34
+  0xbc8b8 r3 = 0x0
+immediates
+  0x4 at 0xbc85c
+  0xc at 0xbc860
+  0x2 at 0xbc86c
+  0x1967c at 0xbc870
+  0x0 at 0xbc884
+  0xbc8c0 at 0xbc888
+  0x193d0 at 0xbc88c
+  0x193ac at 0xbc898
+  0x1 at 0xbc8ac
+  0x34 at 0xbc8b4
+  0x0 at 0xbc8b8
+  0x200a0 at 0xbc8bc
+  0xc at 0xbc8c0
+instructions
+  0xbc854 0dc0a0e1 mov ip, sp
+  0xbc858 00d82de9 push {fp, ip, lr, pc}
+  0xbc85c 04b04ce2 sub fp, ip, #4
+  0xbc860 0cd04de2 sub sp, sp, #0xc
+  0xbc864 10000be5 str r0, [fp, #-0x10]
+  0xbc868 58009fe5 ldr r0, [pc, #0x58]
+  0xbc86c 0210a0e3 mov r1, #2
+  0xbc870 8173fdeb bl #0x1967c
+  0xbc874 0020a0e1 mov r2, r0
+  0xbc878 4c309fe5 ldr r3, [pc, #0x4c]
+  0xbc87c 002083e5 str r2, [r3]
+  0xbc880 003093e5 ldr r3, [r3]
+  0xbc884 000053e3 cmp r3, #0
+  0xbc888 0c0000aa bge #0xbc8c0
+  0xbc88c cf72fdeb bl #0x193d0
+  0xbc890 0030a0e1 mov r3, r0
+  0xbc894 000093e5 ldr r0, [r3]
+  0xbc898 c372fdeb bl #0x193ac
+  0xbc89c 0020a0e1 mov r2, r0
+  0xbc8a0 28309fe5 ldr r3, [pc, #0x28]
+  0xbc8a4 00308de5 str r3, [sp]
+  0xbc8a8 04208de5 str r2, [sp, #4]
+  0xbc8ac 0100a0e3 mov r0, #1
+  0xbc8b0 1c109fe5 ldr r1, [pc, #0x1c]
+  0xbc8b4 3420a0e3 mov r2, #0x34
+  0xbc8b8 0030a0e3 mov r3, #0
+  0xbc8bc f78dfdeb bl #0x200a0
+  0xbc8c0 0cd04be2 sub sp, fp, #0xc
+  0xbc8c4 00a89de8 ldm sp, {fp, sp, pc}
+  0xbc8c8 d8f11100 ldrsbeq pc, [r1], -r8 (not reached by known edges)
+  0xbc8cc 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbc8d0 e8f11100 andseq pc, r1, r8, ror #3 (not reached by known edges)
+  0xbc8d4 00f21100 andseq pc, r1, r0, lsl #4 (not reached by known edges)
+
+routine (unnamed)  0xbc8d8-0xbcac4  size 0x1ec (492 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xbc9a8 mvn: unsupported effects invalidated
+  warning: 0xbc9f4 mvn: unsupported effects invalidated
+  warning: undecodable bytes at 0xbcaac-0xbcab0; fall-through stops at this range
+
+accesses (61)
+  0xbc8dc store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbc8dc store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbc8dc store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbc8dc store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbc8e8 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbc8ec store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbc8f4 store w4 str base=r11 disp -0x1c => sp -0x20 value 0x0
+  0xbc8f8 load w4 ldr base=pc disp +0x1a8 => abs 0xbcaa8
+  0xbc8fc load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbc908 load w4 ldr base=pc disp +0x19c => abs 0xbcaac
+  0xbc90c store w4 str base=r11 disp -0x20 => sp -0x24 value 0xfffff3e4
+  0xbc914 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbc918 load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbc91c store w1 strb base=r11 disp -0x18 => sp -0x1c value ([r1+3]:1 & 0xff)
+  0xbc924 store w1 strb base=r11 disp -0x17 => sp -0x1b value 0x0
+  0xbc928 load w4 ldr base=pc disp +0x178 => abs 0xbcaa8
+  0xbc930 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbc934 load w4 ldr base=pc disp +0x174 => abs 0xbcab0
+  0xbc950 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbc954 store w4 str base=r11 disp -0x1c => sp -0x20 value [ret(0x193d0)]
+  0xbc958 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbc95c load w1 ldrb base=r3 disp +0x6 => [sp-24] +0x6
+  0xbc960 store w1 strb base=r11 disp -0x17 => sp -0x1b value ([[sp-24]+6]:1 & 0xff)
+  0xbc964 load w4 ldr base=pc disp +0x13c => abs 0xbcaa8
+  0xbc96c load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbc970 load w4 ldr base=pc disp +0x13c => abs 0xbcab4
+  0xbc984 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbc998 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbc99c store w4 str base=r11 disp -0x1c => sp -0x20 value [ret(0x193d0)]
+  0xbc9a0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbc9a4 load w1 ldrb base=r3 disp +0x5 => [sp-24] +0x5
+  0xbc9ac store w1 strb base=r11 disp -0x17 => sp -0x1b value ?
+  0xbc9b0 load w4 ldr base=pc disp +0xf0 => abs 0xbcaa8
+  0xbc9b8 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbc9bc load w4 ldr base=pc disp +0xf4 => abs 0xbcab8
+  0xbc9d0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbc9e4 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbc9e8 store w4 str base=r11 disp -0x1c => sp -0x20 value [ret(0x193d0)]
+  0xbc9ec load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbc9f0 load w1 ldrb base=r3 disp +0x4 => [sp-24] +0x4
+  0xbc9f8 store w1 strb base=r11 disp -0x17 => sp -0x1b value ?
+  0xbc9fc load w4 ldr base=pc disp +0xa4 => abs 0xbcaa8
+  0xbca04 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbca08 load w4 ldr base=pc disp +0xac => abs 0xbcabc
+  0xbca1c load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbca30 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbca34 store w4 str base=r11 disp -0x1c => sp -0x20 value [ret(0x193d0)]
+  0xbca38 load w4 ldr base=pc disp +0x68 => abs 0xbcaa8
+  0xbca40 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbca44 load w4 ldr base=pc disp +0x74 => abs 0xbcac0
+  0xbca58 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbca6c load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbca70 store w4 str base=r11 disp -0x1c => sp -0x20 value [ret(0x193d0)]
+  0xbca74 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbca80 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xbca8c store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbcf18)
+  0xbca98 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xbca9c load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xbcaa4 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbcaa4 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbcaa4 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (11)
+  0xbc938 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046706, r2=sp-28, r3=0x12d918
+  0xbc948 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbc974 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046700, r2=sp-28, r3=0x12d918
+  0xbc990 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=[sp-32]
+  0xbc9c0 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046704, r2=sp-28, r3=0x12d918
+  0xbc9dc bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=[sp-32]
+  0xbca0c bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046702, r2=sp-28, r3=0x12d918
+  0xbca28 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=[sp-32]
+  0xbca48 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x80046708, r2=sp-28, r3=0x12d918
+  0xbca64 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=[sp-32]
+  0xbca84 bl (unknown callee) [0xbcf18]
+      args: r0=[sp-32], r1=?, r2=?, r3=[sp-32]
+
+blocks (116)
+  B0 0xbc8d8-0xbc8d8 preds: entry
+      normal -> B1
+  B1 0xbc8dc-0xbc8dc preds: B0
+      normal -> B2
+  B2 0xbc8e0-0xbc8e0 preds: B1
+      normal -> B3
+  B3 0xbc8e4-0xbc8e4 preds: B2
+      normal -> B4
+  B4 0xbc8e8-0xbc8e8 preds: B3
+      normal -> B5
+  B5 0xbc8ec-0xbc8ec preds: B4
+      normal -> B6
+  B6 0xbc8f0-0xbc8f0 preds: B5
+      normal -> B7
+  B7 0xbc8f4-0xbc8f4 preds: B6
+      normal -> B8
+  B8 0xbc8f8-0xbc8f8 preds: B7
+      normal -> B9
+  B9 0xbc8fc-0xbc8fc preds: B8
+      normal -> B10
+  B10 0xbc900-0xbc900 preds: B9
+      normal -> B11
+  B11 0xbc904-0xbc904 preds: B10
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbc914
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B12
+  B12 0xbc908-0xbc908 preds: B11
+      normal -> B13
+  B13 0xbc90c-0xbc90c preds: B12
+      normal -> B14
+  B14 0xbc910-0xbc910 preds: B13
+      jump -> 0xbca9c
+  B15 0xbc914-0xbc914 preds: B11
+      normal -> B16
+  B16 0xbc918-0xbc918 preds: B15
+      normal -> B17
+  B17 0xbc91c-0xbc91c preds: B16
+      normal -> B18
+  B18 0xbc920-0xbc920 preds: B17
+      normal -> B19
+  B19 0xbc924-0xbc924 preds: B18
+      normal -> B20
+  B20 0xbc928-0xbc928 preds: B19
+      normal -> B21
+  B21 0xbc92c-0xbc92c preds: B20
+      normal -> B22
+  B22 0xbc930-0xbc930 preds: B21
+      normal -> B23
+  B23 0xbc934-0xbc934 preds: B22
+      normal -> B24
+  B24 0xbc938-0xbc938 preds: B23
+      call -> 0x19718
+  B25 0xbc93c-0xbc93c preds: B24
+      normal -> B26
+  B26 0xbc940-0xbc940 preds: B25
+      normal -> B27
+  B27 0xbc944-0xbc944 preds: B26
+      taken when ret(0x19718) == 0x0 -> 0xbc958
+      falls through when ret(0x19718) != 0x0 -> B28
+  B28 0xbc948-0xbc948 preds: B27
+      call -> 0x193d0
+  B29 0xbc94c-0xbc94c preds: B28
+      normal -> B30
+  B30 0xbc950-0xbc950 preds: B29
+      normal -> B31
+  B31 0xbc954-0xbc954 preds: B30
+      normal -> B32
+  B32 0xbc958-0xbc958 preds: B27, B31
+      normal -> B33
+  B33 0xbc95c-0xbc95c preds: B32
+      normal -> B34
+  B34 0xbc960-0xbc960 preds: B33
+      normal -> B35
+  B35 0xbc964-0xbc964 preds: B34
+      normal -> B36
+  B36 0xbc968-0xbc968 preds: B35
+      normal -> B37
+  B37 0xbc96c-0xbc96c preds: B36
+      normal -> B38
+  B38 0xbc970-0xbc970 preds: B37
+      normal -> B39
+  B39 0xbc974-0xbc974 preds: B38
+      call -> 0x19718
+  B40 0xbc978-0xbc978 preds: B39
+      normal -> B41
+  B41 0xbc97c-0xbc97c preds: B40
+      normal -> B42
+  B42 0xbc980-0xbc980 preds: B41
+      taken when ret(0x19718) == 0x0 -> 0xbc9a0
+      falls through when ret(0x19718) != 0x0 -> B43
+  B43 0xbc984-0xbc984 preds: B42
+      normal -> B44
+  B44 0xbc988-0xbc988 preds: B43
+      normal -> B45
+  B45 0xbc98c-0xbc98c preds: B44
+      taken when [sp-32] != 0x0 -> 0xbc9a0
+      falls through when [sp-32] == 0x0 -> B46
+  B46 0xbc990-0xbc990 preds: B45
+      call -> 0x193d0
+  B47 0xbc994-0xbc994 preds: B46
+      normal -> B48
+  B48 0xbc998-0xbc998 preds: B47
+      normal -> B49
+  B49 0xbc99c-0xbc99c preds: B48
+      normal -> B50
+  B50 0xbc9a0-0xbc9a0 preds: B42, B45, B49
+      normal -> B51
+  B51 0xbc9a4-0xbc9a4 preds: B50
+      normal -> B52
+  B52 0xbc9a8-0xbc9a8 preds: B51
+      normal -> B53
+  B53 0xbc9ac-0xbc9ac preds: B52
+      normal -> B54
+  B54 0xbc9b0-0xbc9b0 preds: B53
+      normal -> B55
+  B55 0xbc9b4-0xbc9b4 preds: B54
+      normal -> B56
+  B56 0xbc9b8-0xbc9b8 preds: B55
+      normal -> B57
+  B57 0xbc9bc-0xbc9bc preds: B56
+      normal -> B58
+  B58 0xbc9c0-0xbc9c0 preds: B57
+      call -> 0x19718
+  B59 0xbc9c4-0xbc9c4 preds: B58
+      normal -> B60
+  B60 0xbc9c8-0xbc9c8 preds: B59
+      normal -> B61
+  B61 0xbc9cc-0xbc9cc preds: B60
+      taken when ret(0x19718) == 0x0 -> 0xbc9ec
+      falls through when ret(0x19718) != 0x0 -> B62
+  B62 0xbc9d0-0xbc9d0 preds: B61
+      normal -> B63
+  B63 0xbc9d4-0xbc9d4 preds: B62
+      normal -> B64
+  B64 0xbc9d8-0xbc9d8 preds: B63
+      taken when [sp-32] != 0x0 -> 0xbc9ec
+      falls through when [sp-32] == 0x0 -> B65
+  B65 0xbc9dc-0xbc9dc preds: B64
+      call -> 0x193d0
+  B66 0xbc9e0-0xbc9e0 preds: B65
+      normal -> B67
+  B67 0xbc9e4-0xbc9e4 preds: B66
+      normal -> B68
+  B68 0xbc9e8-0xbc9e8 preds: B67
+      normal -> B69
+  B69 0xbc9ec-0xbc9ec preds: B61, B64, B68
+      normal -> B70
+  B70 0xbc9f0-0xbc9f0 preds: B69
+      normal -> B71
+  B71 0xbc9f4-0xbc9f4 preds: B70
+      normal -> B72
+  B72 0xbc9f8-0xbc9f8 preds: B71
+      normal -> B73
+  B73 0xbc9fc-0xbc9fc preds: B72
+      normal -> B74
+  B74 0xbca00-0xbca00 preds: B73
+      normal -> B75
+  B75 0xbca04-0xbca04 preds: B74
+      normal -> B76
+  B76 0xbca08-0xbca08 preds: B75
+      normal -> B77
+  B77 0xbca0c-0xbca0c preds: B76
+      call -> 0x19718
+  B78 0xbca10-0xbca10 preds: B77
+      normal -> B79
+  B79 0xbca14-0xbca14 preds: B78
+      normal -> B80
+  B80 0xbca18-0xbca18 preds: B79
+      taken when ret(0x19718) == 0x0 -> 0xbca38
+      falls through when ret(0x19718) != 0x0 -> B81
+  B81 0xbca1c-0xbca1c preds: B80
+      normal -> B82
+  B82 0xbca20-0xbca20 preds: B81
+      normal -> B83
+  B83 0xbca24-0xbca24 preds: B82
+      taken when [sp-32] != 0x0 -> 0xbca38
+      falls through when [sp-32] == 0x0 -> B84
+  B84 0xbca28-0xbca28 preds: B83
+      call -> 0x193d0
+  B85 0xbca2c-0xbca2c preds: B84
+      normal -> B86
+  B86 0xbca30-0xbca30 preds: B85
+      normal -> B87
+  B87 0xbca34-0xbca34 preds: B86
+      normal -> B88
+  B88 0xbca38-0xbca38 preds: B80, B83, B87
+      normal -> B89
+  B89 0xbca3c-0xbca3c preds: B88
+      normal -> B90
+  B90 0xbca40-0xbca40 preds: B89
+      normal -> B91
+  B91 0xbca44-0xbca44 preds: B90
+      normal -> B92
+  B92 0xbca48-0xbca48 preds: B91
+      call -> 0x19718
+  B93 0xbca4c-0xbca4c preds: B92
+      normal -> B94
+  B94 0xbca50-0xbca50 preds: B93
+      normal -> B95
+  B95 0xbca54-0xbca54 preds: B94
+      taken when ret(0x19718) == 0x0 -> 0xbca74
+      falls through when ret(0x19718) != 0x0 -> B96
+  B96 0xbca58-0xbca58 preds: B95
+      normal -> B97
+  B97 0xbca5c-0xbca5c preds: B96
+      normal -> B98
+  B98 0xbca60-0xbca60 preds: B97
+      taken when [sp-32] != 0x0 -> 0xbca74
+      falls through when [sp-32] == 0x0 -> B99
+  B99 0xbca64-0xbca64 preds: B98
+      call -> 0x193d0
+  B100 0xbca68-0xbca68 preds: B99
+      normal -> B101
+  B101 0xbca6c-0xbca6c preds: B100
+      normal -> B102
+  B102 0xbca70-0xbca70 preds: B101
+      normal -> B103
+  B103 0xbca74-0xbca74 preds: B95, B98, B102
+      normal -> B104
+  B104 0xbca78-0xbca78 preds: B103
+      normal -> B105
+  B105 0xbca7c-0xbca7c preds: B104
+      taken when [sp-32] == 0x0 -> 0xbca94
+      falls through when [sp-32] != 0x0 -> B106
+  B106 0xbca80-0xbca80 preds: B105
+      normal -> B107
+  B107 0xbca84-0xbca84 preds: B106
+      call -> 0xbcf18
+  B108 0xbca88-0xbca88 preds: B107
+      normal -> B109
+  B109 0xbca8c-0xbca8c preds: B108
+      normal -> B110
+  B110 0xbca90-0xbca90 preds: B109
+      jump -> 0xbca9c
+  B111 0xbca94-0xbca94 preds: B105
+      normal -> B112
+  B112 0xbca98-0xbca98 preds: B111
+      normal -> B113
+  B113 0xbca9c-0xbca9c preds: B14, B112, B110
+      normal -> B114
+  B114 0xbcaa0-0xbcaa0 preds: B113
+      normal -> B115
+  B115 0xbcaa4-0xbcaa4 preds: B114
+      return
+
+returns (1)
+  0xbcaa4: r0 = ?; reached from B114
+
+constants
+  0xbc8f0 r3 = 0x0
+  0xbc8f8 r3 = 0x12d918
+  0xbc908 r3 = 0xfffff3e4
+  0xbc920 r3 = 0x0
+  0xbc928 r3 = 0x12d918
+  0xbc934 r1 = 0x40046706
+  0xbc964 r3 = 0x12d918
+  0xbc970 r1 = 0x40046700
+  0xbc9b0 r3 = 0x12d918
+  0xbc9bc r1 = 0x40046704
+  0xbc9fc r3 = 0x12d918
+  0xbca08 r1 = 0x40046702
+  0xbca38 r3 = 0x12d918
+  0xbca44 r1 = 0x80046708
+  0xbca94 r3 = 0x0
+immediates
+  0x4 at 0xbc8e0
+  0x14 at 0xbc8e4
+  0x0 at 0xbc8f0
+  0x0 at 0xbc900
+  0xbc914 at 0xbc904
+  0xbca9c at 0xbc910
+  0x0 at 0xbc920
+  0x18 at 0xbc92c
+  0x19718 at 0xbc938
+  0x0 at 0xbc940
+  0xbc958 at 0xbc944
+  0x193d0 at 0xbc948
+  0x18 at 0xbc968
+  0x19718 at 0xbc974
+  0x0 at 0xbc97c
+  0xbc9a0 at 0xbc980
+  0x0 at 0xbc988
+  0xbc9a0 at 0xbc98c
+  0x193d0 at 0xbc990
+  0x18 at 0xbc9b4
+  0x19718 at 0xbc9c0
+  0x0 at 0xbc9c8
+  0xbc9ec at 0xbc9cc
+  0x0 at 0xbc9d4
+  0xbc9ec at 0xbc9d8
+  0x193d0 at 0xbc9dc
+  0x18 at 0xbca00
+  0x19718 at 0xbca0c
+  0x0 at 0xbca14
+  0xbca38 at 0xbca18
+  0x0 at 0xbca20
+  0xbca38 at 0xbca24
+  0x193d0 at 0xbca28
+  0x18 at 0xbca3c
+  0x19718 at 0xbca48
+  0x0 at 0xbca50
+  0xbca74 at 0xbca54
+  0x0 at 0xbca5c
+  0xbca74 at 0xbca60
+  0x193d0 at 0xbca64
+  0x0 at 0xbca78
+  0xbca94 at 0xbca7c
+  0xbcf18 at 0xbca84
+  0xbca9c at 0xbca90
+  0x0 at 0xbca94
+  0xc at 0xbcaa0
+instructions
+  0xbc8d8 0dc0a0e1 mov ip, sp
+  0xbc8dc 00d82de9 push {fp, ip, lr, pc}
+  0xbc8e0 04b04ce2 sub fp, ip, #4
+  0xbc8e4 14d04de2 sub sp, sp, #0x14
+  0xbc8e8 10000be5 str r0, [fp, #-0x10]
+  0xbc8ec 14100be5 str r1, [fp, #-0x14]
+  0xbc8f0 0030a0e3 mov r3, #0
+  0xbc8f4 1c300be5 str r3, [fp, #-0x1c]
+  0xbc8f8 a8319fe5 ldr r3, [pc, #0x1a8]
+  0xbc8fc 003093e5 ldr r3, [r3]
+  0xbc900 000053e3 cmp r3, #0
+  0xbc904 020000aa bge #0xbc914
+  0xbc908 9c319fe5 ldr r3, [pc, #0x19c]
+  0xbc90c 20300be5 str r3, [fp, #-0x20]
+  0xbc910 610000ea b #0xbca9c
+  0xbc914 14301be5 ldr r3, [fp, #-0x14]
+  0xbc918 0330d3e5 ldrb r3, [r3, #3]
+  0xbc91c 18304be5 strb r3, [fp, #-0x18]
+  0xbc920 0030a0e3 mov r3, #0
+  0xbc924 17304be5 strb r3, [fp, #-0x17]
+  0xbc928 78319fe5 ldr r3, [pc, #0x178]
+  0xbc92c 18204be2 sub r2, fp, #0x18
+  0xbc930 000093e5 ldr r0, [r3]
+  0xbc934 74119fe5 ldr r1, [pc, #0x174]
+  0xbc938 7673fdeb bl #0x19718
+  0xbc93c 0030a0e1 mov r3, r0
+  0xbc940 000053e3 cmp r3, #0
+  0xbc944 0300000a beq #0xbc958
+  0xbc948 a072fdeb bl #0x193d0
+  0xbc94c 0030a0e1 mov r3, r0
+  0xbc950 003093e5 ldr r3, [r3]
+  0xbc954 1c300be5 str r3, [fp, #-0x1c]
+  0xbc958 14301be5 ldr r3, [fp, #-0x14]
+  0xbc95c 0630d3e5 ldrb r3, [r3, #6]
+  0xbc960 17304be5 strb r3, [fp, #-0x17]
+  0xbc964 3c319fe5 ldr r3, [pc, #0x13c]
+  0xbc968 18204be2 sub r2, fp, #0x18
+  0xbc96c 000093e5 ldr r0, [r3]
+  0xbc970 3c119fe5 ldr r1, [pc, #0x13c]
+  0xbc974 6773fdeb bl #0x19718
+  0xbc978 0030a0e1 mov r3, r0
+  0xbc97c 000053e3 cmp r3, #0
+  0xbc980 0600000a beq #0xbc9a0
+  0xbc984 1c301be5 ldr r3, [fp, #-0x1c]
+  0xbc988 000053e3 cmp r3, #0
+  0xbc98c 0300001a bne #0xbc9a0
+  0xbc990 8e72fdeb bl #0x193d0
+  0xbc994 0030a0e1 mov r3, r0
+  0xbc998 003093e5 ldr r3, [r3]
+  0xbc99c 1c300be5 str r3, [fp, #-0x1c]
+  0xbc9a0 14301be5 ldr r3, [fp, #-0x14]
+  0xbc9a4 0530d3e5 ldrb r3, [r3, #5]
+  0xbc9a8 0330e0e1 mvn r3, r3
+  0xbc9ac 17304be5 strb r3, [fp, #-0x17]
+  0xbc9b0 f0309fe5 ldr r3, [pc, #0xf0]
+  0xbc9b4 18204be2 sub r2, fp, #0x18
+  0xbc9b8 000093e5 ldr r0, [r3]
+  0xbc9bc f4109fe5 ldr r1, [pc, #0xf4]
+  0xbc9c0 5473fdeb bl #0x19718
+  0xbc9c4 0030a0e1 mov r3, r0
+  0xbc9c8 000053e3 cmp r3, #0
+  0xbc9cc 0600000a beq #0xbc9ec
+  0xbc9d0 1c301be5 ldr r3, [fp, #-0x1c]
+  0xbc9d4 000053e3 cmp r3, #0
+  0xbc9d8 0300001a bne #0xbc9ec
+  0xbc9dc 7b72fdeb bl #0x193d0
+  0xbc9e0 0030a0e1 mov r3, r0
+  0xbc9e4 003093e5 ldr r3, [r3]
+  0xbc9e8 1c300be5 str r3, [fp, #-0x1c]
+  0xbc9ec 14301be5 ldr r3, [fp, #-0x14]
+  0xbc9f0 0430d3e5 ldrb r3, [r3, #4]
+  0xbc9f4 0330e0e1 mvn r3, r3
+  0xbc9f8 17304be5 strb r3, [fp, #-0x17]
+  0xbc9fc a4309fe5 ldr r3, [pc, #0xa4]
+  0xbca00 18204be2 sub r2, fp, #0x18
+  0xbca04 000093e5 ldr r0, [r3]
+  0xbca08 ac109fe5 ldr r1, [pc, #0xac]
+  0xbca0c 4173fdeb bl #0x19718
+  0xbca10 0030a0e1 mov r3, r0
+  0xbca14 000053e3 cmp r3, #0
+  0xbca18 0600000a beq #0xbca38
+  0xbca1c 1c301be5 ldr r3, [fp, #-0x1c]
+  0xbca20 000053e3 cmp r3, #0
+  0xbca24 0300001a bne #0xbca38
+  0xbca28 6872fdeb bl #0x193d0
+  0xbca2c 0030a0e1 mov r3, r0
+  0xbca30 003093e5 ldr r3, [r3]
+  0xbca34 1c300be5 str r3, [fp, #-0x1c]
+  0xbca38 68309fe5 ldr r3, [pc, #0x68]
+  0xbca3c 18204be2 sub r2, fp, #0x18
+  0xbca40 000093e5 ldr r0, [r3]
+  0xbca44 74109fe5 ldr r1, [pc, #0x74]
+  0xbca48 3273fdeb bl #0x19718
+  0xbca4c 0030a0e1 mov r3, r0
+  0xbca50 000053e3 cmp r3, #0
+  0xbca54 0600000a beq #0xbca74
+  0xbca58 1c301be5 ldr r3, [fp, #-0x1c]
+  0xbca5c 000053e3 cmp r3, #0
+  0xbca60 0300001a bne #0xbca74
+  0xbca64 5972fdeb bl #0x193d0
+  0xbca68 0030a0e1 mov r3, r0
+  0xbca6c 003093e5 ldr r3, [r3]
+  0xbca70 1c300be5 str r3, [fp, #-0x1c]
+  0xbca74 1c301be5 ldr r3, [fp, #-0x1c]
+  0xbca78 000053e3 cmp r3, #0
+  0xbca7c 0400000a beq #0xbca94
+  0xbca80 1c001be5 ldr r0, [fp, #-0x1c]
+  0xbca84 230100eb bl #0xbcf18
+  0xbca88 0030a0e1 mov r3, r0
+  0xbca8c 20300be5 str r3, [fp, #-0x20]
+  0xbca90 010000ea b #0xbca9c
+  0xbca94 0030a0e3 mov r3, #0
+  0xbca98 20300be5 str r3, [fp, #-0x20]
+  0xbca9c 20001be5 ldr r0, [fp, #-0x20]
+  0xbcaa0 0cd04be2 sub sp, fp, #0xc
+  0xbcaa4 00a89de8 ldm sp, {fp, sp, pc}
+  0xbcaa8 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbcab0 06670440 andmi r6, r4, r6, lsl #14 (not reached by known edges)
+  0xbcab4 00670440 andmi r6, r4, r0, lsl #14 (not reached by known edges)
+  0xbcab8 04670440 andmi r6, r4, r4, lsl #14 (not reached by known edges)
+  0xbcabc 02670440 andmi r6, r4, r2, lsl #14 (not reached by known edges)
+  0xbcac0 08670480 andhi r6, r4, r8, lsl #14 (not reached by known edges)
+
+routine (unnamed)  0xbcb70-0xbcc1c  size 0xac (172 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xbcc14-0xbcc18; fall-through stops at this range
+
+accesses (27)
+  0xbcb74 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbcb74 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbcb74 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbcb74 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbcb80 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbcb84 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbcb88 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xbcb8c load w4 ldr base=pc disp +0x7c => abs 0xbcc10
+  0xbcb90 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcb9c load w4 ldr base=pc disp +0x70 => abs 0xbcc14
+  0xbcba0 store w4 str base=r11 disp -0x20 => sp -0x24 value 0xfffff3e4
+  0xbcba8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcbac load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbcbb0 store w1 strb base=r11 disp -0x1c => sp -0x20 value ([r1+3]:1 & 0xff)
+  0xbcbb4 load w4 ldr base=pc disp +0x54 => abs 0xbcc10
+  0xbcbbc load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcbc0 load w4 ldr base=pc disp +0x50 => abs 0xbcc18
+  0xbcbdc load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbcbe8 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbcf18)
+  0xbcbf0 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xbcbf4 load w1 ldrb base=r11 disp -0x1b => sp -0x1f
+  0xbcbf8 store w1 strb base=r2 disp +0x0 => [sp-28] +0x0 value ([sp-31]:1 & 0xff)
+  0xbcc00 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xbcc04 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xbcc0c load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbcc0c load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbcc0c load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xbcbc4 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0xc0046701, r2=sp-32, r3=0x12d918
+  0xbcbd4 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbcbe0 bl (unknown callee) [0xbcf18]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+
+blocks (40)
+  B0 0xbcb70-0xbcb70 preds: entry
+      normal -> B1
+  B1 0xbcb74-0xbcb74 preds: B0
+      normal -> B2
+  B2 0xbcb78-0xbcb78 preds: B1
+      normal -> B3
+  B3 0xbcb7c-0xbcb7c preds: B2
+      normal -> B4
+  B4 0xbcb80-0xbcb80 preds: B3
+      normal -> B5
+  B5 0xbcb84-0xbcb84 preds: B4
+      normal -> B6
+  B6 0xbcb88-0xbcb88 preds: B5
+      normal -> B7
+  B7 0xbcb8c-0xbcb8c preds: B6
+      normal -> B8
+  B8 0xbcb90-0xbcb90 preds: B7
+      normal -> B9
+  B9 0xbcb94-0xbcb94 preds: B8
+      normal -> B10
+  B10 0xbcb98-0xbcb98 preds: B9
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbcba8
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B11
+  B11 0xbcb9c-0xbcb9c preds: B10
+      normal -> B12
+  B12 0xbcba0-0xbcba0 preds: B11
+      normal -> B13
+  B13 0xbcba4-0xbcba4 preds: B12
+      jump -> 0xbcc04
+  B14 0xbcba8-0xbcba8 preds: B10
+      normal -> B15
+  B15 0xbcbac-0xbcbac preds: B14
+      normal -> B16
+  B16 0xbcbb0-0xbcbb0 preds: B15
+      normal -> B17
+  B17 0xbcbb4-0xbcbb4 preds: B16
+      normal -> B18
+  B18 0xbcbb8-0xbcbb8 preds: B17
+      normal -> B19
+  B19 0xbcbbc-0xbcbbc preds: B18
+      normal -> B20
+  B20 0xbcbc0-0xbcbc0 preds: B19
+      normal -> B21
+  B21 0xbcbc4-0xbcbc4 preds: B20
+      call -> 0x19718
+  B22 0xbcbc8-0xbcbc8 preds: B21
+      normal -> B23
+  B23 0xbcbcc-0xbcbcc preds: B22
+      normal -> B24
+  B24 0xbcbd0-0xbcbd0 preds: B23
+      taken when ret(0x19718) == 0x0 -> 0xbcbf0
+      falls through when ret(0x19718) != 0x0 -> B25
+  B25 0xbcbd4-0xbcbd4 preds: B24
+      call -> 0x193d0
+  B26 0xbcbd8-0xbcbd8 preds: B25
+      normal -> B27
+  B27 0xbcbdc-0xbcbdc preds: B26
+      normal -> B28
+  B28 0xbcbe0-0xbcbe0 preds: B27
+      call -> 0xbcf18
+  B29 0xbcbe4-0xbcbe4 preds: B28
+      normal -> B30
+  B30 0xbcbe8-0xbcbe8 preds: B29
+      normal -> B31
+  B31 0xbcbec-0xbcbec preds: B30
+      jump -> 0xbcc04
+  B32 0xbcbf0-0xbcbf0 preds: B24
+      normal -> B33
+  B33 0xbcbf4-0xbcbf4 preds: B32
+      normal -> B34
+  B34 0xbcbf8-0xbcbf8 preds: B33
+      normal -> B35
+  B35 0xbcbfc-0xbcbfc preds: B34
+      normal -> B36
+  B36 0xbcc00-0xbcc00 preds: B35
+      normal -> B37
+  B37 0xbcc04-0xbcc04 preds: B13, B36, B31
+      normal -> B38
+  B38 0xbcc08-0xbcc08 preds: B37
+      normal -> B39
+  B39 0xbcc0c-0xbcc0c preds: B38
+      return
+
+returns (1)
+  0xbcc0c: r0 = ?; reached from B38
+
+constants
+  0xbcb8c r3 = 0x12d918
+  0xbcb9c r3 = 0xfffff3e4
+  0xbcbb4 r3 = 0x12d918
+  0xbcbc0 r1 = 0xc0046701
+  0xbcbfc r3 = 0x0
+immediates
+  0x4 at 0xbcb78
+  0x14 at 0xbcb7c
+  0x0 at 0xbcb94
+  0xbcba8 at 0xbcb98
+  0xbcc04 at 0xbcba4
+  0x1c at 0xbcbb8
+  0x19718 at 0xbcbc4
+  0x0 at 0xbcbcc
+  0xbcbf0 at 0xbcbd0
+  0x193d0 at 0xbcbd4
+  0xbcf18 at 0xbcbe0
+  0xbcc04 at 0xbcbec
+  0x0 at 0xbcbfc
+  0xc at 0xbcc08
+instructions
+  0xbcb70 0dc0a0e1 mov ip, sp
+  0xbcb74 00d82de9 push {fp, ip, lr, pc}
+  0xbcb78 04b04ce2 sub fp, ip, #4
+  0xbcb7c 14d04de2 sub sp, sp, #0x14
+  0xbcb80 10000be5 str r0, [fp, #-0x10]
+  0xbcb84 14100be5 str r1, [fp, #-0x14]
+  0xbcb88 18200be5 str r2, [fp, #-0x18]
+  0xbcb8c 7c309fe5 ldr r3, [pc, #0x7c]
+  0xbcb90 003093e5 ldr r3, [r3]
+  0xbcb94 000053e3 cmp r3, #0
+  0xbcb98 020000aa bge #0xbcba8
+  0xbcb9c 70309fe5 ldr r3, [pc, #0x70]
+  0xbcba0 20300be5 str r3, [fp, #-0x20]
+  0xbcba4 160000ea b #0xbcc04
+  0xbcba8 14301be5 ldr r3, [fp, #-0x14]
+  0xbcbac 0330d3e5 ldrb r3, [r3, #3]
+  0xbcbb0 1c304be5 strb r3, [fp, #-0x1c]
+  0xbcbb4 54309fe5 ldr r3, [pc, #0x54]
+  0xbcbb8 1c204be2 sub r2, fp, #0x1c
+  0xbcbbc 000093e5 ldr r0, [r3]
+  0xbcbc0 50109fe5 ldr r1, [pc, #0x50]
+  0xbcbc4 d372fdeb bl #0x19718
+  0xbcbc8 0030a0e1 mov r3, r0
+  0xbcbcc 000053e3 cmp r3, #0
+  0xbcbd0 0600000a beq #0xbcbf0
+  0xbcbd4 fd71fdeb bl #0x193d0
+  0xbcbd8 0030a0e1 mov r3, r0
+  0xbcbdc 000093e5 ldr r0, [r3]
+  0xbcbe0 cc0000eb bl #0xbcf18
+  0xbcbe4 0030a0e1 mov r3, r0
+  0xbcbe8 20300be5 str r3, [fp, #-0x20]
+  0xbcbec 040000ea b #0xbcc04
+  0xbcbf0 18201be5 ldr r2, [fp, #-0x18]
+  0xbcbf4 1b305be5 ldrb r3, [fp, #-0x1b]
+  0xbcbf8 0030c2e5 strb r3, [r2]
+  0xbcbfc 0030a0e3 mov r3, #0
+  0xbcc00 20300be5 str r3, [fp, #-0x20]
+  0xbcc04 20001be5 ldr r0, [fp, #-0x20]
+  0xbcc08 0cd04be2 sub sp, fp, #0xc
+  0xbcc0c 00a89de8 ldm sp, {fp, sp, pc}
+  0xbcc10 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbcc18 016704c0 andgt r6, r4, r1, lsl #14 (not reached by known edges)
+
+routine (unnamed)  0xbcac4-0xbcb70  size 0xac (172 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xbcb68-0xbcb6c; fall-through stops at this range
+
+accesses (26)
+  0xbcac8 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbcac8 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbcac8 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbcac8 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbcad4 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbcad8 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbcae0 store w1 strb base=r11 disp -0x15 => sp -0x19 value (r2 & 0xff)
+  0xbcae4 load w4 ldr base=pc disp +0x78 => abs 0xbcb64
+  0xbcae8 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcaf4 load w4 ldr base=pc disp +0x6c => abs 0xbcb68
+  0xbcaf8 store w4 str base=r11 disp -0x20 => sp -0x24 value 0xfffff3e4
+  0xbcb00 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcb04 load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbcb08 store w1 strb base=r11 disp -0x1c => sp -0x20 value ([r1+3]:1 & 0xff)
+  0xbcb0c load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0xbcb10 store w1 strb base=r11 disp -0x1b => sp -0x1f value ((r2 & 0xff) & 0xff)
+  0xbcb14 load w4 ldr base=pc disp +0x48 => abs 0xbcb64
+  0xbcb1c load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcb20 load w4 ldr base=pc disp +0x44 => abs 0xbcb6c
+  0xbcb3c load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbcb48 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbcf18)
+  0xbcb54 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xbcb58 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xbcb60 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbcb60 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbcb60 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xbcb24 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046700, r2=sp-32, r3=0x12d918
+  0xbcb34 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbcb40 bl (unknown callee) [0xbcf18]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+
+blocks (40)
+  B0 0xbcac4-0xbcac4 preds: entry
+      normal -> B1
+  B1 0xbcac8-0xbcac8 preds: B0
+      normal -> B2
+  B2 0xbcacc-0xbcacc preds: B1
+      normal -> B3
+  B3 0xbcad0-0xbcad0 preds: B2
+      normal -> B4
+  B4 0xbcad4-0xbcad4 preds: B3
+      normal -> B5
+  B5 0xbcad8-0xbcad8 preds: B4
+      normal -> B6
+  B6 0xbcadc-0xbcadc preds: B5
+      normal -> B7
+  B7 0xbcae0-0xbcae0 preds: B6
+      normal -> B8
+  B8 0xbcae4-0xbcae4 preds: B7
+      normal -> B9
+  B9 0xbcae8-0xbcae8 preds: B8
+      normal -> B10
+  B10 0xbcaec-0xbcaec preds: B9
+      normal -> B11
+  B11 0xbcaf0-0xbcaf0 preds: B10
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbcb00
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B12
+  B12 0xbcaf4-0xbcaf4 preds: B11
+      normal -> B13
+  B13 0xbcaf8-0xbcaf8 preds: B12
+      normal -> B14
+  B14 0xbcafc-0xbcafc preds: B13
+      jump -> 0xbcb58
+  B15 0xbcb00-0xbcb00 preds: B11
+      normal -> B16
+  B16 0xbcb04-0xbcb04 preds: B15
+      normal -> B17
+  B17 0xbcb08-0xbcb08 preds: B16
+      normal -> B18
+  B18 0xbcb0c-0xbcb0c preds: B17
+      normal -> B19
+  B19 0xbcb10-0xbcb10 preds: B18
+      normal -> B20
+  B20 0xbcb14-0xbcb14 preds: B19
+      normal -> B21
+  B21 0xbcb18-0xbcb18 preds: B20
+      normal -> B22
+  B22 0xbcb1c-0xbcb1c preds: B21
+      normal -> B23
+  B23 0xbcb20-0xbcb20 preds: B22
+      normal -> B24
+  B24 0xbcb24-0xbcb24 preds: B23
+      call -> 0x19718
+  B25 0xbcb28-0xbcb28 preds: B24
+      normal -> B26
+  B26 0xbcb2c-0xbcb2c preds: B25
+      normal -> B27
+  B27 0xbcb30-0xbcb30 preds: B26
+      taken when ret(0x19718) == 0x0 -> 0xbcb50
+      falls through when ret(0x19718) != 0x0 -> B28
+  B28 0xbcb34-0xbcb34 preds: B27
+      call -> 0x193d0
+  B29 0xbcb38-0xbcb38 preds: B28
+      normal -> B30
+  B30 0xbcb3c-0xbcb3c preds: B29
+      normal -> B31
+  B31 0xbcb40-0xbcb40 preds: B30
+      call -> 0xbcf18
+  B32 0xbcb44-0xbcb44 preds: B31
+      normal -> B33
+  B33 0xbcb48-0xbcb48 preds: B32
+      normal -> B34
+  B34 0xbcb4c-0xbcb4c preds: B33
+      jump -> 0xbcb58
+  B35 0xbcb50-0xbcb50 preds: B27
+      normal -> B36
+  B36 0xbcb54-0xbcb54 preds: B35
+      normal -> B37
+  B37 0xbcb58-0xbcb58 preds: B14, B36, B34
+      normal -> B38
+  B38 0xbcb5c-0xbcb5c preds: B37
+      normal -> B39
+  B39 0xbcb60-0xbcb60 preds: B38
+      return
+
+returns (1)
+  0xbcb60: r0 = ?; reached from B38
+
+constants
+  0xbcae4 r3 = 0x12d918
+  0xbcaf4 r3 = 0xfffff3e4
+  0xbcb14 r3 = 0x12d918
+  0xbcb20 r1 = 0x40046700
+  0xbcb50 r3 = 0x0
+immediates
+  0x4 at 0xbcacc
+  0x14 at 0xbcad0
+  0x0 at 0xbcaec
+  0xbcb00 at 0xbcaf0
+  0xbcb58 at 0xbcafc
+  0x1c at 0xbcb18
+  0x19718 at 0xbcb24
+  0x0 at 0xbcb2c
+  0xbcb50 at 0xbcb30
+  0x193d0 at 0xbcb34
+  0xbcf18 at 0xbcb40
+  0xbcb58 at 0xbcb4c
+  0x0 at 0xbcb50
+  0xc at 0xbcb5c
+instructions
+  0xbcac4 0dc0a0e1 mov ip, sp
+  0xbcac8 00d82de9 push {fp, ip, lr, pc}
+  0xbcacc 04b04ce2 sub fp, ip, #4
+  0xbcad0 14d04de2 sub sp, sp, #0x14
+  0xbcad4 10000be5 str r0, [fp, #-0x10]
+  0xbcad8 14100be5 str r1, [fp, #-0x14]
+  0xbcadc 0230a0e1 mov r3, r2
+  0xbcae0 15304be5 strb r3, [fp, #-0x15]
+  0xbcae4 78309fe5 ldr r3, [pc, #0x78]
+  0xbcae8 003093e5 ldr r3, [r3]
+  0xbcaec 000053e3 cmp r3, #0
+  0xbcaf0 020000aa bge #0xbcb00
+  0xbcaf4 6c309fe5 ldr r3, [pc, #0x6c]
+  0xbcaf8 20300be5 str r3, [fp, #-0x20]
+  0xbcafc 150000ea b #0xbcb58
+  0xbcb00 14301be5 ldr r3, [fp, #-0x14]
+  0xbcb04 0330d3e5 ldrb r3, [r3, #3]
+  0xbcb08 1c304be5 strb r3, [fp, #-0x1c]
+  0xbcb0c 15305be5 ldrb r3, [fp, #-0x15]
+  0xbcb10 1b304be5 strb r3, [fp, #-0x1b]
+  0xbcb14 48309fe5 ldr r3, [pc, #0x48]
+  0xbcb18 1c204be2 sub r2, fp, #0x1c
+  0xbcb1c 000093e5 ldr r0, [r3]
+  0xbcb20 44109fe5 ldr r1, [pc, #0x44]
+  0xbcb24 fb72fdeb bl #0x19718
+  0xbcb28 0030a0e1 mov r3, r0
+  0xbcb2c 000053e3 cmp r3, #0
+  0xbcb30 0600000a beq #0xbcb50
+  0xbcb34 2572fdeb bl #0x193d0
+  0xbcb38 0030a0e1 mov r3, r0
+  0xbcb3c 000093e5 ldr r0, [r3]
+  0xbcb40 f40000eb bl #0xbcf18
+  0xbcb44 0030a0e1 mov r3, r0
+  0xbcb48 20300be5 str r3, [fp, #-0x20]
+  0xbcb4c 010000ea b #0xbcb58
+  0xbcb50 0030a0e3 mov r3, #0
+  0xbcb54 20300be5 str r3, [fp, #-0x20]
+  0xbcb58 20001be5 ldr r0, [fp, #-0x20]
+  0xbcb5c 0cd04be2 sub sp, fp, #0xc
+  0xbcb60 00a89de8 ldm sp, {fp, sp, pc}
+  0xbcb64 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbcb6c 00670440 andmi r6, r4, r0, lsl #14 (not reached by known edges)
+
+routine (unnamed)  0xbcc1c-0xbccc8  size 0xac (172 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xbccc0-0xbccc4; fall-through stops at this range
+
+accesses (26)
+  0xbcc20 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbcc20 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbcc20 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbcc20 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbcc2c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbcc30 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbcc38 store w1 strb base=r11 disp -0x15 => sp -0x19 value (r2 & 0xff)
+  0xbcc3c load w4 ldr base=pc disp +0x78 => abs 0xbccbc
+  0xbcc40 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcc4c load w4 ldr base=pc disp +0x6c => abs 0xbccc0
+  0xbcc50 store w4 str base=r11 disp -0x20 => sp -0x24 value 0xfffff3e4
+  0xbcc58 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcc5c load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbcc60 store w1 strb base=r11 disp -0x1c => sp -0x20 value ([r1+3]:1 & 0xff)
+  0xbcc64 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0xbcc68 store w1 strb base=r11 disp -0x1b => sp -0x1f value ((r2 & 0xff) & 0xff)
+  0xbcc6c load w4 ldr base=pc disp +0x48 => abs 0xbccbc
+  0xbcc74 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcc78 load w4 ldr base=pc disp +0x44 => abs 0xbccc4
+  0xbcc94 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbcca0 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbcf18)
+  0xbccac store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xbccb0 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xbccb8 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbccb8 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbccb8 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xbcc7c bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x40046706, r2=sp-32, r3=0x12d918
+  0xbcc8c bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbcc98 bl (unknown callee) [0xbcf18]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+
+blocks (40)
+  B0 0xbcc1c-0xbcc1c preds: entry
+      normal -> B1
+  B1 0xbcc20-0xbcc20 preds: B0
+      normal -> B2
+  B2 0xbcc24-0xbcc24 preds: B1
+      normal -> B3
+  B3 0xbcc28-0xbcc28 preds: B2
+      normal -> B4
+  B4 0xbcc2c-0xbcc2c preds: B3
+      normal -> B5
+  B5 0xbcc30-0xbcc30 preds: B4
+      normal -> B6
+  B6 0xbcc34-0xbcc34 preds: B5
+      normal -> B7
+  B7 0xbcc38-0xbcc38 preds: B6
+      normal -> B8
+  B8 0xbcc3c-0xbcc3c preds: B7
+      normal -> B9
+  B9 0xbcc40-0xbcc40 preds: B8
+      normal -> B10
+  B10 0xbcc44-0xbcc44 preds: B9
+      normal -> B11
+  B11 0xbcc48-0xbcc48 preds: B10
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbcc58
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B12
+  B12 0xbcc4c-0xbcc4c preds: B11
+      normal -> B13
+  B13 0xbcc50-0xbcc50 preds: B12
+      normal -> B14
+  B14 0xbcc54-0xbcc54 preds: B13
+      jump -> 0xbccb0
+  B15 0xbcc58-0xbcc58 preds: B11
+      normal -> B16
+  B16 0xbcc5c-0xbcc5c preds: B15
+      normal -> B17
+  B17 0xbcc60-0xbcc60 preds: B16
+      normal -> B18
+  B18 0xbcc64-0xbcc64 preds: B17
+      normal -> B19
+  B19 0xbcc68-0xbcc68 preds: B18
+      normal -> B20
+  B20 0xbcc6c-0xbcc6c preds: B19
+      normal -> B21
+  B21 0xbcc70-0xbcc70 preds: B20
+      normal -> B22
+  B22 0xbcc74-0xbcc74 preds: B21
+      normal -> B23
+  B23 0xbcc78-0xbcc78 preds: B22
+      normal -> B24
+  B24 0xbcc7c-0xbcc7c preds: B23
+      call -> 0x19718
+  B25 0xbcc80-0xbcc80 preds: B24
+      normal -> B26
+  B26 0xbcc84-0xbcc84 preds: B25
+      normal -> B27
+  B27 0xbcc88-0xbcc88 preds: B26
+      taken when ret(0x19718) == 0x0 -> 0xbcca8
+      falls through when ret(0x19718) != 0x0 -> B28
+  B28 0xbcc8c-0xbcc8c preds: B27
+      call -> 0x193d0
+  B29 0xbcc90-0xbcc90 preds: B28
+      normal -> B30
+  B30 0xbcc94-0xbcc94 preds: B29
+      normal -> B31
+  B31 0xbcc98-0xbcc98 preds: B30
+      call -> 0xbcf18
+  B32 0xbcc9c-0xbcc9c preds: B31
+      normal -> B33
+  B33 0xbcca0-0xbcca0 preds: B32
+      normal -> B34
+  B34 0xbcca4-0xbcca4 preds: B33
+      jump -> 0xbccb0
+  B35 0xbcca8-0xbcca8 preds: B27
+      normal -> B36
+  B36 0xbccac-0xbccac preds: B35
+      normal -> B37
+  B37 0xbccb0-0xbccb0 preds: B14, B36, B34
+      normal -> B38
+  B38 0xbccb4-0xbccb4 preds: B37
+      normal -> B39
+  B39 0xbccb8-0xbccb8 preds: B38
+      return
+
+returns (1)
+  0xbccb8: r0 = ?; reached from B38
+
+constants
+  0xbcc3c r3 = 0x12d918
+  0xbcc4c r3 = 0xfffff3e4
+  0xbcc6c r3 = 0x12d918
+  0xbcc78 r1 = 0x40046706
+  0xbcca8 r3 = 0x0
+immediates
+  0x4 at 0xbcc24
+  0x14 at 0xbcc28
+  0x0 at 0xbcc44
+  0xbcc58 at 0xbcc48
+  0xbccb0 at 0xbcc54
+  0x1c at 0xbcc70
+  0x19718 at 0xbcc7c
+  0x0 at 0xbcc84
+  0xbcca8 at 0xbcc88
+  0x193d0 at 0xbcc8c
+  0xbcf18 at 0xbcc98
+  0xbccb0 at 0xbcca4
+  0x0 at 0xbcca8
+  0xc at 0xbccb4
+instructions
+  0xbcc1c 0dc0a0e1 mov ip, sp
+  0xbcc20 00d82de9 push {fp, ip, lr, pc}
+  0xbcc24 04b04ce2 sub fp, ip, #4
+  0xbcc28 14d04de2 sub sp, sp, #0x14
+  0xbcc2c 10000be5 str r0, [fp, #-0x10]
+  0xbcc30 14100be5 str r1, [fp, #-0x14]
+  0xbcc34 0230a0e1 mov r3, r2
+  0xbcc38 15304be5 strb r3, [fp, #-0x15]
+  0xbcc3c 78309fe5 ldr r3, [pc, #0x78]
+  0xbcc40 003093e5 ldr r3, [r3]
+  0xbcc44 000053e3 cmp r3, #0
+  0xbcc48 020000aa bge #0xbcc58
+  0xbcc4c 6c309fe5 ldr r3, [pc, #0x6c]
+  0xbcc50 20300be5 str r3, [fp, #-0x20]
+  0xbcc54 150000ea b #0xbccb0
+  0xbcc58 14301be5 ldr r3, [fp, #-0x14]
+  0xbcc5c 0330d3e5 ldrb r3, [r3, #3]
+  0xbcc60 1c304be5 strb r3, [fp, #-0x1c]
+  0xbcc64 15305be5 ldrb r3, [fp, #-0x15]
+  0xbcc68 1b304be5 strb r3, [fp, #-0x1b]
+  0xbcc6c 48309fe5 ldr r3, [pc, #0x48]
+  0xbcc70 1c204be2 sub r2, fp, #0x1c
+  0xbcc74 000093e5 ldr r0, [r3]
+  0xbcc78 44109fe5 ldr r1, [pc, #0x44]
+  0xbcc7c a572fdeb bl #0x19718
+  0xbcc80 0030a0e1 mov r3, r0
+  0xbcc84 000053e3 cmp r3, #0
+  0xbcc88 0600000a beq #0xbcca8
+  0xbcc8c cf71fdeb bl #0x193d0
+  0xbcc90 0030a0e1 mov r3, r0
+  0xbcc94 000093e5 ldr r0, [r3]
+  0xbcc98 9e0000eb bl #0xbcf18
+  0xbcc9c 0030a0e1 mov r3, r0
+  0xbcca0 20300be5 str r3, [fp, #-0x20]
+  0xbcca4 010000ea b #0xbccb0
+  0xbcca8 0030a0e3 mov r3, #0
+  0xbccac 20300be5 str r3, [fp, #-0x20]
+  0xbccb0 20001be5 ldr r0, [fp, #-0x20]
+  0xbccb4 0cd04be2 sub sp, fp, #0xc
+  0xbccb8 00a89de8 ldm sp, {fp, sp, pc}
+  0xbccbc 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbccc4 06670440 andmi r6, r4, r6, lsl #14 (not reached by known edges)
+
+routine (unnamed)  0xbccc8-0xbcd74  size 0xac (172 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xbcd6c-0xbcd70; fall-through stops at this range
+
+accesses (27)
+  0xbcccc store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbcccc store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbcccc store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbcccc store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbccd8 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbccdc store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbcce0 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xbcce4 load w4 ldr base=pc disp +0x7c => abs 0xbcd68
+  0xbcce8 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbccf4 load w4 ldr base=pc disp +0x70 => abs 0xbcd6c
+  0xbccf8 store w4 str base=r11 disp -0x20 => sp -0x24 value 0xfffff3e4
+  0xbcd00 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcd04 load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbcd08 store w1 strb base=r11 disp -0x1c => sp -0x20 value ([r1+3]:1 & 0xff)
+  0xbcd0c load w4 ldr base=pc disp +0x54 => abs 0xbcd68
+  0xbcd14 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcd18 load w4 ldr base=pc disp +0x50 => abs 0xbcd70
+  0xbcd34 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbcd40 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbcf18)
+  0xbcd48 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xbcd4c load w1 ldrb base=r11 disp -0x1b => sp -0x1f
+  0xbcd50 store w1 strb base=r2 disp +0x0 => [sp-28] +0x0 value ([sp-31]:1 & 0xff)
+  0xbcd58 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xbcd5c load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xbcd64 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbcd64 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbcd64 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xbcd1c bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0xc0046707, r2=sp-32, r3=0x12d918
+  0xbcd2c bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbcd38 bl (unknown callee) [0xbcf18]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+
+blocks (40)
+  B0 0xbccc8-0xbccc8 preds: entry
+      normal -> B1
+  B1 0xbcccc-0xbcccc preds: B0
+      normal -> B2
+  B2 0xbccd0-0xbccd0 preds: B1
+      normal -> B3
+  B3 0xbccd4-0xbccd4 preds: B2
+      normal -> B4
+  B4 0xbccd8-0xbccd8 preds: B3
+      normal -> B5
+  B5 0xbccdc-0xbccdc preds: B4
+      normal -> B6
+  B6 0xbcce0-0xbcce0 preds: B5
+      normal -> B7
+  B7 0xbcce4-0xbcce4 preds: B6
+      normal -> B8
+  B8 0xbcce8-0xbcce8 preds: B7
+      normal -> B9
+  B9 0xbccec-0xbccec preds: B8
+      normal -> B10
+  B10 0xbccf0-0xbccf0 preds: B9
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbcd00
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B11
+  B11 0xbccf4-0xbccf4 preds: B10
+      normal -> B12
+  B12 0xbccf8-0xbccf8 preds: B11
+      normal -> B13
+  B13 0xbccfc-0xbccfc preds: B12
+      jump -> 0xbcd5c
+  B14 0xbcd00-0xbcd00 preds: B10
+      normal -> B15
+  B15 0xbcd04-0xbcd04 preds: B14
+      normal -> B16
+  B16 0xbcd08-0xbcd08 preds: B15
+      normal -> B17
+  B17 0xbcd0c-0xbcd0c preds: B16
+      normal -> B18
+  B18 0xbcd10-0xbcd10 preds: B17
+      normal -> B19
+  B19 0xbcd14-0xbcd14 preds: B18
+      normal -> B20
+  B20 0xbcd18-0xbcd18 preds: B19
+      normal -> B21
+  B21 0xbcd1c-0xbcd1c preds: B20
+      call -> 0x19718
+  B22 0xbcd20-0xbcd20 preds: B21
+      normal -> B23
+  B23 0xbcd24-0xbcd24 preds: B22
+      normal -> B24
+  B24 0xbcd28-0xbcd28 preds: B23
+      taken when ret(0x19718) == 0x0 -> 0xbcd48
+      falls through when ret(0x19718) != 0x0 -> B25
+  B25 0xbcd2c-0xbcd2c preds: B24
+      call -> 0x193d0
+  B26 0xbcd30-0xbcd30 preds: B25
+      normal -> B27
+  B27 0xbcd34-0xbcd34 preds: B26
+      normal -> B28
+  B28 0xbcd38-0xbcd38 preds: B27
+      call -> 0xbcf18
+  B29 0xbcd3c-0xbcd3c preds: B28
+      normal -> B30
+  B30 0xbcd40-0xbcd40 preds: B29
+      normal -> B31
+  B31 0xbcd44-0xbcd44 preds: B30
+      jump -> 0xbcd5c
+  B32 0xbcd48-0xbcd48 preds: B24
+      normal -> B33
+  B33 0xbcd4c-0xbcd4c preds: B32
+      normal -> B34
+  B34 0xbcd50-0xbcd50 preds: B33
+      normal -> B35
+  B35 0xbcd54-0xbcd54 preds: B34
+      normal -> B36
+  B36 0xbcd58-0xbcd58 preds: B35
+      normal -> B37
+  B37 0xbcd5c-0xbcd5c preds: B13, B36, B31
+      normal -> B38
+  B38 0xbcd60-0xbcd60 preds: B37
+      normal -> B39
+  B39 0xbcd64-0xbcd64 preds: B38
+      return
+
+returns (1)
+  0xbcd64: r0 = ?; reached from B38
+
+constants
+  0xbcce4 r3 = 0x12d918
+  0xbccf4 r3 = 0xfffff3e4
+  0xbcd0c r3 = 0x12d918
+  0xbcd18 r1 = 0xc0046707
+  0xbcd54 r3 = 0x0
+immediates
+  0x4 at 0xbccd0
+  0x14 at 0xbccd4
+  0x0 at 0xbccec
+  0xbcd00 at 0xbccf0
+  0xbcd5c at 0xbccfc
+  0x1c at 0xbcd10
+  0x19718 at 0xbcd1c
+  0x0 at 0xbcd24
+  0xbcd48 at 0xbcd28
+  0x193d0 at 0xbcd2c
+  0xbcf18 at 0xbcd38
+  0xbcd5c at 0xbcd44
+  0x0 at 0xbcd54
+  0xc at 0xbcd60
+instructions
+  0xbccc8 0dc0a0e1 mov ip, sp
+  0xbcccc 00d82de9 push {fp, ip, lr, pc}
+  0xbccd0 04b04ce2 sub fp, ip, #4
+  0xbccd4 14d04de2 sub sp, sp, #0x14
+  0xbccd8 10000be5 str r0, [fp, #-0x10]
+  0xbccdc 14100be5 str r1, [fp, #-0x14]
+  0xbcce0 18200be5 str r2, [fp, #-0x18]
+  0xbcce4 7c309fe5 ldr r3, [pc, #0x7c]
+  0xbcce8 003093e5 ldr r3, [r3]
+  0xbccec 000053e3 cmp r3, #0
+  0xbccf0 020000aa bge #0xbcd00
+  0xbccf4 70309fe5 ldr r3, [pc, #0x70]
+  0xbccf8 20300be5 str r3, [fp, #-0x20]
+  0xbccfc 160000ea b #0xbcd5c
+  0xbcd00 14301be5 ldr r3, [fp, #-0x14]
+  0xbcd04 0330d3e5 ldrb r3, [r3, #3]
+  0xbcd08 1c304be5 strb r3, [fp, #-0x1c]
+  0xbcd0c 54309fe5 ldr r3, [pc, #0x54]
+  0xbcd10 1c204be2 sub r2, fp, #0x1c
+  0xbcd14 000093e5 ldr r0, [r3]
+  0xbcd18 50109fe5 ldr r1, [pc, #0x50]
+  0xbcd1c 7d72fdeb bl #0x19718
+  0xbcd20 0030a0e1 mov r3, r0
+  0xbcd24 000053e3 cmp r3, #0
+  0xbcd28 0600000a beq #0xbcd48
+  0xbcd2c a771fdeb bl #0x193d0
+  0xbcd30 0030a0e1 mov r3, r0
+  0xbcd34 000093e5 ldr r0, [r3]
+  0xbcd38 760000eb bl #0xbcf18
+  0xbcd3c 0030a0e1 mov r3, r0
+  0xbcd40 20300be5 str r3, [fp, #-0x20]
+  0xbcd44 040000ea b #0xbcd5c
+  0xbcd48 18201be5 ldr r2, [fp, #-0x18]
+  0xbcd4c 1b305be5 ldrb r3, [fp, #-0x1b]
+  0xbcd50 0030c2e5 strb r3, [r2]
+  0xbcd54 0030a0e3 mov r3, #0
+  0xbcd58 20300be5 str r3, [fp, #-0x20]
+  0xbcd5c 20001be5 ldr r0, [fp, #-0x20]
+  0xbcd60 0cd04be2 sub sp, fp, #0xc
+  0xbcd64 00a89de8 ldm sp, {fp, sp, pc}
+  0xbcd68 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbcd70 076704c0 andgt r6, r4, r7, lsl #14 (not reached by known edges)
+
+routine (unnamed)  0xbcd74-0xbcf18  size 0x1a4 (420 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xbcf04-0xbcf08; fall-through stops at this range
+
+accesses (59)
+  0xbcd78 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xbcd78 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xbcd78 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xbcd78 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xbcd84 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xbcd88 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xbcd8c store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xbcd90 store w1 strb base=r11 disp -0x19 => sp -0x1d value (r3 & 0xff)
+  0xbcd98 store w4 str base=r11 disp -0x24 => sp -0x28 value 0x0
+  0xbcd9c load w4 ldr base=pc disp +0x15c => abs 0xbcf00
+  0xbcda0 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcdac load w4 ldr base=pc disp +0x150 => abs 0xbcf04
+  0xbcdb0 store w4 str base=r11 disp -0x2c => sp -0x30 value 0xfffff3e4
+  0xbcdb8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcdbc load w1 ldrb base=r3 disp +0x3 => r1 +0x3
+  0xbcdc0 store w1 strb base=r11 disp -0x20 => sp -0x24 value ([r1+3]:1 & 0xff)
+  0xbcdc8 store w4 str base=r11 disp -0x28 => sp -0x2c value 0x0
+  0xbcdcc load w4 ldr base=r11 disp -0x28 => sp -0x2c
+  0xbcdd8 load w4 ldr base=pc disp +0x120 => abs 0xbcf00
+  0xbcde0 load w4 ldr base=r3 disp +0x0 => abs 0x12d918
+  0xbcde4 load w4 ldr base=pc disp +0x11c => abs 0xbcf08
+  0xbce00 load w4 ldr base=r3 disp +0x0 => ret(0x193d0) +0x0
+  0xbce18 load w4 ldr base=pc disp +0xec => abs 0xbcf0c
+  0xbce1c store w4 str base=sp disp +0x0 => sp -0x3c value 0x11f20c
+  0xbce20 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbce24 load w4 ldr base=r3 disp +0xc => [sp-24] +0xc
+  0xbce28 store w4 str base=sp disp +0x4 => sp -0x38 value [[sp-24]+12]
+  0xbce2c store w4 str base=sp disp +0x8 => sp -0x34 value ret(0x1fc1c)
+  0xbce34 load w4 ldr base=pc disp +0xd4 => abs 0xbcf10
+  0xbce44 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xbce48 store w4 str base=r11 disp -0x2c => sp -0x30 value [sp-40]
+  0xbce50 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xbce54 load w1 ldrb base=r11 disp -0x1f => sp -0x23
+  0xbce58 load w1 ldrb base=r3 disp +0x3 => [sp-28] +0x3
+  0xbce6c load w1 ldrb base=r11 disp -0x19 => sp -0x1d
+  0xbce70 load w1 ldrb base=r11 disp -0x1f => sp -0x23
+  0xbce74 store w4 str base=sp disp +0x0 => sp -0x3c value [sp-35]:1
+  0xbce7c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbce80 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xbce90 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xbce98 store w4 str base=r11 disp -0x24 => sp -0x28 value ([sp-40] + ret(0xcad04))
+  0xbcea0 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xbcea4 store w4 str base=r11 disp -0x2c => sp -0x30 value [sp-40]
+  0xbceac load w4 ldr base=r11 disp -0x28 => sp -0x2c
+  0xbceb4 store w4 str base=r11 disp -0x28 => sp -0x2c value [sp-44]+1
+  0xbcebc load w4 ldr base=pc disp +0x50 => abs 0xbcf14
+  0xbcec0 store w4 str base=sp disp +0x0 => sp -0x3c value 0x11f238
+  0xbcec4 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xbcec8 load w4 ldr base=r3 disp +0xc => ? (unknown effective address)
+  0xbcecc store w4 str base=sp disp +0x4 => sp -0x38 value ?
+  0xbced0 load w1 ldrb base=r11 disp -0x1f => sp -0x23
+  0xbced4 store w4 str base=sp disp +0x8 => sp -0x34 value [sp-35]:1
+  0xbcedc load w4 ldr base=pc disp +0x2c => abs 0xbcf10
+  0xbceec load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xbcef0 store w4 str base=r11 disp -0x2c => sp -0x30 value [sp-40]
+  0xbcef4 load w4 ldr base=r11 disp -0x2c => sp -0x30
+  0xbcefc load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xbcefc load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xbcefc load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (7)
+  0xbcde8 bl (unknown callee) [0x19718]
+      args: r0=[0x12d918], r1=0x80046708, r2=sp-36, r3=0x12d918
+  0xbcdf8 bl (unknown callee) [0x193d0]
+      args: r0=ret(0x19718), r1=?, r2=?, r3=ret(0x19718)
+  0xbce04 bl (unknown callee) [0xbcf18]
+      args: r0=[ret(0x193d0)], r1=?, r2=?, r3=ret(0x193d0)
+  0xbce10 bl (unknown callee) [0x1fc1c]
+      args: r0=ret(0xbcf18), r1=?, r2=?, r3=ret(0xbcf18)
+  0xbce40 bl (unknown callee) [0x200a0]
+      args: r0=0x3, r1=0x11f200, r2=0xda, r3=0x0
+  0xbce88 bl (unknown callee) [0xcad04]
+      args: r0=0x0, r1=[sp-24], r2=[sp-28], r3=[sp-29]:1
+  0xbcee8 bl (unknown callee) [0x200a0]
+      args: r0=0x3, r1=0x11f200, r2=0xe5, r3=0x0
+
+blocks (99)
+  B0 0xbcd74-0xbcd74 preds: entry
+      normal -> B1
+  B1 0xbcd78-0xbcd78 preds: B0
+      normal -> B2
+  B2 0xbcd7c-0xbcd7c preds: B1
+      normal -> B3
+  B3 0xbcd80-0xbcd80 preds: B2
+      normal -> B4
+  B4 0xbcd84-0xbcd84 preds: B3
+      normal -> B5
+  B5 0xbcd88-0xbcd88 preds: B4
+      normal -> B6
+  B6 0xbcd8c-0xbcd8c preds: B5
+      normal -> B7
+  B7 0xbcd90-0xbcd90 preds: B6
+      normal -> B8
+  B8 0xbcd94-0xbcd94 preds: B7
+      normal -> B9
+  B9 0xbcd98-0xbcd98 preds: B8
+      normal -> B10
+  B10 0xbcd9c-0xbcd9c preds: B9
+      normal -> B11
+  B11 0xbcda0-0xbcda0 preds: B10
+      normal -> B12
+  B12 0xbcda4-0xbcda4 preds: B11
+      normal -> B13
+  B13 0xbcda8-0xbcda8 preds: B12
+      taken when [0x12d918] >= 0x0 (signed, 32-bit) -> 0xbcdb8
+      falls through when [0x12d918] < 0x0 (signed, 32-bit) -> B14
+  B14 0xbcdac-0xbcdac preds: B13
+      normal -> B15
+  B15 0xbcdb0-0xbcdb0 preds: B14
+      normal -> B16
+  B16 0xbcdb4-0xbcdb4 preds: B15
+      jump -> 0xbcef4
+  B17 0xbcdb8-0xbcdb8 preds: B13
+      normal -> B18
+  B18 0xbcdbc-0xbcdbc preds: B17
+      normal -> B19
+  B19 0xbcdc0-0xbcdc0 preds: B18
+      normal -> B20
+  B20 0xbcdc4-0xbcdc4 preds: B19
+      normal -> B21
+  B21 0xbcdc8-0xbcdc8 preds: B20
+      normal -> B22
+  B22 0xbcdcc-0xbcdcc preds: B21, B81
+      normal -> B23
+  B23 0xbcdd0-0xbcdd0 preds: B22
+      normal -> B24
+  B24 0xbcdd4-0xbcdd4 preds: B23
+      taken when gt flags condition (operands unknown) -> 0xbcebc
+      falls through when not (gt flags condition (operands unknown)) -> B25
+  B25 0xbcdd8-0xbcdd8 preds: B24
+      normal -> B26
+  B26 0xbcddc-0xbcddc preds: B25
+      normal -> B27
+  B27 0xbcde0-0xbcde0 preds: B26
+      normal -> B28
+  B28 0xbcde4-0xbcde4 preds: B27
+      normal -> B29
+  B29 0xbcde8-0xbcde8 preds: B28
+      call -> 0x19718
+  B30 0xbcdec-0xbcdec preds: B29
+      normal -> B31
+  B31 0xbcdf0-0xbcdf0 preds: B30
+      normal -> B32
+  B32 0xbcdf4-0xbcdf4 preds: B31
+      taken when ret(0x19718) == 0x0 -> 0xbce50
+      falls through when ret(0x19718) != 0x0 -> B33
+  B33 0xbcdf8-0xbcdf8 preds: B32
+      call -> 0x193d0
+  B34 0xbcdfc-0xbcdfc preds: B33
+      normal -> B35
+  B35 0xbce00-0xbce00 preds: B34
+      normal -> B36
+  B36 0xbce04-0xbce04 preds: B35
+      call -> 0xbcf18
+  B37 0xbce08-0xbce08 preds: B36
+      normal -> B38
+  B38 0xbce0c-0xbce0c preds: B37
+      normal -> B39
+  B39 0xbce10-0xbce10 preds: B38
+      call -> 0x1fc1c
+  B40 0xbce14-0xbce14 preds: B39
+      normal -> B41
+  B41 0xbce18-0xbce18 preds: B40
+      normal -> B42
+  B42 0xbce1c-0xbce1c preds: B41
+      normal -> B43
+  B43 0xbce20-0xbce20 preds: B42
+      normal -> B44
+  B44 0xbce24-0xbce24 preds: B43
+      normal -> B45
+  B45 0xbce28-0xbce28 preds: B44
+      normal -> B46
+  B46 0xbce2c-0xbce2c preds: B45
+      normal -> B47
+  B47 0xbce30-0xbce30 preds: B46
+      normal -> B48
+  B48 0xbce34-0xbce34 preds: B47
+      normal -> B49
+  B49 0xbce38-0xbce38 preds: B48
+      normal -> B50
+  B50 0xbce3c-0xbce3c preds: B49
+      normal -> B51
+  B51 0xbce40-0xbce40 preds: B50
+      call -> 0x200a0
+  B52 0xbce44-0xbce44 preds: B51
+      normal -> B53
+  B53 0xbce48-0xbce48 preds: B52
+      normal -> B54
+  B54 0xbce4c-0xbce4c preds: B53
+      jump -> 0xbcef4
+  B55 0xbce50-0xbce50 preds: B32
+      normal -> B56
+  B56 0xbce54-0xbce54 preds: B55
+      normal -> B57
+  B57 0xbce58-0xbce58 preds: B56
+      normal -> B58
+  B58 0xbce5c-0xbce5c preds: B57
+      normal -> B59
+  B59 0xbce60-0xbce60 preds: B58
+      normal -> B60
+  B60 0xbce64-0xbce64 preds: B59
+      normal -> B61
+  B61 0xbce68-0xbce68 preds: B60
+      taken when ? == 0x0 -> 0xbcea0
+      falls through when ? != 0x0 -> B62
+  B62 0xbce6c-0xbce6c preds: B61
+      normal -> B63
+  B63 0xbce70-0xbce70 preds: B62
+      normal -> B64
+  B64 0xbce74-0xbce74 preds: B63
+      normal -> B65
+  B65 0xbce78-0xbce78 preds: B64
+      normal -> B66
+  B66 0xbce7c-0xbce7c preds: B65
+      normal -> B67
+  B67 0xbce80-0xbce80 preds: B66
+      normal -> B68
+  B68 0xbce84-0xbce84 preds: B67
+      normal -> B69
+  B69 0xbce88-0xbce88 preds: B68
+      call -> 0xcad04
+  B70 0xbce8c-0xbce8c preds: B69
+      normal -> B71
+  B71 0xbce90-0xbce90 preds: B70
+      normal -> B72
+  B72 0xbce94-0xbce94 preds: B71
+      normal -> B73
+  B73 0xbce98-0xbce98 preds: B72
+      normal -> B74
+  B74 0xbce9c-0xbce9c preds: B73
+      jump -> 0xbceac
+  B75 0xbcea0-0xbcea0 preds: B61
+      normal -> B76
+  B76 0xbcea4-0xbcea4 preds: B75
+      normal -> B77
+  B77 0xbcea8-0xbcea8 preds: B76
+      jump -> 0xbcef4
+  B78 0xbceac-0xbceac preds: B74
+      normal -> B79
+  B79 0xbceb0-0xbceb0 preds: B78
+      normal -> B80
+  B80 0xbceb4-0xbceb4 preds: B79
+      normal -> B81
+  B81 0xbceb8-0xbceb8 preds: B80
+      jump -> 0xbcdcc
+  B82 0xbcebc-0xbcebc preds: B24
+      normal -> B83
+  B83 0xbcec0-0xbcec0 preds: B82
+      normal -> B84
+  B84 0xbcec4-0xbcec4 preds: B83
+      normal -> B85
+  B85 0xbcec8-0xbcec8 preds: B84
+      normal -> B86
+  B86 0xbcecc-0xbcecc preds: B85
+      normal -> B87
+  B87 0xbced0-0xbced0 preds: B86
+      normal -> B88
+  B88 0xbced4-0xbced4 preds: B87
+      normal -> B89
+  B89 0xbced8-0xbced8 preds: B88
+      normal -> B90
+  B90 0xbcedc-0xbcedc preds: B89
+      normal -> B91
+  B91 0xbcee0-0xbcee0 preds: B90
+      normal -> B92
+  B92 0xbcee4-0xbcee4 preds: B91
+      normal -> B93
+  B93 0xbcee8-0xbcee8 preds: B92
+      call -> 0x200a0
+  B94 0xbceec-0xbceec preds: B93
+      normal -> B95
+  B95 0xbcef0-0xbcef0 preds: B94
+      normal -> B96
+  B96 0xbcef4-0xbcef4 preds: B16, B95, B77, B54
+      normal -> B97
+  B97 0xbcef8-0xbcef8 preds: B96
+      normal -> B98
+  B98 0xbcefc-0xbcefc preds: B97
+      return
+
+returns (1)
+  0xbcefc: r0 = ?; reached from B97
+
+constants
+  0xbcd94 r3 = 0x0
+  0xbcd9c r3 = 0x12d918
+  0xbcdac r3 = 0xfffff3e4
+  0xbcdc4 r3 = 0x0
+  0xbcdd8 r3 = 0x12d918
+  0xbcde4 r1 = 0x80046708
+  0xbce18 r3 = 0x11f20c
+  0xbce30 r0 = 0x3
+  0xbce34 r1 = 0x11f200
+  0xbce38 r2 = 0xda
+  0xbce3c r3 = 0x0
+  0xbce78 r0 = 0x0
+  0xbcebc r3 = 0x11f238
+  0xbced8 r0 = 0x3
+  0xbcedc r1 = 0x11f200
+  0xbcee0 r2 = 0xe5
+  0xbcee4 r3 = 0x0
+immediates
+  0x4 at 0xbcd7c
+  0x2c at 0xbcd80
+  0x0 at 0xbcd94
+  0x0 at 0xbcda4
+  0xbcdb8 at 0xbcda8
+  0xbcef4 at 0xbcdb4
+  0x0 at 0xbcdc4
+  0x1f at 0xbcdd0
+  0xbcebc at 0xbcdd4
+  0x20 at 0xbcddc
+  0x19718 at 0xbcde8
+  0x0 at 0xbcdf0
+  0xbce50 at 0xbcdf4
+  0x193d0 at 0xbcdf8
+  0xbcf18 at 0xbce04
+  0x1fc1c at 0xbce10
+  0x3 at 0xbce30
+  0xda at 0xbce38
+  0x0 at 0xbce3c
+  0x200a0 at 0xbce40
+  0xbcef4 at 0xbce4c
+  0xff at 0xbce60
+  0x0 at 0xbce64
+  0xbcea0 at 0xbce68
+  0x0 at 0xbce78
+  0xcad04 at 0xbce88
+  0xbceac at 0xbce9c
+  0xbcef4 at 0xbcea8
+  0x1 at 0xbceb0
+  0xbcdcc at 0xbceb8
+  0x3 at 0xbced8
+  0xe5 at 0xbcee0
+  0x0 at 0xbcee4
+  0x200a0 at 0xbcee8
+  0xc at 0xbcef8
+instructions
+  0xbcd74 0dc0a0e1 mov ip, sp
+  0xbcd78 00d82de9 push {fp, ip, lr, pc}
+  0xbcd7c 04b04ce2 sub fp, ip, #4
+  0xbcd80 2cd04de2 sub sp, sp, #0x2c
+  0xbcd84 10000be5 str r0, [fp, #-0x10]
+  0xbcd88 14100be5 str r1, [fp, #-0x14]
+  0xbcd8c 18200be5 str r2, [fp, #-0x18]
+  0xbcd90 19304be5 strb r3, [fp, #-0x19]
+  0xbcd94 0030a0e3 mov r3, #0
+  0xbcd98 24300be5 str r3, [fp, #-0x24]
+  0xbcd9c 5c319fe5 ldr r3, [pc, #0x15c]
+  0xbcda0 003093e5 ldr r3, [r3]
+  0xbcda4 000053e3 cmp r3, #0
+  0xbcda8 020000aa bge #0xbcdb8
+  0xbcdac 50319fe5 ldr r3, [pc, #0x150]
+  0xbcdb0 2c300be5 str r3, [fp, #-0x2c]
+  0xbcdb4 4e0000ea b #0xbcef4
+  0xbcdb8 14301be5 ldr r3, [fp, #-0x14]
+  0xbcdbc 0330d3e5 ldrb r3, [r3, #3]
+  0xbcdc0 20304be5 strb r3, [fp, #-0x20]
+  0xbcdc4 0030a0e3 mov r3, #0
+  0xbcdc8 28300be5 str r3, [fp, #-0x28]
+  0xbcdcc 28301be5 ldr r3, [fp, #-0x28]
+  0xbcdd0 1f0053e3 cmp r3, #0x1f
+  0xbcdd4 380000ca bgt #0xbcebc
+  0xbcdd8 20319fe5 ldr r3, [pc, #0x120]
+  0xbcddc 20204be2 sub r2, fp, #0x20
+  0xbcde0 000093e5 ldr r0, [r3]
+  0xbcde4 1c119fe5 ldr r1, [pc, #0x11c]
+  0xbcde8 4a72fdeb bl #0x19718
+  0xbcdec 0030a0e1 mov r3, r0
+  0xbcdf0 000053e3 cmp r3, #0
+  0xbcdf4 1500000a beq #0xbce50
+  0xbcdf8 7471fdeb bl #0x193d0
+  0xbcdfc 0030a0e1 mov r3, r0
+  0xbce00 000093e5 ldr r0, [r3]
+  0xbce04 430000eb bl #0xbcf18
+  0xbce08 0030a0e1 mov r3, r0
+  0xbce0c 0300a0e1 mov r0, r3
+  0xbce10 818bfdeb bl #0x1fc1c
+  0xbce14 0020a0e1 mov r2, r0
+  0xbce18 ec309fe5 ldr r3, [pc, #0xec]
+  0xbce1c 00308de5 str r3, [sp]
+  0xbce20 14301be5 ldr r3, [fp, #-0x14]
+  0xbce24 0c3093e5 ldr r3, [r3, #0xc]
+  0xbce28 04308de5 str r3, [sp, #4]
+  0xbce2c 08208de5 str r2, [sp, #8]
+  0xbce30 0300a0e3 mov r0, #3
+  0xbce34 d4109fe5 ldr r1, [pc, #0xd4]
+  0xbce38 da20a0e3 mov r2, #0xda
+  0xbce3c 0030a0e3 mov r3, #0
+  0xbce40 968cfdeb bl #0x200a0
+  0xbce44 24301be5 ldr r3, [fp, #-0x24]
+  0xbce48 2c300be5 str r3, [fp, #-0x2c]
+  0xbce4c 280000ea b #0xbcef4
+  0xbce50 18301be5 ldr r3, [fp, #-0x18]
+  0xbce54 1f205be5 ldrb r2, [fp, #-0x1f]
+  0xbce58 0330d3e5 ldrb r3, [r3, #3]
+  0xbce5c 033002e0 and r3, r2, r3
+  0xbce60 ff3003e2 and r3, r3, #0xff
+  0xbce64 000053e3 cmp r3, #0
+  0xbce68 0c00000a beq #0xbcea0
+  0xbce6c 19c05be5 ldrb ip, [fp, #-0x19]
+  0xbce70 1f305be5 ldrb r3, [fp, #-0x1f]
+  0xbce74 00308de5 str r3, [sp]
+  0xbce78 0000a0e3 mov r0, #0
+  0xbce7c 14101be5 ldr r1, [fp, #-0x14]
+  0xbce80 18201be5 ldr r2, [fp, #-0x18]
+  0xbce84 0c30a0e1 mov r3, ip
+  0xbce88 9d3700eb bl #0xcad04
+  0xbce8c 0020a0e1 mov r2, r0
+  0xbce90 24301be5 ldr r3, [fp, #-0x24]
+  0xbce94 023083e0 add r3, r3, r2
+  0xbce98 24300be5 str r3, [fp, #-0x24]
+  0xbce9c 020000ea b #0xbceac
+  0xbcea0 24301be5 ldr r3, [fp, #-0x24]
+  0xbcea4 2c300be5 str r3, [fp, #-0x2c]
+  0xbcea8 110000ea b #0xbcef4
+  0xbceac 28301be5 ldr r3, [fp, #-0x28]
+  0xbceb0 013083e2 add r3, r3, #1
+  0xbceb4 28300be5 str r3, [fp, #-0x28]
+  0xbceb8 c3ffffea b #0xbcdcc
+  0xbcebc 50309fe5 ldr r3, [pc, #0x50]
+  0xbcec0 00308de5 str r3, [sp]
+  0xbcec4 14301be5 ldr r3, [fp, #-0x14]
+  0xbcec8 0c3093e5 ldr r3, [r3, #0xc]
+  0xbcecc 04308de5 str r3, [sp, #4]
+  0xbced0 1f305be5 ldrb r3, [fp, #-0x1f]
+  0xbced4 08308de5 str r3, [sp, #8]
+  0xbced8 0300a0e3 mov r0, #3
+  0xbcedc 2c109fe5 ldr r1, [pc, #0x2c]
+  0xbcee0 e520a0e3 mov r2, #0xe5
+  0xbcee4 0030a0e3 mov r3, #0
+  0xbcee8 6c8cfdeb bl #0x200a0
+  0xbceec 24301be5 ldr r3, [fp, #-0x24]
+  0xbcef0 2c300be5 str r3, [fp, #-0x2c]
+  0xbcef4 2c001be5 ldr r0, [fp, #-0x2c]
+  0xbcef8 0cd04be2 sub sp, fp, #0xc
+  0xbcefc 00a89de8 ldm sp, {fp, sp, pc}
+  0xbcf00 18d91200 andseq sp, r2, r8, lsl sb (not reached by known edges)
+  0xbcf08 08670480 andhi r6, r4, r8, lsl #14 (not reached by known edges)
+  0xbcf0c 0cf21100 andseq pc, r1, ip, lsl #4 (not reached by known edges)
+  0xbcf10 00f21100 andseq pc, r1, r0, lsl #4 (not reached by known edges)
+  0xbcf14 38f21100 andseq pc, r1, r8, lsr r2 (not reached by known edges)
+
+routine (unnamed)  0xc9658-0xc990c  size 0x2b4 (692 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xc97dc rsb: unsupported effects invalidated
+
+accesses (87)
+  0xc965c store w4 push base=sp disp +0x0 => sp -0x14 value r4
+  0xc965c store w4 push base=sp disp +0x4 => sp -0x10 value r11
+  0xc965c store w4 push base=sp disp +0x8 => sp -0xc value sp
+  0xc965c store w4 push base=sp disp +0xc => sp -0x8 value lr
+  0xc965c store w4 push base=sp disp +0x10 => sp -0x4 value ?
+  0xc9668 store w4 str base=r11 disp -0x14 => sp -0x18 value r0
+  0xc966c store w4 str base=r11 disp -0x18 => sp -0x1c value r1
+  0xc9670 store w4 str base=r11 disp -0x1c => sp -0x20 value r2
+  0xc9674 load w4 ldr base=pc disp +0x270 => abs 0xc98ec
+  0xc9678 load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc9684 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xc9690 load w4 ldr base=pc disp +0x258 => abs 0xc98f0
+  0xc9694 store w4 str base=sp disp +0x0 => sp -0x38 value 0x12044c
+  0xc9698 load w4 ldr base=pc disp +0x24c => abs 0xc98ec
+  0xc969c load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc96a0 store w4 str base=sp disp +0x4 => sp -0x34 value [0x29733c]
+  0xc96a4 load w4 ldr base=pc disp +0x248 => abs 0xc98f4
+  0xc96a8 load w4 ldr base=r3 disp +0x0 => abs 0x297340
+  0xc96ac store w4 str base=sp disp +0x8 => sp -0x30 value [0x297340]
+  0xc96b4 load w4 ldr base=pc disp +0x23c => abs 0xc98f8
+  0xc96c4 load w4 ldr base=pc disp +0x228 => abs 0xc98f4
+  0xc96c8 load w4 ldr base=r3 disp +0x0 => abs 0x297340
+  0xc96d4 load w4 ldr base=pc disp +0x218 => abs 0xc98f4
+  0xc96dc store w4 str base=r2 disp +0x0 => abs 0x297340 value 0x1
+  0xc96e0 load w4 ldr base=pc disp +0x20c => abs 0xc98f4
+  0xc96e4 load w4 ldr base=r3 disp +0x0 => abs 0x297340
+  0xc96f8 store w4 str base=r11 disp -0x28 => sp -0x2c value ?
+  0xc96fc load w4 ldr base=pc disp +0x1e8 => abs 0xc98ec
+  0xc9700 load w4 ldr base=r11 disp -0x28 => sp -0x2c
+  0xc9710 store w4 str base=r4 disp +0x0 => abs 0x29733c value ret(0x196d0)
+  0xc9714 load w4 ldr base=r4 disp +0x0 => abs 0x29733c
+  0xc9720 load w4 ldr base=pc disp +0x1d4 => abs 0xc98fc
+  0xc9724 store w4 str base=sp disp +0x0 => sp -0x38 value 0x120498
+  0xc9728 load w4 ldr base=r11 disp -0x28 => sp -0x2c
+  0xc972c store w4 str base=sp disp +0x4 => sp -0x34 value [sp-44]
+  0xc9734 load w4 ldr base=pc disp +0x1bc => abs 0xc98f8
+  0xc9744 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xc9758 load w4 ldr base=pc disp +0x18c => abs 0xc98ec
+  0xc975c load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc9764 store w4 str base=r11 disp -0x20 => sp -0x24 value ?
+  0xc9768 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc976c load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9770 store w4 str base=r2 disp +0x0 => [sp-36] +0x0 value ?
+  0xc9774 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9778 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc977c store w4 str base=r2 disp +0x4 => [sp-36] +0x4 value [sp-32]
+  0xc9780 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9784 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9788 load w4 ldr base=r3 disp +0x4 => [sp-36] +0x4
+  0xc9798 store w4 str base=r4 disp +0x8 => [sp-36] +0x8 value ret(0x196d0)
+  0xc979c load w4 ldr base=r4 disp +0x8 => [sp-36] +0x8
+  0xc97a8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xc97b0 load w4 ldr base=pc disp +0x148 => abs 0xc9900
+  0xc97b4 load w4 ldr base=pc disp +0x148 => abs 0xc9904
+  0xc97f0 store w4 str base=r11 disp -0x28 => sp -0x2c value ?
+  0xc97f4 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xc97fc load w4 ldr base=pc disp +0xfc => abs 0xc9900
+  0xc9800 load w4 ldr base=pc disp +0xfc => abs 0xc9904
+  0xc980c load w4 ldr base=r11 disp -0x28 => sp -0x2c
+  0xc981c load w4 ldr base=pc disp +0xe4 => abs 0xc9908
+  0xc9820 store w4 str base=sp disp +0x0 => ? (unknown effective address) value 0x1204dc
+  0xc9824 store w4 str base=sp disp +0x4 => ? (unknown effective address) value ret(0x19808)
+  0xc9828 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc982c store w4 str base=sp disp +0x8 => ? (unknown effective address) value [sp-32]
+  0xc9834 load w4 ldr base=pc disp +0xbc => abs 0xc98f8
+  0xc9848 store w4 str base=r11 disp -0x24 => sp -0x28 value 0x0
+  0xc984c load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9850 load w4 ldr base=r3 disp +0x4 => [sp-36] +0x4
+  0xc9854 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xc9860 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9864 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xc986c load w4 ldr base=r1 disp +0x0 => [sp-36] +0x0
+  0xc9874 load w1 ldrb base=r3 disp +0x2 => ? (unknown effective address)
+  0xc9880 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9884 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xc9898 load w4 ldr base=r1 disp +0x8 => [sp-36] +0x8
+  0xc98a4 store w1 strb base=r2 disp +0x0 => ? (unknown effective address) value 0x0
+  0xc98ac load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc98b0 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xc98c4 load w4 ldr base=r1 disp +0x8 => [sp-36] +0x8
+  0xc98d0 store w1 strb base=r2 disp +0x0 => ? (unknown effective address) value 0x1
+  0xc98d4 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xc98dc store w4 str base=r11 disp -0x24 => sp -0x28 value [sp-40]+1
+  0xc98e8 load w4 ldm base=sp disp +0x0 => sp -0x14
+  0xc98e8 load w4 ldm base=sp disp +0x4 => sp -0x10
+  0xc98e8 load w4 ldm base=sp disp +0x8 => sp -0xc
+  0xc98e8 load w4 ldm base=sp disp +0xc => sp -0x8
+
+calls (9)
+  0xc96c0 bl (unknown callee) [0x200a0]
+      args: r0=0x9, r1=0x12047c, r2=0x54, r3=0x0
+  0xc9708 bl (unknown callee) [0x196d0]
+      args: r0=[sp-44], r1=0x1, r2=[0x297340], r3=?
+  0xc9740 bl (unknown callee) [0x200a0]
+      args: r0=0x9, r1=0x12047c, r2=0x60, r3=0x0
+  0xc9790 bl (unknown callee) [0x196d0]
+      args: r0=[[sp-36]+4], r1=0xc, r2=[sp-36], r3=[sp-36]
+  0xc97b8 bl (unknown callee) [0x48da8]
+      args: r0=[sp-24], r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc97c4 bl (unknown callee) [0x19538]
+      args: r0=ret(0x48da8), r1=?, r2=?, r3=ret(0x48da8)
+  0xc9804 bl (unknown callee) [0x48da8]
+      args: r0=[sp-24], r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc9814 bl (unknown callee) [0x19808]
+      args: r0=[sp-44], r1=ret(0x48da8), r2=?, r3=ret(0x48da8)
+  0xc9840 bl (unknown callee) [0x200a0]
+      args: r0=0x9, r1=0x12047c, r2=0x6c, r3=0x0
+
+blocks (165)
+  B0 0xc9658-0xc9658 preds: entry
+      normal -> B1
+  B1 0xc965c-0xc965c preds: B0
+      normal -> B2
+  B2 0xc9660-0xc9660 preds: B1
+      normal -> B3
+  B3 0xc9664-0xc9664 preds: B2
+      normal -> B4
+  B4 0xc9668-0xc9668 preds: B3
+      normal -> B5
+  B5 0xc966c-0xc966c preds: B4
+      normal -> B6
+  B6 0xc9670-0xc9670 preds: B5
+      normal -> B7
+  B7 0xc9674-0xc9674 preds: B6
+      normal -> B8
+  B8 0xc9678-0xc9678 preds: B7
+      normal -> B9
+  B9 0xc967c-0xc967c preds: B8
+      normal -> B10
+  B10 0xc9680-0xc9680 preds: B9
+      taken when [0x29733c] == 0x0 -> 0xc96c4
+      falls through when [0x29733c] != 0x0 -> B11
+  B11 0xc9684-0xc9684 preds: B10
+      normal -> B12
+  B12 0xc9688-0xc9688 preds: B11
+      normal -> B13
+  B13 0xc968c-0xc968c preds: B12
+      taken when r0 != 0x0 -> 0xc96c4
+      falls through when r0 == 0x0 -> B14
+  B14 0xc9690-0xc9690 preds: B13
+      normal -> B15
+  B15 0xc9694-0xc9694 preds: B14
+      normal -> B16
+  B16 0xc9698-0xc9698 preds: B15
+      normal -> B17
+  B17 0xc969c-0xc969c preds: B16
+      normal -> B18
+  B18 0xc96a0-0xc96a0 preds: B17
+      normal -> B19
+  B19 0xc96a4-0xc96a4 preds: B18
+      normal -> B20
+  B20 0xc96a8-0xc96a8 preds: B19
+      normal -> B21
+  B21 0xc96ac-0xc96ac preds: B20
+      normal -> B22
+  B22 0xc96b0-0xc96b0 preds: B21
+      normal -> B23
+  B23 0xc96b4-0xc96b4 preds: B22
+      normal -> B24
+  B24 0xc96b8-0xc96b8 preds: B23
+      normal -> B25
+  B25 0xc96bc-0xc96bc preds: B24
+      normal -> B26
+  B26 0xc96c0-0xc96c0 preds: B25
+      call -> 0x200a0
+  B27 0xc96c4-0xc96c4 preds: B10, B13, B26
+      normal -> B28
+  B28 0xc96c8-0xc96c8 preds: B27
+      normal -> B29
+  B29 0xc96cc-0xc96cc preds: B28
+      normal -> B30
+  B30 0xc96d0-0xc96d0 preds: B29
+      taken when [0x297340] != 0x0 -> 0xc9744
+      falls through when [0x297340] == 0x0 -> B31
+  B31 0xc96d4-0xc96d4 preds: B30
+      normal -> B32
+  B32 0xc96d8-0xc96d8 preds: B31
+      normal -> B33
+  B33 0xc96dc-0xc96dc preds: B32
+      normal -> B34
+  B34 0xc96e0-0xc96e0 preds: B33
+      normal -> B35
+  B35 0xc96e4-0xc96e4 preds: B34
+      normal -> B36
+  B36 0xc96e8-0xc96e8 preds: B35
+      normal -> B37
+  B37 0xc96ec-0xc96ec preds: B36
+      normal -> B38
+  B38 0xc96f0-0xc96f0 preds: B37
+      normal -> B39
+  B39 0xc96f4-0xc96f4 preds: B38
+      normal -> B40
+  B40 0xc96f8-0xc96f8 preds: B39
+      normal -> B41
+  B41 0xc96fc-0xc96fc preds: B40
+      normal -> B42
+  B42 0xc9700-0xc9700 preds: B41
+      normal -> B43
+  B43 0xc9704-0xc9704 preds: B42
+      normal -> B44
+  B44 0xc9708-0xc9708 preds: B43
+      call -> 0x196d0
+  B45 0xc970c-0xc970c preds: B44
+      normal -> B46
+  B46 0xc9710-0xc9710 preds: B45
+      normal -> B47
+  B47 0xc9714-0xc9714 preds: B46
+      normal -> B48
+  B48 0xc9718-0xc9718 preds: B47
+      normal -> B49
+  B49 0xc971c-0xc971c preds: B48
+      taken when [0x29733c] != 0x0 -> 0xc9744
+      falls through when [0x29733c] == 0x0 -> B50
+  B50 0xc9720-0xc9720 preds: B49
+      normal -> B51
+  B51 0xc9724-0xc9724 preds: B50
+      normal -> B52
+  B52 0xc9728-0xc9728 preds: B51
+      normal -> B53
+  B53 0xc972c-0xc972c preds: B52
+      normal -> B54
+  B54 0xc9730-0xc9730 preds: B53
+      normal -> B55
+  B55 0xc9734-0xc9734 preds: B54
+      normal -> B56
+  B56 0xc9738-0xc9738 preds: B55
+      normal -> B57
+  B57 0xc973c-0xc973c preds: B56
+      normal -> B58
+  B58 0xc9740-0xc9740 preds: B57
+      call -> 0x200a0
+  B59 0xc9744-0xc9744 preds: B30, B49, B58
+      normal -> B60
+  B60 0xc9748-0xc9748 preds: B59
+      normal -> B61
+  B61 0xc974c-0xc974c preds: B60
+      normal -> B62
+  B62 0xc9750-0xc9750 preds: B61
+      normal -> B63
+  B63 0xc9754-0xc9754 preds: B62
+      normal -> B64
+  B64 0xc9758-0xc9758 preds: B63
+      normal -> B65
+  B65 0xc975c-0xc975c preds: B64
+      normal -> B66
+  B66 0xc9760-0xc9760 preds: B65
+      normal -> B67
+  B67 0xc9764-0xc9764 preds: B66
+      normal -> B68
+  B68 0xc9768-0xc9768 preds: B67
+      normal -> B69
+  B69 0xc976c-0xc976c preds: B68
+      normal -> B70
+  B70 0xc9770-0xc9770 preds: B69
+      normal -> B71
+  B71 0xc9774-0xc9774 preds: B70
+      normal -> B72
+  B72 0xc9778-0xc9778 preds: B71
+      normal -> B73
+  B73 0xc977c-0xc977c preds: B72
+      normal -> B74
+  B74 0xc9780-0xc9780 preds: B73
+      normal -> B75
+  B75 0xc9784-0xc9784 preds: B74
+      normal -> B76
+  B76 0xc9788-0xc9788 preds: B75
+      normal -> B77
+  B77 0xc978c-0xc978c preds: B76
+      normal -> B78
+  B78 0xc9790-0xc9790 preds: B77
+      call -> 0x196d0
+  B79 0xc9794-0xc9794 preds: B78
+      normal -> B80
+  B80 0xc9798-0xc9798 preds: B79
+      normal -> B81
+  B81 0xc979c-0xc979c preds: B80
+      normal -> B82
+  B82 0xc97a0-0xc97a0 preds: B81
+      normal -> B83
+  B83 0xc97a4-0xc97a4 preds: B82
+      taken when [[sp-36]+8] != 0x0 -> 0xc9844
+      falls through when [[sp-36]+8] == 0x0 -> B84
+  B84 0xc97a8-0xc97a8 preds: B83
+      normal -> B85
+  B85 0xc97ac-0xc97ac preds: B84
+      normal -> B86
+  B86 0xc97b0-0xc97b0 preds: B85
+      normal -> B87
+  B87 0xc97b4-0xc97b4 preds: B86
+      normal -> B88
+  B88 0xc97b8-0xc97b8 preds: B87
+      call -> 0x48da8
+  B89 0xc97bc-0xc97bc preds: B88
+      normal -> B90
+  B90 0xc97c0-0xc97c0 preds: B89
+      normal -> B91
+  B91 0xc97c4-0xc97c4 preds: B90
+      call -> 0x19538
+  B92 0xc97c8-0xc97c8 preds: B91
+      normal -> B93
+  B93 0xc97cc-0xc97cc preds: B92
+      normal -> B94
+  B94 0xc97d0-0xc97d0 preds: B93
+      normal -> B95
+  B95 0xc97d4-0xc97d4 preds: B94
+      normal -> B96
+  B96 0xc97d8-0xc97d8 preds: B95
+      normal -> B97
+  B97 0xc97dc-0xc97dc preds: B96
+      normal -> B98
+  B98 0xc97e0-0xc97e0 preds: B97
+      normal -> B99
+  B99 0xc97e4-0xc97e4 preds: B98
+      normal -> B100
+  B100 0xc97e8-0xc97e8 preds: B99
+      normal -> B101
+  B101 0xc97ec-0xc97ec preds: B100
+      normal -> B102
+  B102 0xc97f0-0xc97f0 preds: B101
+      normal -> B103
+  B103 0xc97f4-0xc97f4 preds: B102
+      normal -> B104
+  B104 0xc97f8-0xc97f8 preds: B103
+      normal -> B105
+  B105 0xc97fc-0xc97fc preds: B104
+      normal -> B106
+  B106 0xc9800-0xc9800 preds: B105
+      normal -> B107
+  B107 0xc9804-0xc9804 preds: B106
+      call -> 0x48da8
+  B108 0xc9808-0xc9808 preds: B107
+      normal -> B109
+  B109 0xc980c-0xc980c preds: B108
+      normal -> B110
+  B110 0xc9810-0xc9810 preds: B109
+      normal -> B111
+  B111 0xc9814-0xc9814 preds: B110
+      call -> 0x19808
+  B112 0xc9818-0xc9818 preds: B111
+      normal -> B113
+  B113 0xc981c-0xc981c preds: B112
+      normal -> B114
+  B114 0xc9820-0xc9820 preds: B113
+      normal -> B115
+  B115 0xc9824-0xc9824 preds: B114
+      normal -> B116
+  B116 0xc9828-0xc9828 preds: B115
+      normal -> B117
+  B117 0xc982c-0xc982c preds: B116
+      normal -> B118
+  B118 0xc9830-0xc9830 preds: B117
+      normal -> B119
+  B119 0xc9834-0xc9834 preds: B118
+      normal -> B120
+  B120 0xc9838-0xc9838 preds: B119
+      normal -> B121
+  B121 0xc983c-0xc983c preds: B120
+      normal -> B122
+  B122 0xc9840-0xc9840 preds: B121
+      call -> 0x200a0
+  B123 0xc9844-0xc9844 preds: B83, B122
+      normal -> B124
+  B124 0xc9848-0xc9848 preds: B123
+      normal -> B125
+  B125 0xc984c-0xc984c preds: B124, B162
+      normal -> B126
+  B126 0xc9850-0xc9850 preds: B125
+      normal -> B127
+  B127 0xc9854-0xc9854 preds: B126
+      normal -> B128
+  B128 0xc9858-0xc9858 preds: B127
+      normal -> B129
+  B129 0xc985c-0xc985c preds: B128
+      taken when le flags condition (operands unknown) -> 0xc98e4
+      falls through when not (le flags condition (operands unknown)) -> B130
+  B130 0xc9860-0xc9860 preds: B129
+      normal -> B131
+  B131 0xc9864-0xc9864 preds: B130
+      normal -> B132
+  B132 0xc9868-0xc9868 preds: B131
+      normal -> B133
+  B133 0xc986c-0xc986c preds: B132
+      normal -> B134
+  B134 0xc9870-0xc9870 preds: B133
+      normal -> B135
+  B135 0xc9874-0xc9874 preds: B134
+      normal -> B136
+  B136 0xc9878-0xc9878 preds: B135
+      normal -> B137
+  B137 0xc987c-0xc987c preds: B136
+      taken when Z == 0 -> 0xc98ac
+      falls through when not (Z == 0) -> B138
+  B138 0xc9880-0xc9880 preds: B137
+      normal -> B139
+  B139 0xc9884-0xc9884 preds: B138
+      normal -> B140
+  B140 0xc9888-0xc9888 preds: B139
+      normal -> B141
+  B141 0xc988c-0xc988c preds: B140
+      normal -> B142
+  B142 0xc9890-0xc9890 preds: B141
+      normal -> B143
+  B143 0xc9894-0xc9894 preds: B142
+      normal -> B144
+  B144 0xc9898-0xc9898 preds: B143
+      normal -> B145
+  B145 0xc989c-0xc989c preds: B144
+      normal -> B146
+  B146 0xc98a0-0xc98a0 preds: B145
+      normal -> B147
+  B147 0xc98a4-0xc98a4 preds: B146
+      normal -> B148
+  B148 0xc98a8-0xc98a8 preds: B147
+      jump -> 0xc98d4
+  B149 0xc98ac-0xc98ac preds: B137
+      normal -> B150
+  B150 0xc98b0-0xc98b0 preds: B149
+      normal -> B151
+  B151 0xc98b4-0xc98b4 preds: B150
+      normal -> B152
+  B152 0xc98b8-0xc98b8 preds: B151
+      normal -> B153
+  B153 0xc98bc-0xc98bc preds: B152
+      normal -> B154
+  B154 0xc98c0-0xc98c0 preds: B153
+      normal -> B155
+  B155 0xc98c4-0xc98c4 preds: B154
+      normal -> B156
+  B156 0xc98c8-0xc98c8 preds: B155
+      normal -> B157
+  B157 0xc98cc-0xc98cc preds: B156
+      normal -> B158
+  B158 0xc98d0-0xc98d0 preds: B157
+      normal -> B159
+  B159 0xc98d4-0xc98d4 preds: B158, B148
+      normal -> B160
+  B160 0xc98d8-0xc98d8 preds: B159
+      normal -> B161
+  B161 0xc98dc-0xc98dc preds: B160
+      normal -> B162
+  B162 0xc98e0-0xc98e0 preds: B161
+      jump -> 0xc984c
+  B163 0xc98e4-0xc98e4 preds: B129
+      normal -> B164
+  B164 0xc98e8-0xc98e8 preds: B163
+      return
+
+returns (1)
+  0xc98e8: r0 = ?; reached from B163
+
+constants
+  0xc9674 r3 = 0x29733c
+  0xc9690 r3 = 0x12044c
+  0xc9698 r3 = 0x29733c
+  0xc96a4 r3 = 0x297340
+  0xc96b0 r0 = 0x9
+  0xc96b4 r1 = 0x12047c
+  0xc96b8 r2 = 0x54
+  0xc96bc r3 = 0x0
+  0xc96c4 r3 = 0x297340
+  0xc96d4 r2 = 0x297340
+  0xc96d8 r3 = 0x1
+  0xc96e0 r3 = 0x297340
+  0xc96fc r4 = 0x29733c
+  0xc9704 r1 = 0x1
+  0xc9720 r3 = 0x120498
+  0xc9730 r0 = 0x9
+  0xc9734 r1 = 0x12047c
+  0xc9738 r2 = 0x60
+  0xc973c r3 = 0x0
+  0xc9758 r3 = 0x29733c
+  0xc978c r1 = 0xc
+  0xc97ac r1 = 0x0
+  0xc97b0 r2 = 0x1204d0
+  0xc97b4 r3 = 0x1204d8
+  0xc97f8 r1 = 0x0
+  0xc97fc r2 = 0x1204d0
+  0xc9800 r3 = 0x1204d8
+  0xc981c r3 = 0x1204dc
+  0xc9830 r0 = 0x9
+  0xc9834 r1 = 0x12047c
+  0xc9838 r2 = 0x6c
+  0xc983c r3 = 0x0
+  0xc9844 r3 = 0x0
+  0xc98a0 r3 = 0x0
+  0xc98cc r3 = 0x1
+immediates
+  0x4 at 0xc9660
+  0x24 at 0xc9664
+  0x0 at 0xc967c
+  0xc96c4 at 0xc9680
+  0x0 at 0xc9688
+  0xc96c4 at 0xc968c
+  0x9 at 0xc96b0
+  0x54 at 0xc96b8
+  0x0 at 0xc96bc
+  0x200a0 at 0xc96c0
+  0x0 at 0xc96cc
+  0xc9744 at 0xc96d0
+  0x1 at 0xc96d8
+  0x1 at 0xc9704
+  0x196d0 at 0xc9708
+  0x0 at 0xc9718
+  0xc9744 at 0xc971c
+  0x9 at 0xc9730
+  0x60 at 0xc9738
+  0x0 at 0xc973c
+  0x200a0 at 0xc9740
+  0xc at 0xc978c
+  0x196d0 at 0xc9790
+  0x0 at 0xc97a0
+  0xc9844 at 0xc97a4
+  0x0 at 0xc97ac
+  0x48da8 at 0xc97b8
+  0x19538 at 0xc97c4
+  0x3 at 0xc97cc
+  0x3 at 0xc97d0
+  0xc at 0xc97e0
+  0x3 at 0xc97e4
+  0x0 at 0xc97f8
+  0x48da8 at 0xc9804
+  0x19808 at 0xc9814
+  0x9 at 0xc9830
+  0x6c at 0xc9838
+  0x0 at 0xc983c
+  0x200a0 at 0xc9840
+  0x0 at 0xc9844
+  0xc98e4 at 0xc985c
+  0xff at 0xc9878
+  0xc98ac at 0xc987c
+  0x0 at 0xc98a0
+  0xc98d4 at 0xc98a8
+  0x1 at 0xc98cc
+  0x1 at 0xc98d8
+  0xc984c at 0xc98e0
+  0x10 at 0xc98e4
+instructions
+  0xc9658 0dc0a0e1 mov ip, sp
+  0xc965c 10d82de9 push {r4, fp, ip, lr, pc}
+  0xc9660 04b04ce2 sub fp, ip, #4
+  0xc9664 24d04de2 sub sp, sp, #0x24
+  0xc9668 14000be5 str r0, [fp, #-0x14]
+  0xc966c 18100be5 str r1, [fp, #-0x18]
+  0xc9670 1c200be5 str r2, [fp, #-0x1c]
+  0xc9674 70329fe5 ldr r3, [pc, #0x270]
+  0xc9678 003093e5 ldr r3, [r3]
+  0xc967c 000053e3 cmp r3, #0
+  0xc9680 0f00000a beq #0xc96c4
+  0xc9684 14301be5 ldr r3, [fp, #-0x14]
+  0xc9688 000053e3 cmp r3, #0
+  0xc968c 0c00001a bne #0xc96c4
+  0xc9690 58329fe5 ldr r3, [pc, #0x258]
+  0xc9694 00308de5 str r3, [sp]
+  0xc9698 4c329fe5 ldr r3, [pc, #0x24c]
+  0xc969c 003093e5 ldr r3, [r3]
+  0xc96a0 04308de5 str r3, [sp, #4]
+  0xc96a4 48329fe5 ldr r3, [pc, #0x248]
+  0xc96a8 003093e5 ldr r3, [r3]
+  0xc96ac 08308de5 str r3, [sp, #8]
+  0xc96b0 0900a0e3 mov r0, #9
+  0xc96b4 3c129fe5 ldr r1, [pc, #0x23c]
+  0xc96b8 5420a0e3 mov r2, #0x54
+  0xc96bc 0030a0e3 mov r3, #0
+  0xc96c0 765afdeb bl #0x200a0
+  0xc96c4 28329fe5 ldr r3, [pc, #0x228]
+  0xc96c8 003093e5 ldr r3, [r3]
+  0xc96cc 000053e3 cmp r3, #0
+  0xc96d0 1b00001a bne #0xc9744
+  0xc96d4 18229fe5 ldr r2, [pc, #0x218]
+  0xc96d8 0130a0e3 mov r3, #1
+  0xc96dc 003082e5 str r3, [r2]
+  0xc96e0 0c329fe5 ldr r3, [pc, #0x20c]
+  0xc96e4 002093e5 ldr r2, [r3]
+  0xc96e8 0230a0e1 mov r3, r2
+  0xc96ec 8330a0e1 lsl r3, r3, #1
+  0xc96f0 023083e0 add r3, r3, r2
+  0xc96f4 0331a0e1 lsl r3, r3, #2
+  0xc96f8 28300be5 str r3, [fp, #-0x28]
+  0xc96fc e8419fe5 ldr r4, [pc, #0x1e8]
+  0xc9700 28001be5 ldr r0, [fp, #-0x28]
+  0xc9704 0110a0e3 mov r1, #1
+  0xc9708 f03ffdeb bl #0x196d0
+  0xc970c 0030a0e1 mov r3, r0
+  0xc9710 003084e5 str r3, [r4]
+  0xc9714 003094e5 ldr r3, [r4]
+  0xc9718 000053e3 cmp r3, #0
+  0xc971c 0800001a bne #0xc9744
+  0xc9720 d4319fe5 ldr r3, [pc, #0x1d4]
+  0xc9724 00308de5 str r3, [sp]
+  0xc9728 28301be5 ldr r3, [fp, #-0x28]
+  0xc972c 04308de5 str r3, [sp, #4]
+  0xc9730 0900a0e3 mov r0, #9
+  0xc9734 bc119fe5 ldr r1, [pc, #0x1bc]
+  0xc9738 6020a0e3 mov r2, #0x60
+  0xc973c 0030a0e3 mov r3, #0
+  0xc9740 565afdeb bl #0x200a0
+  0xc9744 14201be5 ldr r2, [fp, #-0x14]
+  0xc9748 0230a0e1 mov r3, r2
+  0xc974c 8330a0e1 lsl r3, r3, #1
+  0xc9750 023083e0 add r3, r3, r2
+  0xc9754 0321a0e1 lsl r2, r3, #2
+  0xc9758 8c319fe5 ldr r3, [pc, #0x18c]
+  0xc975c 003093e5 ldr r3, [r3]
+  0xc9760 033082e0 add r3, r2, r3
+  0xc9764 20300be5 str r3, [fp, #-0x20]
+  0xc9768 20201be5 ldr r2, [fp, #-0x20]
+  0xc976c 18301be5 ldr r3, [fp, #-0x18]
+  0xc9770 003082e5 str r3, [r2]
+  0xc9774 20201be5 ldr r2, [fp, #-0x20]
+  0xc9778 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc977c 043082e5 str r3, [r2, #4]
+  0xc9780 20401be5 ldr r4, [fp, #-0x20]
+  0xc9784 20301be5 ldr r3, [fp, #-0x20]
+  0xc9788 040093e5 ldr r0, [r3, #4]
+  0xc978c 0c10a0e3 mov r1, #0xc
+  0xc9790 ce3ffdeb bl #0x196d0
+  0xc9794 0030a0e1 mov r3, r0
+  0xc9798 083084e5 str r3, [r4, #8]
+  0xc979c 083094e5 ldr r3, [r4, #8]
+  0xc97a0 000053e3 cmp r3, #0
+  0xc97a4 2600001a bne #0xc9844
+  0xc97a8 14001be5 ldr r0, [fp, #-0x14]
+  0xc97ac 0010a0e3 mov r1, #0
+  0xc97b0 48219fe5 ldr r2, [pc, #0x148]
+  0xc97b4 48319fe5 ldr r3, [pc, #0x148]
+  0xc97b8 7afdfdeb bl #0x48da8
+  0xc97bc 0030a0e1 mov r3, r0
+  0xc97c0 0300a0e1 mov r0, r3
+  0xc97c4 5b3ffdeb bl #0x19538
+  0xc97c8 0030a0e1 mov r3, r0
+  0xc97cc 033083e2 add r3, r3, #3
+  0xc97d0 033083e2 add r3, r3, #3
+  0xc97d4 2331a0e1 lsr r3, r3, #2
+  0xc97d8 0331a0e1 lsl r3, r3, #2
+  0xc97dc 0dd063e0 rsb sp, r3, sp
+  0xc97e0 0c308de2 add r3, sp, #0xc
+  0xc97e4 033083e2 add r3, r3, #3
+  0xc97e8 2331a0e1 lsr r3, r3, #2
+  0xc97ec 0331a0e1 lsl r3, r3, #2
+  0xc97f0 28300be5 str r3, [fp, #-0x28]
+  0xc97f4 14001be5 ldr r0, [fp, #-0x14]
+  0xc97f8 0010a0e3 mov r1, #0
+  0xc97fc fc209fe5 ldr r2, [pc, #0xfc]
+  0xc9800 fc309fe5 ldr r3, [pc, #0xfc]
+  0xc9804 67fdfdeb bl #0x48da8
+  0xc9808 0030a0e1 mov r3, r0
+  0xc980c 28001be5 ldr r0, [fp, #-0x28]
+  0xc9810 0310a0e1 mov r1, r3
+  0xc9814 fb3ffdeb bl #0x19808
+  0xc9818 0020a0e1 mov r2, r0
+  0xc981c e4309fe5 ldr r3, [pc, #0xe4]
+  0xc9820 00308de5 str r3, [sp]
+  0xc9824 04208de5 str r2, [sp, #4]
+  0xc9828 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc982c 08308de5 str r3, [sp, #8]
+  0xc9830 0900a0e3 mov r0, #9
+  0xc9834 bc109fe5 ldr r1, [pc, #0xbc]
+  0xc9838 6c20a0e3 mov r2, #0x6c
+  0xc983c 0030a0e3 mov r3, #0
+  0xc9840 165afdeb bl #0x200a0
+  0xc9844 0030a0e3 mov r3, #0
+  0xc9848 24300be5 str r3, [fp, #-0x24]
+  0xc984c 20301be5 ldr r3, [fp, #-0x20]
+  0xc9850 042093e5 ldr r2, [r3, #4]
+  0xc9854 24301be5 ldr r3, [fp, #-0x24]
+  0xc9858 030052e1 cmp r2, r3
+  0xc985c 200000da ble #0xc98e4
+  0xc9860 20101be5 ldr r1, [fp, #-0x20]
+  0xc9864 24301be5 ldr r3, [fp, #-0x24]
+  0xc9868 0322a0e1 lsl r2, r3, #4
+  0xc986c 003091e5 ldr r3, [r1]
+  0xc9870 033082e0 add r3, r2, r3
+  0xc9874 0230d3e5 ldrb r3, [r3, #2]
+  0xc9878 ff0053e3 cmp r3, #0xff
+  0xc987c 0a00001a bne #0xc98ac
+  0xc9880 20101be5 ldr r1, [fp, #-0x20]
+  0xc9884 24201be5 ldr r2, [fp, #-0x24]
+  0xc9888 0230a0e1 mov r3, r2
+  0xc988c 8330a0e1 lsl r3, r3, #1
+  0xc9890 023083e0 add r3, r3, r2
+  0xc9894 0321a0e1 lsl r2, r3, #2
+  0xc9898 083091e5 ldr r3, [r1, #8]
+  0xc989c 032082e0 add r2, r2, r3
+  0xc98a0 0030a0e3 mov r3, #0
+  0xc98a4 0030c2e5 strb r3, [r2]
+  0xc98a8 090000ea b #0xc98d4
+  0xc98ac 20101be5 ldr r1, [fp, #-0x20]
+  0xc98b0 24201be5 ldr r2, [fp, #-0x24]
+  0xc98b4 0230a0e1 mov r3, r2
+  0xc98b8 8330a0e1 lsl r3, r3, #1
+  0xc98bc 023083e0 add r3, r3, r2
+  0xc98c0 0321a0e1 lsl r2, r3, #2
+  0xc98c4 083091e5 ldr r3, [r1, #8]
+  0xc98c8 032082e0 add r2, r2, r3
+  0xc98cc 0130a0e3 mov r3, #1
+  0xc98d0 0030c2e5 strb r3, [r2]
+  0xc98d4 24301be5 ldr r3, [fp, #-0x24]
+  0xc98d8 013083e2 add r3, r3, #1
+  0xc98dc 24300be5 str r3, [fp, #-0x24]
+  0xc98e0 d9ffffea b #0xc984c
+  0xc98e4 10d04be2 sub sp, fp, #0x10
+  0xc98e8 10a89de8 ldm sp, {r4, fp, sp, pc}
+  0xc98ec 3c732900 eoreq r7, sb, ip, lsr r3 (not reached by known edges)
+  0xc98f0 4c041200 andseq r0, r2, ip, asr #8 (not reached by known edges)
+  0xc98f4 40732900 eoreq r7, sb, r0, asr #6 (not reached by known edges)
+  0xc98f8 7c041200 andseq r0, r2, ip, ror r4 (not reached by known edges)
+  0xc98fc 98041200 mulseq r2, r8, r4 (not reached by known edges)
+  0xc9900 d0041200 ldrsbeq r0, [r2], -r0 (not reached by known edges)
+  0xc9904 d8041200 ldrsbeq r0, [r2], -r8 (not reached by known edges)
+  0xc9908 dc041200 ldrsbeq r0, [r2], -ip (not reached by known edges)
+
+routine (unnamed)  0xc9b7c-0xc9d4c  size 0x1d0 (464 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xc9c00 predicated effects are merged with the unexecuted path
+  warning: unresolved indirect transfers: access, call and return lists cover known edges only
+
+accesses (45)
+  0xc9b80 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xc9b80 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xc9b80 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xc9b80 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xc9b8c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xc9b94 store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xc9b98 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9b9c load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9bac store w4 str base=r11 disp -0x18 => sp -0x1c value ret(0xcb198)
+  0xc9bb0 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9bb4 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9bc4 store w4 str base=r11 disp -0x1c => sp -0x20 value ret(0xcb2c0)
+  0xc9bc8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9bcc load w1 ldrb base=r3 disp +0x0 => ret(0xcb2c0) +0x0
+  0xc9bd8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9bdc load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9be0 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9be4 load w1 ldrb base=r3 disp +0x6 => [sp-28] +0x6
+  0xc9be8 load w1 ldrb base=r2 disp +0x4 => [sp-28] +0x4
+  0xc9bf0 store w1 strb base=r0 disp +0x1 => ret(0xcb2c0) +0x1 value ?
+  0xc9bf4 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9bf8 load w1 ldrb base=r3 disp +0x0 => [sp-28] +0x0
+  0xc9c00 load w4 ldrls base=pc disp +0x0 => ? (unknown effective address) when [[sp-28]]:1 <= 0x4 (unsigned, 32-bit)
+  0xc9cbc load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9cc8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9cd0 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9cd4 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9ce4 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xcb894)
+  0xc9ce8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9cec load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9cf0 load w1 ldrb base=r3 disp +0x3 => [sp-32] +0x3
+  0xc9cf4 store w1 strb base=r2 disp +0x4 => [sp-32] +0x4 value ([[sp-32]+3]:1 & 0xff)
+  0xc9cf8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9d00 store w1 strb base=r2 disp +0x5 => [sp-32] +0x5 value 0x5
+  0xc9d04 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9d0c store w1 strb base=r2 disp +0x3 => [sp-32] +0x3 value 0x0
+  0xc9d10 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9d1c load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9d20 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9d24 load w1 ldrb base=r3 disp +0x7 => [sp-28] +0x7
+  0xc9d28 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9d40 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xcbab0)
+  0xc9d48 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xc9d48 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xc9d48 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (4)
+  0xc9ba4 bl (unknown callee) [0xcb198]
+      args: r0=r0, r1=(r1 & 0xff), r2=r2, r3=(r1 & 0xff)
+  0xc9bbc bl (unknown callee) [0xcb2c0]
+      args: r0=[sp-20], r1=[sp-21]:1, r2=?, r3=[sp-21]:1
+  0xc9cdc bl (unknown callee) [0xcb894]
+      args: r0=[sp-20], r1=[sp-28], r2=[sp-32]+2, r3=[sp-32]+2
+  0xc9d38 bl (unknown callee) [0xcbab0]
+      args: r0=[sp-20], r1=[sp-21]:1, r2=[[sp-28]+7]:1, r3=0x1
+
+blocks (71)
+  B0 0xc9b7c-0xc9b7c preds: entry
+      normal -> B1
+  B1 0xc9b80-0xc9b80 preds: B0
+      normal -> B2
+  B2 0xc9b84-0xc9b84 preds: B1
+      normal -> B3
+  B3 0xc9b88-0xc9b88 preds: B2
+      normal -> B4
+  B4 0xc9b8c-0xc9b8c preds: B3
+      normal -> B5
+  B5 0xc9b90-0xc9b90 preds: B4
+      normal -> B6
+  B6 0xc9b94-0xc9b94 preds: B5
+      normal -> B7
+  B7 0xc9b98-0xc9b98 preds: B6
+      normal -> B8
+  B8 0xc9b9c-0xc9b9c preds: B7
+      normal -> B9
+  B9 0xc9ba0-0xc9ba0 preds: B8
+      normal -> B10
+  B10 0xc9ba4-0xc9ba4 preds: B9
+      call -> 0xcb198
+  B11 0xc9ba8-0xc9ba8 preds: B10
+      normal -> B12
+  B12 0xc9bac-0xc9bac preds: B11
+      normal -> B13
+  B13 0xc9bb0-0xc9bb0 preds: B12
+      normal -> B14
+  B14 0xc9bb4-0xc9bb4 preds: B13
+      normal -> B15
+  B15 0xc9bb8-0xc9bb8 preds: B14
+      normal -> B16
+  B16 0xc9bbc-0xc9bbc preds: B15
+      call -> 0xcb2c0
+  B17 0xc9bc0-0xc9bc0 preds: B16
+      normal -> B18
+  B18 0xc9bc4-0xc9bc4 preds: B17
+      normal -> B19
+  B19 0xc9bc8-0xc9bc8 preds: B18
+      normal -> B20
+  B20 0xc9bcc-0xc9bcc preds: B19
+      normal -> B21
+  B21 0xc9bd0-0xc9bd0 preds: B20
+      normal -> B22
+  B22 0xc9bd4-0xc9bd4 preds: B21
+      taken when [ret(0xcb2c0)]:1 == 0x0 -> 0xc9d44
+      falls through when [ret(0xcb2c0)]:1 != 0x0 -> B23
+  B23 0xc9bd8-0xc9bd8 preds: B22
+      normal -> B24
+  B24 0xc9bdc-0xc9bdc preds: B23
+      normal -> B25
+  B25 0xc9be0-0xc9be0 preds: B24
+      normal -> B26
+  B26 0xc9be4-0xc9be4 preds: B25
+      normal -> B27
+  B27 0xc9be8-0xc9be8 preds: B26
+      normal -> B28
+  B28 0xc9bec-0xc9bec preds: B27
+      normal -> B29
+  B29 0xc9bf0-0xc9bf0 preds: B28
+      normal -> B30
+  B30 0xc9bf4-0xc9bf4 preds: B29
+      normal -> B31
+  B31 0xc9bf8-0xc9bf8 preds: B30
+      normal -> B32
+  B32 0xc9bfc-0xc9bfc preds: B31
+      normal -> B33
+  B33 0xc9c00-0xc9c00 preds: B32
+      taken when [[sp-28]]:1 <= 0x4 (unsigned, 32-bit) -> conditional
+      falls through when [[sp-28]]:1 > 0x4 (unsigned, 32-bit) -> B34
+  B34 0xc9c04-0xc9c04 preds: B33
+      jump -> 0xc9cbc
+  B80 0xc9cbc-0xc9cbc preds: B34
+      normal -> B81
+  B81 0xc9cc0-0xc9cc0 preds: B80
+      normal -> B82
+  B82 0xc9cc4-0xc9cc4 preds: B81
+      taken when [sp-36] != 0x0 -> 0xc9ce8
+      falls through when [sp-36] == 0x0 -> B83
+  B83 0xc9cc8-0xc9cc8 preds: B82
+      normal -> B84
+  B84 0xc9ccc-0xc9ccc preds: B83
+      normal -> B85
+  B85 0xc9cd0-0xc9cd0 preds: B84
+      normal -> B86
+  B86 0xc9cd4-0xc9cd4 preds: B85
+      normal -> B87
+  B87 0xc9cd8-0xc9cd8 preds: B86
+      normal -> B88
+  B88 0xc9cdc-0xc9cdc preds: B87
+      call -> 0xcb894
+  B89 0xc9ce0-0xc9ce0 preds: B88
+      normal -> B90
+  B90 0xc9ce4-0xc9ce4 preds: B89
+      normal -> B91
+  B91 0xc9ce8-0xc9ce8 preds: B82, B90
+      normal -> B92
+  B92 0xc9cec-0xc9cec preds: B91
+      normal -> B93
+  B93 0xc9cf0-0xc9cf0 preds: B92
+      normal -> B94
+  B94 0xc9cf4-0xc9cf4 preds: B93
+      normal -> B95
+  B95 0xc9cf8-0xc9cf8 preds: B94
+      normal -> B96
+  B96 0xc9cfc-0xc9cfc preds: B95
+      normal -> B97
+  B97 0xc9d00-0xc9d00 preds: B96
+      normal -> B98
+  B98 0xc9d04-0xc9d04 preds: B97
+      normal -> B99
+  B99 0xc9d08-0xc9d08 preds: B98
+      normal -> B100
+  B100 0xc9d0c-0xc9d0c preds: B99
+      normal -> B101
+  B101 0xc9d10-0xc9d10 preds: B100
+      normal -> B102
+  B102 0xc9d14-0xc9d14 preds: B101
+      normal -> B103
+  B103 0xc9d18-0xc9d18 preds: B102
+      taken when [sp-36] != 0x0 -> 0xc9d44
+      falls through when [sp-36] == 0x0 -> B104
+  B104 0xc9d1c-0xc9d1c preds: B103
+      normal -> B105
+  B105 0xc9d20-0xc9d20 preds: B104
+      normal -> B106
+  B106 0xc9d24-0xc9d24 preds: B105
+      normal -> B107
+  B107 0xc9d28-0xc9d28 preds: B106
+      normal -> B108
+  B108 0xc9d2c-0xc9d2c preds: B107
+      normal -> B109
+  B109 0xc9d30-0xc9d30 preds: B108
+      normal -> B110
+  B110 0xc9d34-0xc9d34 preds: B109
+      normal -> B111
+  B111 0xc9d38-0xc9d38 preds: B110
+      call -> 0xcbab0
+  B112 0xc9d3c-0xc9d3c preds: B111
+      normal -> B113
+  B113 0xc9d40-0xc9d40 preds: B112
+      normal -> B114
+  B114 0xc9d44-0xc9d44 preds: B22, B103, B113
+      normal -> B115
+  B115 0xc9d48-0xc9d48 preds: B114
+      return
+
+returns (1)
+  0xc9d48: r0 = ?; reached from B114
+
+constants
+  0xc9cfc r3 = 0x5
+  0xc9d08 r3 = 0x0
+  0xc9d34 r3 = 0x1
+immediates
+  0x4 at 0xc9b84
+  0x14 at 0xc9b88
+  0xcb198 at 0xc9ba4
+  0xcb2c0 at 0xc9bbc
+  0x0 at 0xc9bd0
+  0xc9d44 at 0xc9bd4
+  0x4 at 0xc9bfc
+  0xc9cbc at 0xc9c04
+  0x0 at 0xc9cc0
+  0xc9ce8 at 0xc9cc4
+  0x2 at 0xc9ccc
+  0xcb894 at 0xc9cdc
+  0x5 at 0xc9cfc
+  0x0 at 0xc9d08
+  0x0 at 0xc9d14
+  0xc9d44 at 0xc9d18
+  0x1 at 0xc9d34
+  0xcbab0 at 0xc9d38
+  0xc at 0xc9d44
+instructions
+  0xc9b7c 0dc0a0e1 mov ip, sp
+  0xc9b80 00d82de9 push {fp, ip, lr, pc}
+  0xc9b84 04b04ce2 sub fp, ip, #4
+  0xc9b88 14d04de2 sub sp, sp, #0x14
+  0xc9b8c 10000be5 str r0, [fp, #-0x10]
+  0xc9b90 0130a0e1 mov r3, r1
+  0xc9b94 11304be5 strb r3, [fp, #-0x11]
+  0xc9b98 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9b9c 10001be5 ldr r0, [fp, #-0x10]
+  0xc9ba0 0310a0e1 mov r1, r3
+  0xc9ba4 7b0500eb bl #0xcb198
+  0xc9ba8 0030a0e1 mov r3, r0
+  0xc9bac 18300be5 str r3, [fp, #-0x18]
+  0xc9bb0 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9bb4 10001be5 ldr r0, [fp, #-0x10]
+  0xc9bb8 0310a0e1 mov r1, r3
+  0xc9bbc bf0500eb bl #0xcb2c0
+  0xc9bc0 0030a0e1 mov r3, r0
+  0xc9bc4 1c300be5 str r3, [fp, #-0x1c]
+  0xc9bc8 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc9bcc 0030d3e5 ldrb r3, [r3]
+  0xc9bd0 000053e3 cmp r3, #0
+  0xc9bd4 5a00000a beq #0xc9d44
+  0xc9bd8 1c001be5 ldr r0, [fp, #-0x1c]
+  0xc9bdc 18301be5 ldr r3, [fp, #-0x18]
+  0xc9be0 18201be5 ldr r2, [fp, #-0x18]
+  0xc9be4 0610d3e5 ldrb r1, [r3, #6]
+  0xc9be8 0430d2e5 ldrb r3, [r2, #4]
+  0xc9bec 033081e1 orr r3, r1, r3
+  0xc9bf0 0130c0e5 strb r3, [r0, #1]
+  0xc9bf4 18301be5 ldr r3, [fp, #-0x18]
+  0xc9bf8 0030d3e5 ldrb r3, [r3]
+  0xc9bfc 040053e3 cmp r3, #4
+  0xc9c00 03f19f97 ldrls pc, [pc, r3, lsl #2]
+  0xc9c04 2c0000ea b #0xc9cbc
+  0xc9c08 1c9c0c00 andeq sb, ip, ip, lsl ip (not reached by known edges)
+  0xc9c0c 609c0c00 andeq sb, ip, r0, ror #24 (not reached by known edges)
+  0xc9c10 789c0c00 andeq sb, ip, r8, ror ip (not reached by known edges)
+  0xc9c14 909c0c00 muleq ip, r0, ip (not reached by known edges)
+  0xc9c18 a89c0c00 andeq sb, ip, r8, lsr #25 (not reached by known edges)
+  0xc9c1c 18301be5 ldr r3, [fp, #-0x18] (not reached by known edges)
+  0xc9c20 0130d3e5 ldrb r3, [r3, #1] (not reached by known edges)
+  0xc9c24 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9c28 0310a0e1 mov r1, r3 (not reached by known edges)
+  0xc9c2c 11c4ffeb bl #0xbac78 (not reached by known edges)
+  0xc9c30 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9c34 ff2003e2 and r2, r3, #0xff (not reached by known edges)
+  0xc9c38 18301be5 ldr r3, [fp, #-0x18] (not reached by known edges)
+  0xc9c3c 0210d3e5 ldrb r1, [r3, #2] (not reached by known edges)
+  0xc9c40 1c301be5 ldr r3, [fp, #-0x1c] (not reached by known edges)
+  0xc9c44 0130d3e5 ldrb r3, [r3, #1] (not reached by known edges)
+  0xc9c48 0200a0e1 mov r0, r2 (not reached by known edges)
+  0xc9c4c 0320a0e1 mov r2, r3 (not reached by known edges)
+  0xc9c50 ecc5ffeb bl #0xbb408 (not reached by known edges)
+  0xc9c54 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9c58 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9c5c 160000ea b #0xc9cbc (not reached by known edges)
+  0xc9c60 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9c64 18101be5 ldr r1, [fp, #-0x18] (not reached by known edges)
+  0xc9c68 2d0b00eb bl #0xcc924 (not reached by known edges)
+  0xc9c6c 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9c70 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9c74 100000ea b #0xc9cbc (not reached by known edges)
+  0xc9c78 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9c7c 18101be5 ldr r1, [fp, #-0x18] (not reached by known edges)
+  0xc9c80 b50f00eb bl #0xcdb5c (not reached by known edges)
+  0xc9c84 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9c88 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9c8c 0a0000ea b #0xc9cbc (not reached by known edges)
+  0xc9c90 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9c94 18101be5 ldr r1, [fp, #-0x18] (not reached by known edges)
+  0xc9c98 0ecbffeb bl #0xbc8d8 (not reached by known edges)
+  0xc9c9c 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9ca0 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9ca4 040000ea b #0xc9cbc (not reached by known edges)
+  0xc9ca8 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9cac 18101be5 ldr r1, [fp, #-0x18] (not reached by known edges)
+  0xc9cb0 631600eb bl #0xcf644 (not reached by known edges)
+  0xc9cb4 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9cb8 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9cbc 20301be5 ldr r3, [fp, #-0x20]
+  0xc9cc0 000053e3 cmp r3, #0
+  0xc9cc4 0700001a bne #0xc9ce8
+  0xc9cc8 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc9ccc 023083e2 add r3, r3, #2
+  0xc9cd0 10001be5 ldr r0, [fp, #-0x10]
+  0xc9cd4 18101be5 ldr r1, [fp, #-0x18]
+  0xc9cd8 0320a0e1 mov r2, r3
+  0xc9cdc ec0600eb bl #0xcb894
+  0xc9ce0 0030a0e1 mov r3, r0
+  0xc9ce4 20300be5 str r3, [fp, #-0x20]
+  0xc9ce8 1c201be5 ldr r2, [fp, #-0x1c]
+  0xc9cec 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc9cf0 0330d3e5 ldrb r3, [r3, #3]
+  0xc9cf4 0430c2e5 strb r3, [r2, #4]
+  0xc9cf8 1c201be5 ldr r2, [fp, #-0x1c]
+  0xc9cfc 0530a0e3 mov r3, #5
+  0xc9d00 0530c2e5 strb r3, [r2, #5]
+  0xc9d04 1c201be5 ldr r2, [fp, #-0x1c]
+  0xc9d08 0030a0e3 mov r3, #0
+  0xc9d0c 0330c2e5 strb r3, [r2, #3]
+  0xc9d10 20301be5 ldr r3, [fp, #-0x20]
+  0xc9d14 000053e3 cmp r3, #0
+  0xc9d18 0900001a bne #0xc9d44
+  0xc9d1c 11205be5 ldrb r2, [fp, #-0x11]
+  0xc9d20 18301be5 ldr r3, [fp, #-0x18]
+  0xc9d24 0730d3e5 ldrb r3, [r3, #7]
+  0xc9d28 10001be5 ldr r0, [fp, #-0x10]
+  0xc9d2c 0210a0e1 mov r1, r2
+  0xc9d30 0320a0e1 mov r2, r3
+  0xc9d34 0130a0e3 mov r3, #1
+  0xc9d38 5c0700eb bl #0xcbab0
+  0xc9d3c 0030a0e1 mov r3, r0
+  0xc9d40 20300be5 str r3, [fp, #-0x20]
+  0xc9d44 0cd04be2 sub sp, fp, #0xc
+  0xc9d48 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xc9e74-0xc9efc  size 0x88 (136 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (21)
+  0xc9e78 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xc9e78 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xc9e78 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xc9e78 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xc9e84 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xc9e88 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9e9c load w4 ldr base=pc disp +0x54 => abs 0xc9ef8
+  0xc9ea0 load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc9ea8 store w4 str base=r11 disp -0x14 => sp -0x18 value ?
+  0xc9eac load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9eb8 store w1 strb base=r11 disp -0x15 => sp -0x19 value 0x0
+  0xc9ebc load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0xc9ec0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xc9ec4 load w4 ldr base=r2 disp +0x4 => [sp-24] +0x4
+  0xc9ed0 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0xc9ed4 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9ee0 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0xc9ee8 store w1 strb base=r11 disp -0x15 => sp -0x19 value ([sp-25]:1+1 & 0xff)
+  0xc9ef4 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xc9ef4 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xc9ef4 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (2)
+  0xc9eb0 bl (unknown callee) [0xcc564]
+      args: r0=r0, r1=r1, r2=?, r3=?
+  0xc9edc bl (unknown callee) [0xc9b7c]
+      args: r0=[sp-20], r1=?, r2=[[sp-24]+4], r3=?
+
+blocks (33)
+  B0 0xc9e74-0xc9e74 preds: entry
+      normal -> B1
+  B1 0xc9e78-0xc9e78 preds: B0
+      normal -> B2
+  B2 0xc9e7c-0xc9e7c preds: B1
+      normal -> B3
+  B3 0xc9e80-0xc9e80 preds: B2
+      normal -> B4
+  B4 0xc9e84-0xc9e84 preds: B3
+      normal -> B5
+  B5 0xc9e88-0xc9e88 preds: B4
+      normal -> B6
+  B6 0xc9e8c-0xc9e8c preds: B5
+      normal -> B7
+  B7 0xc9e90-0xc9e90 preds: B6
+      normal -> B8
+  B8 0xc9e94-0xc9e94 preds: B7
+      normal -> B9
+  B9 0xc9e98-0xc9e98 preds: B8
+      normal -> B10
+  B10 0xc9e9c-0xc9e9c preds: B9
+      normal -> B11
+  B11 0xc9ea0-0xc9ea0 preds: B10
+      normal -> B12
+  B12 0xc9ea4-0xc9ea4 preds: B11
+      normal -> B13
+  B13 0xc9ea8-0xc9ea8 preds: B12
+      normal -> B14
+  B14 0xc9eac-0xc9eac preds: B13
+      normal -> B15
+  B15 0xc9eb0-0xc9eb0 preds: B14
+      call -> 0xcc564
+  B16 0xc9eb4-0xc9eb4 preds: B15
+      normal -> B17
+  B17 0xc9eb8-0xc9eb8 preds: B16
+      normal -> B18
+  B18 0xc9ebc-0xc9ebc preds: B17, B30
+      normal -> B19
+  B19 0xc9ec0-0xc9ec0 preds: B18
+      normal -> B20
+  B20 0xc9ec4-0xc9ec4 preds: B19
+      normal -> B21
+  B21 0xc9ec8-0xc9ec8 preds: B20
+      normal -> B22
+  B22 0xc9ecc-0xc9ecc preds: B21
+      taken when ge flags condition (operands unknown) -> 0xc9ef0
+      falls through when not (ge flags condition (operands unknown)) -> B23
+  B23 0xc9ed0-0xc9ed0 preds: B22
+      normal -> B24
+  B24 0xc9ed4-0xc9ed4 preds: B23
+      normal -> B25
+  B25 0xc9ed8-0xc9ed8 preds: B24
+      normal -> B26
+  B26 0xc9edc-0xc9edc preds: B25
+      call -> 0xc9b7c
+  B27 0xc9ee0-0xc9ee0 preds: B26
+      normal -> B28
+  B28 0xc9ee4-0xc9ee4 preds: B27
+      normal -> B29
+  B29 0xc9ee8-0xc9ee8 preds: B28
+      normal -> B30
+  B30 0xc9eec-0xc9eec preds: B29
+      jump -> 0xc9ebc
+  B31 0xc9ef0-0xc9ef0 preds: B22
+      normal -> B32
+  B32 0xc9ef4-0xc9ef4 preds: B31
+      return
+
+returns (1)
+  0xc9ef4: r0 = ?; reached from B31
+
+constants
+  0xc9e9c r3 = 0x29733c
+  0xc9eb4 r3 = 0x0
+immediates
+  0x4 at 0xc9e7c
+  0xc at 0xc9e80
+  0xcc564 at 0xc9eb0
+  0x0 at 0xc9eb4
+  0xc9ef0 at 0xc9ecc
+  0xc9b7c at 0xc9edc
+  0x1 at 0xc9ee4
+  0xc9ebc at 0xc9eec
+  0xc at 0xc9ef0
+instructions
+  0xc9e74 0dc0a0e1 mov ip, sp
+  0xc9e78 00d82de9 push {fp, ip, lr, pc}
+  0xc9e7c 04b04ce2 sub fp, ip, #4
+  0xc9e80 0cd04de2 sub sp, sp, #0xc
+  0xc9e84 10000be5 str r0, [fp, #-0x10]
+  0xc9e88 10201be5 ldr r2, [fp, #-0x10]
+  0xc9e8c 0230a0e1 mov r3, r2
+  0xc9e90 8330a0e1 lsl r3, r3, #1
+  0xc9e94 023083e0 add r3, r3, r2
+  0xc9e98 0321a0e1 lsl r2, r3, #2
+  0xc9e9c 54309fe5 ldr r3, [pc, #0x54]
+  0xc9ea0 003093e5 ldr r3, [r3]
+  0xc9ea4 033082e0 add r3, r2, r3
+  0xc9ea8 14300be5 str r3, [fp, #-0x14]
+  0xc9eac 10001be5 ldr r0, [fp, #-0x10]
+  0xc9eb0 ab0900eb bl #0xcc564
+  0xc9eb4 0030a0e3 mov r3, #0
+  0xc9eb8 15304be5 strb r3, [fp, #-0x15]
+  0xc9ebc 15305be5 ldrb r3, [fp, #-0x15]
+  0xc9ec0 14201be5 ldr r2, [fp, #-0x14]
+  0xc9ec4 042092e5 ldr r2, [r2, #4]
+  0xc9ec8 020053e1 cmp r3, r2
+  0xc9ecc 070000aa bge #0xc9ef0
+  0xc9ed0 15305be5 ldrb r3, [fp, #-0x15]
+  0xc9ed4 10001be5 ldr r0, [fp, #-0x10]
+  0xc9ed8 0310a0e1 mov r1, r3
+  0xc9edc 26ffffeb bl #0xc9b7c
+  0xc9ee0 15305be5 ldrb r3, [fp, #-0x15]
+  0xc9ee4 013083e2 add r3, r3, #1
+  0xc9ee8 15304be5 strb r3, [fp, #-0x15]
+  0xc9eec f2ffffea b #0xc9ebc
+  0xc9ef0 0cd04be2 sub sp, fp, #0xc
+  0xc9ef4 00a89de8 ldm sp, {fp, sp, pc}
+  0xc9ef8 3c732900 eoreq r7, sb, ip, lsr r3 (not reached by known edges)
+
+routine (unnamed)  0xc9d4c-0xc9e74  size 0x128 (296 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xc9ddc predicated effects are merged with the unexecuted path
+  warning: unresolved indirect transfers: access, call and return lists cover known edges only
+
+accesses (32)
+  0xc9d50 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xc9d50 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xc9d50 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xc9d50 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xc9d5c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xc9d64 store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xc9d6c store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xc9d70 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9d74 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9d84 store w4 str base=r11 disp -0x18 => sp -0x1c value ret(0xcb198)
+  0xc9d88 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9d8c load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9d9c store w4 str base=r11 disp -0x1c => sp -0x20 value ret(0xcb2c0)
+  0xc9da0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9da4 load w1 ldrb base=r3 disp +0x0 => ret(0xcb2c0) +0x0
+  0xc9db0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9db4 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9db8 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9dbc load w1 ldrb base=r3 disp +0x6 => [sp-28] +0x6
+  0xc9dc0 load w1 ldrb base=r2 disp +0x4 => [sp-28] +0x4
+  0xc9dc8 store w1 strb base=r0 disp +0x1 => ret(0xcb2c0) +0x1 value ?
+  0xc9dcc load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9dd0 load w1 ldrb base=r3 disp +0x0 => [sp-28] +0x0
+  0xc9ddc load w4 ldrls base=pc disp +0x0 => ? (unknown effective address) when [[sp-28]]:1-1 <= 0x3 (unsigned, 32-bit)
+  0xc9e34 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xc9e40 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9e48 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9e4c load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9e5c store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xcb894)
+  0xc9e64 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xc9e64 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xc9e64 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xc9d7c bl (unknown callee) [0xcb198]
+      args: r0=r0, r1=(r1 & 0xff), r2=r2, r3=(r1 & 0xff)
+  0xc9d94 bl (unknown callee) [0xcb2c0]
+      args: r0=[sp-20], r1=[sp-21]:1, r2=?, r3=[sp-21]:1
+  0xc9e54 bl (unknown callee) [0xcb894]
+      args: r0=[sp-20], r1=[sp-28], r2=[sp-32]+2, r3=[sp-32]+2
+
+blocks (51)
+  B0 0xc9d4c-0xc9d4c preds: entry
+      normal -> B1
+  B1 0xc9d50-0xc9d50 preds: B0
+      normal -> B2
+  B2 0xc9d54-0xc9d54 preds: B1
+      normal -> B3
+  B3 0xc9d58-0xc9d58 preds: B2
+      normal -> B4
+  B4 0xc9d5c-0xc9d5c preds: B3
+      normal -> B5
+  B5 0xc9d60-0xc9d60 preds: B4
+      normal -> B6
+  B6 0xc9d64-0xc9d64 preds: B5
+      normal -> B7
+  B7 0xc9d68-0xc9d68 preds: B6
+      normal -> B8
+  B8 0xc9d6c-0xc9d6c preds: B7
+      normal -> B9
+  B9 0xc9d70-0xc9d70 preds: B8
+      normal -> B10
+  B10 0xc9d74-0xc9d74 preds: B9
+      normal -> B11
+  B11 0xc9d78-0xc9d78 preds: B10
+      normal -> B12
+  B12 0xc9d7c-0xc9d7c preds: B11
+      call -> 0xcb198
+  B13 0xc9d80-0xc9d80 preds: B12
+      normal -> B14
+  B14 0xc9d84-0xc9d84 preds: B13
+      normal -> B15
+  B15 0xc9d88-0xc9d88 preds: B14
+      normal -> B16
+  B16 0xc9d8c-0xc9d8c preds: B15
+      normal -> B17
+  B17 0xc9d90-0xc9d90 preds: B16
+      normal -> B18
+  B18 0xc9d94-0xc9d94 preds: B17
+      call -> 0xcb2c0
+  B19 0xc9d98-0xc9d98 preds: B18
+      normal -> B20
+  B20 0xc9d9c-0xc9d9c preds: B19
+      normal -> B21
+  B21 0xc9da0-0xc9da0 preds: B20
+      normal -> B22
+  B22 0xc9da4-0xc9da4 preds: B21
+      normal -> B23
+  B23 0xc9da8-0xc9da8 preds: B22
+      normal -> B24
+  B24 0xc9dac-0xc9dac preds: B23
+      taken when [ret(0xcb2c0)]:1 == 0x0 -> 0xc9e60
+      falls through when [ret(0xcb2c0)]:1 != 0x0 -> B25
+  B25 0xc9db0-0xc9db0 preds: B24
+      normal -> B26
+  B26 0xc9db4-0xc9db4 preds: B25
+      normal -> B27
+  B27 0xc9db8-0xc9db8 preds: B26
+      normal -> B28
+  B28 0xc9dbc-0xc9dbc preds: B27
+      normal -> B29
+  B29 0xc9dc0-0xc9dc0 preds: B28
+      normal -> B30
+  B30 0xc9dc4-0xc9dc4 preds: B29
+      normal -> B31
+  B31 0xc9dc8-0xc9dc8 preds: B30
+      normal -> B32
+  B32 0xc9dcc-0xc9dcc preds: B31
+      normal -> B33
+  B33 0xc9dd0-0xc9dd0 preds: B32
+      normal -> B34
+  B34 0xc9dd4-0xc9dd4 preds: B33
+      normal -> B35
+  B35 0xc9dd8-0xc9dd8 preds: B34
+      normal -> B36
+  B36 0xc9ddc-0xc9ddc preds: B35
+      taken when [[sp-28]]:1-1 <= 0x3 (unsigned, 32-bit) -> conditional
+      falls through when [[sp-28]]:1-1 > 0x3 (unsigned, 32-bit) -> B37
+  B37 0xc9de0-0xc9de0 preds: B36
+      jump -> 0xc9e34
+  B58 0xc9e34-0xc9e34 preds: B37
+      normal -> B59
+  B59 0xc9e38-0xc9e38 preds: B58
+      normal -> B60
+  B60 0xc9e3c-0xc9e3c preds: B59
+      taken when [sp-36] != 0x0 -> 0xc9e60
+      falls through when [sp-36] == 0x0 -> B61
+  B61 0xc9e40-0xc9e40 preds: B60
+      normal -> B62
+  B62 0xc9e44-0xc9e44 preds: B61
+      normal -> B63
+  B63 0xc9e48-0xc9e48 preds: B62
+      normal -> B64
+  B64 0xc9e4c-0xc9e4c preds: B63
+      normal -> B65
+  B65 0xc9e50-0xc9e50 preds: B64
+      normal -> B66
+  B66 0xc9e54-0xc9e54 preds: B65
+      call -> 0xcb894
+  B67 0xc9e58-0xc9e58 preds: B66
+      normal -> B68
+  B68 0xc9e5c-0xc9e5c preds: B67
+      normal -> B69
+  B69 0xc9e60-0xc9e60 preds: B24, B60, B68
+      normal -> B70
+  B70 0xc9e64-0xc9e64 preds: B69
+      return
+
+returns (1)
+  0xc9e64: r0 = ?; reached from B69
+
+constants
+  0xc9d68 r3 = 0x0
+immediates
+  0x4 at 0xc9d54
+  0x1c at 0xc9d58
+  0x0 at 0xc9d68
+  0xcb198 at 0xc9d7c
+  0xcb2c0 at 0xc9d94
+  0x0 at 0xc9da8
+  0xc9e60 at 0xc9dac
+  0x1 at 0xc9dd4
+  0x3 at 0xc9dd8
+  0xc9e34 at 0xc9de0
+  0x0 at 0xc9e38
+  0xc9e60 at 0xc9e3c
+  0x2 at 0xc9e44
+  0xcb894 at 0xc9e54
+  0xc at 0xc9e60
+instructions
+  0xc9d4c 0dc0a0e1 mov ip, sp
+  0xc9d50 00d82de9 push {fp, ip, lr, pc}
+  0xc9d54 04b04ce2 sub fp, ip, #4
+  0xc9d58 1cd04de2 sub sp, sp, #0x1c
+  0xc9d5c 10000be5 str r0, [fp, #-0x10]
+  0xc9d60 0130a0e1 mov r3, r1
+  0xc9d64 11304be5 strb r3, [fp, #-0x11]
+  0xc9d68 0030a0e3 mov r3, #0
+  0xc9d6c 20300be5 str r3, [fp, #-0x20]
+  0xc9d70 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9d74 10001be5 ldr r0, [fp, #-0x10]
+  0xc9d78 0310a0e1 mov r1, r3
+  0xc9d7c 050500eb bl #0xcb198
+  0xc9d80 0030a0e1 mov r3, r0
+  0xc9d84 18300be5 str r3, [fp, #-0x18]
+  0xc9d88 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9d8c 10001be5 ldr r0, [fp, #-0x10]
+  0xc9d90 0310a0e1 mov r1, r3
+  0xc9d94 490500eb bl #0xcb2c0
+  0xc9d98 0030a0e1 mov r3, r0
+  0xc9d9c 1c300be5 str r3, [fp, #-0x1c]
+  0xc9da0 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc9da4 0030d3e5 ldrb r3, [r3]
+  0xc9da8 000053e3 cmp r3, #0
+  0xc9dac 2b00000a beq #0xc9e60
+  0xc9db0 1c001be5 ldr r0, [fp, #-0x1c]
+  0xc9db4 18301be5 ldr r3, [fp, #-0x18]
+  0xc9db8 18201be5 ldr r2, [fp, #-0x18]
+  0xc9dbc 0610d3e5 ldrb r1, [r3, #6]
+  0xc9dc0 0430d2e5 ldrb r3, [r2, #4]
+  0xc9dc4 033081e1 orr r3, r1, r3
+  0xc9dc8 0130c0e5 strb r3, [r0, #1]
+  0xc9dcc 18301be5 ldr r3, [fp, #-0x18]
+  0xc9dd0 0030d3e5 ldrb r3, [r3]
+  0xc9dd4 013043e2 sub r3, r3, #1
+  0xc9dd8 030053e3 cmp r3, #3
+  0xc9ddc 03f19f97 ldrls pc, [pc, r3, lsl #2]
+  0xc9de0 130000ea b #0xc9e34
+  0xc9de4 0c9e0c00 andeq sb, ip, ip, lsl #28 (not reached by known edges)
+  0xc9de8 f49d0c00 strdeq sb, sl, [ip], -r4 (not reached by known edges)
+  0xc9dec 0c9e0c00 andeq sb, ip, ip, lsl #28 (not reached by known edges)
+  0xc9df0 0c9e0c00 andeq sb, ip, ip, lsl #28 (not reached by known edges)
+  0xc9df4 10001be5 ldr r0, [fp, #-0x10] (not reached by known edges)
+  0xc9df8 18101be5 ldr r1, [fp, #-0x18] (not reached by known edges)
+  0xc9dfc 091000eb bl #0xcde28 (not reached by known edges)
+  0xc9e00 0030a0e1 mov r3, r0 (not reached by known edges)
+  0xc9e04 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
+  0xc9e08 090000ea b #0xc9e34 (not reached by known edges)
+  0xc9e0c 54309fe5 ldr r3, [pc, #0x54] (not reached by known edges)
+  0xc9e10 00308de5 str r3, [sp] (not reached by known edges)
+  0xc9e14 18301be5 ldr r3, [fp, #-0x18] (not reached by known edges)
+  0xc9e18 0030d3e5 ldrb r3, [r3] (not reached by known edges)
+  0xc9e1c 04308de5 str r3, [sp, #4] (not reached by known edges)
+  0xc9e20 0900a0e3 mov r0, #9 (not reached by known edges)
+  0xc9e24 40109fe5 ldr r1, [pc, #0x40] (not reached by known edges)
+  0xc9e28 40209fe5 ldr r2, [pc, #0x40] (not reached by known edges)
+  0xc9e2c 0030a0e3 mov r3, #0 (not reached by known edges)
+  0xc9e30 9a58fdeb bl #0x200a0 (not reached by known edges)
+  0xc9e34 20301be5 ldr r3, [fp, #-0x20]
+  0xc9e38 000053e3 cmp r3, #0
+  0xc9e3c 0700001a bne #0xc9e60
+  0xc9e40 1c301be5 ldr r3, [fp, #-0x1c]
+  0xc9e44 023083e2 add r3, r3, #2
+  0xc9e48 10001be5 ldr r0, [fp, #-0x10]
+  0xc9e4c 18101be5 ldr r1, [fp, #-0x18]
+  0xc9e50 0320a0e1 mov r2, r3
+  0xc9e54 8e0600eb bl #0xcb894
+  0xc9e58 0030a0e1 mov r3, r0
+  0xc9e5c 20300be5 str r3, [fp, #-0x20]
+  0xc9e60 0cd04be2 sub sp, fp, #0xc
+  0xc9e64 00a89de8 ldm sp, {fp, sp, pc}
+  0xc9e68 5c051200 andseq r0, r2, ip, asr r5 (not reached by known edges)
+  0xc9e6c 7c041200 andseq r0, r2, ip, ror r4 (not reached by known edges)
+  0xc9e70 0b010000 andeq r0, r0, fp, lsl #2 (not reached by known edges)
+
+routine (unnamed)  0xc990c-0xc9a44  size 0x138 (312 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xc99c0 rsb: unsupported effects invalidated
+
+accesses (34)
+  0xc9910 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xc9910 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xc9910 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xc9910 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xc991c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xc9924 store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xc9928 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc993c load w4 ldr base=pc disp +0xec => abs 0xc9a30
+  0xc9940 load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc9948 store w4 str base=r11 disp -0x18 => sp -0x1c value ?
+  0xc994c load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9950 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9954 load w4 ldr base=r3 disp +0x4 => [sp-28] +0x4
+  0xc9960 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9964 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9978 load w4 ldr base=r1 disp +0x8 => [sp-28] +0x8
+  0xc9984 store w1 strb base=r2 disp +0x0 => ? (unknown effective address) value 0x1
+  0xc998c load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9994 load w4 ldr base=pc disp +0x98 => abs 0xc9a34
+  0xc9998 load w4 ldr base=pc disp +0x98 => abs 0xc9a38
+  0xc99d4 store w4 str base=r11 disp -0x1c => sp -0x20 value ?
+  0xc99d8 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc99e0 load w4 ldr base=pc disp +0x4c => abs 0xc9a34
+  0xc99e4 load w4 ldr base=pc disp +0x4c => abs 0xc9a38
+  0xc99f0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9a00 load w4 ldr base=pc disp +0x34 => abs 0xc9a3c
+  0xc9a04 store w4 str base=sp disp +0x0 => ? (unknown effective address) value 0x120514
+  0xc9a08 store w4 str base=sp disp +0x4 => ? (unknown effective address) value ret(0x19808)
+  0xc9a0c load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9a10 store w4 str base=sp disp +0x8 => ? (unknown effective address) value [sp-21]:1
+  0xc9a18 load w4 ldr base=pc disp +0x20 => abs 0xc9a40
+  0xc9a2c load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xc9a2c load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xc9a2c load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (5)
+  0xc999c bl (unknown callee) [0x48da8]
+      args: r0=r0, r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc99a8 bl (unknown callee) [0x19538]
+      args: r0=ret(0x48da8), r1=?, r2=?, r3=ret(0x48da8)
+  0xc99e8 bl (unknown callee) [0x48da8]
+      args: r0=[sp-20], r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc99f8 bl (unknown callee) [0x19808]
+      args: r0=[sp-32], r1=ret(0x48da8), r2=?, r3=ret(0x48da8)
+  0xc9a24 bl (unknown callee) [0x200a0]
+      args: r0=0x6, r1=0x12047c, r2=0x82, r3=0x0
+
+blocks (73)
+  B0 0xc990c-0xc990c preds: entry
+      normal -> B1
+  B1 0xc9910-0xc9910 preds: B0
+      normal -> B2
+  B2 0xc9914-0xc9914 preds: B1
+      normal -> B3
+  B3 0xc9918-0xc9918 preds: B2
+      normal -> B4
+  B4 0xc991c-0xc991c preds: B3
+      normal -> B5
+  B5 0xc9920-0xc9920 preds: B4
+      normal -> B6
+  B6 0xc9924-0xc9924 preds: B5
+      normal -> B7
+  B7 0xc9928-0xc9928 preds: B6
+      normal -> B8
+  B8 0xc992c-0xc992c preds: B7
+      normal -> B9
+  B9 0xc9930-0xc9930 preds: B8
+      normal -> B10
+  B10 0xc9934-0xc9934 preds: B9
+      normal -> B11
+  B11 0xc9938-0xc9938 preds: B10
+      normal -> B12
+  B12 0xc993c-0xc993c preds: B11
+      normal -> B13
+  B13 0xc9940-0xc9940 preds: B12
+      normal -> B14
+  B14 0xc9944-0xc9944 preds: B13
+      normal -> B15
+  B15 0xc9948-0xc9948 preds: B14
+      normal -> B16
+  B16 0xc994c-0xc994c preds: B15
+      normal -> B17
+  B17 0xc9950-0xc9950 preds: B16
+      normal -> B18
+  B18 0xc9954-0xc9954 preds: B17
+      normal -> B19
+  B19 0xc9958-0xc9958 preds: B18
+      normal -> B20
+  B20 0xc995c-0xc995c preds: B19
+      taken when (r1 & 0xff) >= [[sp-28]+4] (signed, 32-bit) -> 0xc998c
+      falls through when (r1 & 0xff) < [[sp-28]+4] (signed, 32-bit) -> B21
+  B21 0xc9960-0xc9960 preds: B20
+      normal -> B22
+  B22 0xc9964-0xc9964 preds: B21
+      normal -> B23
+  B23 0xc9968-0xc9968 preds: B22
+      normal -> B24
+  B24 0xc996c-0xc996c preds: B23
+      normal -> B25
+  B25 0xc9970-0xc9970 preds: B24
+      normal -> B26
+  B26 0xc9974-0xc9974 preds: B25
+      normal -> B27
+  B27 0xc9978-0xc9978 preds: B26
+      normal -> B28
+  B28 0xc997c-0xc997c preds: B27
+      normal -> B29
+  B29 0xc9980-0xc9980 preds: B28
+      normal -> B30
+  B30 0xc9984-0xc9984 preds: B29
+      normal -> B31
+  B31 0xc9988-0xc9988 preds: B30
+      jump -> 0xc9a28
+  B32 0xc998c-0xc998c preds: B20
+      normal -> B33
+  B33 0xc9990-0xc9990 preds: B32
+      normal -> B34
+  B34 0xc9994-0xc9994 preds: B33
+      normal -> B35
+  B35 0xc9998-0xc9998 preds: B34
+      normal -> B36
+  B36 0xc999c-0xc999c preds: B35
+      call -> 0x48da8
+  B37 0xc99a0-0xc99a0 preds: B36
+      normal -> B38
+  B38 0xc99a4-0xc99a4 preds: B37
+      normal -> B39
+  B39 0xc99a8-0xc99a8 preds: B38
+      call -> 0x19538
+  B40 0xc99ac-0xc99ac preds: B39
+      normal -> B41
+  B41 0xc99b0-0xc99b0 preds: B40
+      normal -> B42
+  B42 0xc99b4-0xc99b4 preds: B41
+      normal -> B43
+  B43 0xc99b8-0xc99b8 preds: B42
+      normal -> B44
+  B44 0xc99bc-0xc99bc preds: B43
+      normal -> B45
+  B45 0xc99c0-0xc99c0 preds: B44
+      normal -> B46
+  B46 0xc99c4-0xc99c4 preds: B45
+      normal -> B47
+  B47 0xc99c8-0xc99c8 preds: B46
+      normal -> B48
+  B48 0xc99cc-0xc99cc preds: B47
+      normal -> B49
+  B49 0xc99d0-0xc99d0 preds: B48
+      normal -> B50
+  B50 0xc99d4-0xc99d4 preds: B49
+      normal -> B51
+  B51 0xc99d8-0xc99d8 preds: B50
+      normal -> B52
+  B52 0xc99dc-0xc99dc preds: B51
+      normal -> B53
+  B53 0xc99e0-0xc99e0 preds: B52
+      normal -> B54
+  B54 0xc99e4-0xc99e4 preds: B53
+      normal -> B55
+  B55 0xc99e8-0xc99e8 preds: B54
+      call -> 0x48da8
+  B56 0xc99ec-0xc99ec preds: B55
+      normal -> B57
+  B57 0xc99f0-0xc99f0 preds: B56
+      normal -> B58
+  B58 0xc99f4-0xc99f4 preds: B57
+      normal -> B59
+  B59 0xc99f8-0xc99f8 preds: B58
+      call -> 0x19808
+  B60 0xc99fc-0xc99fc preds: B59
+      normal -> B61
+  B61 0xc9a00-0xc9a00 preds: B60
+      normal -> B62
+  B62 0xc9a04-0xc9a04 preds: B61
+      normal -> B63
+  B63 0xc9a08-0xc9a08 preds: B62
+      normal -> B64
+  B64 0xc9a0c-0xc9a0c preds: B63
+      normal -> B65
+  B65 0xc9a10-0xc9a10 preds: B64
+      normal -> B66
+  B66 0xc9a14-0xc9a14 preds: B65
+      normal -> B67
+  B67 0xc9a18-0xc9a18 preds: B66
+      normal -> B68
+  B68 0xc9a1c-0xc9a1c preds: B67
+      normal -> B69
+  B69 0xc9a20-0xc9a20 preds: B68
+      normal -> B70
+  B70 0xc9a24-0xc9a24 preds: B69
+      call -> 0x200a0
+  B71 0xc9a28-0xc9a28 preds: B31, B70
+      normal -> B72
+  B72 0xc9a2c-0xc9a2c preds: B71
+      return
+
+returns (1)
+  0xc9a2c: r0 = ?; reached from B71
+
+constants
+  0xc993c r3 = 0x29733c
+  0xc9980 r3 = 0x1
+  0xc9990 r1 = 0x0
+  0xc9994 r2 = 0x1204d0
+  0xc9998 r3 = 0x1204d8
+  0xc99dc r1 = 0x0
+  0xc99e0 r2 = 0x1204d0
+  0xc99e4 r3 = 0x1204d8
+  0xc9a00 r3 = 0x120514
+  0xc9a14 r0 = 0x6
+  0xc9a18 r1 = 0x12047c
+  0xc9a1c r2 = 0x82
+  0xc9a20 r3 = 0x0
+immediates
+  0x4 at 0xc9914
+  0x1c at 0xc9918
+  0xc998c at 0xc995c
+  0x1 at 0xc9980
+  0xc9a28 at 0xc9988
+  0x0 at 0xc9990
+  0x48da8 at 0xc999c
+  0x19538 at 0xc99a8
+  0x3 at 0xc99b0
+  0x3 at 0xc99b4
+  0xc at 0xc99c4
+  0x3 at 0xc99c8
+  0x0 at 0xc99dc
+  0x48da8 at 0xc99e8
+  0x19808 at 0xc99f8
+  0x6 at 0xc9a14
+  0x82 at 0xc9a1c
+  0x0 at 0xc9a20
+  0x200a0 at 0xc9a24
+  0xc at 0xc9a28
+instructions
+  0xc990c 0dc0a0e1 mov ip, sp
+  0xc9910 00d82de9 push {fp, ip, lr, pc}
+  0xc9914 04b04ce2 sub fp, ip, #4
+  0xc9918 1cd04de2 sub sp, sp, #0x1c
+  0xc991c 10000be5 str r0, [fp, #-0x10]
+  0xc9920 0130a0e1 mov r3, r1
+  0xc9924 11304be5 strb r3, [fp, #-0x11]
+  0xc9928 10201be5 ldr r2, [fp, #-0x10]
+  0xc992c 0230a0e1 mov r3, r2
+  0xc9930 8330a0e1 lsl r3, r3, #1
+  0xc9934 023083e0 add r3, r3, r2
+  0xc9938 0321a0e1 lsl r2, r3, #2
+  0xc993c ec309fe5 ldr r3, [pc, #0xec]
+  0xc9940 003093e5 ldr r3, [r3]
+  0xc9944 033082e0 add r3, r2, r3
+  0xc9948 18300be5 str r3, [fp, #-0x18]
+  0xc994c 11205be5 ldrb r2, [fp, #-0x11]
+  0xc9950 18301be5 ldr r3, [fp, #-0x18]
+  0xc9954 043093e5 ldr r3, [r3, #4]
+  0xc9958 030052e1 cmp r2, r3
+  0xc995c 0a0000aa bge #0xc998c
+  0xc9960 18101be5 ldr r1, [fp, #-0x18]
+  0xc9964 11205be5 ldrb r2, [fp, #-0x11]
+  0xc9968 0230a0e1 mov r3, r2
+  0xc996c 8330a0e1 lsl r3, r3, #1
+  0xc9970 023083e0 add r3, r3, r2
+  0xc9974 0321a0e1 lsl r2, r3, #2
+  0xc9978 083091e5 ldr r3, [r1, #8]
+  0xc997c 032082e0 add r2, r2, r3
+  0xc9980 0130a0e3 mov r3, #1
+  0xc9984 0030c2e5 strb r3, [r2]
+  0xc9988 260000ea b #0xc9a28
+  0xc998c 10001be5 ldr r0, [fp, #-0x10]
+  0xc9990 0010a0e3 mov r1, #0
+  0xc9994 98209fe5 ldr r2, [pc, #0x98]
+  0xc9998 98309fe5 ldr r3, [pc, #0x98]
+  0xc999c 01fdfdeb bl #0x48da8
+  0xc99a0 0030a0e1 mov r3, r0
+  0xc99a4 0300a0e1 mov r0, r3
+  0xc99a8 e23efdeb bl #0x19538
+  0xc99ac 0030a0e1 mov r3, r0
+  0xc99b0 033083e2 add r3, r3, #3
+  0xc99b4 033083e2 add r3, r3, #3
+  0xc99b8 2331a0e1 lsr r3, r3, #2
+  0xc99bc 0331a0e1 lsl r3, r3, #2
+  0xc99c0 0dd063e0 rsb sp, r3, sp
+  0xc99c4 0c308de2 add r3, sp, #0xc
+  0xc99c8 033083e2 add r3, r3, #3
+  0xc99cc 2331a0e1 lsr r3, r3, #2
+  0xc99d0 0331a0e1 lsl r3, r3, #2
+  0xc99d4 1c300be5 str r3, [fp, #-0x1c]
+  0xc99d8 10001be5 ldr r0, [fp, #-0x10]
+  0xc99dc 0010a0e3 mov r1, #0
+  0xc99e0 4c209fe5 ldr r2, [pc, #0x4c]
+  0xc99e4 4c309fe5 ldr r3, [pc, #0x4c]
+  0xc99e8 eefcfdeb bl #0x48da8
+  0xc99ec 0030a0e1 mov r3, r0
+  0xc99f0 1c001be5 ldr r0, [fp, #-0x1c]
+  0xc99f4 0310a0e1 mov r1, r3
+  0xc99f8 823ffdeb bl #0x19808
+  0xc99fc 0020a0e1 mov r2, r0
+  0xc9a00 34309fe5 ldr r3, [pc, #0x34]
+  0xc9a04 00308de5 str r3, [sp]
+  0xc9a08 04208de5 str r2, [sp, #4]
+  0xc9a0c 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9a10 08308de5 str r3, [sp, #8]
+  0xc9a14 0600a0e3 mov r0, #6
+  0xc9a18 20109fe5 ldr r1, [pc, #0x20]
+  0xc9a1c 8220a0e3 mov r2, #0x82
+  0xc9a20 0030a0e3 mov r3, #0
+  0xc9a24 9d59fdeb bl #0x200a0
+  0xc9a28 0cd04be2 sub sp, fp, #0xc
+  0xc9a2c 00a89de8 ldm sp, {fp, sp, pc}
+  0xc9a30 3c732900 eoreq r7, sb, ip, lsr r3 (not reached by known edges)
+  0xc9a34 d0041200 ldrsbeq r0, [r2], -r0 (not reached by known edges)
+  0xc9a38 d8041200 ldrsbeq r0, [r2], -r8 (not reached by known edges)
+  0xc9a3c 14051200 andseq r0, r2, r4, lsl r5 (not reached by known edges)
+  0xc9a40 7c041200 andseq r0, r2, ip, ror r4 (not reached by known edges)
+
+routine (unnamed)  0xc9a44-0xc9b7c  size 0x138 (312 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0xc9af8 rsb: unsupported effects invalidated
+
+accesses (34)
+  0xc9a48 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xc9a48 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xc9a48 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xc9a48 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xc9a54 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xc9a5c store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xc9a60 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9a74 load w4 ldr base=pc disp +0xec => abs 0xc9b68
+  0xc9a78 load w4 ldr base=r3 disp +0x0 => abs 0x29733c
+  0xc9a80 store w4 str base=r11 disp -0x18 => sp -0x1c value ?
+  0xc9a84 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9a88 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9a8c load w4 ldr base=r3 disp +0x4 => [sp-28] +0x4
+  0xc9a98 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xc9a9c load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9ab0 load w4 ldr base=r1 disp +0x8 => [sp-28] +0x8
+  0xc9abc store w1 strb base=r2 disp +0x0 => ? (unknown effective address) value 0x0
+  0xc9ac4 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9acc load w4 ldr base=pc disp +0x98 => abs 0xc9b6c
+  0xc9ad0 load w4 ldr base=pc disp +0x98 => abs 0xc9b70
+  0xc9b0c store w4 str base=r11 disp -0x1c => sp -0x20 value ?
+  0xc9b10 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xc9b18 load w4 ldr base=pc disp +0x4c => abs 0xc9b6c
+  0xc9b1c load w4 ldr base=pc disp +0x4c => abs 0xc9b70
+  0xc9b28 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xc9b38 load w4 ldr base=pc disp +0x34 => abs 0xc9b74
+  0xc9b3c store w4 str base=sp disp +0x0 => ? (unknown effective address) value 0x120538
+  0xc9b40 store w4 str base=sp disp +0x4 => ? (unknown effective address) value ret(0x19808)
+  0xc9b44 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xc9b48 store w4 str base=sp disp +0x8 => ? (unknown effective address) value [sp-21]:1
+  0xc9b50 load w4 ldr base=pc disp +0x20 => abs 0xc9b78
+  0xc9b64 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xc9b64 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xc9b64 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (5)
+  0xc9ad4 bl (unknown callee) [0x48da8]
+      args: r0=r0, r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc9ae0 bl (unknown callee) [0x19538]
+      args: r0=ret(0x48da8), r1=?, r2=?, r3=ret(0x48da8)
+  0xc9b20 bl (unknown callee) [0x48da8]
+      args: r0=[sp-20], r1=0x0, r2=0x1204d0, r3=0x1204d8
+  0xc9b30 bl (unknown callee) [0x19808]
+      args: r0=[sp-32], r1=ret(0x48da8), r2=?, r3=ret(0x48da8)
+  0xc9b5c bl (unknown callee) [0x200a0]
+      args: r0=0x6, r1=0x12047c, r2=0x91, r3=0x0
+
+blocks (73)
+  B0 0xc9a44-0xc9a44 preds: entry
+      normal -> B1
+  B1 0xc9a48-0xc9a48 preds: B0
+      normal -> B2
+  B2 0xc9a4c-0xc9a4c preds: B1
+      normal -> B3
+  B3 0xc9a50-0xc9a50 preds: B2
+      normal -> B4
+  B4 0xc9a54-0xc9a54 preds: B3
+      normal -> B5
+  B5 0xc9a58-0xc9a58 preds: B4
+      normal -> B6
+  B6 0xc9a5c-0xc9a5c preds: B5
+      normal -> B7
+  B7 0xc9a60-0xc9a60 preds: B6
+      normal -> B8
+  B8 0xc9a64-0xc9a64 preds: B7
+      normal -> B9
+  B9 0xc9a68-0xc9a68 preds: B8
+      normal -> B10
+  B10 0xc9a6c-0xc9a6c preds: B9
+      normal -> B11
+  B11 0xc9a70-0xc9a70 preds: B10
+      normal -> B12
+  B12 0xc9a74-0xc9a74 preds: B11
+      normal -> B13
+  B13 0xc9a78-0xc9a78 preds: B12
+      normal -> B14
+  B14 0xc9a7c-0xc9a7c preds: B13
+      normal -> B15
+  B15 0xc9a80-0xc9a80 preds: B14
+      normal -> B16
+  B16 0xc9a84-0xc9a84 preds: B15
+      normal -> B17
+  B17 0xc9a88-0xc9a88 preds: B16
+      normal -> B18
+  B18 0xc9a8c-0xc9a8c preds: B17
+      normal -> B19
+  B19 0xc9a90-0xc9a90 preds: B18
+      normal -> B20
+  B20 0xc9a94-0xc9a94 preds: B19
+      taken when (r1 & 0xff) >= [[sp-28]+4] (signed, 32-bit) -> 0xc9ac4
+      falls through when (r1 & 0xff) < [[sp-28]+4] (signed, 32-bit) -> B21
+  B21 0xc9a98-0xc9a98 preds: B20
+      normal -> B22
+  B22 0xc9a9c-0xc9a9c preds: B21
+      normal -> B23
+  B23 0xc9aa0-0xc9aa0 preds: B22
+      normal -> B24
+  B24 0xc9aa4-0xc9aa4 preds: B23
+      normal -> B25
+  B25 0xc9aa8-0xc9aa8 preds: B24
+      normal -> B26
+  B26 0xc9aac-0xc9aac preds: B25
+      normal -> B27
+  B27 0xc9ab0-0xc9ab0 preds: B26
+      normal -> B28
+  B28 0xc9ab4-0xc9ab4 preds: B27
+      normal -> B29
+  B29 0xc9ab8-0xc9ab8 preds: B28
+      normal -> B30
+  B30 0xc9abc-0xc9abc preds: B29
+      normal -> B31
+  B31 0xc9ac0-0xc9ac0 preds: B30
+      jump -> 0xc9b60
+  B32 0xc9ac4-0xc9ac4 preds: B20
+      normal -> B33
+  B33 0xc9ac8-0xc9ac8 preds: B32
+      normal -> B34
+  B34 0xc9acc-0xc9acc preds: B33
+      normal -> B35
+  B35 0xc9ad0-0xc9ad0 preds: B34
+      normal -> B36
+  B36 0xc9ad4-0xc9ad4 preds: B35
+      call -> 0x48da8
+  B37 0xc9ad8-0xc9ad8 preds: B36
+      normal -> B38
+  B38 0xc9adc-0xc9adc preds: B37
+      normal -> B39
+  B39 0xc9ae0-0xc9ae0 preds: B38
+      call -> 0x19538
+  B40 0xc9ae4-0xc9ae4 preds: B39
+      normal -> B41
+  B41 0xc9ae8-0xc9ae8 preds: B40
+      normal -> B42
+  B42 0xc9aec-0xc9aec preds: B41
+      normal -> B43
+  B43 0xc9af0-0xc9af0 preds: B42
+      normal -> B44
+  B44 0xc9af4-0xc9af4 preds: B43
+      normal -> B45
+  B45 0xc9af8-0xc9af8 preds: B44
+      normal -> B46
+  B46 0xc9afc-0xc9afc preds: B45
+      normal -> B47
+  B47 0xc9b00-0xc9b00 preds: B46
+      normal -> B48
+  B48 0xc9b04-0xc9b04 preds: B47
+      normal -> B49
+  B49 0xc9b08-0xc9b08 preds: B48
+      normal -> B50
+  B50 0xc9b0c-0xc9b0c preds: B49
+      normal -> B51
+  B51 0xc9b10-0xc9b10 preds: B50
+      normal -> B52
+  B52 0xc9b14-0xc9b14 preds: B51
+      normal -> B53
+  B53 0xc9b18-0xc9b18 preds: B52
+      normal -> B54
+  B54 0xc9b1c-0xc9b1c preds: B53
+      normal -> B55
+  B55 0xc9b20-0xc9b20 preds: B54
+      call -> 0x48da8
+  B56 0xc9b24-0xc9b24 preds: B55
+      normal -> B57
+  B57 0xc9b28-0xc9b28 preds: B56
+      normal -> B58
+  B58 0xc9b2c-0xc9b2c preds: B57
+      normal -> B59
+  B59 0xc9b30-0xc9b30 preds: B58
+      call -> 0x19808
+  B60 0xc9b34-0xc9b34 preds: B59
+      normal -> B61
+  B61 0xc9b38-0xc9b38 preds: B60
+      normal -> B62
+  B62 0xc9b3c-0xc9b3c preds: B61
+      normal -> B63
+  B63 0xc9b40-0xc9b40 preds: B62
+      normal -> B64
+  B64 0xc9b44-0xc9b44 preds: B63
+      normal -> B65
+  B65 0xc9b48-0xc9b48 preds: B64
+      normal -> B66
+  B66 0xc9b4c-0xc9b4c preds: B65
+      normal -> B67
+  B67 0xc9b50-0xc9b50 preds: B66
+      normal -> B68
+  B68 0xc9b54-0xc9b54 preds: B67
+      normal -> B69
+  B69 0xc9b58-0xc9b58 preds: B68
+      normal -> B70
+  B70 0xc9b5c-0xc9b5c preds: B69
+      call -> 0x200a0
+  B71 0xc9b60-0xc9b60 preds: B31, B70
+      normal -> B72
+  B72 0xc9b64-0xc9b64 preds: B71
+      return
+
+returns (1)
+  0xc9b64: r0 = ?; reached from B71
+
+constants
+  0xc9a74 r3 = 0x29733c
+  0xc9ab8 r3 = 0x0
+  0xc9ac8 r1 = 0x0
+  0xc9acc r2 = 0x1204d0
+  0xc9ad0 r3 = 0x1204d8
+  0xc9b14 r1 = 0x0
+  0xc9b18 r2 = 0x1204d0
+  0xc9b1c r3 = 0x1204d8
+  0xc9b38 r3 = 0x120538
+  0xc9b4c r0 = 0x6
+  0xc9b50 r1 = 0x12047c
+  0xc9b54 r2 = 0x91
+  0xc9b58 r3 = 0x0
+immediates
+  0x4 at 0xc9a4c
+  0x1c at 0xc9a50
+  0xc9ac4 at 0xc9a94
+  0x0 at 0xc9ab8
+  0xc9b60 at 0xc9ac0
+  0x0 at 0xc9ac8
+  0x48da8 at 0xc9ad4
+  0x19538 at 0xc9ae0
+  0x3 at 0xc9ae8
+  0x3 at 0xc9aec
+  0xc at 0xc9afc
+  0x3 at 0xc9b00
+  0x0 at 0xc9b14
+  0x48da8 at 0xc9b20
+  0x19808 at 0xc9b30
+  0x6 at 0xc9b4c
+  0x91 at 0xc9b54
+  0x0 at 0xc9b58
+  0x200a0 at 0xc9b5c
+  0xc at 0xc9b60
+instructions
+  0xc9a44 0dc0a0e1 mov ip, sp
+  0xc9a48 00d82de9 push {fp, ip, lr, pc}
+  0xc9a4c 04b04ce2 sub fp, ip, #4
+  0xc9a50 1cd04de2 sub sp, sp, #0x1c
+  0xc9a54 10000be5 str r0, [fp, #-0x10]
+  0xc9a58 0130a0e1 mov r3, r1
+  0xc9a5c 11304be5 strb r3, [fp, #-0x11]
+  0xc9a60 10201be5 ldr r2, [fp, #-0x10]
+  0xc9a64 0230a0e1 mov r3, r2
+  0xc9a68 8330a0e1 lsl r3, r3, #1
+  0xc9a6c 023083e0 add r3, r3, r2
+  0xc9a70 0321a0e1 lsl r2, r3, #2
+  0xc9a74 ec309fe5 ldr r3, [pc, #0xec]
+  0xc9a78 003093e5 ldr r3, [r3]
+  0xc9a7c 033082e0 add r3, r2, r3
+  0xc9a80 18300be5 str r3, [fp, #-0x18]
+  0xc9a84 11205be5 ldrb r2, [fp, #-0x11]
+  0xc9a88 18301be5 ldr r3, [fp, #-0x18]
+  0xc9a8c 043093e5 ldr r3, [r3, #4]
+  0xc9a90 030052e1 cmp r2, r3
+  0xc9a94 0a0000aa bge #0xc9ac4
+  0xc9a98 18101be5 ldr r1, [fp, #-0x18]
+  0xc9a9c 11205be5 ldrb r2, [fp, #-0x11]
+  0xc9aa0 0230a0e1 mov r3, r2
+  0xc9aa4 8330a0e1 lsl r3, r3, #1
+  0xc9aa8 023083e0 add r3, r3, r2
+  0xc9aac 0321a0e1 lsl r2, r3, #2
+  0xc9ab0 083091e5 ldr r3, [r1, #8]
+  0xc9ab4 032082e0 add r2, r2, r3
+  0xc9ab8 0030a0e3 mov r3, #0
+  0xc9abc 0030c2e5 strb r3, [r2]
+  0xc9ac0 260000ea b #0xc9b60
+  0xc9ac4 10001be5 ldr r0, [fp, #-0x10]
+  0xc9ac8 0010a0e3 mov r1, #0
+  0xc9acc 98209fe5 ldr r2, [pc, #0x98]
+  0xc9ad0 98309fe5 ldr r3, [pc, #0x98]
+  0xc9ad4 b3fcfdeb bl #0x48da8
+  0xc9ad8 0030a0e1 mov r3, r0
+  0xc9adc 0300a0e1 mov r0, r3
+  0xc9ae0 943efdeb bl #0x19538
+  0xc9ae4 0030a0e1 mov r3, r0
+  0xc9ae8 033083e2 add r3, r3, #3
+  0xc9aec 033083e2 add r3, r3, #3
+  0xc9af0 2331a0e1 lsr r3, r3, #2
+  0xc9af4 0331a0e1 lsl r3, r3, #2
+  0xc9af8 0dd063e0 rsb sp, r3, sp
+  0xc9afc 0c308de2 add r3, sp, #0xc
+  0xc9b00 033083e2 add r3, r3, #3
+  0xc9b04 2331a0e1 lsr r3, r3, #2
+  0xc9b08 0331a0e1 lsl r3, r3, #2
+  0xc9b0c 1c300be5 str r3, [fp, #-0x1c]
+  0xc9b10 10001be5 ldr r0, [fp, #-0x10]
+  0xc9b14 0010a0e3 mov r1, #0
+  0xc9b18 4c209fe5 ldr r2, [pc, #0x4c]
+  0xc9b1c 4c309fe5 ldr r3, [pc, #0x4c]
+  0xc9b20 a0fcfdeb bl #0x48da8
+  0xc9b24 0030a0e1 mov r3, r0
+  0xc9b28 1c001be5 ldr r0, [fp, #-0x1c]
+  0xc9b2c 0310a0e1 mov r1, r3
+  0xc9b30 343ffdeb bl #0x19808
+  0xc9b34 0020a0e1 mov r2, r0
+  0xc9b38 34309fe5 ldr r3, [pc, #0x34]
+  0xc9b3c 00308de5 str r3, [sp]
+  0xc9b40 04208de5 str r2, [sp, #4]
+  0xc9b44 11305be5 ldrb r3, [fp, #-0x11]
+  0xc9b48 08308de5 str r3, [sp, #8]
+  0xc9b4c 0600a0e3 mov r0, #6
+  0xc9b50 20109fe5 ldr r1, [pc, #0x20]
+  0xc9b54 9120a0e3 mov r2, #0x91
+  0xc9b58 0030a0e3 mov r3, #0
+  0xc9b5c 4f59fdeb bl #0x200a0
+  0xc9b60 0cd04be2 sub sp, fp, #0xc
+  0xc9b64 00a89de8 ldm sp, {fp, sp, pc}
+  0xc9b68 3c732900 eoreq r7, sb, ip, lsr r3 (not reached by known edges)
+  0xc9b6c d0041200 ldrsbeq r0, [r2], -r0 (not reached by known edges)
+  0xc9b70 d8041200 ldrsbeq r0, [r2], -r8 (not reached by known edges)
+  0xc9b74 38051200 andseq r0, r2, r8, lsr r5 (not reached by known edges)
+  0xc9b78 7c041200 andseq r0, r2, ip, ror r4 (not reached by known edges)
+
+routine (unnamed)  0xca70c-0xca7a0  size 0x94 (148 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xca79c-0xca7a0; fall-through stops at this range
+
+accesses (25)
+  0xca710 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xca710 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xca710 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xca710 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xca71c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xca724 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xca728 store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xca72c load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xca730 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca740 store w4 str base=r11 disp -0x1c => sp -0x20 value ret(0xcb198)
+  0xca744 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xca748 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca758 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xcb2c0)
+  0xca75c load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xca760 load w1 ldrb base=r3 disp +0x0 => ret(0xcb2c0) +0x0
+  0xca76c load w4 ldr base=pc disp +0x28 => abs 0xca79c
+  0xca770 store w4 str base=r11 disp -0x24 => sp -0x28 value 0xfffffc11
+  0xca778 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca77c load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xca780 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xca78c store w4 str base=r11 disp -0x24 => sp -0x28 value ret(0xcb894)
+  0xca790 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xca798 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xca798 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xca798 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (3)
+  0xca738 bl (unknown callee) [0xcb198]
+      args: r0=r0, r1=(r1 & 0xff), r2=r2, r3=(r1 & 0xff)
+  0xca750 bl (unknown callee) [0xcb2c0]
+      args: r0=[sp-20], r1=[sp-21]:1, r2=?, r3=[sp-21]:1
+  0xca784 bl (unknown callee) [0xcb894]
+      args: r0=[sp-20], r1=[sp-32], r2=[sp-28], r3=[ret(0xcb2c0)]:1
+
+blocks (36)
+  B0 0xca70c-0xca70c preds: entry
+      normal -> B1
+  B1 0xca710-0xca710 preds: B0
+      normal -> B2
+  B2 0xca714-0xca714 preds: B1
+      normal -> B3
+  B3 0xca718-0xca718 preds: B2
+      normal -> B4
+  B4 0xca71c-0xca71c preds: B3
+      normal -> B5
+  B5 0xca720-0xca720 preds: B4
+      normal -> B6
+  B6 0xca724-0xca724 preds: B5
+      normal -> B7
+  B7 0xca728-0xca728 preds: B6
+      normal -> B8
+  B8 0xca72c-0xca72c preds: B7
+      normal -> B9
+  B9 0xca730-0xca730 preds: B8
+      normal -> B10
+  B10 0xca734-0xca734 preds: B9
+      normal -> B11
+  B11 0xca738-0xca738 preds: B10
+      call -> 0xcb198
+  B12 0xca73c-0xca73c preds: B11
+      normal -> B13
+  B13 0xca740-0xca740 preds: B12
+      normal -> B14
+  B14 0xca744-0xca744 preds: B13
+      normal -> B15
+  B15 0xca748-0xca748 preds: B14
+      normal -> B16
+  B16 0xca74c-0xca74c preds: B15
+      normal -> B17
+  B17 0xca750-0xca750 preds: B16
+      call -> 0xcb2c0
+  B18 0xca754-0xca754 preds: B17
+      normal -> B19
+  B19 0xca758-0xca758 preds: B18
+      normal -> B20
+  B20 0xca75c-0xca75c preds: B19
+      normal -> B21
+  B21 0xca760-0xca760 preds: B20
+      normal -> B22
+  B22 0xca764-0xca764 preds: B21
+      normal -> B23
+  B23 0xca768-0xca768 preds: B22
+      taken when [ret(0xcb2c0)]:1 != 0x0 -> 0xca778
+      falls through when [ret(0xcb2c0)]:1 == 0x0 -> B24
+  B24 0xca76c-0xca76c preds: B23
+      normal -> B25
+  B25 0xca770-0xca770 preds: B24
+      normal -> B26
+  B26 0xca774-0xca774 preds: B25
+      jump -> 0xca790
+  B27 0xca778-0xca778 preds: B23
+      normal -> B28
+  B28 0xca77c-0xca77c preds: B27
+      normal -> B29
+  B29 0xca780-0xca780 preds: B28
+      normal -> B30
+  B30 0xca784-0xca784 preds: B29
+      call -> 0xcb894
+  B31 0xca788-0xca788 preds: B30
+      normal -> B32
+  B32 0xca78c-0xca78c preds: B31
+      normal -> B33
+  B33 0xca790-0xca790 preds: B26, B32
+      normal -> B34
+  B34 0xca794-0xca794 preds: B33
+      normal -> B35
+  B35 0xca798-0xca798 preds: B34
+      return
+
+returns (1)
+  0xca798: r0 = ?; reached from B34
+
+constants
+  0xca76c r3 = 0xfffffc11
+immediates
+  0x4 at 0xca714
+  0x18 at 0xca718
+  0xcb198 at 0xca738
+  0xcb2c0 at 0xca750
+  0x0 at 0xca764
+  0xca778 at 0xca768
+  0xca790 at 0xca774
+  0xcb894 at 0xca784
+  0xc at 0xca794
+instructions
+  0xca70c 0dc0a0e1 mov ip, sp
+  0xca710 00d82de9 push {fp, ip, lr, pc}
+  0xca714 04b04ce2 sub fp, ip, #4
+  0xca718 18d04de2 sub sp, sp, #0x18
+  0xca71c 10000be5 str r0, [fp, #-0x10]
+  0xca720 0130a0e1 mov r3, r1
+  0xca724 18200be5 str r2, [fp, #-0x18]
+  0xca728 11304be5 strb r3, [fp, #-0x11]
+  0xca72c 11305be5 ldrb r3, [fp, #-0x11]
+  0xca730 10001be5 ldr r0, [fp, #-0x10]
+  0xca734 0310a0e1 mov r1, r3
+  0xca738 960200eb bl #0xcb198
+  0xca73c 0030a0e1 mov r3, r0
+  0xca740 1c300be5 str r3, [fp, #-0x1c]
+  0xca744 11305be5 ldrb r3, [fp, #-0x11]
+  0xca748 10001be5 ldr r0, [fp, #-0x10]
+  0xca74c 0310a0e1 mov r1, r3
+  0xca750 da0200eb bl #0xcb2c0
+  0xca754 0030a0e1 mov r3, r0
+  0xca758 20300be5 str r3, [fp, #-0x20]
+  0xca75c 20301be5 ldr r3, [fp, #-0x20]
+  0xca760 0030d3e5 ldrb r3, [r3]
+  0xca764 000053e3 cmp r3, #0
+  0xca768 0200001a bne #0xca778
+  0xca76c 28309fe5 ldr r3, [pc, #0x28]
+  0xca770 24300be5 str r3, [fp, #-0x24]
+  0xca774 050000ea b #0xca790
+  0xca778 10001be5 ldr r0, [fp, #-0x10]
+  0xca77c 1c101be5 ldr r1, [fp, #-0x1c]
+  0xca780 18201be5 ldr r2, [fp, #-0x18]
+  0xca784 420400eb bl #0xcb894
+  0xca788 0030a0e1 mov r3, r0
+  0xca78c 24300be5 str r3, [fp, #-0x24]
+  0xca790 24001be5 ldr r0, [fp, #-0x24]
+  0xca794 0cd04be2 sub sp, fp, #0xc
+  0xca798 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xca584-0xca688  size 0x104 (260 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#4 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: undecodable bytes at 0xca684-0xca688; fall-through stops at this range
+
+accesses (38)
+  0xca588 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xca588 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xca588 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xca588 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xca594 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xca5a0 store w1 strb base=r11 disp -0x11 => sp -0x15 value (r1 & 0xff)
+  0xca5a8 store w1 strb base=r11 disp -0x12 => sp -0x16 value (r2 & 0xff)
+  0xca5b0 store w1 strb base=r11 disp -0x13 => sp -0x17 value (r3 & 0xff)
+  0xca5b4 load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xca5b8 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca5c8 store w4 str base=r11 disp -0x18 => sp -0x1c value ret(0xcb198)
+  0xca5cc load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xca5d0 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca5e0 store w4 str base=r11 disp -0x1c => sp -0x20 value ret(0xcb2c0)
+  0xca5e4 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xca5e8 load w1 ldrb base=r3 disp +0x0 => ret(0xcb2c0) +0x0
+  0xca5f4 load w4 ldr base=pc disp +0x88 => abs 0xca684
+  0xca5f8 store w4 str base=r11 disp -0x24 => sp -0x28 value 0xfffffc11
+  0xca600 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xca604 load w1 ldrb base=r3 disp +0x1 => [sp-28] +0x1
+  0xca608 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca628 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xbaf50)
+  0xca62c load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xca638 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xca63c store w4 str base=r11 disp -0x24 => sp -0x28 value ret(0xbaf50)
+  0xca644 load w1 ldrb base=r11 disp -0x12 => sp -0x16
+  0xca648 load w1 ldrb base=r11 disp -0x13 => sp -0x17
+  0xca64c store w4 str base=sp disp +0x0 => sp -0x2c value [sp-23]:1
+  0xca650 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xca654 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xca658 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xca668 store w4 str base=r11 disp -0x20 => sp -0x24 value ret(0xcb3f4)
+  0xca670 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xca674 store w4 str base=r11 disp -0x24 => sp -0x28 value [sp-36]
+  0xca678 load w4 ldr base=r11 disp -0x24 => sp -0x28
+  0xca680 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xca680 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xca680 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (6)
+  0xca5c0 bl (unknown callee) [0xcb198]
+      args: r0=r0, r1=(r1 & 0xff), r2=r2, r3=(r1 & 0xff)
+  0xca5d8 bl (unknown callee) [0xcb2c0]
+      args: r0=[sp-20], r1=[sp-21]:1, r2=?, r3=[sp-21]:1
+  0xca610 bl (unknown callee) [0xbac78]
+      args: r0=[sp-20], r1=[[sp-28]+1]:1, r2=?, r3=[[sp-28]+1]:1
+  0xca620 bl (unknown callee) [0xbaf50]
+      args: r0=?, r1=?, r2=?, r3=?
+  0xca660 bl (unknown callee) [0xcb3f4]
+      args: r0=[sp-20], r1=[sp-28], r2=[sp-32], r3=[sp-22]:1
+  0xca66c bl (unknown callee) [0xbb094]
+      args: r0=ret(0xcb3f4), r1=?, r2=?, r3=ret(0xcb3f4)
+
+blocks (64)
+  B0 0xca584-0xca584 preds: entry
+      normal -> B1
+  B1 0xca588-0xca588 preds: B0
+      normal -> B2
+  B2 0xca58c-0xca58c preds: B1
+      normal -> B3
+  B3 0xca590-0xca590 preds: B2
+      normal -> B4
+  B4 0xca594-0xca594 preds: B3
+      normal -> B5
+  B5 0xca598-0xca598 preds: B4
+      normal -> B6
+  B6 0xca59c-0xca59c preds: B5
+      normal -> B7
+  B7 0xca5a0-0xca5a0 preds: B6
+      normal -> B8
+  B8 0xca5a4-0xca5a4 preds: B7
+      normal -> B9
+  B9 0xca5a8-0xca5a8 preds: B8
+      normal -> B10
+  B10 0xca5ac-0xca5ac preds: B9
+      normal -> B11
+  B11 0xca5b0-0xca5b0 preds: B10
+      normal -> B12
+  B12 0xca5b4-0xca5b4 preds: B11
+      normal -> B13
+  B13 0xca5b8-0xca5b8 preds: B12
+      normal -> B14
+  B14 0xca5bc-0xca5bc preds: B13
+      normal -> B15
+  B15 0xca5c0-0xca5c0 preds: B14
+      call -> 0xcb198
+  B16 0xca5c4-0xca5c4 preds: B15
+      normal -> B17
+  B17 0xca5c8-0xca5c8 preds: B16
+      normal -> B18
+  B18 0xca5cc-0xca5cc preds: B17
+      normal -> B19
+  B19 0xca5d0-0xca5d0 preds: B18
+      normal -> B20
+  B20 0xca5d4-0xca5d4 preds: B19
+      normal -> B21
+  B21 0xca5d8-0xca5d8 preds: B20
+      call -> 0xcb2c0
+  B22 0xca5dc-0xca5dc preds: B21
+      normal -> B23
+  B23 0xca5e0-0xca5e0 preds: B22
+      normal -> B24
+  B24 0xca5e4-0xca5e4 preds: B23
+      normal -> B25
+  B25 0xca5e8-0xca5e8 preds: B24
+      normal -> B26
+  B26 0xca5ec-0xca5ec preds: B25
+      normal -> B27
+  B27 0xca5f0-0xca5f0 preds: B26
+      taken when [ret(0xcb2c0)]:1 != 0x0 -> 0xca600
+      falls through when [ret(0xcb2c0)]:1 == 0x0 -> B28
+  B28 0xca5f4-0xca5f4 preds: B27
+      normal -> B29
+  B29 0xca5f8-0xca5f8 preds: B28
+      normal -> B30
+  B30 0xca5fc-0xca5fc preds: B29
+      jump -> 0xca678
+  B31 0xca600-0xca600 preds: B27
+      normal -> B32
+  B32 0xca604-0xca604 preds: B31
+      normal -> B33
+  B33 0xca608-0xca608 preds: B32
+      normal -> B34
+  B34 0xca60c-0xca60c preds: B33
+      normal -> B35
+  B35 0xca610-0xca610 preds: B34
+      call -> 0xbac78
+  B36 0xca614-0xca614 preds: B35
+      normal -> B37
+  B37 0xca618-0xca618 preds: B36
+      normal -> B38
+  B38 0xca61c-0xca61c preds: B37
+      normal -> B39
+  B39 0xca620-0xca620 preds: B38
+      call -> 0xbaf50
+  B40 0xca624-0xca624 preds: B39
+      normal -> B41
+  B41 0xca628-0xca628 preds: B40
+      normal -> B42
+  B42 0xca62c-0xca62c preds: B41
+      normal -> B43
+  B43 0xca630-0xca630 preds: B42
+      normal -> B44
+  B44 0xca634-0xca634 preds: B43
+      taken when ret(0xbaf50) == 0x0 -> 0xca644
+      falls through when ret(0xbaf50) != 0x0 -> B45
+  B45 0xca638-0xca638 preds: B44
+      normal -> B46
+  B46 0xca63c-0xca63c preds: B45
+      normal -> B47
+  B47 0xca640-0xca640 preds: B46
+      jump -> 0xca678
+  B48 0xca644-0xca644 preds: B44
+      normal -> B49
+  B49 0xca648-0xca648 preds: B48
+      normal -> B50
+  B50 0xca64c-0xca64c preds: B49
+      normal -> B51
+  B51 0xca650-0xca650 preds: B50
+      normal -> B52
+  B52 0xca654-0xca654 preds: B51
+      normal -> B53
+  B53 0xca658-0xca658 preds: B52
+      normal -> B54
+  B54 0xca65c-0xca65c preds: B53
+      normal -> B55
+  B55 0xca660-0xca660 preds: B54
+      call -> 0xcb3f4
+  B56 0xca664-0xca664 preds: B55
+      normal -> B57
+  B57 0xca668-0xca668 preds: B56
+      normal -> B58
+  B58 0xca66c-0xca66c preds: B57
+      call -> 0xbb094
+  B59 0xca670-0xca670 preds: B58
+      normal -> B60
+  B60 0xca674-0xca674 preds: B59
+      normal -> B61
+  B61 0xca678-0xca678 preds: B30, B47, B60
+      normal -> B62
+  B62 0xca67c-0xca67c preds: B61
+      normal -> B63
+  B63 0xca680-0xca680 preds: B62
+      return
+
+returns (1)
+  0xca680: r0 = ?; reached from B62
+
+constants
+  0xca5f4 r3 = 0xfffffc11
+immediates
+  0x4 at 0xca58c
+  0x1c at 0xca590
+  0xcb198 at 0xca5c0
+  0xcb2c0 at 0xca5d8
+  0x0 at 0xca5ec
+  0xca600 at 0xca5f0
+  0xca678 at 0xca5fc
+  0xbac78 at 0xca610
+  0xff at 0xca618
+  0xbaf50 at 0xca620
+  0x0 at 0xca630
+  0xca644 at 0xca634
+  0xca678 at 0xca640
+  0xcb3f4 at 0xca660
+  0xbb094 at 0xca66c
+  0xc at 0xca67c
+instructions
+  0xca584 0dc0a0e1 mov ip, sp
+  0xca588 00d82de9 push {fp, ip, lr, pc}
+  0xca58c 04b04ce2 sub fp, ip, #4
+  0xca590 1cd04de2 sub sp, sp, #0x1c
+  0xca594 10000be5 str r0, [fp, #-0x10]
+  0xca598 0300a0e1 mov r0, r3
+  0xca59c 0130a0e1 mov r3, r1
+  0xca5a0 11304be5 strb r3, [fp, #-0x11]
+  0xca5a4 0230a0e1 mov r3, r2
+  0xca5a8 12304be5 strb r3, [fp, #-0x12]
+  0xca5ac 0030a0e1 mov r3, r0
+  0xca5b0 13304be5 strb r3, [fp, #-0x13]
+  0xca5b4 11305be5 ldrb r3, [fp, #-0x11]
+  0xca5b8 10001be5 ldr r0, [fp, #-0x10]
+  0xca5bc 0310a0e1 mov r1, r3
+  0xca5c0 f40200eb bl #0xcb198
+  0xca5c4 0030a0e1 mov r3, r0
+  0xca5c8 18300be5 str r3, [fp, #-0x18]
+  0xca5cc 11305be5 ldrb r3, [fp, #-0x11]
+  0xca5d0 10001be5 ldr r0, [fp, #-0x10]
+  0xca5d4 0310a0e1 mov r1, r3
+  0xca5d8 380300eb bl #0xcb2c0
+  0xca5dc 0030a0e1 mov r3, r0
+  0xca5e0 1c300be5 str r3, [fp, #-0x1c]
+  0xca5e4 1c301be5 ldr r3, [fp, #-0x1c]
+  0xca5e8 0030d3e5 ldrb r3, [r3]
+  0xca5ec 000053e3 cmp r3, #0
+  0xca5f0 0200001a bne #0xca600
+  0xca5f4 88309fe5 ldr r3, [pc, #0x88]
+  0xca5f8 24300be5 str r3, [fp, #-0x24]
+  0xca5fc 1d0000ea b #0xca678
+  0xca600 18301be5 ldr r3, [fp, #-0x18]
+  0xca604 0130d3e5 ldrb r3, [r3, #1]
+  0xca608 10001be5 ldr r0, [fp, #-0x10]
+  0xca60c 0310a0e1 mov r1, r3
+  0xca610 98c1ffeb bl #0xbac78
+  0xca614 0030a0e1 mov r3, r0
+  0xca618 ff3003e2 and r3, r3, #0xff
+  0xca61c 0300a0e1 mov r0, r3
+  0xca620 4ac2ffeb bl #0xbaf50
+  0xca624 0030a0e1 mov r3, r0
+  0xca628 20300be5 str r3, [fp, #-0x20]
+  0xca62c 20301be5 ldr r3, [fp, #-0x20]
+  0xca630 000053e3 cmp r3, #0
+  0xca634 0200000a beq #0xca644
+  0xca638 20301be5 ldr r3, [fp, #-0x20]
+  0xca63c 24300be5 str r3, [fp, #-0x24]
+  0xca640 0c0000ea b #0xca678
+  0xca644 12c05be5 ldrb ip, [fp, #-0x12]
+  0xca648 13305be5 ldrb r3, [fp, #-0x13]
+  0xca64c 00308de5 str r3, [sp]
+  0xca650 10001be5 ldr r0, [fp, #-0x10]
+  0xca654 18101be5 ldr r1, [fp, #-0x18]
+  0xca658 1c201be5 ldr r2, [fp, #-0x1c]
+  0xca65c 0c30a0e1 mov r3, ip
+  0xca660 630300eb bl #0xcb3f4
+  0xca664 0030a0e1 mov r3, r0
+  0xca668 20300be5 str r3, [fp, #-0x20]
+  0xca66c 88c2ffeb bl #0xbb094
+  0xca670 20301be5 ldr r3, [fp, #-0x20]
+  0xca674 24300be5 str r3, [fp, #-0x24]
+  0xca678 24001be5 ldr r0, [fp, #-0x24]
+  0xca67c 0cd04be2 sub sp, fp, #0xc
+  0xca680 00a89de8 ldm sp, {fp, sp, pc}
+
+raw undecodable in-span words
+l1ioGpioReset 0xbcaac-0xbcab0 e4f3ffff
+l1ioGpioRead 0xbcc14-0xbcc18 e4f3ffff
+l1ioGpioWrite 0xbcb68-0xbcb6c e4f3ffff
+l1ioGpioIntSet 0xbccc0-0xbccc4 e4f3ffff
+l1ioGpioIntGet 0xbcd6c-0xbcd70 e4f3ffff
+l1ioGpioInt 0xbcf04-0xbcf08 e4f3ffff
+ioExpRead 0xca79c-0xca7a0 11fcffff
+ioExpWrite 0xca684-0xca688 11fcffff
