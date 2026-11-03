@@ -16,7 +16,7 @@ register locations r0 through r3 with unknown arity. Stack stores share the acce
 Numeric call targets have unknown callee names in the flat-image analysis. Device roles
 and pointee meanings remain unknown unless the body establishes them. Tables include all
 explicit memory operands on known control-flow edges. Implicit stack saves appear in the
-full fact sheets. Unresolved computed transfers exclude additional effects and return paths.
+full fact sheets. Unknown indirect calls retain candidate argument values.
 
 [Fact sheets and full listings](disasm/arm-1.34.2-package3/i2c-interrupt-facts.txt) retain all tool sections.
 
@@ -57,11 +57,11 @@ full fact sheets. Unresolved computed transfers exclude additional effects and r
 - `i2cLock`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xab648 to 0xab788.
-  Established. The call to 0x189e0 has r0 candidate 0x27ead0 (`bl` at 0xab664). The later call to
-  0x18a64 supplies the value stored at 0x27eaec (`bl` at 0xab6b0, `str` at 0xab6bc). `beq` takes the
-  zero-byte path from `[sp-17]:1` to the zero-result store (`beq` at 0xab6c8, `str` at 0xab758); its
-  nonzero path can reach the unresolved computed transfer at 0xab714 (`mov` at 0xab714). Additional
-  effects beyond that transfer remain unknown.
+  Established. The word at `0x27eaec` receives `ret(0x18a64)` (`str` at 0xab6bc). A later indirect
+  call has candidates `([sp-17]:1, unknown, [sp-17]:1, [0x11570c])` (`mov` at 0xab714), with an
+  unknown target. The byte store at `0x27eaf0` contains `([sp-17]:1 & 0xff)` (`strb` at 0xab750).
+  The return value is unknown (`ldmdb` at 0xab760).
+  Lock ownership and synchronization semantics are Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -89,6 +89,13 @@ full fact sheets. Unresolved computed transfers exclude additional effects and r
 | `ldr` at 0xab700 | load | 4 | `abs 0xab778` | `-` |
 | `ldrb` at 0xab704 | load | 1 | `sp -0x11` | `-` |
 | `ldr` at 0xab708 | load | 4 | `abs 0x11570c` | `-` |
+| `str` at 0xab71c | store | 4 | `sp -0x18` | `ret(unknown)` |
+| `ldr` at 0xab720 | load | 4 | `sp -0x18` | `-` |
+| `ldr` at 0xab738 | load | 4 | `ret(0x188b4) +0x0` | `-` |
+| `str` at 0xab740 | store | 4 | `sp -0x1c` | `?` |
+| `ldr` at 0xab748 | load | 4 | `abs 0xab784` | `-` |
+| `ldrb` at 0xab74c | load | 1 | `sp -0x11` | `-` |
+| `strb` at 0xab750 | store | 1 | `abs 0x27eaf0` | `([sp-17]:1 & 0xff)` |
 | `str` at 0xab758 | store | 4 | `sp -0x1c` | `0x0` |
 | `ldr` at 0xab75c | load | 4 | `sp -0x1c` | `-` |
 | `ldmdb` at 0xab760 | load | 4 | `sp -0x10` | `-` |
@@ -103,30 +110,31 @@ full fact sheets. Unresolved computed transfers exclude additional effects and r
 | `bl` at 0xab6ac | `(unknown callee) 0x1eed0` | `0x9` | `0x107bbc` | `0x122` | `0x0` |
 | `bl` at 0xab6b0 | `(unknown callee) 0x18a64` | `?` | `?` | `?` | `?` |
 | `bl` at 0xab6fc | `(unknown callee) 0x1eed0` | `0x9` | `0x107bbc` | `0x12b` | `0x0` |
+| `mov` at 0xab714 | `(unknown callee) (unknown target)` | `[sp-17]:1` | `?` | `[sp-17]:1` | `[0x11570c]` |
+| `bl` at 0xab72c | `(unknown callee) 0xab788` | `ret(unknown)` | `?` | `?` | `ret(unknown)` |
+| `bl` at 0xab730 | `(unknown callee) 0x188b4` | `ret(0xab788)` | `?` | `?` | `?` |
 
 | Branch instruction | Taken when | Falls through when |
 |---|---|---|
 | `bge` at 0xab678 | `ret(0x189e0) >= 0x0 (signed, 32-bit)` | `ret(0x189e0) < 0x0 (signed, 32-bit)` |
 | `beq` at 0xab6c8 | `[sp-17]:1 == 0x0` | `[sp-17]:1 != 0x0` |
 | `bne` at 0xab6d8 | `[0x11570c] != 0x0` | `[0x11570c] == 0x0` |
+| `beq` at 0xab728 | `ret(unknown) == 0x0` | `ret(unknown) != 0x0` |
 
 | Return instruction | Register | Value |
 |---|---|---|
-| `ldmdb` at 0xab760 | `r0` | `0x0` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab714).
+| `ldmdb` at 0xab760 | `r0` | `?` |
 
 ## `i2cUnlock`
 
 - `i2cUnlock`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xab788 to 0xab87c.
-  Established. The routine clears the word at 0x27eaec (`str` at 0xab7a0). The byte at 0x27eaf0
-  decides `beq`, whose taken zero path skips the second global test (`ldrb` at 0xab7a8, `beq` at
-  0xab7b0). With a nonzero byte, a second `beq` takes the zero-word path from 0x27eae8 to the
-  byte-clear at 0x27eaf0 (`ldr` at 0xab7b8, `beq` at 0xab7c0, `strb` at 0xab804); its nonzero
-  fall-through reaches an unresolved computed transfer (`mov` at 0xab7dc). The known continuation
-  calls 0x18c50 with r0 candidate 0x27ead0 (`bl` at 0xab80c).
+  Established. A word clear targets `0x27eaec` (`str` at 0xab7a0), and a later byte clear targets
+  `0x27eaf0` (`strb` at 0xab804). The indirect call has candidates `([0x27eaf0]:1, entry r1,
+  [0x27eae8], [0x27eaf0]:1)` (`mov` at 0xab7dc). The first branch takes its zero arm for
+  `[0x27eaf0]:1 == 0`, and falls through otherwise (`beq` at 0xab7b0). The called target and the
+  physical operation remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -140,6 +148,9 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab714)
 | `ldr` at 0xab7c8 | load | 4 | `abs 0xab860` | `-` |
 | `ldrb` at 0xab7cc | load | 1 | `abs 0x27eaf0` | `-` |
 | `ldr` at 0xab7d0 | load | 4 | `abs 0x27eae8` | `-` |
+| `str` at 0xab7e4 | store | 4 | `sp -0x14` | `ret(unknown)` |
+| `ldr` at 0xab7e8 | load | 4 | `sp -0x14` | `-` |
+| `ldr` at 0xab7f4 | load | 4 | `abs 0xab868` | `-` |
 | `ldr` at 0xab7fc | load | 4 | `abs 0xab860` | `-` |
 | `strb` at 0xab804 | store | 1 | `abs 0x27eaf0` | `0x0` |
 | `ldr` at 0xab808 | load | 4 | `abs 0xab86c` | `-` |
@@ -157,7 +168,9 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab714)
 
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
-| `bl` at 0xab80c | `(unknown callee) 0x18c50` | `0x27ead0` | `r1` | `?` | `?` |
+| `mov` at 0xab7dc | `(unknown callee) (unknown target)` | `[0x27eaf0]:1` | `r1` | `[0x27eae8]` | `[0x27eaf0]:1` |
+| `bl` at 0xab7f8 | `(unknown callee) 0x1d6d8` | `0x107ce4` | `?` | `?` | `ret(unknown)` |
+| `bl` at 0xab80c | `(unknown callee) 0x18c50` | `0x27ead0` | `?` | `?` | `?` |
 | `bl` at 0xab824 | `(unknown callee) 0x188b4` | `ret(0x18c50)` | `?` | `?` | `ret(0x18c50)` |
 | `bl` at 0xab830 | `(unknown callee) 0x1e71c` | `[ret(0x188b4)]` | `?` | `?` | `ret(0x188b4)` |
 | `bl` at 0xab854 | `(unknown callee) 0x1eed0` | `0x9` | `0x107bbc` | `0x156` | `0x0` |
@@ -166,13 +179,12 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab714)
 |---|---|---|
 | `beq` at 0xab7b0 | `[0x27eaf0]:1 == 0x0` | `[0x27eaf0]:1 != 0x0` |
 | `beq` at 0xab7c0 | `[0x27eae8] == 0x0` | `[0x27eae8] != 0x0` |
+| `beq` at 0xab7f0 | `ret(unknown) == 0x0` | `ret(unknown) != 0x0` |
 | `bge` at 0xab820 | `ret(0x18c50) >= 0x0 (signed, 32-bit)` | `ret(0x18c50) < 0x0 (signed, 32-bit)` |
 
 | Return instruction | Register | Value |
 |---|---|---|
 | `ldmdb` at 0xab858 | `r0` | `?` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab7dc).
 
 ## `i2cIntInit`
 

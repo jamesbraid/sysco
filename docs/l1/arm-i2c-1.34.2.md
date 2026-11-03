@@ -16,7 +16,7 @@ register locations r0 through r3 with unknown arity. Stack stores appear in the 
 Numeric call targets have unknown callee names in the flat-image analysis. Device roles
 and pointee meanings remain unknown unless the body establishes them. Tables include all
 explicit memory operands on known control-flow edges. Implicit stack saves appear in the
-full fact sheets. Effects and return paths beyond unresolved computed transfers are unknown.
+full fact sheets. Unknown indirect call targets retain unknown callee names.
 
 [Fact sheets and full listings](disasm/arm-1.34.2-package3/i2c-facts.txt) retain all tool sections.
 
@@ -507,11 +507,11 @@ full fact sheets. Effects and return paths beyond unresolved computed transfers 
 - `i2cSelectBus`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xab87c to 0xab908.
-  Established. `beq` takes the zero path from the word loaded at 0x11570c to the call to 0x1eed0
-  (`ldr` at 0xab898, `beq` at 0xab8a0, `bl` at 0xab8e8); its nonzero fall-through path reloads
-  0x11570c and reaches an unresolved computed transfer (`ldr` at 0xab8ac, `mov` at 0xab8b8). The
-  known zero path stores 0x0 at sp -0x18 (`str` at 0xab8f0). The return table covers that known path
-  only (`ldmdb` at 0xab8f8).
+  Established. The equality branch is taken when `[0x11570c] == 0`, and falls through when nonzero
+  (`beq` at 0xab8a0). The nonzero arm makes an indirect call with candidates `((r0 & 0xff), entry
+  r1, (r0 & 0xff), [0x11570c])` (`mov` at 0xab8b8); its target and callee name are unknown. The
+  merged return value is also unknown (`ldmdb` at 0xab8f8). Bus selection and the called operation
+  remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -521,6 +521,7 @@ full fact sheets. Effects and return paths beyond unresolved computed transfers 
 | `ldr` at 0xab8a4 | load | 4 | `abs 0xab8fc` | `-` |
 | `ldrb` at 0xab8a8 | load | 1 | `sp -0x11` | `-` |
 | `ldr` at 0xab8ac | load | 4 | `abs 0x11570c` | `-` |
+| `str` at 0xab8c0 | store | 4 | `sp -0x18` | `ret(unknown)` |
 | `ldr` at 0xab8c8 | load | 4 | `abs 0xab900` | `-` |
 | `str` at 0xab8cc | store | 4 | `sp -0x20` | `0x107d18` |
 | `ldrb` at 0xab8d0 | load | 1 | `sp -0x11` | `-` |
@@ -534,6 +535,7 @@ full fact sheets. Effects and return paths beyond unresolved computed transfers 
 
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
+| `mov` at 0xab8b8 | `(unknown callee) (unknown target)` | `(r0 & 0xff)` | `r1` | `(r0 & 0xff)` | `[0x11570c]` |
 | `bl` at 0xab8e8 | `(unknown callee) 0x1eed0` | `0x1` | `0x107bbc` | `0x168` | `0x0` |
 
 | Branch instruction | Taken when | Falls through when |
@@ -542,9 +544,7 @@ full fact sheets. Effects and return paths beyond unresolved computed transfers 
 
 | Return instruction | Register | Value |
 |---|---|---|
-| `ldmdb` at 0xab8f8 | `r0` | `0x0` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0xab8b8).
+| `ldmdb` at 0xab8f8 | `r0` | `?` |
 
 ## `i2cSetBusSelect`
 

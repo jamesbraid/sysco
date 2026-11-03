@@ -19,7 +19,7 @@ Unknown values and predicates include unsupported instruction effects and merged
 Numeric call targets have unknown callee names in the flat-image analysis. Device roles
 and pointee meanings remain unknown unless the body establishes them. Tables include all
 explicit memory operands on known control-flow edges. Implicit stack saves appear in the
-full fact sheets. An unresolved computed transfer can leave additional effects and return paths unknown.
+full fact sheets. Unknown call targets do not establish device operations.
 
 [Fact sheets and full listings](disasm/arm-1.34.2-package3/power-facts.txt) retain all tool sections.
 
@@ -685,12 +685,12 @@ full fact sheets. An unresolved computed transfer can leave additional effects a
 - `powerResetAgain`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3dca8 to 0x3dd10.
-  Established. The word read at 0x119ddc decides the first `beq`, whose taken zero path reaches the
-  zero-result save (`ldr` at 0x3dcbc, `beq` at 0x3dcc4, `str` at 0x3dcfc). With nonzero
-  fall-through, a second `beq` takes the zero-word path from 0x27ee88 to the same save (`ldr` at
-  0x3dccc, `beq` at 0x3dcd4, `str` at 0x3dcfc); its nonzero path reloads 0x27ee88 and reaches an
-  unresolved computed transfer (`ldr` at 0x3dcdc, `mov` at 0x3dce8). The known return carries 0x0,
-  and additional effects of that transfer remain unknown (`ldmdb` at 0x3dd04).
+  Established. The first equality branch is taken for `[0x119ddc] == 0` and falls through when
+  nonzero (`beq` at 0x3dcc4). A second comparison branches for `[0x27ee88] == 0`, also falling
+  through on nonzero (`beq` at 0x3dcd4). That second fall-through makes an indirect call with
+  candidates `(0xff, entry r1, entry r2, [0x27ee88])` (`mov` at 0x3dce8). The target and resulting
+  merged return are unknown (`ldmdb` at 0x3dd04). The reset operation is not established by the
+  function name.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -700,6 +700,7 @@ full fact sheets. An unresolved computed transfer can leave additional effects a
 | `ldr` at 0x3dccc | load | 4 | `abs 0x27ee88` | `-` |
 | `ldr` at 0x3dcd8 | load | 4 | `abs 0x3dd0c` | `-` |
 | `ldr` at 0x3dcdc | load | 4 | `abs 0x27ee88` | `-` |
+| `str` at 0x3dcf0 | store | 4 | `sp -0x14` | `ret(unknown)` |
 | `str` at 0x3dcfc | store | 4 | `sp -0x14` | `0x0` |
 | `ldr` at 0x3dd00 | load | 4 | `sp -0x14` | `-` |
 | `ldmdb` at 0x3dd04 | load | 4 | `sp -0x10` | `-` |
@@ -708,6 +709,7 @@ full fact sheets. An unresolved computed transfer can leave additional effects a
 
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
+| `mov` at 0x3dce8 | `(unknown callee) (unknown target)` | `0xff` | `r1` | `r2` | `[0x27ee88]` |
 
 | Branch instruction | Taken when | Falls through when |
 |---|---|---|
@@ -716,9 +718,7 @@ full fact sheets. An unresolved computed transfer can leave additional effects a
 
 | Return instruction | Register | Value |
 |---|---|---|
-| `ldmdb` at 0x3dd04 | `r0` | `0x0` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3dce8).
+| `ldmdb` at 0x3dd04 | `r0` | `?` |
 
 ## `powerResetStart`
 

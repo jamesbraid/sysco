@@ -384,13 +384,11 @@ An unresolved computed transfer can leave additional effects and return paths un
 - `ioExpIntHandler`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xb8014 to 0xb81fc.
-  Established. The word at entry r0 +0x8 decides the first `beq`, whose taken zero path bypasses the
-  call to 0xb86d4 (`ldr` at 0xb8044, `beq` at 0xb804c, `bl` at 0xb807c). After that call, a second
-  `beq` takes its zero-result path to a word store of `[[sp-24]+8]+1` at `[sp-24] +0x8` (`beq` at
-  0xb8090, `str` at 0xb80e8). A later word load at `[sp-20] +0x8` precedes an unresolved computed
-  transfer (`ldr` at 0xb8110, `mov` at 0xb8120). The known paths include a call to 0xb7c2c with
-  candidates `[sp-25]:1` and `[sp-48]` (`bl` at 0xb81cc). Additional transfer effects and physical
-  handler semantics are unknown.
+  Established. A word at `[sp-24] +0x8` receives `[[sp-24]+8]+1` (`str` at 0xb80e8). The indirect
+  call has candidates `([sp-25]:1, unknown, [[sp-24]+2]:1, [[sp-24]+2]:1)` (`mov` at 0xb8120), with
+  an unknown target. The initial equality branch is taken when `[r0+8] == 0`, and falls through
+  otherwise (`beq` at 0xb804c). The exit retains an unknown value (`ldmdb` at 0xb81dc). Interrupt
+  ownership and handler effects are Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -429,6 +427,7 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `ldr` at 0xb8108 | load | 4 | `sp -0x18` | `-` |
 | `ldrb` at 0xb810c | load | 1 | `[sp-24] +0x2` | `-` |
 | `ldr` at 0xb8110 | load | 4 | `[sp-20] +0x8` | `-` |
+| `str` at 0xb8128 | store | 4 | `sp -0x24` | `0x1` |
 | `ldr` at 0xb8130 | load | 4 | `abs 0xb81ec` | `-` |
 | `str` at 0xb8134 | store | 4 | `sp -0x44` | `0x1092d4` |
 | `ldr` at 0xb8138 | load | 4 | `sp -0x14` | `-` |
@@ -469,6 +468,7 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `bl` at 0xb807c | `(unknown callee) 0xb86d4` | `r0` | `r1+2` | `(r3 & 0xff)` | `r1+2` |
 | `bl` at 0xb8098 | `(unknown callee) 0x1ea50` | `ret(0xb86d4)` | `?` | `?` | `ret(0xb86d4)` |
 | `bl` at 0xb80c8 | `(unknown callee) 0x1eed0` | `0x3` | `0x10916c` | `0x28f` | `0x0` |
+| `mov` at 0xb8120 | `(unknown callee) (unknown target)` | `[sp-25]:1` | `?` | `[[sp-24]+2]:1` | `[[sp-24]+2]:1` |
 | `bl` at 0xb8194 | `(unknown callee) 0x1eed0` | `0x1` | `0x10916c` | `0x299` | `0x0` |
 | `bl` at 0xb81cc | `(unknown callee) 0xb7c2c` | `[sp-25]:1` | `[sp-48]` | `?` | `?` |
 
@@ -482,9 +482,7 @@ An unresolved computed transfer can leave additional effects and return paths un
 
 | Return instruction | Register | Value |
 |---|---|---|
-| `ldmdb` at 0xb81dc | `r0` | `0x0` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0xb8120).
+| `ldmdb` at 0xb81dc | `r0` | `?` |
 
 ## `ioExpIgnoreInt`
 

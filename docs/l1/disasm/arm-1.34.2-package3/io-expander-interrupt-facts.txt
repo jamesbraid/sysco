@@ -1314,9 +1314,8 @@ routine (unnamed)  0xb8014-0xb81fc  size 0x1e8 (488 bytes)
   file root/6.5.27/usr/cpu/firmware/sysco/l1.bin :: 6.5.27:l1#3 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
   calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
   legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
-  warning: unresolved indirect transfers: access, call and return lists cover known edges only
 
-accesses (73)
+accesses (74)
   0xb8018 store w4 push base=sp disp +0x0 => sp -0x10 value r11
   0xb8018 store w4 push base=sp disp +0x4 => sp -0xc value sp
   0xb8018 store w4 push base=sp disp +0x8 => sp -0x8 value lr
@@ -1356,6 +1355,7 @@ accesses (73)
   0xb8108 load w4 ldr base=r11 disp -0x14 => sp -0x18
   0xb810c load w1 ldrb base=r3 disp +0x2 => [sp-24] +0x2
   0xb8110 load w4 ldr base=r1 disp +0x8 => [sp-20] +0x8
+  0xb8128 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x1
   0xb8130 load w4 ldr base=pc disp +0xb4 => abs 0xb81ec
   0xb8134 store w4 str base=sp disp +0x0 => sp -0x44 value 0x1092d4
   0xb8138 load w4 ldr base=r11 disp -0x10 => sp -0x14
@@ -1391,19 +1391,21 @@ accesses (73)
   0xb81dc load w4 ldmdb base=r11 disp -0x8 => sp -0xc
   0xb81dc load w4 ldmdb base=r11 disp -0x4 => sp -0x8
 
-calls (5)
+calls (6)
   0xb807c bl (unknown callee) [0xb86d4]
       args: r0=r0, r1=r1+2, r2=(r3 & 0xff), r3=r1+2
   0xb8098 bl (unknown callee) [0x1ea50]
       args: r0=ret(0xb86d4), r1=?, r2=?, r3=ret(0xb86d4)
   0xb80c8 bl (unknown callee) [0x1eed0]
       args: r0=0x3, r1=0x10916c, r2=0x28f, r3=0x0
+  0xb8120 mov (unknown callee) [unknown target]
+      args: r0=[sp-25]:1, r1=?, r2=[[sp-24]+2]:1, r3=[[sp-24]+2]:1
   0xb8194 bl (unknown callee) [0x1eed0]
       args: r0=0x1, r1=0x10916c, r2=0x299, r3=0x0
   0xb81cc bl (unknown callee) [0xb7c2c]
       args: r0=[sp-25]:1, r1=[sp-48], r2=?, r3=?
 
-blocks (112)
+blocks (115)
   B0 0xb8014-0xb8014 preds: entry
       normal -> B1
   B1 0xb8018-0xb8018 preds: B0
@@ -1542,7 +1544,13 @@ blocks (112)
   B66 0xb811c-0xb811c preds: B65
       normal -> B67
   B67 0xb8120-0xb8120 preds: B66
-      jump
+      call -> B68
+  B68 0xb8124-0xb8124 preds: B67
+      normal -> B69
+  B69 0xb8128-0xb8128 preds: B68
+      normal -> B70
+  B70 0xb812c-0xb812c preds: B69
+      jump -> 0xb81d8
   B71 0xb8130-0xb8130 preds: B14, B21
       normal -> B72
   B72 0xb8134-0xb8134 preds: B71
@@ -1629,13 +1637,13 @@ blocks (112)
       normal -> B112
   B112 0xb81d4-0xb81d4 preds: B111
       normal -> B113
-  B113 0xb81d8-0xb81d8 preds: B48, B112
+  B113 0xb81d8-0xb81d8 preds: B48, B112, B70
       normal -> B114
   B114 0xb81dc-0xb81dc preds: B113
       return
 
 returns (1)
-  0xb81dc: r0 = 0x0; reached from B113
+  0xb81dc: r0 = ?; reached from B113
 
 constants
   0xb80a0 r3 = 0x1092b0
@@ -1644,6 +1652,8 @@ constants
   0xb80c0 r2 = 0x28f
   0xb80c4 r3 = 0x0
   0xb80cc r3 = 0x0
+  0xb811c lr = 0xb8124
+  0xb8124 r3 = 0x1
   0xb8130 r3 = 0x1092d4
   0xb8168 r3 = 0x109318
   0xb8174 r3 = 0x10931c
@@ -1653,7 +1663,6 @@ constants
   0xb8190 r3 = 0x0
   0xb81bc r3 = 0xff
   0xb81d0 r3 = 0x0
-  0xb81d8 r0 = 0x0
 immediates
   0x4 at 0xb801c
   0x34 at 0xb8020
@@ -1674,6 +1683,8 @@ immediates
   0xb81d8 at 0xb80d4
   0x1 at 0xb80e4
   0xff at 0xb8104
+  0x1 at 0xb8124
+  0xb81d8 at 0xb812c
   0x0 at 0xb8160
   0xb8174 at 0xb8164
   0xb817c at 0xb8170
@@ -1755,9 +1766,9 @@ instructions
   0xb8118 0320a0e1 mov r2, r3
   0xb811c 0fe0a0e1 mov lr, pc
   0xb8120 0cf0a0e1 mov pc, ip
-  0xb8124 0130a0e3 mov r3, #1 (not reached by known edges)
-  0xb8128 20300be5 str r3, [fp, #-0x20] (not reached by known edges)
-  0xb812c 290000ea b #0xb81d8 (not reached by known edges)
+  0xb8124 0130a0e3 mov r3, #1
+  0xb8128 20300be5 str r3, [fp, #-0x20]
+  0xb812c 290000ea b #0xb81d8
   0xb8130 b4309fe5 ldr r3, [pc, #0xb4]
   0xb8134 00308de5 str r3, [sp]
   0xb8138 10301be5 ldr r3, [fp, #-0x10]

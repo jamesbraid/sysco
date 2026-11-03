@@ -28,16 +28,12 @@ An unresolved computed transfer can leave additional effects and return paths un
 - `powerUp`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x39a3c to 0x3a458.
-  Established. The initial known paths include word clears at 0x119dd4 and 0x119dd8, followed by a
-  word store of 0x1 at 0x119de0 (`str` at 0x39bf8, `str` at 0x39c04, `str` at 0x39c24). Later word
-  stores to 0x119de0 write 0x0 at three separate sites (`str` at 0x39ce4, `str` at 0x39fa4, `str` at
-  0x3a0bc). Another known path writes 0x1 at 0x119ddc (`str` at 0x3a248). Five computed transfers
-  remain unresolved (`mov` at 0x39aa0, `ldrls` at 0x39b00, `mov` at 0x3a1dc, `ldrls` at 0x3a264,
-  `mov` at 0x3a408). One later `beq` takes the zero-word path from 0x27ee58 past the final computed
-  transfer, then a word store clears 0x119de0 (`beq` at 0x3a3f8, `mov` at 0x3a408, `str` at
-  0x3a414). The known call list includes 0x3ed00 with first candidates 0xff and 0x3, and 0x5edf8
-  with first candidate 0x1 (`bl` at 0x3a210, `bl` at 0x3a33c). The complete physical power-up
-  sequence, global meanings and additional transfer effects remain unknown.
+  Established. Known word stores include zero at `0x119dd4` (`str` at 0x39bf8), zero at `0x119dd8`
+  (`str` at 0x39c04) and one at `0x119de0` (`str` at 0x39c24). Three indirect calls are recorded
+  (`mov` at 0x39aa0, `mov` at 0x3a1dc, `mov` at 0x3a408). Each has an unknown target. The first
+  carries candidates `(ret(0x2c470), unknown, unknown, [0x27eec0])` (`mov` at 0x39aa0). Two computed
+  transfers still have unresolved taken edges (`ldrls` at 0x39b00, `ldrls` at 0x3a264). The full
+  physical power-up sequence and global meanings remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -59,6 +55,11 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `ldr` at 0x39a88 | load | 4 | `abs 0x27eec0` | `-` |
 | `ldr` at 0x39a94 | load | 4 | `abs 0x3a1b0` | `-` |
 | `ldr` at 0x39a98 | load | 4 | `abs 0x27eec0` | `-` |
+| `ldr` at 0x39ab0 | load | 4 | `abs 0x3a15c` | `-` |
+| `str` at 0x39ab4 | store | 4 | `sp -0x88` | `0xe163c` |
+| `ldr` at 0x39abc | load | 4 | `abs 0x3a160` | `-` |
+| `ldr` at 0x39ac0 | load | 4 | `abs 0x3a164` | `-` |
+| `str` at 0x39ad0 | store | 4 | `sp -0x74` | `0x0` |
 | `str` at 0x39ae0 | store | 4 | `sp -0x3c` | `ret(0x446bc)` |
 | `ldr` at 0x39ae4 | load | 4 | `sp -0x3c` | `-` |
 | `ldr` at 0x39af0 | load | 4 | `sp -0x3c` | `-` |
@@ -191,6 +192,11 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `ldr` at 0x3a1c4 | load | 4 | `abs 0x281140` | `-` |
 | `ldr` at 0x3a1d0 | load | 4 | `abs 0x3a1a0` | `-` |
 | `ldr` at 0x3a1d4 | load | 4 | `abs 0x281140` | `-` |
+| `str` at 0x3a1e4 | store | 4 | `sp -0x38` | `ret(unknown)` |
+| `ldr` at 0x3a1e8 | load | 4 | `sp -0x38` | `-` |
+| `ldr` at 0x3a1f4 | load | 4 | `sp -0x34` | `-` |
+| `ldr` at 0x3a200 | load | 4 | `sp -0x38` | `-` |
+| `str` at 0x3a204 | store | 4 | `sp -0x34` | `ret(unknown)` |
 | `str` at 0x3a218 | store | 4 | `sp -0x38` | `ret(0x3ed00)` |
 | `ldr` at 0x3a21c | load | 4 | `sp -0x38` | `-` |
 | `ldr` at 0x3a228 | load | 4 | `sp -0x34` | `-` |
@@ -248,7 +254,9 @@ An unresolved computed transfer can leave additional effects and return paths un
 |---|---|---|---|---|---|
 | `bl` at 0x39a74 | `(unknown callee) 0x2b31c` | `[0xe162c]` | `[0xe1630]` | `[0xe1634]` | `[0xe1638]` |
 | `bl` at 0x39a80 | `(unknown callee) 0x2c470` | `ret(0x2b31c)` | `?` | `?` | `ret(0x2b31c)` |
-| `bl` at 0x39ad8 | `(unknown callee) 0x446bc` | `ret(0x2c470)` | `?` | `?` | `[0x27eec0]` |
+| `mov` at 0x39aa0 | `(unknown callee) (unknown target)` | `ret(0x2c470)` | `?` | `?` | `[0x27eec0]` |
+| `bl` at 0x39ac8 | `(unknown callee) 0x1eed0` | `0x6` | `0xe1584` | `0x1c7` | `0x0` |
+| `bl` at 0x39ad8 | `(unknown callee) 0x446bc` | `?` | `?` | `?` | `?` |
 | `bl` at 0x39b58 | `(unknown callee) 0x2c4a4` | `0x2` | `?` | `?` | `ret(0x446bc)+1704` |
 | `bl` at 0x39b68 | `(unknown callee) 0x2bfac` | `0x32` | `[sp-112]` | `0x2` | `?` |
 | `bl` at 0x39b7c | `(unknown callee) 0x437dc` | `[sp-44]` | `?` | `?` | `ret(0x446bc)` |
@@ -291,7 +299,8 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `bl` at 0x3a130 | `(unknown callee) 0x3e294` | `0x32` | `?` | `?` | `[sp-64]` |
 | `bl` at 0x3a13c | `(unknown callee) 0x3e294` | `0x19` | `?` | `?` | `?` |
 | `bl` at 0x3a1bc | `(unknown callee) 0x3e294` | `0x64` | `?` | `?` | `[0x281100]` |
-| `bl` at 0x3a210 | `(unknown callee) 0x3ed00` | `0xff` | `0x3` | `?` | `[0x281140]` |
+| `mov` at 0x3a1dc | `(unknown callee) (unknown target)` | `ret(0x3e294)` | `?` | `?` | `[0x281140]` |
+| `bl` at 0x3a210 | `(unknown callee) 0x3ed00` | `0xff` | `0x3` | `?` | `?` |
 | `bl` at 0x3a23c | `(unknown callee) 0x6b9d0` | `ret(0x3ed00)` | `?` | `?` | `?` |
 | `bl` at 0x3a300 | `(unknown callee) 0x43298` | `0x5` | `?` | `0x1` | `[sp-93]:1-48` |
 | `bl` at 0x3a33c | `(unknown callee) 0x5edf8` | `0x1` | `?` | `?` | `[sp-52]` |
@@ -302,11 +311,13 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `bl` at 0x3a37c | `(unknown callee) 0x2dcf4` | `ret(0x2e40c)` | `?` | `?` | `?` |
 | `bl` at 0x3a3c4 | `(unknown callee) 0x43298` | `0x5` | `[sp-93]:1` | `?` | `[sp-93]:1` |
 | `bl` at 0x3a3e0 | `(unknown callee) 0x433b0` | `0x5` | `?` | `?` | `[sp-40]` |
+| `mov` at 0x3a408 | `(unknown callee) (unknown target)` | `?` | `?` | `?` | `[0x27ee58]` |
 | `bl` at 0x3a428 | `(unknown callee) 0x6bab8` | `0x0` | `?` | `0x0` | `[sp-40]` |
 
 | Branch instruction | Taken when | Falls through when |
 |---|---|---|
 | `beq` at 0x39a90 | `[0x27eec0] == 0x0` | `[0x27eec0] != 0x0` |
+| `beq` at 0x39aac | `ret(unknown) == 0x0` | `ret(unknown) != 0x0` |
 | `beq` at 0x39aec | `ret(0x446bc) == 0x0` | `ret(0x446bc) != 0x0` |
 | `ldrls` at 0x39b00 | `ret(0x446bc)+1704 <= 0x4 (unsigned, 32-bit)` | `ret(0x446bc)+1704 > 0x4 (unsigned, 32-bit)` |
 | `beq` at 0x39b8c | `[sp-40] == 0x0` | `[sp-40] != 0x0` |
@@ -336,6 +347,8 @@ An unresolved computed transfer can leave additional effects and return paths un
 | `bne` at 0x3a11c | `[sp-93]:1 != 0x36` | `[sp-93]:1 == 0x36` |
 | `bne` at 0x3a128 | `[sp-64] != 0x0` | `[sp-64] == 0x0` |
 | `beq` at 0x3a1cc | `[0x281140] == 0x0` | `[0x281140] != 0x0` |
+| `beq` at 0x3a1f0 | `ret(unknown) == 0x0` | `ret(unknown) != 0x0` |
+| `bne` at 0x3a1fc | `[sp-52] != 0x0` | `[sp-52] == 0x0` |
 | `beq` at 0x3a224 | `ret(0x3ed00) == 0x0` | `ret(0x3ed00) != 0x0` |
 | `bne` at 0x3a230 | `[sp-52] != 0x0` | `[sp-52] == 0x0` |
 | `beq` at 0x3a254 | `[sp-40] == 0x0` | `[sp-40] != 0x0` |
@@ -356,30 +369,21 @@ An unresolved computed transfer can leave additional effects and return paths un
 |---|---|---|
 | `ldmdb` at 0x3a454 | `r0` | `?` |
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x39aa0).
-
 Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x39b00).
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a1dc).
-
 Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3a264).
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408).
 
 ## `powerDown`
 
 - `powerDown`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3a458 to 0x3a838.
-  Established. The first call to 0x6eb6c is followed by `beq`, whose taken zero-result path skips an
-  earlier conditional dispatch (`bl` at 0x3a480, `beq` at 0x3a48c, `ldrls` at 0x3a504). That `ldrls`
-  has taken condition `[sp-20]-1 <= 0x4 (unsigned, 32-bit)` and an unresolved taken edge (`ldrls` at
-  0x3a504). A later word load from 0x281100 supplies the save `[0x281100]-1` at sp -0x20 before a
-  loop whose `bge` has unknown operands (`ldr` at 0x3a654, `str` at 0x3a65c, `bge` at 0x3a668).
-  Known calls include 0x3efcc with first candidates 0xff and 0x2, and 0x5edf8 with first candidate
-  0x0 (`bl` at 0x3a5dc, `bl` at 0x3a7d0). Two other computed transfers remain unresolved (`mov` at
-  0x3a624, `mov` at 0x3a7f8). The known return retains `[sp-24]`. The physical power-down sequence
-  and additional transfer effects are unknown (`ldmdb` at 0x3a808).
+  Established. The two indirect calls have candidates `(ret(0x3efcc), unknown, unknown, [0x281160])`
+  (`mov` at 0x3a624) and `(ret(0x3e294), unknown, unknown, [0x27ee58])` (`mov` at 0x3a7f8). Both
+  targets are unknown. The earlier computed transfer takes its arm for unsigned `[sp-20]-1 <= 0x4`,
+  and falls through when greater (`ldrls` at 0x3a504); its taken edge remains unresolved. The exit
+  reports `[sp-24]` (`ldmdb` at 0x3a808). Physical power-down ordering and the called operations are
+  Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -412,6 +416,11 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408)
 | `ldr` at 0x3a60c | load | 4 | `abs 0x281160` | `-` |
 | `ldr` at 0x3a618 | load | 4 | `abs 0x3a81c` | `-` |
 | `ldr` at 0x3a61c | load | 4 | `abs 0x281160` | `-` |
+| `str` at 0x3a62c | store | 4 | `sp -0x1c` | `ret(unknown)` |
+| `ldr` at 0x3a630 | load | 4 | `sp -0x1c` | `-` |
+| `ldr` at 0x3a63c | load | 4 | `sp -0x18` | `-` |
+| `ldr` at 0x3a648 | load | 4 | `sp -0x1c` | `-` |
+| `str` at 0x3a64c | store | 4 | `sp -0x18` | `ret(unknown)` |
 | `ldr` at 0x3a650 | load | 4 | `abs 0x3a820` | `-` |
 | `ldr` at 0x3a654 | load | 4 | `abs 0x281100` | `-` |
 | `str` at 0x3a65c | store | 4 | `sp -0x20` | `[0x281100]-1` |
@@ -473,6 +482,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408)
 | `bl` at 0x3a5c4 | `(unknown callee) 0x433b0` | `0x5` | `?` | `?` | `?` |
 | `bl` at 0x3a5d0 | `(unknown callee) 0x2de10` | `ret(0x433b0)` | `?` | `?` | `ret(0x433b0)` |
 | `bl` at 0x3a5dc | `(unknown callee) 0x3efcc` | `0xff` | `0x2` | `?` | `?` |
+| `mov` at 0x3a624 | `(unknown callee) (unknown target)` | `ret(0x3efcc)` | `?` | `?` | `[0x281160]` |
 | `bl` at 0x3a6fc | `(unknown callee) 0xb78b4` | `?` | `?` | `?` | `?` |
 | `bl` at 0x3a734 | `(unknown callee) 0x3dde4` | `?` | `0x281120` | `?` | `?` |
 | `bl` at 0x3a784 | `(unknown callee) 0xb7958` | `0x1` | `0x80` | `?` | `[sp-113]:1` |
@@ -481,6 +491,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408)
 | `bl` at 0x3a7c8 | `(unknown callee) 0x6ba34` | `ret(0x2bfac)` | `?` | `?` | `ret(0x2bfac)` |
 | `bl` at 0x3a7d0 | `(unknown callee) 0x5edf8` | `0x0` | `?` | `?` | `?` |
 | `bl` at 0x3a7e8 | `(unknown callee) 0x3e294` | `0x28` | `?` | `?` | `[0x27ee58]` |
+| `mov` at 0x3a7f8 | `(unknown callee) (unknown target)` | `ret(0x3e294)` | `?` | `?` | `[0x27ee58]` |
 
 | Branch instruction | Taken when | Falls through when |
 |---|---|---|
@@ -494,6 +505,8 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408)
 | `beq` at 0x3a5f0 | `ret(0x3efcc) == 0x0` | `ret(0x3efcc) != 0x0` |
 | `bne` at 0x3a5fc | `[sp-24] != 0x0` | `[sp-24] == 0x0` |
 | `beq` at 0x3a614 | `[0x281160] == 0x0` | `[0x281160] != 0x0` |
+| `beq` at 0x3a638 | `ret(unknown) == 0x0` | `ret(unknown) != 0x0` |
+| `bne` at 0x3a644 | `[sp-24] != 0x0` | `[sp-24] == 0x0` |
 | `bge` at 0x3a668 | `ge flags condition (operands unknown)` | `not (ge flags condition (operands unknown))` |
 | `beq` at 0x3a698 | `? == 0xff` | `? != 0xff` |
 | `bne` at 0x3a6b4 | `Z == 0` | `not (Z == 0)` |
@@ -510,10 +523,6 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a408)
 | `ldmdb` at 0x3a808 | `r0` | `[sp-24]` |
 
 Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3a504).
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a624).
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3a7f8).
 
 ## `powerGetMargin`
 
@@ -793,12 +802,10 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3ced
 - `powerNominalVoltageI`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3d538 to 0x3d6dc.
-  Established. A word read from 0x27ee98 decides `beq`, whose taken zero path reaches the call to
-  0x3d108 (`ldr` at 0x3d5a0, `beq` at 0x3d5a8, `bl` at 0x3d5d0). Nonzero fall-through instead loads
-  a word from 0x27ee94 and reaches an unresolved computed transfer (`ldr` at 0x3d5b0, `mov` at
-  0x3d5bc). Other known paths save 0x4023e76d or an unknown word at sp -0x18 (`str` at 0x3d66c,
-  `str` at 0x3d6b4). The return value, voltage units and additional transfer effects remain unknown
-  (`ldmdb` at 0x3d6bc).
+  Established. The indirect call carries candidates `(entry r0, entry r1, [sp-32], [0x27ee94])`
+  (`mov` at 0x3d5bc), with an unknown target. The first comparison branches when `[sp-32] == 0xb`,
+  and falls through when unequal (`beq` at 0x3d57c). The exit reports an unknown value (`ldmdb` at
+  0x3d6bc). Voltage units and the relationship between the input and output remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -816,6 +823,7 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3ced
 | `ldr` at 0x3d5ac | load | 4 | `abs 0x3d6c4` | `-` |
 | `ldr` at 0x3d5b0 | load | 4 | `abs 0x27ee94` | `-` |
 | `ldr` at 0x3d5b4 | load | 4 | `sp -0x14` | `-` |
+| `str` at 0x3d5c4 | store | 4 | `sp -0x18` | `ret(unknown)` |
 | `ldr` at 0x3d5cc | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d5d8 | load | 4 | `abs 0x3d6c8` | `-` |
 | `str` at 0x3d5dc | store | 4 | `sp -0x2c` | `0xe1b6c` |
@@ -848,6 +856,7 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3ced
 
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
+| `mov` at 0x3d5bc | `(unknown callee) (unknown target)` | `r0` | `r1` | `[sp-32]` | `[0x27ee94]` |
 | `bl` at 0x3d5d0 | `(unknown callee) 0x3d108` | `r0` | `r1` | `[sp-32]` | `[0x27ee98]` |
 | `bl` at 0x3d61c | `(unknown callee) 0x1eed0` | `0x9` | `0xe1584` | `0x8d1` | `0x0` |
 | `bl` at 0x3d620 | `(unknown callee) 0x2b31c` | `?` | `?` | `?` | `?` |
@@ -867,19 +876,16 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0x3ced
 |---|---|---|
 | `ldmdb` at 0x3d6bc | `r0` | `?` |
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d5bc).
-
 ## `powerMarginPercent`
 
 - `powerMarginPercent`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3d6dc to 0x3d7d8.
-  Established. The `beq` paths for `[sp-28]` equal to 0xa and 0x10 reach different arms (`beq` at
-  0x3d720, `beq` at 0x3d72c). The first arm saves 0x3cdd67ba at sp -0x18 (`str` at 0x3d7a0). In the
-  second arm, a `beq` takes the zero-word path from 0x27ee9c to 0x3d108. Nonzero fall-through
-  reloads that global and reaches an unresolved computed transfer (`beq` at 0x3d740, `ldr` at
-  0x3d748, `mov` at 0x3d754, `bl` at 0x3d768). Another known path saves 0x3d4ccccd at sp -0x18
-  (`str` at 0x3d7ac). The percent encoding and further transfer effects remain unknown.
+  Established. An indirect call has candidates `(entry r0, entry r1, unknown, [0x27ee9c])` (`mov` at
+  0x3d754); its target is unknown. The earlier equality branches are taken for `[sp-28] == 0xa`
+  (`beq` at 0x3d720) and `[sp-28] == 0x10` (`beq` at 0x3d72c), with inequality falling through in
+  each case. The return value remains unknown (`ldmdb` at 0x3d7b8). The percent encoding is not
+  established by the call candidates.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -896,6 +902,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d5bc)
 | `ldr` at 0x3d744 | load | 4 | `abs 0x3d7c0` | `-` |
 | `ldr` at 0x3d748 | load | 4 | `abs 0x27ee9c` | `-` |
 | `ldr` at 0x3d74c | load | 4 | `sp -0x14` | `-` |
+| `str` at 0x3d75c | store | 4 | `sp -0x18` | `ret(unknown)` |
 | `ldr` at 0x3d764 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d770 | load | 4 | `abs 0x3d7c4` | `-` |
 | `str` at 0x3d774 | store | 4 | `sp -0x28` | `0xe1ba8` |
@@ -915,6 +922,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d5bc)
 
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
+| `mov` at 0x3d754 | `(unknown callee) (unknown target)` | `r0` | `r1` | `?` | `[0x27ee9c]` |
 | `bl` at 0x3d768 | `(unknown callee) 0x3d108` | `r0` | `r1` | `?` | `[0x27ee9c]` |
 | `bl` at 0x3d794 | `(unknown callee) 0x1eed0` | `0x9` | `0xe1584` | `0x8ea` | `0x0` |
 
@@ -928,20 +936,15 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d5bc)
 |---|---|---|
 | `ldmdb` at 0x3d7b8 | `r0` | `?` |
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d754).
-
 ## `powerLowMargin`
 
 - `powerLowMargin`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3d7d8 to 0x3d8ac.
-  Established. `bhi` takes the path past the global test when `[r0]:1-16 > 0x1` unsigned (`bhi` at
-  0x3d7fc). If it falls through, `beq` takes the zero-word path from 0x27ee98 to 0x3da54 and
-  0x3d108 (`beq` at 0x3d80c, `bl` at 0x3d848, `bl` at 0x3d854). The nonzero path instead reloads
-  0x27ee98 and reaches an unresolved computed transfer (`ldr` at 0x3d820, `mov` at 0x3d830). The
-  later byte load has an unknown effective target and is saved as an unknown word at sp -0x18
-  (`ldrb` at 0x3d88c, `str` at 0x3d890). Physical margin selection and additional effects are
-  unknown.
+  Established. The unsigned comparison takes its branch for `[r0]:1-16 > 0x1`, and falls through for
+  less or equal (`bhi` at 0x3d7fc). A later indirect call has candidates `(0x1, ret(0x3da54),
+  ret(0x3da54), [0x27ee98])` (`mov` at 0x3d830); its target and merged return value remain unknown
+  (`ldmdb` at 0x3d898). Physical margin selection is Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -953,6 +956,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d754)
 | `ldr` at 0x3d810 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d81c | load | 4 | `abs 0x3d89c` | `-` |
 | `ldr` at 0x3d820 | load | 4 | `abs 0x27ee98` | `-` |
+| `str` at 0x3d83c | store | 4 | `sp -0x18` | `?` |
 | `ldr` at 0x3d844 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d85c | load | 4 | `abs 0x3d8a0` | `-` |
 | `str` at 0x3d860 | store | 4 | `sp -0x24` | `0xe1b6c` |
@@ -973,6 +977,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d754)
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
 | `bl` at 0x3d814 | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
+| `mov` at 0x3d830 | `(unknown callee) (unknown target)` | `0x1` | `ret(0x3da54)` | `ret(0x3da54)` | `[0x27ee98]` |
 | `bl` at 0x3d848 | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
 | `bl` at 0x3d854 | `(unknown callee) 0x3d108` | `ret(0x3da54)` | `?` | `?` | `ret(0x3da54)` |
 | `bl` at 0x3d884 | `(unknown callee) 0x1eed0` | `0x9` | `0xe1584` | `0x901` | `0x0` |
@@ -986,20 +991,15 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d754)
 |---|---|---|
 | `ldmdb` at 0x3d898 | `r0` | `?` |
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d830).
-
 ## `powerNormalMargin`
 
 - `powerNormalMargin`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3d8ac to 0x3d980.
-  Established. The initial `bhi` takes the path past the global test for `[r0]:1-16 > 0x1` unsigned
-  (`bhi` at 0x3d8d0). The later `beq` takes the zero-word path from 0x27ee98 to two calls to
-  0x3da54 and 0x3d108 (`beq` at 0x3d8e0, `bl` at 0x3d91c, `bl` at 0x3d928). Nonzero fall-through
-  reaches an unresolved computed transfer after reloading 0x27ee98 (`ldr` at 0x3d8f4, `mov` at
-  0x3d904). An unknown-valued word save at sp -0x18 follows a byte load with unknown target on a
-  known path (`ldrb` at 0x3d960, `str` at 0x3d964). Normal-margin semantics and further effects
-  remain unknown.
+  Established. The initial unsigned branch takes the arm for `[r0]:1-16 > 0x1`, with less or equal
+  falling through (`bhi` at 0x3d8d0). The indirect call uses candidates `(0x2, ret(0x3da54),
+  ret(0x3da54), [0x27ee98])` (`mov` at 0x3d904). No callee target is resolved, and the exit value is
+  unknown (`ldmdb` at 0x3d96c). Normal-margin semantics remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -1011,6 +1011,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d830)
 | `ldr` at 0x3d8e4 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d8f0 | load | 4 | `abs 0x3d970` | `-` |
 | `ldr` at 0x3d8f4 | load | 4 | `abs 0x27ee98` | `-` |
+| `str` at 0x3d910 | store | 4 | `sp -0x18` | `?` |
 | `ldr` at 0x3d918 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d930 | load | 4 | `abs 0x3d974` | `-` |
 | `str` at 0x3d934 | store | 4 | `sp -0x24` | `0xe1b6c` |
@@ -1031,6 +1032,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d830)
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
 | `bl` at 0x3d8e8 | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
+| `mov` at 0x3d904 | `(unknown callee) (unknown target)` | `0x2` | `ret(0x3da54)` | `ret(0x3da54)` | `[0x27ee98]` |
 | `bl` at 0x3d91c | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
 | `bl` at 0x3d928 | `(unknown callee) 0x3d108` | `ret(0x3da54)` | `?` | `?` | `ret(0x3da54)` |
 | `bl` at 0x3d958 | `(unknown callee) 0x1eed0` | `0x9` | `0xe1584` | `0x918` | `0x0` |
@@ -1044,19 +1046,15 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d830)
 |---|---|---|
 | `ldmdb` at 0x3d96c | `r0` | `?` |
 
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d904).
-
 ## `powerHighMargin`
 
 - `powerHighMargin`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0x3d980 to 0x3da54.
-  Established. The conditional `bhi` takes the `[r0]:1-16 > 0x1` unsigned path past the global test
-  (`bhi` at 0x3d9a4). The global-zero path taken by `beq` reaches 0x3da54 and 0x3d108 (`beq` at
-  0x3d9b4, `bl` at 0x3d9f0, `bl` at 0x3d9fc). The other path reloads 0x27ee98 and reaches an
-  unresolved computed transfer (`ldr` at 0x3d9c8, `mov` at 0x3d9d8). The later byte load and its
-  word save at sp -0x18 have unknown target and value respectively (`ldrb` at 0x3da34, `str` at
-  0x3da38). High-margin semantics and additional transfer effects are unknown.
+  Established. The first branch is taken for unsigned `[r0]:1-16 > 0x1` and falls through otherwise
+  (`bhi` at 0x3d9a4). The indirect call has candidates `(0x3, ret(0x3da54), ret(0x3da54),
+  [0x27ee98])` (`mov` at 0x3d9d8), with an unknown target. The exit retains an unknown value
+  (`ldmdb` at 0x3da40). The electrical high-margin setting and its units are Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -1068,6 +1066,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d904)
 | `ldr` at 0x3d9b8 | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3d9c4 | load | 4 | `abs 0x3da44` | `-` |
 | `ldr` at 0x3d9c8 | load | 4 | `abs 0x27ee98` | `-` |
+| `str` at 0x3d9e4 | store | 4 | `sp -0x18` | `?` |
 | `ldr` at 0x3d9ec | load | 4 | `sp -0x14` | `-` |
 | `ldr` at 0x3da04 | load | 4 | `abs 0x3da48` | `-` |
 | `str` at 0x3da08 | store | 4 | `sp -0x24` | `0xe1b6c` |
@@ -1088,6 +1087,7 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d904)
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
 | `bl` at 0x3d9bc | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
+| `mov` at 0x3d9d8 | `(unknown callee) (unknown target)` | `0x3` | `ret(0x3da54)` | `ret(0x3da54)` | `[0x27ee98]` |
 | `bl` at 0x3d9f0 | `(unknown callee) 0x3da54` | `r0` | `r1` | `r2` | `[0x27ee98]` |
 | `bl` at 0x3d9fc | `(unknown callee) 0x3d108` | `ret(0x3da54)` | `?` | `?` | `ret(0x3da54)` |
 | `bl` at 0x3da2c | `(unknown callee) 0x1eed0` | `0x9` | `0xe1584` | `0x92e` | `0x0` |
@@ -1100,8 +1100,6 @@ Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d904)
 | Return instruction | Register | Value |
 |---|---|---|
 | `ldmdb` at 0x3da40 | `r0` | `?` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0x3d9d8).
 
 ## `powerGetIndexOfConfig`
 

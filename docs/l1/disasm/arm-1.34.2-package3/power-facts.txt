@@ -1850,7 +1850,8 @@ routine (unnamed)  0x3aa60-0x3ab58  size 0xf8 (248 bytes)
   warning: 0x3ab1c predicated effects are merged with the unexecuted path
   warning: 0x3ab30 predicated effects are merged with the unexecuted path
   warning: 0x3ab34 predicated effects are merged with the unexecuted path
-  warning: decoder stopped at 0x3ab4c; remaining bytes are not instructions
+  warning: undecodable bytes at 0x3ab4c-0x3ab50; fall-through stops at this range
+  warning: undecodable bytes at 0x3ab54-0x3ab58; fall-through stops at this range
 
 accesses (32)
   0x3aa64 store w4 push base=sp disp +0x0 => sp -0x10 value r11
@@ -2106,6 +2107,7 @@ instructions
   0x3ab40 1c300be5 str r3, [fp, #-0x1c]
   0x3ab44 1c001be5 ldr r0, [fp, #-0x1c]
   0x3ab48 00a81be9 ldmdb fp, {fp, sp, pc}
+  0x3ab50 20112800 eoreq r1, r8, r0, lsr #2 (not reached by known edges)
 
 routine (unnamed)  0x3b134-0x3b1c4  size 0x90 (144 bytes)
   file root/6.5.27/usr/cpu/firmware/sysco/l1.bin :: 6.5.27:l1#3 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
@@ -2682,9 +2684,8 @@ routine (unnamed)  0x3dca8-0x3dd10  size 0x68 (104 bytes)
   file root/6.5.27/usr/cpu/firmware/sysco/l1.bin :: 6.5.27:l1#3 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
   calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
   legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
-  warning: unresolved indirect transfers: access, call and return lists cover known edges only
 
-accesses (15)
+accesses (16)
   0x3dcac store w4 push base=sp disp +0x0 => sp -0x10 value r11
   0x3dcac store w4 push base=sp disp +0x4 => sp -0xc value sp
   0x3dcac store w4 push base=sp disp +0x8 => sp -0x8 value lr
@@ -2695,15 +2696,18 @@ accesses (15)
   0x3dccc load w4 ldr base=r3 disp +0xc8 => abs 0x27ee88
   0x3dcd8 load w4 ldr base=pc disp +0x2c => abs 0x3dd0c
   0x3dcdc load w4 ldr base=r3 disp +0xc8 => abs 0x27ee88
+  0x3dcf0 store w4 str base=r11 disp -0x10 => sp -0x14 value ret(unknown)
   0x3dcfc store w4 str base=r11 disp -0x10 => sp -0x14 value 0x0
   0x3dd00 load w4 ldr base=r11 disp -0x10 => sp -0x14
   0x3dd04 load w4 ldmdb base=r11 disp -0xc => sp -0x10
   0x3dd04 load w4 ldmdb base=r11 disp -0x8 => sp -0xc
   0x3dd04 load w4 ldmdb base=r11 disp -0x4 => sp -0x8
 
-calls (0)
+calls (1)
+  0x3dce8 mov (unknown callee) [unknown target]
+      args: r0=0xff, r1=r1, r2=r2, r3=[0x27ee88]
 
-blocks (21)
+blocks (24)
   B0 0x3dca8-0x3dca8 preds: entry
       normal -> B1
   B1 0x3dcac-0x3dcac preds: B0
@@ -2739,26 +2743,32 @@ blocks (21)
   B15 0x3dce4-0x3dce4 preds: B14
       normal -> B16
   B16 0x3dce8-0x3dce8 preds: B15
-      jump
+      call -> B17
+  B17 0x3dcec-0x3dcec preds: B16
+      normal -> B18
+  B18 0x3dcf0-0x3dcf0 preds: B17
+      normal -> B19
+  B19 0x3dcf4-0x3dcf4 preds: B18
+      jump -> 0x3dd00
   B20 0x3dcf8-0x3dcf8 preds: B7, B11
       normal -> B21
   B21 0x3dcfc-0x3dcfc preds: B20
       normal -> B22
-  B22 0x3dd00-0x3dd00 preds: B21
+  B22 0x3dd00-0x3dd00 preds: B21, B19
       normal -> B23
   B23 0x3dd04-0x3dd04 preds: B22
       return
 
 returns (1)
-  0x3dd04: r0 = 0x0; reached from B22
+  0x3dd04: r0 = ?; reached from B22
 
 constants
   0x3dcb8 r3 = 0x119ddc
   0x3dcc8 r3 = 0x27edc0
   0x3dcd8 r3 = 0x27edc0
   0x3dce0 r0 = 0xff
+  0x3dce4 lr = 0x3dcec
   0x3dcf8 r3 = 0x0
-  0x3dd00 r0 = 0x0
 immediates
   0x4 at 0x3dcb0
   0x4 at 0x3dcb4
@@ -2767,6 +2777,7 @@ immediates
   0x0 at 0x3dcd0
   0x3dcf8 at 0x3dcd4
   0xff at 0x3dce0
+  0x3dd00 at 0x3dcf4
   0x0 at 0x3dcf8
 instructions
   0x3dca8 0dc0a0e1 mov ip, sp
@@ -2786,9 +2797,9 @@ instructions
   0x3dce0 ff00a0e3 mov r0, #0xff
   0x3dce4 0fe0a0e1 mov lr, pc
   0x3dce8 03f0a0e1 mov pc, r3
-  0x3dcec 0030a0e1 mov r3, r0 (not reached by known edges)
-  0x3dcf0 10300be5 str r3, [fp, #-0x10] (not reached by known edges)
-  0x3dcf4 010000ea b #0x3dd00 (not reached by known edges)
+  0x3dcec 0030a0e1 mov r3, r0
+  0x3dcf0 10300be5 str r3, [fp, #-0x10]
+  0x3dcf4 010000ea b #0x3dd00
   0x3dcf8 0030a0e3 mov r3, #0
   0x3dcfc 10300be5 str r3, [fp, #-0x10]
   0x3dd00 10001be5 ldr r0, [fp, #-0x10]

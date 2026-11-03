@@ -368,13 +368,11 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb738
 - `ioExpSoftResetInt`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xb7644 to 0xb7858.
-  Established. The loop initializes the byte at sp -0x19 to zero and uses a `blt` predicate with
-  unknown operands (`strb` at 0xb7658, `blt` at 0xb766c); its paths include word stores of 0xb96cc,
-  0xba1cc and 0xad1f0 at sp -0x20 (`str` at 0xb7708, `str` at 0xb773c, `str` at 0xb7748). A later
-  computed transfer is unresolved (`mov` at 0xb778c). The known `Z == 1` path selected by `beq`
-  bypasses that transfer, with the compared value unknown (`beq` at 0xb7770, `mov` at 0xb778c). Another known path calls 0xb7c2c with
-  first candidate unknown and second candidate 0xff (`bl` at 0xb7818). The constants' callable roles
-  and additional transfer effects remain unknown.
+  Established. The loop initializes a byte at `sp -0x19` to zero (`strb` at 0xb7658) and retains an
+  `lt` flags condition with unknown operands (`blt` at 0xb766c). An indirect call is visible with
+  all four argument candidates unknown (`mov` at 0xb778c). The call target is unknown. A byte store
+  elsewhere has unknown value and effective target (`strb` at 0xb7764). Callable roles of stored
+  constants and the interrupt-reset effects remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -418,6 +416,17 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb738
 | `ldr` at 0xb7774 | load | 4 | `sp -0x18` | `-` |
 | `ldr` at 0xb777c | load | 4 | `sp -0x20` | `-` |
 | `ldr` at 0xb7780 | load | 4 | `sp -0x14` | `-` |
+| `str` at 0xb77a0 | store | 4 | `sp -0x24` | `?` |
+| `ldr` at 0xb77a8 | load | 4 | `sp -0x18` | `-` |
+| `ldrb` at 0xb77ac | load | 1 | `[sp-24] +0x3` | `-` |
+| `ldr` at 0xb77b0 | load | 4 | `sp -0x14` | `-` |
+| `ldrb` at 0xb77b4 | load | 1 | `[sp-20] +0x4` | `-` |
+| `ldr` at 0xb77c8 | load | 4 | `sp -0x14` | `-` |
+| `ldr` at 0xb77cc | load | 4 | `sp -0x18` | `-` |
+| `ldrb` at 0xb77d0 | load | 1 | `[sp-24] +0x3` | `-` |
+| `ldr` at 0xb77d4 | load | 4 | `abs 0xb7854` | `-` |
+| `ldr` at 0xb77d8 | load | 4 | `[sp-20] +0xc` | `-` |
+| `str` at 0xb77e4 | store | 4 | `sp -0x24` | `?` |
 | `ldr` at 0xb77ec | load | 4 | `sp -0x18` | `-` |
 | `ldrb` at 0xb77f0 | load | 1 | `(unknown)` | `-` |
 | `ldr` at 0xb77fc | load | 4 | `sp -0x14` | `-` |
@@ -434,6 +443,8 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb738
 | Call instruction | Callee and target | Candidate 0 | Candidate 1 | Candidate 2 | Candidate 3 |
 |---|---|---|---|---|---|
 | `bl` at 0xb771c | `(unknown callee) 0xb9268` | `?` | `?` | `?` | `?` |
+| `mov` at 0xb778c | `(unknown callee) (unknown target)` | `?` | `?` | `?` | `?` |
+| `bl` at 0xb77dc | `(unknown callee) 0x1dba4` | `0x109234` | `[[sp-20]+12]` | `[[sp-24]+3]:1` | `[sp-20]` |
 | `bl` at 0xb7818 | `(unknown callee) 0xb7c2c` | `?` | `0xff` | `?` | `?` |
 
 | Branch instruction | Taken when | Falls through when |
@@ -446,14 +457,14 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb738
 | `beq` at 0xb76fc | `Z == 1` | `not (Z == 1)` |
 | `beq` at 0xb7728 | `ret(0xb9268) == 0x0` | `ret(0xb9268) != 0x0` |
 | `beq` at 0xb7770 | `Z == 1` | `not (Z == 1)` |
+| `beq` at 0xb7798 | `Z == 1` | `not (Z == 1)` |
+| `beq` at 0xb77c4 | `? == 0x0` | `? != 0x0` |
 | `beq` at 0xb77f8 | `Z == 1` | `not (Z == 1)` |
 | `bne` at 0xb7808 | `Z == 0` | `not (Z == 0)` |
 
 | Return instruction | Register | Value |
 |---|---|---|
 | `ldmdb` at 0xb7838 | `r0` | `?` |
-
-Coverage excludes unresolved edges from the computed transfer (`mov` at 0xb778c).
 
 ## `ioExpGetCfg`
 
