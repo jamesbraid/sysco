@@ -532,4 +532,3 @@ tool sections.
 | Return instruction | Register | Value |
 |---|---|---|
 | `ldmdb` at 0x651c4 | `r0` | `?` |
-
