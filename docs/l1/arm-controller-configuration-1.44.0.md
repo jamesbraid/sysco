@@ -27,7 +27,13 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgReset`
 
-- `L1CfgReset`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x60b1c to 0x60bf0. Established. The absolute word at `0x132adc` receives zero (`str` at 0x60b34). The unnamed `0x19748` call carries `[0x132ae4]`, `0x0`, unknown, unknown (`bl` at 0x60b60). The unnamed `0x66694` call carries `0x132ae4`, `0x132adc`, `0x132ae0`, `[[sp-24]+8]` (`bl` at 0x60bd4).
+- `L1CfgReset`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x60b1c to 0x60bf0.
+  Established.
+  The absolute word at `0x132adc` receives zero (`str` at 0x60b34).
+  The unnamed `0x19748` call carries `[0x132ae4]`, `0x0`, unknown, unknown (`bl` at 0x60b60).
+  The unnamed `0x66694` call carries `0x132ae4`, `0x132adc`, `0x132ae0`, `[[sp-24]+8]` (`bl` at 0x60bd4).
   Configuration reset effects remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
@@ -78,8 +84,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgRefresh`
 
-- `L1CfgRefresh`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x60bf0 to 0x60c60. Established. Included calls of the unnamed `0x676c0` pass `0x2`, `0xd`, `0x14`, `0xf` as their first candidates at separate sites (`bl` at 0x60c00, `bl` at 0x60c08, `bl` at 0x60c10, `bl` at 0x60c58). The first call retains three entry register candidates, while the other cited calls have unknown remaining candidates (`bl` at 0x60c00, `bl` at 0x60c08, `bl` at 0x60c10, `bl` at 0x60c58). The included return record carries `ret(0x676c0)` in `r0` (`ldm` at 0x60c5c). Refresh request
-  meanings remain Unknown.
+- `L1CfgRefresh`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x60bf0 to 0x60c60.
+  Established.
+  Included calls of the unnamed `0x676c0` pass `0x2`, `0xd`, `0x14`, `0xf` as their first candidates at separate sites (`bl` at 0x60c00, `bl` at 0x60c08, `bl` at 0x60c10, `bl` at 0x60c58).
+  The first call retains three entry register candidates, while the other cited calls have unknown remaining candidates (`bl` at 0x60c00, `bl` at 0x60c08, `bl` at 0x60c10, `bl` at 0x60c58).
+  The included return record carries `ret(0x676c0)` in `r0` (`ldm` at 0x60c5c).
+  Refresh request meanings remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -111,7 +123,13 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgLock`
 
-- `L1CfgLock`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x619dc to 0x61a78. Established. The unnamed `0x20cd0` call carries `0x1329f0`, `0xc8`, entry `r2`, entry `r3` (`bl` at 0x619f8); its zero result takes `0x61a4c`, while nonzero falls through (`beq` at 0x61a0c). The unnamed `0x19808` call carries `0x29a500`, `[sp-20]`, unknown, unknown (`bl` at 0x61a54).
+- `L1CfgLock`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x619dc to 0x61a78.
+  Established.
+  The unnamed `0x20cd0` call carries `0x1329f0`, `0xc8`, entry `r2`, entry `r3` (`bl` at 0x619f8);
+  its zero result takes `0x61a4c`, while nonzero falls through (`beq` at 0x61a0c).
+  The unnamed `0x19808` call carries `0x29a500`, `[sp-20]`, unknown, unknown (`bl` at 0x61a54).
   Configuration lock semantics remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
@@ -154,7 +172,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgUnlock`
 
-- `L1CfgUnlock`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x61a78 to 0x61b04. Established. The unnamed `0x19808` call at `0x61a90` carries `0x29a528`, `0x29a500`, entry `r2`, entry `r3` (`bl` at 0x61a90). The unnamed `0x2105c` call carries `0x1329f0` and three unknown candidates (`bl` at 0x61aa4); its zero result takes `0x61ae0`, while nonzero falls through (`beq` at 0x61ab8). Configuration release behavior remains Unknown.
+- `L1CfgUnlock`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x61a78 to 0x61b04.
+  Established.
+  The unnamed `0x19808` call at `0x61a90` carries `0x29a528`, `0x29a500`, entry `r2`, entry `r3` (`bl` at 0x61a90).
+  The unnamed `0x2105c` call carries `0x1329f0` and three unknown candidates (`bl` at 0x61aa4);
+  its zero result takes `0x61ae0`, while nonzero falls through (`beq` at 0x61ab8).
+  Configuration release behavior remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -192,7 +217,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgRequest`
 
-- `L1CfgRequest`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x676c0 to 0x678e0. Established. The unsigned condition `[sp-20] > 0x19` takes `0x678a8`, while less or equal values fall through (`bhi` at 0x67724). An included word assignment at `sp -0xc8` writes `0xffff00e` (`str` at 0x677c0). The unnamed `0xaa424` call carries `0x132a48`, `sp-200`, `0x0`, `0x0` (`bl` at 0x6781c). Configuration request protocol remains Unknown.
+- `L1CfgRequest`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x676c0 to 0x678e0.
+  Established.
+  The unsigned condition `[sp-20] > 0x19` takes `0x678a8`, while less or equal values fall through (`bhi` at 0x67724).
+  An included word assignment at `sp -0xc8` writes `0xffff00e` (`str` at 0x677c0).
+  The unnamed `0xaa424` call carries `0x132a48`, `sp-200`, `0x0`, `0x0` (`bl` at 0x6781c).
+  Configuration request protocol remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -274,8 +306,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgProcessEvent`
 
-- `L1CfgProcessEvent`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x68070 to 0x681e8. Established. A nonzero byte through entry `r0 +0x13` takes `0x681dc`, while zero falls through (`bne` at 0x68090). The halfword through entry `r0 +0x22` is read (`ldrh` at 0x68098). The unnamed `0x6b324` call carries entry `r0`, entry `r1`, `[r0+34]:2`, `[r0+34]:2` (`bl` at 0x6819c). Event
-  dispatch interpretation remains Unknown.
+- `L1CfgProcessEvent`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x68070 to 0x681e8.
+  Established.
+  A nonzero byte through entry `r0 +0x13` takes `0x681dc`, while zero falls through (`bne` at 0x68090).
+  The halfword through entry `r0 +0x22` is read (`ldrh` at 0x68098).
+  The unnamed `0x6b324` call carries entry `r0`, entry `r1`, `[r0+34]:2`, `[r0+34]:2` (`bl` at 0x6819c).
+  Event dispatch interpretation remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -353,7 +391,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgProcessResponse`
 
-- `L1CfgProcessResponse`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x67f9c to 0x68070. Established. A nonzero byte through entry `r0 +0x13` takes `0x68058`, while zero falls through (`bne` at 0x67fbc). The condition `[sp-36] == 0x3e8` takes `0x6800c`, while inequality falls through (`beq` at 0x68004). The absolute word at `0x132794` receives `ret(0x194f0)` on an included path (`str` at 0x68044). Response processing policy remains Unknown.
+- `L1CfgProcessResponse`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x67f9c to 0x68070.
+  Established.
+  A nonzero byte through entry `r0 +0x13` takes `0x68058`, while zero falls through (`bne` at 0x67fbc).
+  The condition `[sp-36] == 0x3e8` takes `0x6800c`, while inequality falls through (`beq` at 0x68004).
+  The absolute word at `0x132794` receives `ret(0x194f0)` on an included path (`str` at 0x68044).
+  Response processing policy remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -405,8 +450,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgIRouter`
 
-- `L1CfgIRouter`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x681e8 to 0x682a8. Established. The byte through entry `r0 +0x16` is read (`ldrb` at 0x68208); its inequality with `0x2` takes `0x68264`, while equality falls through (`bne` at 0x68210). The unnamed `0x67f9c` call carries entry `r0`, entry `r1`, entry `r2`, `[r0+22]:1` (`bl` at 0x68294). Configuration packet
-  routing meaning remains Unknown.
+- `L1CfgIRouter`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x681e8 to 0x682a8.
+  Established.
+  The byte through entry `r0 +0x16` is read (`ldrb` at 0x68208);
+  its inequality with `0x2` takes `0x68264`, while equality falls through (`bne` at 0x68210).
+  The unnamed `0x67f9c` call carries entry `r0`, entry `r1`, entry `r2`, `[r0+22]:1` (`bl` at 0x68294).
+  Configuration packet routing meaning remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -454,8 +505,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgPortNonRoutered`
 
-- `L1CfgPortNonRoutered`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x6a400 to 0x6a474. Established. The signed condition `[0x132ad4] <= r0` takes `0x6a45c`, while greater values fall through (`ble` at 0x6a424). An included word assignment at `sp -0x18` writes zero (`str` at 0x6a460). The absolute word at `0x132ad8` is read (`ldr` at 0x6a448). Port routing classification
-  remains Unknown.
+- `L1CfgPortNonRoutered`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x6a400 to 0x6a474.
+  Established.
+  The signed condition `[0x132ad4] <= r0` takes `0x6a45c`, while greater values fall through (`ble` at 0x6a424).
+  An included word assignment at `sp -0x18` writes zero (`str` at 0x6a460).
+  The absolute word at `0x132ad8` is read (`ldr` at 0x6a448).
+  Port routing classification remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -487,7 +544,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgTypeNonRoutered`
 
-- `L1CfgTypeNonRoutered`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x6a390 to 0x6a400. Established. The unsigned condition `r0-64 > 0x13` takes `0x6a3e8`, while less or equal values fall through (`bhi` at 0x6a3b8). Separate included assignments at `sp -0x18` write zero and `0x1` (`str` at 0x6a3e0, `str` at 0x6a3ec). The included return record gives an unknown integer value in `r0` (`ldm` at 0x6a3f8). Type classification policy remains Unknown.
+- `L1CfgTypeNonRoutered`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x6a390 to 0x6a400.
+  Established.
+  The unsigned condition `r0-64 > 0x13` takes `0x6a3e8`, while less or equal values fall through (`bhi` at 0x6a3b8).
+  Separate included assignments at `sp -0x18` write zero and `0x1` (`str` at 0x6a3e0, `str` at 0x6a3ec).
+  The included return record gives an unknown integer value in `r0` (`ldm` at 0x6a3f8).
+  Type classification policy remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -518,7 +582,13 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgGetBrick`
 
-- `L1CfgGetBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x6a0b0 to 0x6a0f8. Established. The absolute words at `0x132ae4` and `0x132adc` are read (`ldr` at 0x6a0d0, `ldr` at 0x6a0d4). The unnamed `0x65068` call carries `[0x132ae4]`, `[0x132adc]`, entry `r0`, entry `r1` (`bl` at 0x6a0e0). The included return record gives `ret(0x65068)` in `r0` (`ldm` at 0x6a0f0).
+- `L1CfgGetBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x6a0b0 to 0x6a0f8.
+  Established.
+  The absolute words at `0x132ae4` and `0x132adc` are read (`ldr` at 0x6a0d0, `ldr` at 0x6a0d4).
+  The unnamed `0x65068` call carries `[0x132ae4]`, `[0x132adc]`, entry `r0`, entry `r1` (`bl` at 0x6a0e0).
+  The included return record gives `ret(0x65068)` in `r0` (`ldm` at 0x6a0f0).
   Brick lookup semantics remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
@@ -548,7 +618,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgGetIndexBrick`
 
-- `L1CfgGetIndexBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x6a038 to 0x6a0b0. Established. A negative signed entry `r0` takes `0x6a070`, while nonnegative values fall through (`blt` at 0x6a054). The signed condition `[0x132adc] <= r0` also takes `0x6a070`, while greater values fall through (`ble` at 0x6a068). An included word assignment at `sp -0x18` writes zero (`str` at 0x6a074). Brick index bounds meaning remains Unknown.
+- `L1CfgGetIndexBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x6a038 to 0x6a0b0.
+  Established.
+  A negative signed entry `r0` takes `0x6a070`, while nonnegative values fall through (`blt` at 0x6a054).
+  The signed condition `[0x132adc] <= r0` also takes `0x6a070`, while greater values fall through (`ble` at 0x6a068).
+  An included word assignment at `sp -0x18` writes zero (`str` at 0x6a074).
+  Brick index bounds meaning remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -581,8 +658,13 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgBrickCount`
 
-- `L1CfgBrickCount`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x6a370 to 0x6a390. Established. The absolute word at `0x132adc` is read (`ldr` at 0x6a380). The included return record carries `[0x132adc]` in `r0` (`ldm` at 0x6a388). Brick count interpretation remains
-  Unknown.
+- `L1CfgBrickCount`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x6a370 to 0x6a390.
+  Established.
+  The absolute word at `0x132adc` is read (`ldr` at 0x6a380).
+  The included return record carries `[0x132adc]` in `r0` (`ldm` at 0x6a388).
+  Brick count interpretation remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -604,8 +686,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgFindBrick`
 
-- `L1CfgFindBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x65068 to 0x65184. Established. A zero entry `r0` takes `0x65130`, while nonzero falls through (`beq` at 0x650ac). The word at `sp -0x28` receives `0x1` on an included path (`str` at 0x6511c). The word at `sp -0x2c` receives zero in the included fallback arm (`str` at 0x65170). Brick search matching
-  remains Unknown.
+- `L1CfgFindBrick`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x65068 to 0x65184.
+  Established.
+  A zero entry `r0` takes `0x65130`, while nonzero falls through (`beq` at 0x650ac).
+  The word at `sp -0x28` receives `0x1` on an included path (`str` at 0x6511c).
+  The word at `sp -0x2c` receives zero in the included fallback arm (`str` at 0x65170).
+  Brick search matching remains Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
@@ -660,7 +748,14 @@ coprocessor results. Unknown values and effects remain explicit in the fact shee
 
 ## `L1CfgFindState`
 
-- `L1CfgFindState`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`: Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`. Analysed span 0x65184 to 0x652dc. Established. The inequality `[0x132a58] != r2` takes `0x651d8`, while equality falls through (`bne` at 0x651b4). An included word assignment at `sp -0x2c` writes `0x132a50` (`str` at 0x651d0). The word at `sp -0x30` receives `[sp-48]-112` on another included path (`str` at 0x652b4). State search result semantics remain Unknown.
+- `L1CfgFindState`, `6.5.30/usr/cpu/firmware/sysco/l1.bin`:
+  Package `6.5.30:l1#4`, inner executable `/stand/sysco/bin/l1`.
+  Analysed span 0x65184 to 0x652dc.
+  Established.
+  The inequality `[0x132a58] != r2` takes `0x651d8`, while equality falls through (`bne` at 0x651b4).
+  An included word assignment at `sp -0x2c` writes `0x132a50` (`str` at 0x651d0).
+  The word at `sp -0x30` receives `[sp-48]-112` on another included path (`str` at 0x652b4).
+  State search result semantics remain Unknown.
 
 | Instruction | Access | Width in bytes | Effective target | Stored value |
 |---|---|---:|---|---|
