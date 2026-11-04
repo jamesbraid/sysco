@@ -35,6 +35,24 @@ Supply enables in `POWER ENABLE`, in table order: mask `0x01` (supply type 8, th
 
 **Summary.** An I-brick at mains is off with its bridges held in reset (E code path, I for the clean-start condition). It powers only when its own L1 receives `power up`: from its console, or from a C-brick over the RS-422 peer link (`* power up` or `cti power up`), or from an L2. Nothing in the I-brick image powers it by itself.
 
+### I-brick `XBRIDGE CONTROL` bit by bit (package 0, 1.44.0)
+
+Every bit use below is read from the routines named; the expander (index 5, M-Bus address `0x48`, name `XBRIDGE CONTROL`, applied value `0xd4`, input-bit mask 0, so all eight bits are outputs) carries no per-bit label in the image. The only labels are the log literals quoted. The reset table entry for the `I` brick (`0xffe46a0c`) holds the `XBRIDGE CONTROL` index (5) in byte 0, a second expander index (4) in byte 1, then the setting numbers `0x2a` and `0x2b` and the module-record numbers 1 and 2 as word pairs (bytes `05 04 00 00 00 00 00 2a 00 00 00 2b 00 00 00 01 00 00 00 02`), so the port-A and port-B enables read exactly those settings and records; the routine that reads both back at start-up (`0xffe47cd4`, source literal `XBridge.c`) logs "Error reading XBridge control IOExp status" and "Error reading Port control IOExp status". E.
+
+| Bit | Mask | What the firmware does with it | Grade |
+|---|---|---|---|
+| 0 | `0x01` | Reset group member. Driven low by reset-hold (`0xffe47ddc`, call `0xffe65e84(5, 0x0b, 0)`), released last: release writes `0x0a` to the group, 10 ticks later `0x0b`. Low at cold start (`0xd4`). | E for the writes, I that low is asserted (hold drives it low, release raises it) |
+| 1 | `0x02` | Reset group member, released with bit 3 in the step before bit 0. Low at cold start. | E, as above |
+| 3 | `0x08` | Reset group member, released with bit 1. Low at cold start. | E, as above |
+| 2 | `0x04` | Not in the reset group. Release writes it set when module record 1 (a neighbor on host port A) is valid and persistent setting `0x2a` is nonzero, or when the global word at `0x30000130` forces it (`0xffe48446` to `0xffe48466`); a word at `0x3000012c` can force both enables clear (value 1) or both set (values 2 and 3) (`0xffe484a2` to `0xffe484dc`). Set at cold start (`0xd4`). | E for the condition; I that it is the enable of host port A |
+| 4 | `0x10` | The same for record 2 (host port B) and setting `0x2b` (`0xffe4847e` to `0xffe4849c`). Set at cold start. | E, I as above |
+| 5 | `0x20` | Clock-source select. The helper `0xffe480a4` decides it from the two host ports and release writes it with bits 2 and 4. The reader `0xffe47fd8` tests this one bit (`0xffe66044(5, 0x20)`) and returns the character `A` (`0x41`) when it is set and `B` (`0x42`) when it is clear; the helper's log text is "Neither port is okay for UST clock selection". Clear at cold start. | E for the bit and the A/B reading (reader read in full), I for the electrical meaning (what UST stands for is not stated in the image: U) |
+| 6, 7 | `0x40`, `0x80` | Never written by reset hold or release in this package. Both are 1 in the cold-start value. | E for not written here, U for use |
+
+How the helper picks a port (`0xffe480a4`, read in full). For each of host ports A and B it reads the port-control expander through `0xffe4f8d0`; a read error logs "Error reading port A status" or "... port B status" (strings `0xffe48750`, `0xffe48770`) and counts that port's status bit 0 as clear. A port is "ok" when its module record is valid and the record's brick-type word (`+0x10`) is one of `C 3 5 4 A 6 9 7 8 0 Q @ O B F H L` (compare chain `0xffe48150` to `0xffe481e6`; the same letters as the auto power-up list), or when this brick's own type is `%` (`0x25`) and `0xffe2d178(port)` is nonzero (`0xffe481f2` to `0xffe48206`). Only A ok gives `0x20`; only B ok gives 0. Both ok: with setting `0x2c` nonzero the result is `0x20` unless A's status bit 0 is clear and B's is set; with it zero the result is 0 unless B's status bit 0 is clear and A's is set. Neither ok: log, then `0x20` if setting `0x2c` is nonzero, else 0. So bit 5 chooses between the clocks arriving on host ports A and B. E for the logic, I for "clocks arriving": the image names only "UST clock selection".
+
+What this does and does not settle. The three reset bits are written only as a group and have no individual name, so the image does not say which chip input each reaches. The expander is `XBRIDGE CONTROL`, the second expander named in the entry (index 4) is read back with it at start-up, and the other bits of the same byte are port enables and a clock select, so the three reset bits are board controls of the XBridge (I). Whether they are the chip's power-on reset, a warm-reset or link-reset input, or a PCI-side reset is U. Nothing in the firmware distinguishes them beyond the order of release (bits 1 and 3 together, then bit 0 ten ticks later) (E).
+
 ## R-brick (letter `R`)
 
 **Board tables (E).** Initialiser `0xffe4a330` (package 2 initialiser matched at `0xffe693e8`): USB count 1, reset-hold hook `0xffe49fe0`, release hook `0xffe4a1b4`, no power-up veto. Registration `0xffe4a234`: 8 expanders at `0xffe4a3bc`, 5 supplies at `0xffe4a460`, one reset entry at `0xffe4a5d0`.
@@ -58,5 +76,5 @@ Supply enables in `POWER CONTROL`: `0x01` (type 8, 48 V) and `0x04` (type `0x0f`
 ## Corrections and gaps
 
 - [../l2/userspace.md](../l2/userspace.md) and [../coverage.md](../coverage.md) place the R-brick personality in package 3 or 5. Packages 3 and 5 do not list `R`; it is in packages 0 and 2.
-- Not read: the module-record handshake that fills the records `*` uses; the meaning in time of a tick; which of an I-brick's two slots faces which C slot; the pin-level meaning of the reset bits; the I-brick and R-brick in L1 versions other than 1.44.0.
+- Not read: which XBridge input each of the three `XBRIDGE CONTROL` reset bits reaches (the image gives only the group and its release order); the module-record handshake that fills the records `*` uses; the meaning in time of a tick; which of an I-brick's two slots faces which C slot; the pin-level meaning of the reset bits; the I-brick and R-brick in L1 versions other than 1.44.0.
 - Published manuals were not used as corroboration in this pass (the Library PDF text extractor was not available).
