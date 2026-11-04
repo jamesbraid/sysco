@@ -1,0 +1,639 @@
+routine _sysInWordString  0x1081f0-0x108210  size 0x20 (32 bytes)
+  file 6.5.2/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x1081f0 store w4 push base=esp disp -0x4 => sp -0x4 value edi
+  0x1081f1 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x1081f5 load w4 mov base=esp disp +0xc => sp +0x8
+  0x1081f9 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x1081fe load w2 rep insw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x1081fe store w2 rep insw base=edi disp +0x0 => ? (unknown effective address) value ? iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=es offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x108203 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x1081f0-0x1081f0 preds: entry
+      normal -> B1
+  B1 0x1081f1-0x1081f1 preds: B0
+      normal -> B2
+  B2 0x1081f5-0x1081f5 preds: B1
+      normal -> B3
+  B3 0x1081f9-0x1081f9 preds: B2
+      normal -> B4
+  B4 0x1081fd-0x1081fd preds: B3
+      normal -> B5
+  B5 0x1081fe-0x1081fe preds: B4
+      normal -> B6
+  B6 0x108201-0x108201 preds: B5
+      normal -> B7
+  B7 0x108203-0x108203 preds: B6
+      normal -> B8
+  B8 0x108204-0x108204 preds: B7
+      return
+
+returns (1)
+  0x108204: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x1081fe ecx = 0x0
+immediates
+instructions
+  0x1081f0 57 push edi
+  0x1081f1 8b542408 mov edx, dword ptr [esp + 8]
+  0x1081f5 8b7c240c mov edi, dword ptr [esp + 0xc]
+  0x1081f9 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x1081fd fc cld
+  0x1081fe f3666d rep insw word ptr es:[edi], dx
+  0x108201 89f8 mov eax, edi
+  0x108203 5f pop edi
+  0x108204 c3 ret
+  0x108205 90 nop  (not reached by known edges)
+  0x108206 90 nop  (not reached by known edges)
+  0x108207 90 nop  (not reached by known edges)
+  0x108208 90 nop  (not reached by known edges)
+  0x108209 90 nop  (not reached by known edges)
+  0x10820a 90 nop  (not reached by known edges)
+  0x10820b 90 nop  (not reached by known edges)
+  0x10820c 90 nop  (not reached by known edges)
+  0x10820d 90 nop  (not reached by known edges)
+  0x10820e 90 nop  (not reached by known edges)
+  0x10820f 90 nop  (not reached by known edges)
+
+routine _sysOutWordString  0x108210-0x108230  size 0x20 (32 bytes)
+  file 6.5.2/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108210 store w4 push base=esp disp -0x4 => sp -0x4 value esi
+  0x108211 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x108215 load w4 mov base=esp disp +0xc => sp +0x8
+  0x108219 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x10821e load w2 rep outsw base=esi disp +0x0 => ? (unknown effective address) iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=ds offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x10821e store w2 rep outsw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 value ? space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x108223 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x108210-0x108210 preds: entry
+      normal -> B1
+  B1 0x108211-0x108211 preds: B0
+      normal -> B2
+  B2 0x108215-0x108215 preds: B1
+      normal -> B3
+  B3 0x108219-0x108219 preds: B2
+      normal -> B4
+  B4 0x10821d-0x10821d preds: B3
+      normal -> B5
+  B5 0x10821e-0x10821e preds: B4
+      normal -> B6
+  B6 0x108221-0x108221 preds: B5
+      normal -> B7
+  B7 0x108223-0x108223 preds: B6
+      normal -> B8
+  B8 0x108224-0x108224 preds: B7
+      return
+
+returns (1)
+  0x108224: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x10821e ecx = 0x0
+immediates
+instructions
+  0x108210 56 push esi
+  0x108211 8b542408 mov edx, dword ptr [esp + 8]
+  0x108215 8b74240c mov esi, dword ptr [esp + 0xc]
+  0x108219 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x10821d fc cld
+  0x10821e f3666f rep outsw dx, word ptr [esi]
+  0x108221 89f0 mov eax, esi
+  0x108223 5e pop esi
+  0x108224 c3 ret
+  0x108225 90 nop  (not reached by known edges)
+  0x108226 90 nop  (not reached by known edges)
+  0x108227 90 nop  (not reached by known edges)
+  0x108228 90 nop  (not reached by known edges)
+  0x108229 90 nop  (not reached by known edges)
+  0x10822a 90 nop  (not reached by known edges)
+  0x10822b 90 nop  (not reached by known edges)
+  0x10822c 90 nop  (not reached by known edges)
+  0x10822d 90 nop  (not reached by known edges)
+  0x10822e 90 nop  (not reached by known edges)
+  0x10822f 90 nop  (not reached by known edges)
+
+routine _sysInWordString  0x1081f0-0x108210  size 0x20 (32 bytes)
+  file 6.5.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x1081f0 store w4 push base=esp disp -0x4 => sp -0x4 value edi
+  0x1081f1 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x1081f5 load w4 mov base=esp disp +0xc => sp +0x8
+  0x1081f9 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x1081fe load w2 rep insw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x1081fe store w2 rep insw base=edi disp +0x0 => ? (unknown effective address) value ? iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=es offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x108203 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x1081f0-0x1081f0 preds: entry
+      normal -> B1
+  B1 0x1081f1-0x1081f1 preds: B0
+      normal -> B2
+  B2 0x1081f5-0x1081f5 preds: B1
+      normal -> B3
+  B3 0x1081f9-0x1081f9 preds: B2
+      normal -> B4
+  B4 0x1081fd-0x1081fd preds: B3
+      normal -> B5
+  B5 0x1081fe-0x1081fe preds: B4
+      normal -> B6
+  B6 0x108201-0x108201 preds: B5
+      normal -> B7
+  B7 0x108203-0x108203 preds: B6
+      normal -> B8
+  B8 0x108204-0x108204 preds: B7
+      return
+
+returns (1)
+  0x108204: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x1081fe ecx = 0x0
+immediates
+instructions
+  0x1081f0 57 push edi
+  0x1081f1 8b542408 mov edx, dword ptr [esp + 8]
+  0x1081f5 8b7c240c mov edi, dword ptr [esp + 0xc]
+  0x1081f9 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x1081fd fc cld
+  0x1081fe f3666d rep insw word ptr es:[edi], dx
+  0x108201 89f8 mov eax, edi
+  0x108203 5f pop edi
+  0x108204 c3 ret
+  0x108205 90 nop  (not reached by known edges)
+  0x108206 90 nop  (not reached by known edges)
+  0x108207 90 nop  (not reached by known edges)
+  0x108208 90 nop  (not reached by known edges)
+  0x108209 90 nop  (not reached by known edges)
+  0x10820a 90 nop  (not reached by known edges)
+  0x10820b 90 nop  (not reached by known edges)
+  0x10820c 90 nop  (not reached by known edges)
+  0x10820d 90 nop  (not reached by known edges)
+  0x10820e 90 nop  (not reached by known edges)
+  0x10820f 90 nop  (not reached by known edges)
+
+routine _sysOutWordString  0x108210-0x108230  size 0x20 (32 bytes)
+  file 6.5.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108210 store w4 push base=esp disp -0x4 => sp -0x4 value esi
+  0x108211 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x108215 load w4 mov base=esp disp +0xc => sp +0x8
+  0x108219 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x10821e load w2 rep outsw base=esi disp +0x0 => ? (unknown effective address) iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=ds offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x10821e store w2 rep outsw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 value ? space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x108223 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x108210-0x108210 preds: entry
+      normal -> B1
+  B1 0x108211-0x108211 preds: B0
+      normal -> B2
+  B2 0x108215-0x108215 preds: B1
+      normal -> B3
+  B3 0x108219-0x108219 preds: B2
+      normal -> B4
+  B4 0x10821d-0x10821d preds: B3
+      normal -> B5
+  B5 0x10821e-0x10821e preds: B4
+      normal -> B6
+  B6 0x108221-0x108221 preds: B5
+      normal -> B7
+  B7 0x108223-0x108223 preds: B6
+      normal -> B8
+  B8 0x108224-0x108224 preds: B7
+      return
+
+returns (1)
+  0x108224: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x10821e ecx = 0x0
+immediates
+instructions
+  0x108210 56 push esi
+  0x108211 8b542408 mov edx, dword ptr [esp + 8]
+  0x108215 8b74240c mov esi, dword ptr [esp + 0xc]
+  0x108219 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x10821d fc cld
+  0x10821e f3666f rep outsw dx, word ptr [esi]
+  0x108221 89f0 mov eax, esi
+  0x108223 5e pop esi
+  0x108224 c3 ret
+  0x108225 90 nop  (not reached by known edges)
+  0x108226 90 nop  (not reached by known edges)
+  0x108227 90 nop  (not reached by known edges)
+  0x108228 90 nop  (not reached by known edges)
+  0x108229 90 nop  (not reached by known edges)
+  0x10822a 90 nop  (not reached by known edges)
+  0x10822b 90 nop  (not reached by known edges)
+  0x10822c 90 nop  (not reached by known edges)
+  0x10822d 90 nop  (not reached by known edges)
+  0x10822e 90 nop  (not reached by known edges)
+  0x10822f 90 nop  (not reached by known edges)
+
+routine _sysInWordString  0x1081f0-0x108210  size 0x20 (32 bytes)
+  file 6.5.6/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x1081f0 store w4 push base=esp disp -0x4 => sp -0x4 value edi
+  0x1081f1 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x1081f5 load w4 mov base=esp disp +0xc => sp +0x8
+  0x1081f9 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x1081fe load w2 rep insw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x1081fe store w2 rep insw base=edi disp +0x0 => ? (unknown effective address) value ? iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=es offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x108203 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x1081f0-0x1081f0 preds: entry
+      normal -> B1
+  B1 0x1081f1-0x1081f1 preds: B0
+      normal -> B2
+  B2 0x1081f5-0x1081f5 preds: B1
+      normal -> B3
+  B3 0x1081f9-0x1081f9 preds: B2
+      normal -> B4
+  B4 0x1081fd-0x1081fd preds: B3
+      normal -> B5
+  B5 0x1081fe-0x1081fe preds: B4
+      normal -> B6
+  B6 0x108201-0x108201 preds: B5
+      normal -> B7
+  B7 0x108203-0x108203 preds: B6
+      normal -> B8
+  B8 0x108204-0x108204 preds: B7
+      return
+
+returns (1)
+  0x108204: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x1081fe ecx = 0x0
+immediates
+instructions
+  0x1081f0 57 push edi
+  0x1081f1 8b542408 mov edx, dword ptr [esp + 8]
+  0x1081f5 8b7c240c mov edi, dword ptr [esp + 0xc]
+  0x1081f9 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x1081fd fc cld
+  0x1081fe f3666d rep insw word ptr es:[edi], dx
+  0x108201 89f8 mov eax, edi
+  0x108203 5f pop edi
+  0x108204 c3 ret
+  0x108205 90 nop  (not reached by known edges)
+  0x108206 90 nop  (not reached by known edges)
+  0x108207 90 nop  (not reached by known edges)
+  0x108208 90 nop  (not reached by known edges)
+  0x108209 90 nop  (not reached by known edges)
+  0x10820a 90 nop  (not reached by known edges)
+  0x10820b 90 nop  (not reached by known edges)
+  0x10820c 90 nop  (not reached by known edges)
+  0x10820d 90 nop  (not reached by known edges)
+  0x10820e 90 nop  (not reached by known edges)
+  0x10820f 90 nop  (not reached by known edges)
+
+routine _sysOutWordString  0x108210-0x108230  size 0x20 (32 bytes)
+  file 6.5.6/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108210 store w4 push base=esp disp -0x4 => sp -0x4 value esi
+  0x108211 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x108215 load w4 mov base=esp disp +0xc => sp +0x8
+  0x108219 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x10821e load w2 rep outsw base=esi disp +0x0 => ? (unknown effective address) iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=ds offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x10821e store w2 rep outsw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 value ? space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x108223 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x108210-0x108210 preds: entry
+      normal -> B1
+  B1 0x108211-0x108211 preds: B0
+      normal -> B2
+  B2 0x108215-0x108215 preds: B1
+      normal -> B3
+  B3 0x108219-0x108219 preds: B2
+      normal -> B4
+  B4 0x10821d-0x10821d preds: B3
+      normal -> B5
+  B5 0x10821e-0x10821e preds: B4
+      normal -> B6
+  B6 0x108221-0x108221 preds: B5
+      normal -> B7
+  B7 0x108223-0x108223 preds: B6
+      normal -> B8
+  B8 0x108224-0x108224 preds: B7
+      return
+
+returns (1)
+  0x108224: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x10821e ecx = 0x0
+immediates
+instructions
+  0x108210 56 push esi
+  0x108211 8b542408 mov edx, dword ptr [esp + 8]
+  0x108215 8b74240c mov esi, dword ptr [esp + 0xc]
+  0x108219 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x10821d fc cld
+  0x10821e f3666f rep outsw dx, word ptr [esi]
+  0x108221 89f0 mov eax, esi
+  0x108223 5e pop esi
+  0x108224 c3 ret
+  0x108225 90 nop  (not reached by known edges)
+  0x108226 90 nop  (not reached by known edges)
+  0x108227 90 nop  (not reached by known edges)
+  0x108228 90 nop  (not reached by known edges)
+  0x108229 90 nop  (not reached by known edges)
+  0x10822a 90 nop  (not reached by known edges)
+  0x10822b 90 nop  (not reached by known edges)
+  0x10822c 90 nop  (not reached by known edges)
+  0x10822d 90 nop  (not reached by known edges)
+  0x10822e 90 nop  (not reached by known edges)
+  0x10822f 90 nop  (not reached by known edges)
+
+routine _sysInWordString  0x1081f0-0x108210  size 0x20 (32 bytes)
+  file 6.4/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x1081f0 store w4 push base=esp disp -0x4 => sp -0x4 value edi
+  0x1081f1 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x1081f5 load w4 mov base=esp disp +0xc => sp +0x8
+  0x1081f9 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x1081fe load w2 rep insw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x1081fe store w2 rep insw base=edi disp +0x0 => ? (unknown effective address) value ? iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=es offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x108203 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x1081f0-0x1081f0 preds: entry
+      normal -> B1
+  B1 0x1081f1-0x1081f1 preds: B0
+      normal -> B2
+  B2 0x1081f5-0x1081f5 preds: B1
+      normal -> B3
+  B3 0x1081f9-0x1081f9 preds: B2
+      normal -> B4
+  B4 0x1081fd-0x1081fd preds: B3
+      normal -> B5
+  B5 0x1081fe-0x1081fe preds: B4
+      normal -> B6
+  B6 0x108201-0x108201 preds: B5
+      normal -> B7
+  B7 0x108203-0x108203 preds: B6
+      normal -> B8
+  B8 0x108204-0x108204 preds: B7
+      return
+
+returns (1)
+  0x108204: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x1081fe ecx = 0x0
+immediates
+instructions
+  0x1081f0 57 push edi
+  0x1081f1 8b542408 mov edx, dword ptr [esp + 8]
+  0x1081f5 8b7c240c mov edi, dword ptr [esp + 0xc]
+  0x1081f9 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x1081fd fc cld
+  0x1081fe f3666d rep insw word ptr es:[edi], dx
+  0x108201 89f8 mov eax, edi
+  0x108203 5f pop edi
+  0x108204 c3 ret
+  0x108205 90 nop  (not reached by known edges)
+  0x108206 90 nop  (not reached by known edges)
+  0x108207 90 nop  (not reached by known edges)
+  0x108208 90 nop  (not reached by known edges)
+  0x108209 90 nop  (not reached by known edges)
+  0x10820a 90 nop  (not reached by known edges)
+  0x10820b 90 nop  (not reached by known edges)
+  0x10820c 90 nop  (not reached by known edges)
+  0x10820d 90 nop  (not reached by known edges)
+  0x10820e 90 nop  (not reached by known edges)
+  0x10820f 90 nop  (not reached by known edges)
+
+routine _sysOutWordString  0x108210-0x108230  size 0x20 (32 bytes)
+  file 6.4/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108210 store w4 push base=esp disp -0x4 => sp -0x4 value esi
+  0x108211 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x108215 load w4 mov base=esp disp +0xc => sp +0x8
+  0x108219 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x10821e load w2 rep outsw base=esi disp +0x0 => ? (unknown effective address) iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=ds offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x10821e store w2 rep outsw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 value ? space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x108223 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x108210-0x108210 preds: entry
+      normal -> B1
+  B1 0x108211-0x108211 preds: B0
+      normal -> B2
+  B2 0x108215-0x108215 preds: B1
+      normal -> B3
+  B3 0x108219-0x108219 preds: B2
+      normal -> B4
+  B4 0x10821d-0x10821d preds: B3
+      normal -> B5
+  B5 0x10821e-0x10821e preds: B4
+      normal -> B6
+  B6 0x108221-0x108221 preds: B5
+      normal -> B7
+  B7 0x108223-0x108223 preds: B6
+      normal -> B8
+  B8 0x108224-0x108224 preds: B7
+      return
+
+returns (1)
+  0x108224: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x10821e ecx = 0x0
+immediates
+instructions
+  0x108210 56 push esi
+  0x108211 8b542408 mov edx, dword ptr [esp + 8]
+  0x108215 8b74240c mov esi, dword ptr [esp + 0xc]
+  0x108219 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x10821d fc cld
+  0x10821e f3666f rep outsw dx, word ptr [esi]
+  0x108221 89f0 mov eax, esi
+  0x108223 5e pop esi
+  0x108224 c3 ret
+  0x108225 90 nop  (not reached by known edges)
+  0x108226 90 nop  (not reached by known edges)
+  0x108227 90 nop  (not reached by known edges)
+  0x108228 90 nop  (not reached by known edges)
+  0x108229 90 nop  (not reached by known edges)
+  0x10822a 90 nop  (not reached by known edges)
+  0x10822b 90 nop  (not reached by known edges)
+  0x10822c 90 nop  (not reached by known edges)
+  0x10822d 90 nop  (not reached by known edges)
+  0x10822e 90 nop  (not reached by known edges)
+  0x10822f 90 nop  (not reached by known edges)
+
+routine _sysInWordString  0x1081f0-0x108210  size 0x20 (32 bytes)
+  file 6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x1081f0 store w4 push base=esp disp -0x4 => sp -0x4 value edi
+  0x1081f1 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x1081f5 load w4 mov base=esp disp +0xc => sp +0x8
+  0x1081f9 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x1081fe load w2 rep insw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x1081fe store w2 rep insw base=edi disp +0x0 => ? (unknown effective address) value ? iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=es offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x108203 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x1081f0-0x1081f0 preds: entry
+      normal -> B1
+  B1 0x1081f1-0x1081f1 preds: B0
+      normal -> B2
+  B2 0x1081f5-0x1081f5 preds: B1
+      normal -> B3
+  B3 0x1081f9-0x1081f9 preds: B2
+      normal -> B4
+  B4 0x1081fd-0x1081fd preds: B3
+      normal -> B5
+  B5 0x1081fe-0x1081fe preds: B4
+      normal -> B6
+  B6 0x108201-0x108201 preds: B5
+      normal -> B7
+  B7 0x108203-0x108203 preds: B6
+      normal -> B8
+  B8 0x108204-0x108204 preds: B7
+      return
+
+returns (1)
+  0x108204: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x1081fe ecx = 0x0
+immediates
+instructions
+  0x1081f0 57 push edi
+  0x1081f1 8b542408 mov edx, dword ptr [esp + 8]
+  0x1081f5 8b7c240c mov edi, dword ptr [esp + 0xc]
+  0x1081f9 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x1081fd fc cld
+  0x1081fe f3666d rep insw word ptr es:[edi], dx
+  0x108201 89f8 mov eax, edi
+  0x108203 5f pop edi
+  0x108204 c3 ret
+  0x108205 90 nop  (not reached by known edges)
+  0x108206 90 nop  (not reached by known edges)
+  0x108207 90 nop  (not reached by known edges)
+  0x108208 90 nop  (not reached by known edges)
+  0x108209 90 nop  (not reached by known edges)
+  0x10820a 90 nop  (not reached by known edges)
+  0x10820b 90 nop  (not reached by known edges)
+  0x10820c 90 nop  (not reached by known edges)
+  0x10820d 90 nop  (not reached by known edges)
+  0x10820e 90 nop  (not reached by known edges)
+  0x10820f 90 nop  (not reached by known edges)
+
+routine _sysOutWordString  0x108210-0x108230  size 0x20 (32 bytes)
+  file 6.5/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x108210 store w4 push base=esp disp -0x4 => sp -0x4 value esi
+  0x108211 load w4 mov base=esp disp +0x8 => sp +0x4
+  0x108215 load w4 mov base=esp disp +0xc => sp +0x8
+  0x108219 load w4 mov base=esp disp +0x10 => sp +0xc
+  0x10821e load w2 rep outsw base=esi disp +0x0 => ? (unknown effective address) iterations=[sp+12] counter=ecx stride=2 address_bits=32 (per transfer; normal completion) segment=ds offset=[sp+8] base unknown when [sp+12] != 0x0
+  0x10821e store w2 rep outsw base=port disp +0x0 => ([sp+4] & 0xffff) +0x0 value ? space=io iterations=[sp+12] counter=ecx stride=0 address_bits=16 (per transfer; normal completion) when [sp+12] != 0x0
+  0x108223 load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (0)
+
+blocks (9)
+  B0 0x108210-0x108210 preds: entry
+      normal -> B1
+  B1 0x108211-0x108211 preds: B0
+      normal -> B2
+  B2 0x108215-0x108215 preds: B1
+      normal -> B3
+  B3 0x108219-0x108219 preds: B2
+      normal -> B4
+  B4 0x10821d-0x10821d preds: B3
+      normal -> B5
+  B5 0x10821e-0x10821e preds: B4
+      normal -> B6
+  B6 0x108221-0x108221 preds: B5
+      normal -> B7
+  B7 0x108223-0x108223 preds: B6
+      normal -> B8
+  B8 0x108224-0x108224 preds: B7
+      return
+
+returns (1)
+  0x108224: eax = (([sp+8] + ([sp+12] * 0x2)) & 0xffffffff); reached from B7
+
+constants
+  0x10821e ecx = 0x0
+immediates
+instructions
+  0x108210 56 push esi
+  0x108211 8b542408 mov edx, dword ptr [esp + 8]
+  0x108215 8b74240c mov esi, dword ptr [esp + 0xc]
+  0x108219 8b4c2410 mov ecx, dword ptr [esp + 0x10]
+  0x10821d fc cld
+  0x10821e f3666f rep outsw dx, word ptr [esi]
+  0x108221 89f0 mov eax, esi
+  0x108223 5e pop esi
+  0x108224 c3 ret
+  0x108225 90 nop  (not reached by known edges)
+  0x108226 90 nop  (not reached by known edges)
+  0x108227 90 nop  (not reached by known edges)
+  0x108228 90 nop  (not reached by known edges)
+  0x108229 90 nop  (not reached by known edges)
+  0x10822a 90 nop  (not reached by known edges)
+  0x10822b 90 nop  (not reached by known edges)
+  0x10822c 90 nop  (not reached by known edges)
+  0x10822d 90 nop  (not reached by known edges)
+  0x10822e 90 nop  (not reached by known edges)
+  0x10822f 90 nop  (not reached by known edges)
