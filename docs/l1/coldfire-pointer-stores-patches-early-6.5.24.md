@@ -23,15 +23,15 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Grouped accesses: 2 4-byte load records with target `abs 0x300025bc`, including `tst.l` at 0xffecb73c, `move.l` at 0xffecb77c.
   Branch (`ble.b` at 0xffecb740): taken to 0xffecb77c when `[0x300025bc] <= 0x0 (signed, 32-bit)`, falls through to 0xffecb742 when `[0x300025bc] > 0x0 (signed, 32-bit)`.
   Grouped accesses: 7 4-byte load records with target `abs 0x300003bc`, including `movea.l` at 0xffecb748, `movea.l` at 0xffecb752, `movea.l` at 0xffecb758.
-  Halfword store: target `[0x300003bc] +0x88`, value `0x4000` (`move.w` at 0xffecb74e).
-  Word store: target `[0x300003bc] +0x8c`, value `0x0` (`clr.l` at 0xffecb754).
-  Halfword store: target `[0x300003bc] +0x92`, value `0x953` (`move.w` at 0xffecb75e).
+  Two-byte store: target `[0x300003bc] +0x88`, value `0x4000` (`move.w` at 0xffecb74e).
+  Four-byte store: target `[0x300003bc] +0x8c`, value `0x0` (`clr.l` at 0xffecb754).
+  Two-byte store: target `[0x300003bc] +0x92`, value `0x953` (`move.w` at 0xffecb75e).
   Call (`jsr` at 0xffecb772): (unknown callee), target 0xffedd590, stack arg0=`0x0`, stack arg1=`0x40000000`, stack arg2=`0x2`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   Branch (`bne.b` at 0xffecb782): taken to 0xffecb7c8 when `Z == 0`, falls through to 0xffecb784 when `not (Z == 0)`.
   Byte store: target `[0x300003bc] +0x16`, value `0x8c` (`move.b` at 0xffecb78e).
-  Halfword store: target `[0x300003bc] +0xa0`, value `0x6000` (`move.w` at 0xffecb798).
-  Word store: target `[0x300003bc] +0xa4`, value `0x0` (`clr.l` at 0xffecb79e).
-  Halfword store: target `[0x300003bc] +0xaa`, value `0x953` (`move.w` at 0xffecb7a8).
+  Two-byte store: target `[0x300003bc] +0xa0`, value `0x6000` (`move.w` at 0xffecb798).
+  Four-byte store: target `[0x300003bc] +0xa4`, value `0x0` (`clr.l` at 0xffecb79e).
+  Two-byte store: target `[0x300003bc] +0xaa`, value `0x953` (`move.w` at 0xffecb7a8).
   Call (`jsr` at 0xffecb7be): (unknown callee), target 0xffedd590, stack arg0=`0x1`, stack arg1=`0x60000000`, stack arg2=`0x3`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   At the return (`rts` at 0xffecb7ce), d0 is `unknown`.
 
@@ -50,15 +50,15 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Grouped accesses: 2 4-byte load records with target `abs 0x300026b8`, including `tst.l` at 0xffecb3e0, `move.l` at 0xffecb420.
   Branch (`ble.b` at 0xffecb3e4): taken to 0xffecb420 when `[0x300026b8] <= 0x0 (signed, 32-bit)`, falls through to 0xffecb3e6 when `[0x300026b8] > 0x0 (signed, 32-bit)`.
   Grouped accesses: 7 4-byte load records with target `abs 0x300003e8`, including `movea.l` at 0xffecb3ec, `movea.l` at 0xffecb3f6, `movea.l` at 0xffecb3fc.
-  Halfword store: target `[0x300003e8] +0x88`, value `0x4000` (`move.w` at 0xffecb3f2).
-  Word store: target `[0x300003e8] +0x8c`, value `0x0` (`clr.l` at 0xffecb3f8).
-  Halfword store: target `[0x300003e8] +0x92`, value `0x953` (`move.w` at 0xffecb402).
+  Two-byte store: target `[0x300003e8] +0x88`, value `0x4000` (`move.w` at 0xffecb3f2).
+  Four-byte store: target `[0x300003e8] +0x8c`, value `0x0` (`clr.l` at 0xffecb3f8).
+  Two-byte store: target `[0x300003e8] +0x92`, value `0x953` (`move.w` at 0xffecb402).
   Call (`jsr` at 0xffecb416): (unknown callee), target 0xffedd42c, stack arg0=`0x0`, stack arg1=`0x40000000`, stack arg2=`0x2`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   Branch (`bne.b` at 0xffecb426): taken to 0xffecb46c when `Z == 0`, falls through to 0xffecb428 when `not (Z == 0)`.
   Byte store: target `[0x300003e8] +0x16`, value `0x8c` (`move.b` at 0xffecb432).
-  Halfword store: target `[0x300003e8] +0xa0`, value `0x6000` (`move.w` at 0xffecb43c).
-  Word store: target `[0x300003e8] +0xa4`, value `0x0` (`clr.l` at 0xffecb442).
-  Halfword store: target `[0x300003e8] +0xaa`, value `0x953` (`move.w` at 0xffecb44c).
+  Two-byte store: target `[0x300003e8] +0xa0`, value `0x6000` (`move.w` at 0xffecb43c).
+  Four-byte store: target `[0x300003e8] +0xa4`, value `0x0` (`clr.l` at 0xffecb442).
+  Two-byte store: target `[0x300003e8] +0xaa`, value `0x953` (`move.w` at 0xffecb44c).
   Call (`jsr` at 0xffecb462): (unknown callee), target 0xffedd42c, stack arg0=`0x1`, stack arg1=`0x60000000`, stack arg2=`0x3`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   The exit (`rts` at 0xffecb472) reports d0 = `unknown`.
 
@@ -77,15 +77,15 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Grouped accesses: 2 4-byte load records with target `abs 0x30003298`, including `tst.l` at 0xfff7e160, `move.l` at 0xfff7e1a0.
   Branch (`ble.b` at 0xfff7e164): taken to 0xfff7e1a0 when `[0x30003298] <= 0x0 (signed, 32-bit)`, falls through to 0xfff7e166 when `[0x30003298] > 0x0 (signed, 32-bit)`.
   Grouped accesses: 7 4-byte load records with target `abs 0x30000a40`, including `movea.l` at 0xfff7e16c, `movea.l` at 0xfff7e176, `movea.l` at 0xfff7e17c.
-  Halfword store: target `[0x30000a40] +0x88`, value `0x4000` (`move.w` at 0xfff7e172).
-  Word store: target `[0x30000a40] +0x8c`, value `0x0` (`clr.l` at 0xfff7e178).
-  Halfword store: target `[0x30000a40] +0x92`, value `0x953` (`move.w` at 0xfff7e182).
+  Two-byte store: target `[0x30000a40] +0x88`, value `0x4000` (`move.w` at 0xfff7e172).
+  Four-byte store: target `[0x30000a40] +0x8c`, value `0x0` (`clr.l` at 0xfff7e178).
+  Two-byte store: target `[0x30000a40] +0x92`, value `0x953` (`move.w` at 0xfff7e182).
   Call (`jsr` at 0xfff7e196): (unknown callee), target 0xfff9dfa4, stack arg0=`0x0`, stack arg1=`0x40000000`, stack arg2=`0x2`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   Branch (`bne.b` at 0xfff7e1a6): taken to 0xfff7e1ec when `Z == 0`, falls through to 0xfff7e1a8 when `not (Z == 0)`.
   Byte store: target `[0x30000a40] +0x16`, value `0x8c` (`move.b` at 0xfff7e1b2).
-  Halfword store: target `[0x30000a40] +0xa0`, value `0x6000` (`move.w` at 0xfff7e1bc).
-  Word store: target `[0x30000a40] +0xa4`, value `0x0` (`clr.l` at 0xfff7e1c2).
-  Halfword store: target `[0x30000a40] +0xaa`, value `0x953` (`move.w` at 0xfff7e1cc).
+  Two-byte store: target `[0x30000a40] +0xa0`, value `0x6000` (`move.w` at 0xfff7e1bc).
+  Four-byte store: target `[0x30000a40] +0xa4`, value `0x0` (`clr.l` at 0xfff7e1c2).
+  Two-byte store: target `[0x30000a40] +0xaa`, value `0x953` (`move.w` at 0xfff7e1cc).
   Call (`jsr` at 0xfff7e1e2): (unknown callee), target 0xfff9dfa4, stack arg0=`0x1`, stack arg1=`0x60000000`, stack arg2=`0x3`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   `rts` at 0xfff7e1f2 has recorded d0 = `unknown`.
 
@@ -104,15 +104,15 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Grouped accesses: 2 4-byte load records with target `abs 0x30002ca0`, including `tst.l` at 0xfff63530, `move.l` at 0xfff63570.
   Branch (`ble.b` at 0xfff63534): taken to 0xfff63570 when `[0x30002ca0] <= 0x0 (signed, 32-bit)`, falls through to 0xfff63536 when `[0x30002ca0] > 0x0 (signed, 32-bit)`.
   Grouped accesses: 7 4-byte load records with target `abs 0x30000a84`, including `movea.l` at 0xfff6353c, `movea.l` at 0xfff63546, `movea.l` at 0xfff6354c.
-  Halfword store: target `[0x30000a84] +0x88`, value `0x4000` (`move.w` at 0xfff63542).
-  Word store: target `[0x30000a84] +0x8c`, value `0x0` (`clr.l` at 0xfff63548).
-  Halfword store: target `[0x30000a84] +0x92`, value `0x953` (`move.w` at 0xfff63552).
+  Two-byte store: target `[0x30000a84] +0x88`, value `0x4000` (`move.w` at 0xfff63542).
+  Four-byte store: target `[0x30000a84] +0x8c`, value `0x0` (`clr.l` at 0xfff63548).
+  Two-byte store: target `[0x30000a84] +0x92`, value `0x953` (`move.w` at 0xfff63552).
   Call (`jsr` at 0xfff63566): (unknown callee), target 0xfff829d4, stack arg0=`0x0`, stack arg1=`0x40000000`, stack arg2=`0x2`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   Branch (`bne.b` at 0xfff63576): taken to 0xfff635bc when `Z == 0`, falls through to 0xfff63578 when `not (Z == 0)`.
   Byte store: target `[0x30000a84] +0x16`, value `0x8c` (`move.b` at 0xfff63582).
-  Halfword store: target `[0x30000a84] +0xa0`, value `0x6000` (`move.w` at 0xfff6358c).
-  Word store: target `[0x30000a84] +0xa4`, value `0x0` (`clr.l` at 0xfff63592).
-  Halfword store: target `[0x30000a84] +0xaa`, value `0x953` (`move.w` at 0xfff6359c).
+  Two-byte store: target `[0x30000a84] +0xa0`, value `0x6000` (`move.w` at 0xfff6358c).
+  Four-byte store: target `[0x30000a84] +0xa4`, value `0x0` (`clr.l` at 0xfff63592).
+  Two-byte store: target `[0x30000a84] +0xaa`, value `0x953` (`move.w` at 0xfff6359c).
   Call (`jsr` at 0xfff635b2): (unknown callee), target 0xfff829d4, stack arg0=`0x1`, stack arg1=`0x60000000`, stack arg2=`0x3`, stack arg3=`sp-8`, stack arg4=`unknown`, stack arg5=`unknown`.
   Recorded d0 at the return is `unknown` (`rts` at 0xfff635c2).
 
@@ -136,9 +136,9 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Branch (`beq.b` at 0xffeb20ae): taken to 0xffeb20b2 when `Z == 1`, falls through to 0xffeb20b0 when `not (Z == 1)`.
   Jump (`bra.b` at 0xffeb20b0): target 0xffeb20ee.
   Grouped accesses: 3 4-byte load records with target `abs 0x30000480`, including `movea.l` at 0xffeb20b2, `movea.l` at 0xffeb20c0, `movea.l` at 0xffeb20ca.
-  Halfword store: target `[0x30000480] +0x88`, value `unknown` (`move.w` at 0xffeb20bc).
-  Word store: target `[0x30000480] +0x8c`, value `0x0` (`clr.l` at 0xffeb20c6).
-  Halfword store: target `[0x30000480] +0x92`, value `unknown` (`move.w` at 0xffeb20d4).
+  Two-byte store: target `[0x30000480] +0x88`, value `unknown` (`move.w` at 0xffeb20bc).
+  Four-byte store: target `[0x30000480] +0x8c`, value `0x0` (`clr.l` at 0xffeb20c6).
+  Two-byte store: target `[0x30000480] +0x92`, value `unknown` (`move.w` at 0xffeb20d4).
   Call (`jsr` at 0xffeb20e4): (unknown callee), target 0xffec43d4, stack arg0=`0x0`, stack arg1=`0x40000000`, stack arg2=`0x2`, stack arg3=`unknown`, stack arg4=`unknown`, stack arg5=`unknown`.
   At the return (`rts` at 0xffeb20f4), d0 is `unknown`.
 
@@ -149,7 +149,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 961604 bytes, SHA256 `75cbe6e87e2e84fca517ce27a11391c362057ea1a8b3b3e994ce069994720a9a`.
   Payload: carrier offset 0x28, 961564 bytes, SHA256 `5b9d6771ee2405c5d556304b713f1a6b1deaa9bfd49009cd21856cd266eb3ef9`.
   Read window: SHA256 `f84c60761956fa33653152c06154bf58790f8a3e307953352e2deaf0aa486c6a`.
-  Word load: target `abs 0x30000490` (`movea.l` at 0xffe5a3fc).
+  Four-byte load: target `abs 0x30000490` (`movea.l` at 0xffe5a3fc).
   Byte store: target `[0x30000490] +0x1e8`, value `0x80` (`move.b` at 0xffe5a404).
   The exit (`rts` at 0xffe5a40a) reports d0 = `0xffffff80`.
 
@@ -160,7 +160,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 961604 bytes, SHA256 `75cbe6e87e2e84fca517ce27a11391c362057ea1a8b3b3e994ce069994720a9a`.
   Payload: carrier offset 0x28, 961564 bytes, SHA256 `5b9d6771ee2405c5d556304b713f1a6b1deaa9bfd49009cd21856cd266eb3ef9`.
   Read window: SHA256 `f84c60761956fa33653152c06154bf58790f8a3e307953352e2deaf0aa486c6a`.
-  Word load: target `abs 0x30000490` (`movea.l` at 0xffeca3fc).
+  Four-byte load: target `abs 0x30000490` (`movea.l` at 0xffeca3fc).
   Byte store: target `[0x30000490] +0x1e8`, value `0x80` (`move.b` at 0xffeca404).
   `rts` at 0xffeca40a has recorded d0 = `0xffffff80`.
 
@@ -171,7 +171,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 947836 bytes, SHA256 `8a6b608cdd4b28ab4758020afbcda5eea94429ffcc92d12fa401a6db41254add`.
   Payload: carrier offset 0x28, 947796 bytes, SHA256 `7084835eb61932052dc28531fe420d397a42df805f59b49d47bec8a95f6dcc93`.
   Read window: SHA256 `54c68f0828deeb406f57e63e23ecb7c3cc083d3f6fe7b1222cb34bebef85914b`.
-  Word load: target `abs 0x30000198` (`movea.l` at 0xffe654b0).
+  Four-byte load: target `abs 0x30000198` (`movea.l` at 0xffe654b0).
   Byte store: target `[0x30000198] +0x1e8`, value `0x80` (`move.b` at 0xffe654b8).
   Recorded d0 at the return is `0xffffff80` (`rts` at 0xffe654be).
 
@@ -182,7 +182,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 947836 bytes, SHA256 `8a6b608cdd4b28ab4758020afbcda5eea94429ffcc92d12fa401a6db41254add`.
   Payload: carrier offset 0x28, 947796 bytes, SHA256 `7084835eb61932052dc28531fe420d397a42df805f59b49d47bec8a95f6dcc93`.
   Read window: SHA256 `54c68f0828deeb406f57e63e23ecb7c3cc083d3f6fe7b1222cb34bebef85914b`.
-  Word load: target `abs 0x30000198` (`movea.l` at 0xffed54b0).
+  Four-byte load: target `abs 0x30000198` (`movea.l` at 0xffed54b0).
   Byte store: target `[0x30000198] +0x1e8`, value `0x80` (`move.b` at 0xffed54b8).
   At the return (`rts` at 0xffed54be), d0 is `0xffffff80`.
 
@@ -193,7 +193,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 957104 bytes, SHA256 `b69671ddfc246ad55cf3162af0b9b86652ce74eba10cf9325a3fef8ee1d96fdd`.
   Payload: carrier offset 0x28, 957064 bytes, SHA256 `6e560e68a673766d56d716333f39ae79dca4b8779b59c7c97ef02741c822611d`.
   Read window: SHA256 `0a26c2e1b25be5367887bff67b8a30e0222db6833b39d35ec8fd3f0994e606c6`.
-  Word load: target `abs 0x300002ac` (`movea.l` at 0xffe67734).
+  Four-byte load: target `abs 0x300002ac` (`movea.l` at 0xffe67734).
   Byte store: target `[0x300002ac] +0x1e8`, value `0x80` (`move.b` at 0xffe6773c).
   The exit (`rts` at 0xffe67742) reports d0 = `0xffffff80`.
 
@@ -204,7 +204,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 957104 bytes, SHA256 `b69671ddfc246ad55cf3162af0b9b86652ce74eba10cf9325a3fef8ee1d96fdd`.
   Payload: carrier offset 0x28, 957064 bytes, SHA256 `6e560e68a673766d56d716333f39ae79dca4b8779b59c7c97ef02741c822611d`.
   Read window: SHA256 `0a26c2e1b25be5367887bff67b8a30e0222db6833b39d35ec8fd3f0994e606c6`.
-  Word load: target `abs 0x300002ac` (`movea.l` at 0xffed7734).
+  Four-byte load: target `abs 0x300002ac` (`movea.l` at 0xffed7734).
   Byte store: target `[0x300002ac] +0x1e8`, value `0x80` (`move.b` at 0xffed773c).
   `rts` at 0xffed7742 has recorded d0 = `0xffffff80`.
 
@@ -215,8 +215,8 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 982364 bytes, SHA256 `01f4157793ada930d8f671157cdd27fad86188a92d4a4c32b5c2c8133fcd243b`.
   Payload: carrier offset 0x48, 982292 bytes, SHA256 `85d56d8030146394e6339ca8e34f99d091e9588ecd9a752759a35358c554e5e8`.
   Read window: SHA256 `fcf0a5ee2e967c94ea2d05da09343422e48d422f2835977e4558240dc09120a3`.
-  Word load: target `abs 0x30000808` (`movea.l` at 0xffe71e68).
-  Word load: target `sp +0x4` (`move.l` at 0xffe71e6e).
+  Four-byte load: target `abs 0x30000808` (`movea.l` at 0xffe71e68).
+  Four-byte load: target `sp +0x4` (`move.l` at 0xffe71e6e).
   Byte store: target `[0x30000808] +0x1c9`, value `([sp+4] & 0xff)` (`move.b` at 0xffe71e72).
   Recorded d0 at the return is `[sp+4]` (`rts` at 0xffe71e78).
 
@@ -227,8 +227,8 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0xefd5c, 981328 bytes, SHA256 `aea0366c69ecffb773f22102af9e5d2696ec1eff91925377f388345d468380a0`.
   Payload: carrier offset 0xefd88, 981284 bytes, SHA256 `1c9aeb0a2af5bb40c97a727427e01cc159613434ed1a7a670b2dd81566888cf4`.
   Read window: SHA256 `2e82c108cb971a797514f8120b9ea90d0561481bf2e251fb36ab4b71c67fa0d2`.
-  Word load: target `abs 0x300008b0` (`movea.l` at 0xffe71980).
-  Word load: target `sp +0x4` (`move.l` at 0xffe71986).
+  Four-byte load: target `abs 0x300008b0` (`movea.l` at 0xffe71980).
+  Four-byte load: target `sp +0x4` (`move.l` at 0xffe71986).
   Byte store: target `[0x300008b0] +0x1c9`, value `([sp+4] & 0xff)` (`move.b` at 0xffe7198a).
   At the return (`rts` at 0xffe71990), d0 is `[sp+4]`.
 
@@ -239,8 +239,8 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x1df6ac, 1799620 bytes, SHA256 `f8faa30fbd2a62abf34dc81f249e3eced855814e03126cd61f23787233c72db5`.
   Payload: carrier offset 0x1df6d8, 1799576 bytes, SHA256 `92705d72b6589449f4852e8d45d40a995d5c54909f9de62af36ea3b5aeb28414`.
   Read window: SHA256 `94402606408060e677a798cd6ee0b98158cf94b2cb700fe6f12b69d682612151`.
-  Word load: target `abs 0x30000afc` (`movea.l` at 0xffea1c54).
-  Word load: target `sp +0x4` (`move.l` at 0xffea1c5a).
+  Four-byte load: target `abs 0x30000afc` (`movea.l` at 0xffea1c54).
+  Four-byte load: target `sp +0x4` (`move.l` at 0xffea1c5a).
   Byte store: target `[0x30000afc] +0x1c9`, value `([sp+4] & 0xff)` (`move.b` at 0xffea1c5e).
   The exit (`rts` at 0xffea1c64) reports d0 = `[sp+4]`.
 
@@ -251,7 +251,7 @@ The [complete facts](disasm/coldfire-variants/pointer-stores-patches-early-6.5.2
   Package: carrier offset 0x0, 980132 bytes, SHA256 `743c2e9361fcdd2134ae3d68a4773694a6909e4016afbc25530506172432cbd5`.
   Payload: carrier offset 0x48, 980060 bytes, SHA256 `edb297ad427641845d4abf1ffb2c0e82e81e5b26f56cd2c1e3d888352a34fd50`.
   Read window: SHA256 `fcf0a5ee2e967c94ea2d05da09343422e48d422f2835977e4558240dc09120a3`.
-  Word load: target `abs 0x30000808` (`movea.l` at 0xffe716c4).
-  Word load: target `sp +0x4` (`move.l` at 0xffe716ca).
+  Four-byte load: target `abs 0x30000808` (`movea.l` at 0xffe716c4).
+  Four-byte load: target `sp +0x4` (`move.l` at 0xffe716ca).
   Byte store: target `[0x30000808] +0x1c9`, value `([sp+4] & 0xff)` (`move.b` at 0xffe716ce).
   `rts` at 0xffe716d4 has recorded d0 = `[sp+4]`.
