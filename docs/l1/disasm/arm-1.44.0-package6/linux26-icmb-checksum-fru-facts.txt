@@ -1,0 +1,1718 @@
+routine (unnamed)  0xede7c-0xeded8  size 0x5c (92 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (18)
+  0xede80 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xede80 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xede80 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xede80 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xede8c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xede94 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xede9c load w1 ldrb base=r3 disp +0x0 => r0 +0x1
+  0xedea0 store w2 strh base=r11 disp -0x12 => sp -0x16 value ([r0+1]:1 & 0xffff)
+  0xedea4 load w2 ldrh base=r11 disp -0x12 => sp -0x16
+  0xedeac store w2 strh base=r11 disp -0x12 => sp -0x16 value ?
+  0xedeb0 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xedeb4 load w1 ldrb base=r3 disp +0x0 => r0 +0x0
+  0xedebc load w2 ldrh base=r11 disp -0x12 => sp -0x16
+  0xedec4 store w2 strh base=r11 disp -0x12 => sp -0x16 value ?
+  0xedec8 load w2 ldrh base=r11 disp -0x12 => sp -0x16
+  0xeded4 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xeded4 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xeded4 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (23)
+  B0 0xede7c-0xede7c preds: entry
+      normal -> B1
+  B1 0xede80-0xede80 preds: B0
+      normal -> B2
+  B2 0xede84-0xede84 preds: B1
+      normal -> B3
+  B3 0xede88-0xede88 preds: B2
+      normal -> B4
+  B4 0xede8c-0xede8c preds: B3
+      normal -> B5
+  B5 0xede90-0xede90 preds: B4
+      normal -> B6
+  B6 0xede94-0xede94 preds: B5
+      normal -> B7
+  B7 0xede98-0xede98 preds: B6
+      normal -> B8
+  B8 0xede9c-0xede9c preds: B7
+      normal -> B9
+  B9 0xedea0-0xedea0 preds: B8
+      normal -> B10
+  B10 0xedea4-0xedea4 preds: B9
+      normal -> B11
+  B11 0xedea8-0xedea8 preds: B10
+      normal -> B12
+  B12 0xedeac-0xedeac preds: B11
+      normal -> B13
+  B13 0xedeb0-0xedeb0 preds: B12
+      normal -> B14
+  B14 0xedeb4-0xedeb4 preds: B13
+      normal -> B15
+  B15 0xedeb8-0xedeb8 preds: B14
+      normal -> B16
+  B16 0xedebc-0xedebc preds: B15
+      normal -> B17
+  B17 0xedec0-0xedec0 preds: B16
+      normal -> B18
+  B18 0xedec4-0xedec4 preds: B17
+      normal -> B19
+  B19 0xedec8-0xedec8 preds: B18
+      normal -> B20
+  B20 0xedecc-0xedecc preds: B19
+      normal -> B21
+  B21 0xeded0-0xeded0 preds: B20
+      normal -> B22
+  B22 0xeded4-0xeded4 preds: B21
+      return
+
+returns (1)
+  0xeded4: r0 = [sp-22]:2; reached from B21
+
+constants
+  0xede90 r2 = 0x1
+immediates
+  0x4 at 0xede84
+  0x8 at 0xede88
+  0x1 at 0xede90
+  0xc at 0xeded0
+instructions
+  0xede7c 0dc0a0e1 mov ip, sp
+  0xede80 00d82de9 push {fp, ip, lr, pc}
+  0xede84 04b04ce2 sub fp, ip, #4
+  0xede88 08d04de2 sub sp, sp, #8
+  0xede8c 10000be5 str r0, [fp, #-0x10]
+  0xede90 0120a0e3 mov r2, #1
+  0xede94 10301be5 ldr r3, [fp, #-0x10]
+  0xede98 033082e0 add r3, r2, r3
+  0xede9c 0030d3e5 ldrb r3, [r3]
+  0xedea0 b2314be1 strh r3, [fp, #-0x12]
+  0xedea4 b2315be1 ldrh r3, [fp, #-0x12]
+  0xedea8 0334a0e1 lsl r3, r3, #8
+  0xedeac b2314be1 strh r3, [fp, #-0x12]
+  0xedeb0 10301be5 ldr r3, [fp, #-0x10]
+  0xedeb4 0030d3e5 ldrb r3, [r3]
+  0xedeb8 0320a0e1 mov r2, r3
+  0xedebc b2315be1 ldrh r3, [fp, #-0x12]
+  0xedec0 023083e1 orr r3, r3, r2
+  0xedec4 b2314be1 strh r3, [fp, #-0x12]
+  0xedec8 b2315be1 ldrh r3, [fp, #-0x12]
+  0xedecc 0300a0e1 mov r0, r3
+  0xeded0 0cd04be2 sub sp, fp, #0xc
+  0xeded4 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xeded8-0xedf20  size 0x48 (72 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (15)
+  0xededc store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xededc store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xededc store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xededc store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xedee8 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xedef0 store w2 strh base=r11 disp -0x12 => sp -0x16 value (r1 & 0xffff)
+  0xedef4 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xedef8 load w2 ldrh base=r11 disp -0x12 => sp -0x16
+  0xedefc store w1 strb base=r2 disp +0x0 => r0 +0x0 value ((r1 & 0xffff) & 0xff)
+  0xedf04 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xedf0c load w2 ldrh base=r11 disp -0x12 => sp -0x16
+  0xedf14 store w1 strb base=r2 disp +0x0 => [sp-20] +0x1 value ?
+  0xedf1c load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xedf1c load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xedf1c load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (18)
+  B0 0xeded8-0xeded8 preds: entry
+      normal -> B1
+  B1 0xededc-0xededc preds: B0
+      normal -> B2
+  B2 0xedee0-0xedee0 preds: B1
+      normal -> B3
+  B3 0xedee4-0xedee4 preds: B2
+      normal -> B4
+  B4 0xedee8-0xedee8 preds: B3
+      normal -> B5
+  B5 0xedeec-0xedeec preds: B4
+      normal -> B6
+  B6 0xedef0-0xedef0 preds: B5
+      normal -> B7
+  B7 0xedef4-0xedef4 preds: B6
+      normal -> B8
+  B8 0xedef8-0xedef8 preds: B7
+      normal -> B9
+  B9 0xedefc-0xedefc preds: B8
+      normal -> B10
+  B10 0xedf00-0xedf00 preds: B9
+      normal -> B11
+  B11 0xedf04-0xedf04 preds: B10
+      normal -> B12
+  B12 0xedf08-0xedf08 preds: B11
+      normal -> B13
+  B13 0xedf0c-0xedf0c preds: B12
+      normal -> B14
+  B14 0xedf10-0xedf10 preds: B13
+      normal -> B15
+  B15 0xedf14-0xedf14 preds: B14
+      normal -> B16
+  B16 0xedf18-0xedf18 preds: B15
+      normal -> B17
+  B17 0xedf1c-0xedf1c preds: B16
+      return
+
+returns (1)
+  0xedf1c: r0 = r0; reached from B16
+
+constants
+  0xedf00 r2 = 0x1
+immediates
+  0x4 at 0xedee0
+  0x8 at 0xedee4
+  0x1 at 0xedf00
+  0xc at 0xedf18
+instructions
+  0xeded8 0dc0a0e1 mov ip, sp
+  0xededc 00d82de9 push {fp, ip, lr, pc}
+  0xedee0 04b04ce2 sub fp, ip, #4
+  0xedee4 08d04de2 sub sp, sp, #8
+  0xedee8 10000be5 str r0, [fp, #-0x10]
+  0xedeec 0130a0e1 mov r3, r1
+  0xedef0 b2314be1 strh r3, [fp, #-0x12]
+  0xedef4 10201be5 ldr r2, [fp, #-0x10]
+  0xedef8 b2315be1 ldrh r3, [fp, #-0x12]
+  0xedefc 0030c2e5 strb r3, [r2]
+  0xedf00 0120a0e3 mov r2, #1
+  0xedf04 10301be5 ldr r3, [fp, #-0x10]
+  0xedf08 032082e0 add r2, r2, r3
+  0xedf0c b2315be1 ldrh r3, [fp, #-0x12]
+  0xedf10 2334a0e1 lsr r3, r3, #8
+  0xedf14 0030c2e5 strb r3, [r2]
+  0xedf18 0cd04be2 sub sp, fp, #0xc
+  0xedf1c 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xedf20-0xedf5c  size 0x3c (60 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (12)
+  0xedf24 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xedf24 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xedf24 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xedf24 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xedf30 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xedf34 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xedf38 load w1 ldrb base=r3 disp +0x0 => r0 +0x0
+  0xedf48 store w4 str base=r11 disp -0x14 => sp -0x18 value ?
+  0xedf4c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xedf58 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xedf58 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xedf58 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (15)
+  B0 0xedf20-0xedf20 preds: entry
+      normal -> B1
+  B1 0xedf24-0xedf24 preds: B0
+      normal -> B2
+  B2 0xedf28-0xedf28 preds: B1
+      normal -> B3
+  B3 0xedf2c-0xedf2c preds: B2
+      normal -> B4
+  B4 0xedf30-0xedf30 preds: B3
+      normal -> B5
+  B5 0xedf34-0xedf34 preds: B4
+      normal -> B6
+  B6 0xedf38-0xedf38 preds: B5
+      normal -> B7
+  B7 0xedf3c-0xedf3c preds: B6
+      normal -> B8
+  B8 0xedf40-0xedf40 preds: B7
+      normal -> B9
+  B9 0xedf44-0xedf44 preds: B8
+      normal -> B10
+  B10 0xedf48-0xedf48 preds: B9
+      normal -> B11
+  B11 0xedf4c-0xedf4c preds: B10
+      normal -> B12
+  B12 0xedf50-0xedf50 preds: B11
+      normal -> B13
+  B13 0xedf54-0xedf54 preds: B12
+      normal -> B14
+  B14 0xedf58-0xedf58 preds: B13
+      return
+
+returns (1)
+  0xedf58: r0 = [sp-24]; reached from B13
+
+constants
+  0xedf3c r3 = 0x80
+immediates
+  0x4 at 0xedf28
+  0x8 at 0xedf2c
+  0x80 at 0xedf3c
+  0xc at 0xedf54
+instructions
+  0xedf20 0dc0a0e1 mov ip, sp
+  0xedf24 00d82de9 push {fp, ip, lr, pc}
+  0xedf28 04b04ce2 sub fp, ip, #4
+  0xedf2c 08d04de2 sub sp, sp, #8
+  0xedf30 10000be5 str r0, [fp, #-0x10]
+  0xedf34 10301be5 ldr r3, [fp, #-0x10]
+  0xedf38 0020d3e5 ldrb r2, [r3]
+  0xedf3c 8030a0e3 mov r3, #0x80
+  0xedf40 033002e0 and r3, r2, r3
+  0xedf44 c333a0e1 asr r3, r3, #7
+  0xedf48 14300be5 str r3, [fp, #-0x14]
+  0xedf4c 14301be5 ldr r3, [fp, #-0x14]
+  0xedf50 0300a0e1 mov r0, r3
+  0xedf54 0cd04be2 sub sp, fp, #0xc
+  0xedf58 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xedfb8-0xedfec  size 0x34 (52 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (12)
+  0xedfbc store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xedfbc store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xedfbc store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xedfbc store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xedfc8 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xedfcc load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xedfd0 load w1 ldrb base=r3 disp +0x0 => r0 +0x0
+  0xedfd8 store w1 strb base=r11 disp -0x11 => sp -0x15 value ?
+  0xedfdc load w1 ldrb base=r11 disp -0x11 => sp -0x15
+  0xedfe8 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xedfe8 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xedfe8 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (13)
+  B0 0xedfb8-0xedfb8 preds: entry
+      normal -> B1
+  B1 0xedfbc-0xedfbc preds: B0
+      normal -> B2
+  B2 0xedfc0-0xedfc0 preds: B1
+      normal -> B3
+  B3 0xedfc4-0xedfc4 preds: B2
+      normal -> B4
+  B4 0xedfc8-0xedfc8 preds: B3
+      normal -> B5
+  B5 0xedfcc-0xedfcc preds: B4
+      normal -> B6
+  B6 0xedfd0-0xedfd0 preds: B5
+      normal -> B7
+  B7 0xedfd4-0xedfd4 preds: B6
+      normal -> B8
+  B8 0xedfd8-0xedfd8 preds: B7
+      normal -> B9
+  B9 0xedfdc-0xedfdc preds: B8
+      normal -> B10
+  B10 0xedfe0-0xedfe0 preds: B9
+      normal -> B11
+  B11 0xedfe4-0xedfe4 preds: B10
+      normal -> B12
+  B12 0xedfe8-0xedfe8 preds: B11
+      return
+
+returns (1)
+  0xedfe8: r0 = [sp-21]:1; reached from B11
+
+constants
+immediates
+  0x4 at 0xedfc0
+  0x8 at 0xedfc4
+  0x1f at 0xedfd4
+  0xc at 0xedfe4
+instructions
+  0xedfb8 0dc0a0e1 mov ip, sp
+  0xedfbc 00d82de9 push {fp, ip, lr, pc}
+  0xedfc0 04b04ce2 sub fp, ip, #4
+  0xedfc4 08d04de2 sub sp, sp, #8
+  0xedfc8 10000be5 str r0, [fp, #-0x10]
+  0xedfcc 10301be5 ldr r3, [fp, #-0x10]
+  0xedfd0 0030d3e5 ldrb r3, [r3]
+  0xedfd4 1f3003e2 and r3, r3, #0x1f
+  0xedfd8 11304be5 strb r3, [fp, #-0x11]
+  0xedfdc 11305be5 ldrb r3, [fp, #-0x11]
+  0xedfe0 0300a0e1 mov r0, r3
+  0xedfe4 0cd04be2 sub sp, fp, #0xc
+  0xedfe8 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xee03c-0xee074  size 0x38 (56 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (12)
+  0xee040 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xee040 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xee040 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xee040 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xee04c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xee054 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xee05c load w1 ldrb base=r3 disp +0x0 => r0 +0x1
+  0xee060 store w4 str base=r11 disp -0x14 => sp -0x18 value [r0+1]:1
+  0xee064 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xee070 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xee070 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xee070 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (14)
+  B0 0xee03c-0xee03c preds: entry
+      normal -> B1
+  B1 0xee040-0xee040 preds: B0
+      normal -> B2
+  B2 0xee044-0xee044 preds: B1
+      normal -> B3
+  B3 0xee048-0xee048 preds: B2
+      normal -> B4
+  B4 0xee04c-0xee04c preds: B3
+      normal -> B5
+  B5 0xee050-0xee050 preds: B4
+      normal -> B6
+  B6 0xee054-0xee054 preds: B5
+      normal -> B7
+  B7 0xee058-0xee058 preds: B6
+      normal -> B8
+  B8 0xee05c-0xee05c preds: B7
+      normal -> B9
+  B9 0xee060-0xee060 preds: B8
+      normal -> B10
+  B10 0xee064-0xee064 preds: B9
+      normal -> B11
+  B11 0xee068-0xee068 preds: B10
+      normal -> B12
+  B12 0xee06c-0xee06c preds: B11
+      normal -> B13
+  B13 0xee070-0xee070 preds: B12
+      return
+
+returns (1)
+  0xee070: r0 = [r0+1]:1; reached from B12
+
+constants
+  0xee050 r2 = 0x1
+immediates
+  0x4 at 0xee044
+  0x8 at 0xee048
+  0x1 at 0xee050
+  0xc at 0xee06c
+instructions
+  0xee03c 0dc0a0e1 mov ip, sp
+  0xee040 00d82de9 push {fp, ip, lr, pc}
+  0xee044 04b04ce2 sub fp, ip, #4
+  0xee048 08d04de2 sub sp, sp, #8
+  0xee04c 10000be5 str r0, [fp, #-0x10]
+  0xee050 0120a0e3 mov r2, #1
+  0xee054 10301be5 ldr r3, [fp, #-0x10]
+  0xee058 033082e0 add r3, r2, r3
+  0xee05c 0030d3e5 ldrb r3, [r3]
+  0xee060 14300be5 str r3, [fp, #-0x14]
+  0xee064 14301be5 ldr r3, [fp, #-0x14]
+  0xee068 0300a0e1 mov r0, r3
+  0xee06c 0cd04be2 sub sp, fp, #0xc
+  0xee070 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xee0a8-0xee0e0  size 0x38 (56 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (12)
+  0xee0ac store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xee0ac store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xee0ac store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xee0ac store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xee0b8 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xee0c0 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xee0c8 load w1 ldrb base=r3 disp +0x0 => r0 +0x2
+  0xee0cc store w4 str base=r11 disp -0x14 => sp -0x18 value [r0+2]:1
+  0xee0d0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xee0dc load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xee0dc load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xee0dc load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (14)
+  B0 0xee0a8-0xee0a8 preds: entry
+      normal -> B1
+  B1 0xee0ac-0xee0ac preds: B0
+      normal -> B2
+  B2 0xee0b0-0xee0b0 preds: B1
+      normal -> B3
+  B3 0xee0b4-0xee0b4 preds: B2
+      normal -> B4
+  B4 0xee0b8-0xee0b8 preds: B3
+      normal -> B5
+  B5 0xee0bc-0xee0bc preds: B4
+      normal -> B6
+  B6 0xee0c0-0xee0c0 preds: B5
+      normal -> B7
+  B7 0xee0c4-0xee0c4 preds: B6
+      normal -> B8
+  B8 0xee0c8-0xee0c8 preds: B7
+      normal -> B9
+  B9 0xee0cc-0xee0cc preds: B8
+      normal -> B10
+  B10 0xee0d0-0xee0d0 preds: B9
+      normal -> B11
+  B11 0xee0d4-0xee0d4 preds: B10
+      normal -> B12
+  B12 0xee0d8-0xee0d8 preds: B11
+      normal -> B13
+  B13 0xee0dc-0xee0dc preds: B12
+      return
+
+returns (1)
+  0xee0dc: r0 = [r0+2]:1; reached from B12
+
+constants
+  0xee0bc r2 = 0x2
+immediates
+  0x4 at 0xee0b0
+  0x8 at 0xee0b4
+  0x2 at 0xee0bc
+  0xc at 0xee0d8
+instructions
+  0xee0a8 0dc0a0e1 mov ip, sp
+  0xee0ac 00d82de9 push {fp, ip, lr, pc}
+  0xee0b0 04b04ce2 sub fp, ip, #4
+  0xee0b4 08d04de2 sub sp, sp, #8
+  0xee0b8 10000be5 str r0, [fp, #-0x10]
+  0xee0bc 0220a0e3 mov r2, #2
+  0xee0c0 10301be5 ldr r3, [fp, #-0x10]
+  0xee0c4 033082e0 add r3, r2, r3
+  0xee0c8 0030d3e5 ldrb r3, [r3]
+  0xee0cc 14300be5 str r3, [fp, #-0x14]
+  0xee0d0 14301be5 ldr r3, [fp, #-0x14]
+  0xee0d4 0300a0e1 mov r0, r3
+  0xee0d8 0cd04be2 sub sp, fp, #0xc
+  0xee0dc 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xee0e0-0xee13c  size 0x5c (92 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (16)
+  0xee0e4 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xee0e4 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xee0e4 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xee0e4 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xee0f0 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xee0f4 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xee100 store w4 str base=r11 disp -0x14 => sp -0x18 value ret(0xedf20)
+  0xee104 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xee110 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xee118 store w4 str base=r11 disp -0x18 => sp -0x1c value [sp-20]+2
+  0xee120 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xee128 store w4 str base=r11 disp -0x18 => sp -0x1c value [sp-20]+3
+  0xee12c load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xee138 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xee138 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xee138 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0xee0f8 bl (unknown callee) [0xedf20]
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (23)
+  B0 0xee0e0-0xee0e0 preds: entry
+      normal -> B1
+  B1 0xee0e4-0xee0e4 preds: B0
+      normal -> B2
+  B2 0xee0e8-0xee0e8 preds: B1
+      normal -> B3
+  B3 0xee0ec-0xee0ec preds: B2
+      normal -> B4
+  B4 0xee0f0-0xee0f0 preds: B3
+      normal -> B5
+  B5 0xee0f4-0xee0f4 preds: B4
+      normal -> B6
+  B6 0xee0f8-0xee0f8 preds: B5
+      call -> 0xedf20
+  B7 0xee0fc-0xee0fc preds: B6
+      normal -> B8
+  B8 0xee100-0xee100 preds: B7
+      normal -> B9
+  B9 0xee104-0xee104 preds: B8
+      normal -> B10
+  B10 0xee108-0xee108 preds: B9
+      normal -> B11
+  B11 0xee10c-0xee10c preds: B10
+      taken when ret(0xedf20) != 0x0 -> 0xee120
+      falls through when ret(0xedf20) == 0x0 -> B12
+  B12 0xee110-0xee110 preds: B11
+      normal -> B13
+  B13 0xee114-0xee114 preds: B12
+      normal -> B14
+  B14 0xee118-0xee118 preds: B13
+      normal -> B15
+  B15 0xee11c-0xee11c preds: B14
+      jump -> 0xee12c
+  B16 0xee120-0xee120 preds: B11
+      normal -> B17
+  B17 0xee124-0xee124 preds: B16
+      normal -> B18
+  B18 0xee128-0xee128 preds: B17
+      normal -> B19
+  B19 0xee12c-0xee12c preds: B18, B15
+      normal -> B20
+  B20 0xee130-0xee130 preds: B19
+      normal -> B21
+  B21 0xee134-0xee134 preds: B20
+      normal -> B22
+  B22 0xee138-0xee138 preds: B21
+      return
+
+returns (1)
+  0xee138: r0 = [sp-28]; reached from B21
+
+constants
+immediates
+  0x4 at 0xee0e8
+  0xc at 0xee0ec
+  0xedf20 at 0xee0f8
+  0x0 at 0xee108
+  0xee120 at 0xee10c
+  0x2 at 0xee114
+  0xee12c at 0xee11c
+  0x3 at 0xee124
+  0xc at 0xee134
+instructions
+  0xee0e0 0dc0a0e1 mov ip, sp
+  0xee0e4 00d82de9 push {fp, ip, lr, pc}
+  0xee0e8 04b04ce2 sub fp, ip, #4
+  0xee0ec 0cd04de2 sub sp, sp, #0xc
+  0xee0f0 10000be5 str r0, [fp, #-0x10]
+  0xee0f4 10001be5 ldr r0, [fp, #-0x10]
+  0xee0f8 88ffffeb bl #0xedf20
+  0xee0fc 0030a0e1 mov r3, r0
+  0xee100 14300be5 str r3, [fp, #-0x14]
+  0xee104 14301be5 ldr r3, [fp, #-0x14]
+  0xee108 000053e3 cmp r3, #0
+  0xee10c 0300001a bne #0xee120
+  0xee110 10301be5 ldr r3, [fp, #-0x10]
+  0xee114 023083e2 add r3, r3, #2
+  0xee118 18300be5 str r3, [fp, #-0x18]
+  0xee11c 020000ea b #0xee12c
+  0xee120 10301be5 ldr r3, [fp, #-0x10]
+  0xee124 033083e2 add r3, r3, #3
+  0xee128 18300be5 str r3, [fp, #-0x18]
+  0xee12c 18301be5 ldr r3, [fp, #-0x18]
+  0xee130 0300a0e1 mov r0, r3
+  0xee134 0cd04be2 sub sp, fp, #0xc
+  0xee138 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0xee13c-0xee1bc  size 0x80 (128 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (22)
+  0xee140 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xee140 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xee140 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xee140 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xee14c store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xee150 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xee154 store w4 str base=r11 disp -0x1c => sp -0x20 value r3
+  0xee15c store w1 strb base=r11 disp -0xd => sp -0x11 value (r0 & 0xff)
+  0xee160 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xee168 store w4 str base=r11 disp -0x20 => sp -0x24 value r3+2
+  0xee16c load w4 ldr base=r11 disp +0x4 => sp +0x0
+  0xee178 load w1 ldrb base=r11 disp -0xd => sp -0x11
+  0xee17c load w4 ldr base=r11 disp +0x4 => sp +0x0
+  0xee188 load w4 ldr base=r11 disp +0x4 => sp +0x0
+  0xee18c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xee194 load w4 ldr base=r11 disp +0x4 => sp +0x0
+  0xee1a0 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xee1a4 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xee1ac load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xee1b8 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xee1b8 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xee1b8 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (4)
+  0xee174 bl (unknown callee) [0xedf5c]
+      args: r0=[sp], r1=0x0, r2=r2, r3=r3+2
+  0xee184 bl (unknown callee) [0xedfec]
+      args: r0=[sp], r1=[sp-17]:1, r2=?, r3=[sp-17]:1
+  0xee190 bl (unknown callee) [0xee074]
+      args: r0=[sp], r1=[sp-24], r2=?, r3=?
+  0xee1a8 bl (unknown callee) [0x203f4]
+      args: r0=[sp]+2, r1=[sp-28], r2=[sp-32], r3=[sp]+2
+
+blocks (32)
+  B0 0xee13c-0xee13c preds: entry
+      normal -> B1
+  B1 0xee140-0xee140 preds: B0
+      normal -> B2
+  B2 0xee144-0xee144 preds: B1
+      normal -> B3
+  B3 0xee148-0xee148 preds: B2
+      normal -> B4
+  B4 0xee14c-0xee14c preds: B3
+      normal -> B5
+  B5 0xee150-0xee150 preds: B4
+      normal -> B6
+  B6 0xee154-0xee154 preds: B5
+      normal -> B7
+  B7 0xee158-0xee158 preds: B6
+      normal -> B8
+  B8 0xee15c-0xee15c preds: B7
+      normal -> B9
+  B9 0xee160-0xee160 preds: B8
+      normal -> B10
+  B10 0xee164-0xee164 preds: B9
+      normal -> B11
+  B11 0xee168-0xee168 preds: B10
+      normal -> B12
+  B12 0xee16c-0xee16c preds: B11
+      normal -> B13
+  B13 0xee170-0xee170 preds: B12
+      normal -> B14
+  B14 0xee174-0xee174 preds: B13
+      call -> 0xedf5c
+  B15 0xee178-0xee178 preds: B14
+      normal -> B16
+  B16 0xee17c-0xee17c preds: B15
+      normal -> B17
+  B17 0xee180-0xee180 preds: B16
+      normal -> B18
+  B18 0xee184-0xee184 preds: B17
+      call -> 0xedfec
+  B19 0xee188-0xee188 preds: B18
+      normal -> B20
+  B20 0xee18c-0xee18c preds: B19
+      normal -> B21
+  B21 0xee190-0xee190 preds: B20
+      call -> 0xee074
+  B22 0xee194-0xee194 preds: B21
+      normal -> B23
+  B23 0xee198-0xee198 preds: B22
+      normal -> B24
+  B24 0xee19c-0xee19c preds: B23
+      normal -> B25
+  B25 0xee1a0-0xee1a0 preds: B24
+      normal -> B26
+  B26 0xee1a4-0xee1a4 preds: B25
+      normal -> B27
+  B27 0xee1a8-0xee1a8 preds: B26
+      call -> 0x203f4
+  B28 0xee1ac-0xee1ac preds: B27
+      normal -> B29
+  B29 0xee1b0-0xee1b0 preds: B28
+      normal -> B30
+  B30 0xee1b4-0xee1b4 preds: B29
+      normal -> B31
+  B31 0xee1b8-0xee1b8 preds: B30
+      return
+
+returns (1)
+  0xee1b8: r0 = [sp-36]; reached from B30
+
+constants
+  0xee170 r1 = 0x0
+immediates
+  0x4 at 0xee144
+  0x18 at 0xee148
+  0x2 at 0xee164
+  0x0 at 0xee170
+  0xedf5c at 0xee174
+  0xedfec at 0xee184
+  0xee074 at 0xee190
+  0x2 at 0xee198
+  0x203f4 at 0xee1a8
+  0xc at 0xee1b4
+instructions
+  0xee13c 0dc0a0e1 mov ip, sp
+  0xee140 00d82de9 push {fp, ip, lr, pc}
+  0xee144 04b04ce2 sub fp, ip, #4
+  0xee148 18d04de2 sub sp, sp, #0x18
+  0xee14c 14100be5 str r1, [fp, #-0x14]
+  0xee150 18200be5 str r2, [fp, #-0x18]
+  0xee154 1c300be5 str r3, [fp, #-0x1c]
+  0xee158 0030a0e1 mov r3, r0
+  0xee15c 0d304be5 strb r3, [fp, #-0xd]
+  0xee160 1c301be5 ldr r3, [fp, #-0x1c]
+  0xee164 023083e2 add r3, r3, #2
+  0xee168 20300be5 str r3, [fp, #-0x20]
+  0xee16c 04009be5 ldr r0, [fp, #4]
+  0xee170 0010a0e3 mov r1, #0
+  0xee174 78ffffeb bl #0xedf5c
+  0xee178 0d305be5 ldrb r3, [fp, #-0xd]
+  0xee17c 04009be5 ldr r0, [fp, #4]
+  0xee180 0310a0e1 mov r1, r3
+  0xee184 98ffffeb bl #0xedfec
+  0xee188 04009be5 ldr r0, [fp, #4]
+  0xee18c 14101be5 ldr r1, [fp, #-0x14]
+  0xee190 b7ffffeb bl #0xee074
+  0xee194 04309be5 ldr r3, [fp, #4]
+  0xee198 023083e2 add r3, r3, #2
+  0xee19c 0300a0e1 mov r0, r3
+  0xee1a0 18101be5 ldr r1, [fp, #-0x18]
+  0xee1a4 1c201be5 ldr r2, [fp, #-0x1c]
+  0xee1a8 91c8fceb bl #0x203f4
+  0xee1ac 20301be5 ldr r3, [fp, #-0x20]
+  0xee1b0 0300a0e1 mov r0, r3
+  0xee1b4 0cd04be2 sub sp, fp, #0xc
+  0xee1b8 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0x52784-0x52794  size 0x10 (16 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (7)
+  0x52788 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x52788 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x52788 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x52788 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x52790 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x52790 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x52790 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (4)
+  B0 0x52784-0x52784 preds: entry
+      normal -> B1
+  B1 0x52788-0x52788 preds: B0
+      normal -> B2
+  B2 0x5278c-0x5278c preds: B1
+      normal -> B3
+  B3 0x52790-0x52790 preds: B2
+      return
+
+returns (1)
+  0x52790: r0 = r0; reached from B2
+
+constants
+immediates
+  0x4 at 0x5278c
+instructions
+  0x52784 0dc0a0e1 mov ip, sp
+  0x52788 00d82de9 push {fp, ip, lr, pc}
+  0x5278c 04b04ce2 sub fp, ip, #4
+  0x52790 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0x52794-0x52800  size 0x6c (108 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x527c0 cmn: unsupported effects invalidated
+
+accesses (18)
+  0x52798 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x52798 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x52798 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x52798 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x527a4 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x527a8 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x527b0 store w1 strb base=r11 disp -0x15 => sp -0x19 value 0x0
+  0x527b4 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x527bc store w4 str base=r11 disp -0x14 => sp -0x18 value ?
+  0x527cc load w4 ldr base=r0 disp +0x0 => sp -0x14
+  0x527d4 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0x527d8 load w1 ldrb base=r3 disp +0x0 => [sp-20] +0x0
+  0x527e4 store w4 str base=r0 disp +0x0 => sp -0x14 value [sp-20]+1
+  0x527e8 store w1 strb base=r11 disp -0x15 => sp -0x19 value (([sp-25]:1 + [[sp-20]]:1) & 0xff)
+  0x527f0 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0x527fc load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x527fc load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x527fc load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (27)
+  B0 0x52794-0x52794 preds: entry
+      normal -> B1
+  B1 0x52798-0x52798 preds: B0
+      normal -> B2
+  B2 0x5279c-0x5279c preds: B1
+      normal -> B3
+  B3 0x527a0-0x527a0 preds: B2
+      normal -> B4
+  B4 0x527a4-0x527a4 preds: B3
+      normal -> B5
+  B5 0x527a8-0x527a8 preds: B4
+      normal -> B6
+  B6 0x527ac-0x527ac preds: B5
+      normal -> B7
+  B7 0x527b0-0x527b0 preds: B6
+      normal -> B8
+  B8 0x527b4-0x527b4 preds: B7, B22
+      normal -> B9
+  B9 0x527b8-0x527b8 preds: B8
+      normal -> B10
+  B10 0x527bc-0x527bc preds: B9
+      normal -> B11
+  B11 0x527c0-0x527c0 preds: B10
+      normal -> B12
+  B12 0x527c4-0x527c4 preds: B11
+      taken when Z == 1 -> 0x527f0
+      falls through when not (Z == 1) -> B13
+  B13 0x527c8-0x527c8 preds: B12
+      normal -> B14
+  B14 0x527cc-0x527cc preds: B13
+      normal -> B15
+  B15 0x527d0-0x527d0 preds: B14
+      normal -> B16
+  B16 0x527d4-0x527d4 preds: B15
+      normal -> B17
+  B17 0x527d8-0x527d8 preds: B16
+      normal -> B18
+  B18 0x527dc-0x527dc preds: B17
+      normal -> B19
+  B19 0x527e0-0x527e0 preds: B18
+      normal -> B20
+  B20 0x527e4-0x527e4 preds: B19
+      normal -> B21
+  B21 0x527e8-0x527e8 preds: B20
+      normal -> B22
+  B22 0x527ec-0x527ec preds: B21
+      jump -> 0x527b4
+  B23 0x527f0-0x527f0 preds: B12
+      normal -> B24
+  B24 0x527f4-0x527f4 preds: B23
+      normal -> B25
+  B25 0x527f8-0x527f8 preds: B24
+      normal -> B26
+  B26 0x527fc-0x527fc preds: B25
+      return
+
+returns (1)
+  0x527fc: r0 = [sp-25]:1; reached from B25
+
+constants
+  0x527ac r3 = 0x0
+immediates
+  0x4 at 0x5279c
+  0xc at 0x527a0
+  0x0 at 0x527ac
+  0x1 at 0x527b8
+  0x1 at 0x527c0
+  0x527f0 at 0x527c4
+  0x10 at 0x527c8
+  0x1 at 0x527e0
+  0x527b4 at 0x527ec
+  0xc at 0x527f8
+instructions
+  0x52794 0dc0a0e1 mov ip, sp
+  0x52798 00d82de9 push {fp, ip, lr, pc}
+  0x5279c 04b04ce2 sub fp, ip, #4
+  0x527a0 0cd04de2 sub sp, sp, #0xc
+  0x527a4 10000be5 str r0, [fp, #-0x10]
+  0x527a8 14100be5 str r1, [fp, #-0x14]
+  0x527ac 0030a0e3 mov r3, #0
+  0x527b0 15304be5 strb r3, [fp, #-0x15]
+  0x527b4 14301be5 ldr r3, [fp, #-0x14]
+  0x527b8 013043e2 sub r3, r3, #1
+  0x527bc 14300be5 str r3, [fp, #-0x14]
+  0x527c0 010073e3 cmn r3, #1
+  0x527c4 0900000a beq #0x527f0
+  0x527c8 10004be2 sub r0, fp, #0x10
+  0x527cc 002090e5 ldr r2, [r0]
+  0x527d0 0230a0e1 mov r3, r2
+  0x527d4 15105be5 ldrb r1, [fp, #-0x15]
+  0x527d8 0030d3e5 ldrb r3, [r3]
+  0x527dc 033081e0 add r3, r1, r3
+  0x527e0 012082e2 add r2, r2, #1
+  0x527e4 002080e5 str r2, [r0]
+  0x527e8 15304be5 strb r3, [fp, #-0x15]
+  0x527ec f0ffffea b #0x527b4
+  0x527f0 15305be5 ldrb r3, [fp, #-0x15]
+  0x527f4 0300a0e1 mov r0, r3
+  0x527f8 0cd04be2 sub sp, fp, #0xc
+  0x527fc 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0x52800-0x52878  size 0x78 (120 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x52860 mvn: unsupported effects invalidated
+
+accesses (18)
+  0x52804 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x52804 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x52804 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x52804 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x52810 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x52814 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x5281c store w1 strb base=r11 disp -0x15 => sp -0x19 value 0x0
+  0x52820 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x52828 store w4 str base=r11 disp -0x14 => sp -0x18 value ?
+  0x52838 load w4 ldr base=r0 disp +0x0 => sp -0x14
+  0x52840 load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0x52844 load w1 ldrb base=r3 disp +0x0 => ? (unknown effective address)
+  0x52850 store w4 str base=r0 disp +0x0 => sp -0x14 value ?
+  0x52854 store w1 strb base=r11 disp -0x15 => sp -0x19 value ?
+  0x5285c load w1 ldrb base=r11 disp -0x15 => sp -0x19
+  0x52874 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x52874 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x52874 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (30)
+  B0 0x52800-0x52800 preds: entry
+      normal -> B1
+  B1 0x52804-0x52804 preds: B0
+      normal -> B2
+  B2 0x52808-0x52808 preds: B1
+      normal -> B3
+  B3 0x5280c-0x5280c preds: B2
+      normal -> B4
+  B4 0x52810-0x52810 preds: B3
+      normal -> B5
+  B5 0x52814-0x52814 preds: B4
+      normal -> B6
+  B6 0x52818-0x52818 preds: B5
+      normal -> B7
+  B7 0x5281c-0x5281c preds: B6
+      normal -> B8
+  B8 0x52820-0x52820 preds: B7, B22
+      normal -> B9
+  B9 0x52824-0x52824 preds: B8
+      normal -> B10
+  B10 0x52828-0x52828 preds: B9
+      normal -> B11
+  B11 0x5282c-0x5282c preds: B10
+      normal -> B12
+  B12 0x52830-0x52830 preds: B11
+      taken when Z == 1 -> 0x5285c
+      falls through when not (Z == 1) -> B13
+  B13 0x52834-0x52834 preds: B12
+      normal -> B14
+  B14 0x52838-0x52838 preds: B13
+      normal -> B15
+  B15 0x5283c-0x5283c preds: B14
+      normal -> B16
+  B16 0x52840-0x52840 preds: B15
+      normal -> B17
+  B17 0x52844-0x52844 preds: B16
+      normal -> B18
+  B18 0x52848-0x52848 preds: B17
+      normal -> B19
+  B19 0x5284c-0x5284c preds: B18
+      normal -> B20
+  B20 0x52850-0x52850 preds: B19
+      normal -> B21
+  B21 0x52854-0x52854 preds: B20
+      normal -> B22
+  B22 0x52858-0x52858 preds: B21
+      jump -> 0x52820
+  B23 0x5285c-0x5285c preds: B12
+      normal -> B24
+  B24 0x52860-0x52860 preds: B23
+      normal -> B25
+  B25 0x52864-0x52864 preds: B24
+      normal -> B26
+  B26 0x52868-0x52868 preds: B25
+      normal -> B27
+  B27 0x5286c-0x5286c preds: B26
+      normal -> B28
+  B28 0x52870-0x52870 preds: B27
+      normal -> B29
+  B29 0x52874-0x52874 preds: B28
+      return
+
+returns (1)
+  0x52874: r0 = ?; reached from B28
+
+constants
+  0x52818 r3 = 0x0
+immediates
+  0x4 at 0x52808
+  0xc at 0x5280c
+  0x0 at 0x52818
+  0x1 at 0x52824
+  0x0 at 0x5282c
+  0x5285c at 0x52830
+  0x10 at 0x52834
+  0x1 at 0x5284c
+  0x52820 at 0x52858
+  0x1 at 0x52864
+  0xff at 0x52868
+  0xc at 0x52870
+instructions
+  0x52800 0dc0a0e1 mov ip, sp
+  0x52804 00d82de9 push {fp, ip, lr, pc}
+  0x52808 04b04ce2 sub fp, ip, #4
+  0x5280c 0cd04de2 sub sp, sp, #0xc
+  0x52810 10000be5 str r0, [fp, #-0x10]
+  0x52814 14100be5 str r1, [fp, #-0x14]
+  0x52818 0030a0e3 mov r3, #0
+  0x5281c 15304be5 strb r3, [fp, #-0x15]
+  0x52820 14301be5 ldr r3, [fp, #-0x14]
+  0x52824 013043e2 sub r3, r3, #1
+  0x52828 14300be5 str r3, [fp, #-0x14]
+  0x5282c 000053e3 cmp r3, #0
+  0x52830 0900000a beq #0x5285c
+  0x52834 10004be2 sub r0, fp, #0x10
+  0x52838 002090e5 ldr r2, [r0]
+  0x5283c 0230a0e1 mov r3, r2
+  0x52840 15105be5 ldrb r1, [fp, #-0x15]
+  0x52844 0030d3e5 ldrb r3, [r3]
+  0x52848 033081e0 add r3, r1, r3
+  0x5284c 012082e2 add r2, r2, #1
+  0x52850 002080e5 str r2, [r0]
+  0x52854 15304be5 strb r3, [fp, #-0x15]
+  0x52858 f0ffffea b #0x52820
+  0x5285c 15305be5 ldrb r3, [fp, #-0x15]
+  0x52860 0330e0e1 mvn r3, r3
+  0x52864 013083e2 add r3, r3, #1
+  0x52868 ff3003e2 and r3, r3, #0xff
+  0x5286c 0300a0e1 mov r0, r3
+  0x52870 0cd04be2 sub sp, fp, #0xc
+  0x52874 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0x105fe4-0x106010  size 0x2c (44 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (10)
+  0x105fe8 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x105fe8 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x105fe8 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x105fe8 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x105ff4 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x105ff8 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x105ffc load w4 ldr base=pc disp +0x8 => abs 0x10600c
+  0x106008 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x106008 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x106008 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (10)
+  B0 0x105fe4-0x105fe4 preds: entry
+      normal -> B1
+  B1 0x105fe8-0x105fe8 preds: B0
+      normal -> B2
+  B2 0x105fec-0x105fec preds: B1
+      normal -> B3
+  B3 0x105ff0-0x105ff0 preds: B2
+      normal -> B4
+  B4 0x105ff4-0x105ff4 preds: B3
+      normal -> B5
+  B5 0x105ff8-0x105ff8 preds: B4
+      normal -> B6
+  B6 0x105ffc-0x105ffc preds: B5
+      normal -> B7
+  B7 0x106000-0x106000 preds: B6
+      normal -> B8
+  B8 0x106004-0x106004 preds: B7
+      normal -> B9
+  B9 0x106008-0x106008 preds: B8
+      return
+
+returns (1)
+  0x106008: r0 = 0x18bfa8; reached from B8
+
+constants
+  0x105ffc r3 = 0x18bfa8
+  0x106000 r0 = 0x18bfa8
+immediates
+  0x4 at 0x105fec
+  0x8 at 0x105ff0
+  0xc at 0x106004
+instructions
+  0x105fe4 0dc0a0e1 mov ip, sp
+  0x105fe8 00d82de9 push {fp, ip, lr, pc}
+  0x105fec 04b04ce2 sub fp, ip, #4
+  0x105ff0 08d04de2 sub sp, sp, #8
+  0x105ff4 10000be5 str r0, [fp, #-0x10]
+  0x105ff8 14100be5 str r1, [fp, #-0x14]
+  0x105ffc 08309fe5 ldr r3, [pc, #8]
+  0x106000 0300a0e1 mov r0, r3
+  0x106004 0cd04be2 sub sp, fp, #0xc
+  0x106008 00a89de8 ldm sp, {fp, sp, pc}
+  0x10600c a8bf1800 andseq fp, r8, r8, lsr #31 (not reached by known edges)
+
+routine (unnamed)  0x106f04-0x106f2c  size 0x28 (40 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (11)
+  0x106f08 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x106f08 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x106f08 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x106f08 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x106f14 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x106f18 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x106f1c store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0x106f20 store w4 str base=r11 disp -0x1c => sp -0x20 value r3
+  0x106f28 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x106f28 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x106f28 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (10)
+  B0 0x106f04-0x106f04 preds: entry
+      normal -> B1
+  B1 0x106f08-0x106f08 preds: B0
+      normal -> B2
+  B2 0x106f0c-0x106f0c preds: B1
+      normal -> B3
+  B3 0x106f10-0x106f10 preds: B2
+      normal -> B4
+  B4 0x106f14-0x106f14 preds: B3
+      normal -> B5
+  B5 0x106f18-0x106f18 preds: B4
+      normal -> B6
+  B6 0x106f1c-0x106f1c preds: B5
+      normal -> B7
+  B7 0x106f20-0x106f20 preds: B6
+      normal -> B8
+  B8 0x106f24-0x106f24 preds: B7
+      normal -> B9
+  B9 0x106f28-0x106f28 preds: B8
+      return
+
+returns (1)
+  0x106f28: r0 = r0; reached from B8
+
+constants
+immediates
+  0x4 at 0x106f0c
+  0x10 at 0x106f10
+  0xc at 0x106f24
+instructions
+  0x106f04 0dc0a0e1 mov ip, sp
+  0x106f08 00d82de9 push {fp, ip, lr, pc}
+  0x106f0c 04b04ce2 sub fp, ip, #4
+  0x106f10 10d04de2 sub sp, sp, #0x10
+  0x106f14 10000be5 str r0, [fp, #-0x10]
+  0x106f18 14100be5 str r1, [fp, #-0x14]
+  0x106f1c 18200be5 str r2, [fp, #-0x18]
+  0x106f20 1c300be5 str r3, [fp, #-0x1c]
+  0x106f24 0cd04be2 sub sp, fp, #0xc
+  0x106f28 00a89de8 ldm sp, {fp, sp, pc}
+
+routine (unnamed)  0x106f2c-0x106ff8  size 0xcc (204 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (25)
+  0x106f30 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x106f30 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x106f30 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x106f30 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x106f3c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x106f40 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x106f44 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0x106f48 store w4 str base=r11 disp -0x1c => sp -0x20 value r3
+  0x106f50 load w4 ldr base=r11 disp +0x4 => sp +0x0
+  0x106f60 store w4 str base=r11 disp -0xac => sp -0xb0 value ret(0x104a4c)
+  0x106f64 load w4 ldr base=r11 disp -0xac => sp -0xb0
+  0x106f70 load w4 ldr base=r11 disp -0xac => sp -0xb0
+  0x106f84 load w4 ldr base=pc disp +0x68 => abs 0x106ff4
+  0x106f94 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x106f98 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x106fa8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x106fb8 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x106fbc load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x106fc0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x106fd0 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x106fd4 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x106fd8 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x106ff0 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x106ff0 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x106ff0 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (7)
+  0x106f58 bl (unknown callee) [0x104a4c]
+      args: r0=[sp], r1=sp-92, r2=r2, r3=sp-92
+  0x106f74 bl (unknown callee) [0x1073c8]
+      args: r0=ret(0x104a4c), r1=?, r2=?, r3=ret(0x104a4c)
+  0x106f8c bl (unknown callee) [0x205bc]
+      args: r0=sp-172, r1=0x18c270, r2=ret(0x1073c8), r3=ret(0x1073c8)
+  0x106fa0 bl (unknown callee) [0x105fb0]
+      args: r0=[sp-28], r1=[sp-32], r2=sp-172, r3=sp-172
+  0x106fc4 bl (unknown callee) [0x106010]
+      args: r0=[sp-20], r1=[sp-28], r2=[sp-32], r3=sp-92
+  0x106fdc bl (unknown callee) [0x106f04]
+      args: r0=[sp-20], r1=[sp-28], r2=[sp-32], r3=sp-92
+  0x106fe8 bl (unknown callee) [0x1070e8]
+      args: r0=sp-92, r1=?, r2=?, r3=sp-92
+
+blocks (50)
+  B0 0x106f2c-0x106f2c preds: entry
+      normal -> B1
+  B1 0x106f30-0x106f30 preds: B0
+      normal -> B2
+  B2 0x106f34-0x106f34 preds: B1
+      normal -> B3
+  B3 0x106f38-0x106f38 preds: B2
+      normal -> B4
+  B4 0x106f3c-0x106f3c preds: B3
+      normal -> B5
+  B5 0x106f40-0x106f40 preds: B4
+      normal -> B6
+  B6 0x106f44-0x106f44 preds: B5
+      normal -> B7
+  B7 0x106f48-0x106f48 preds: B6
+      normal -> B8
+  B8 0x106f4c-0x106f4c preds: B7
+      normal -> B9
+  B9 0x106f50-0x106f50 preds: B8
+      normal -> B10
+  B10 0x106f54-0x106f54 preds: B9
+      normal -> B11
+  B11 0x106f58-0x106f58 preds: B10
+      call -> 0x104a4c
+  B12 0x106f5c-0x106f5c preds: B11
+      normal -> B13
+  B13 0x106f60-0x106f60 preds: B12
+      normal -> B14
+  B14 0x106f64-0x106f64 preds: B13
+      normal -> B15
+  B15 0x106f68-0x106f68 preds: B14
+      normal -> B16
+  B16 0x106f6c-0x106f6c preds: B15
+      taken when ret(0x104a4c) == 0x0 -> 0x106fa8
+      falls through when ret(0x104a4c) != 0x0 -> B17
+  B17 0x106f70-0x106f70 preds: B16
+      normal -> B18
+  B18 0x106f74-0x106f74 preds: B17
+      call -> 0x1073c8
+  B19 0x106f78-0x106f78 preds: B18
+      normal -> B20
+  B20 0x106f7c-0x106f7c preds: B19
+      normal -> B21
+  B21 0x106f80-0x106f80 preds: B20
+      normal -> B22
+  B22 0x106f84-0x106f84 preds: B21
+      normal -> B23
+  B23 0x106f88-0x106f88 preds: B22
+      normal -> B24
+  B24 0x106f8c-0x106f8c preds: B23
+      call -> 0x205bc
+  B25 0x106f90-0x106f90 preds: B24
+      normal -> B26
+  B26 0x106f94-0x106f94 preds: B25
+      normal -> B27
+  B27 0x106f98-0x106f98 preds: B26
+      normal -> B28
+  B28 0x106f9c-0x106f9c preds: B27
+      normal -> B29
+  B29 0x106fa0-0x106fa0 preds: B28
+      call -> 0x105fb0
+  B30 0x106fa4-0x106fa4 preds: B29
+      jump -> 0x106fec
+  B31 0x106fa8-0x106fa8 preds: B16
+      normal -> B32
+  B32 0x106fac-0x106fac preds: B31
+      normal -> B33
+  B33 0x106fb0-0x106fb0 preds: B32
+      taken when [sp-24] != 0x0 -> 0x106fcc
+      falls through when [sp-24] == 0x0 -> B34
+  B34 0x106fb4-0x106fb4 preds: B33
+      normal -> B35
+  B35 0x106fb8-0x106fb8 preds: B34
+      normal -> B36
+  B36 0x106fbc-0x106fbc preds: B35
+      normal -> B37
+  B37 0x106fc0-0x106fc0 preds: B36
+      normal -> B38
+  B38 0x106fc4-0x106fc4 preds: B37
+      call -> 0x106010
+  B39 0x106fc8-0x106fc8 preds: B38
+      jump -> 0x106fe0
+  B40 0x106fcc-0x106fcc preds: B33
+      normal -> B41
+  B41 0x106fd0-0x106fd0 preds: B40
+      normal -> B42
+  B42 0x106fd4-0x106fd4 preds: B41
+      normal -> B43
+  B43 0x106fd8-0x106fd8 preds: B42
+      normal -> B44
+  B44 0x106fdc-0x106fdc preds: B43
+      call -> 0x106f04
+  B45 0x106fe0-0x106fe0 preds: B44, B39
+      normal -> B46
+  B46 0x106fe4-0x106fe4 preds: B45
+      normal -> B47
+  B47 0x106fe8-0x106fe8 preds: B46
+      call -> 0x1070e8
+  B48 0x106fec-0x106fec preds: B47, B30
+      normal -> B49
+  B49 0x106ff0-0x106ff0 preds: B48
+      return
+
+returns (1)
+  0x106ff0: r0 = ?; reached from B48
+
+constants
+  0x106f84 r1 = 0x18c270
+immediates
+  0x4 at 0x106f34
+  0xa8 at 0x106f38
+  0x58 at 0x106f4c
+  0x104a4c at 0x106f58
+  0x0 at 0x106f68
+  0x106fa8 at 0x106f6c
+  0x1073c8 at 0x106f74
+  0xa8 at 0x106f7c
+  0x205bc at 0x106f8c
+  0xa8 at 0x106f90
+  0x105fb0 at 0x106fa0
+  0x106fec at 0x106fa4
+  0x0 at 0x106fac
+  0x106fcc at 0x106fb0
+  0x58 at 0x106fb4
+  0x106010 at 0x106fc4
+  0x106fe0 at 0x106fc8
+  0x58 at 0x106fcc
+  0x106f04 at 0x106fdc
+  0x58 at 0x106fe0
+  0x1070e8 at 0x106fe8
+  0xc at 0x106fec
+instructions
+  0x106f2c 0dc0a0e1 mov ip, sp
+  0x106f30 00d82de9 push {fp, ip, lr, pc}
+  0x106f34 04b04ce2 sub fp, ip, #4
+  0x106f38 a8d04de2 sub sp, sp, #0xa8
+  0x106f3c 10000be5 str r0, [fp, #-0x10]
+  0x106f40 14100be5 str r1, [fp, #-0x14]
+  0x106f44 18200be5 str r2, [fp, #-0x18]
+  0x106f48 1c300be5 str r3, [fp, #-0x1c]
+  0x106f4c 58304be2 sub r3, fp, #0x58
+  0x106f50 04009be5 ldr r0, [fp, #4]
+  0x106f54 0310a0e1 mov r1, r3
+  0x106f58 bbf6ffeb bl #0x104a4c
+  0x106f5c 0030a0e1 mov r3, r0
+  0x106f60 ac300be5 str r3, [fp, #-0xac]
+  0x106f64 ac301be5 ldr r3, [fp, #-0xac]
+  0x106f68 000053e3 cmp r3, #0
+  0x106f6c 0d00000a beq #0x106fa8
+  0x106f70 ac001be5 ldr r0, [fp, #-0xac]
+  0x106f74 130100eb bl #0x1073c8
+  0x106f78 0030a0e1 mov r3, r0
+  0x106f7c a8204be2 sub r2, fp, #0xa8
+  0x106f80 0200a0e1 mov r0, r2
+  0x106f84 68109fe5 ldr r1, [pc, #0x68]
+  0x106f88 0320a0e1 mov r2, r3
+  0x106f8c 8a65fceb bl #0x205bc
+  0x106f90 a8304be2 sub r3, fp, #0xa8
+  0x106f94 18001be5 ldr r0, [fp, #-0x18]
+  0x106f98 1c101be5 ldr r1, [fp, #-0x1c]
+  0x106f9c 0320a0e1 mov r2, r3
+  0x106fa0 02fcffeb bl #0x105fb0
+  0x106fa4 100000ea b #0x106fec
+  0x106fa8 14301be5 ldr r3, [fp, #-0x14]
+  0x106fac 000053e3 cmp r3, #0
+  0x106fb0 0500001a bne #0x106fcc
+  0x106fb4 58304be2 sub r3, fp, #0x58
+  0x106fb8 10001be5 ldr r0, [fp, #-0x10]
+  0x106fbc 18101be5 ldr r1, [fp, #-0x18]
+  0x106fc0 1c201be5 ldr r2, [fp, #-0x1c]
+  0x106fc4 11fcffeb bl #0x106010
+  0x106fc8 040000ea b #0x106fe0
+  0x106fcc 58304be2 sub r3, fp, #0x58
+  0x106fd0 10001be5 ldr r0, [fp, #-0x10]
+  0x106fd4 18101be5 ldr r1, [fp, #-0x18]
+  0x106fd8 1c201be5 ldr r2, [fp, #-0x1c]
+  0x106fdc c8ffffeb bl #0x106f04
+  0x106fe0 58304be2 sub r3, fp, #0x58
+  0x106fe4 0300a0e1 mov r0, r3
+  0x106fe8 3e0000eb bl #0x1070e8
+  0x106fec 0cd04be2 sub sp, fp, #0xc
+  0x106ff0 00a89de8 ldm sp, {fp, sp, pc}
+  0x106ff4 70c21800 andseq ip, r8, r0, ror r2 (not reached by known edges)
+
+routine (unnamed)  0x106ff8-0x1070e8  size 0xf0 (240 bytes)
+  file root/6.5.30/usr/cpu/firmware/sysco/l1.bin :: 6.5.30:l1#6 :: /stand/sysco/bin/l1 :: executable PT_LOAD  flat  ISA arm  ABI arm-aapcs  load 0x8000; size from given
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+
+accesses (29)
+  0x106ffc store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x106ffc store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x106ffc store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x106ffc store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x107008 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x10700c store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x107010 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0x107014 store w4 str base=r11 disp -0x1c => sp -0x20 value r3
+  0x10701c load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x10702c store w4 str base=r11 disp -0xac => sp -0xb0 value ret(0x104a4c)
+  0x107030 load w4 ldr base=r11 disp -0xac => sp -0xb0
+  0x10703c load w4 ldr base=r11 disp -0xac => sp -0xb0
+  0x107050 load w4 ldr base=pc disp +0x8c => abs 0x1070e4
+  0x107060 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x107064 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x107078 store w4 str base=r11 disp -0xb8 => sp -0xbc value 0x1
+  0x10707c load w4 ldr base=r11 disp -0xb8 => sp -0xbc
+  0x107088 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x107098 load w4 ldr base=r11 disp -0xb8 => sp -0xbc
+  0x10709c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x1070a0 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x1070b0 load w4 ldr base=r11 disp -0xb8 => sp -0xbc
+  0x1070b4 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x1070b8 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x1070c0 load w4 ldr base=r11 disp -0xb8 => sp -0xbc
+  0x1070c8 store w4 str base=r11 disp -0xb8 => sp -0xbc value ?
+  0x1070e0 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x1070e0 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x1070e0 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (7)
+  0x107024 bl (unknown callee) [0x104a4c]
+      args: r0=r3, r1=sp-92, r2=r2, r3=sp-92
+  0x107040 bl (unknown callee) [0x1073c8]
+      args: r0=ret(0x104a4c), r1=?, r2=?, r3=ret(0x104a4c)
+  0x107058 bl (unknown callee) [0x205bc]
+      args: r0=sp-172, r1=0x18c270, r2=ret(0x1073c8), r3=ret(0x1073c8)
+  0x10706c bl (unknown callee) [0x105fb0]
+      args: r0=[sp-24], r1=[sp-28], r2=sp-172, r3=sp-172
+  0x1070a4 bl (unknown callee) [0x106010]
+      args: r0=?, r1=[sp-24], r2=[sp-28], r3=sp-92
+  0x1070bc bl (unknown callee) [0x106f04]
+      args: r0=?, r1=[sp-24], r2=[sp-28], r3=sp-92
+  0x1070d8 bl (unknown callee) [0x1070e8]
+      args: r0=sp-92, r1=?, r2=?, r3=sp-92
+
+blocks (59)
+  B0 0x106ff8-0x106ff8 preds: entry
+      normal -> B1
+  B1 0x106ffc-0x106ffc preds: B0
+      normal -> B2
+  B2 0x107000-0x107000 preds: B1
+      normal -> B3
+  B3 0x107004-0x107004 preds: B2
+      normal -> B4
+  B4 0x107008-0x107008 preds: B3
+      normal -> B5
+  B5 0x10700c-0x10700c preds: B4
+      normal -> B6
+  B6 0x107010-0x107010 preds: B5
+      normal -> B7
+  B7 0x107014-0x107014 preds: B6
+      normal -> B8
+  B8 0x107018-0x107018 preds: B7
+      normal -> B9
+  B9 0x10701c-0x10701c preds: B8
+      normal -> B10
+  B10 0x107020-0x107020 preds: B9
+      normal -> B11
+  B11 0x107024-0x107024 preds: B10
+      call -> 0x104a4c
+  B12 0x107028-0x107028 preds: B11
+      normal -> B13
+  B13 0x10702c-0x10702c preds: B12
+      normal -> B14
+  B14 0x107030-0x107030 preds: B13
+      normal -> B15
+  B15 0x107034-0x107034 preds: B14
+      normal -> B16
+  B16 0x107038-0x107038 preds: B15
+      taken when ret(0x104a4c) == 0x0 -> 0x107074
+      falls through when ret(0x104a4c) != 0x0 -> B17
+  B17 0x10703c-0x10703c preds: B16
+      normal -> B18
+  B18 0x107040-0x107040 preds: B17
+      call -> 0x1073c8
+  B19 0x107044-0x107044 preds: B18
+      normal -> B20
+  B20 0x107048-0x107048 preds: B19
+      normal -> B21
+  B21 0x10704c-0x10704c preds: B20
+      normal -> B22
+  B22 0x107050-0x107050 preds: B21
+      normal -> B23
+  B23 0x107054-0x107054 preds: B22
+      normal -> B24
+  B24 0x107058-0x107058 preds: B23
+      call -> 0x205bc
+  B25 0x10705c-0x10705c preds: B24
+      normal -> B26
+  B26 0x107060-0x107060 preds: B25
+      normal -> B27
+  B27 0x107064-0x107064 preds: B26
+      normal -> B28
+  B28 0x107068-0x107068 preds: B27
+      normal -> B29
+  B29 0x10706c-0x10706c preds: B28
+      call -> 0x105fb0
+  B30 0x107070-0x107070 preds: B29
+      jump -> 0x1070dc
+  B31 0x107074-0x107074 preds: B16
+      normal -> B32
+  B32 0x107078-0x107078 preds: B31
+      normal -> B33
+  B33 0x10707c-0x10707c preds: B32, B53
+      normal -> B34
+  B34 0x107080-0x107080 preds: B33
+      normal -> B35
+  B35 0x107084-0x107084 preds: B34
+      taken when Z == 1 -> 0x1070d0
+      falls through when not (Z == 1) -> B36
+  B36 0x107088-0x107088 preds: B35
+      normal -> B37
+  B37 0x10708c-0x10708c preds: B36
+      normal -> B38
+  B38 0x107090-0x107090 preds: B37
+      taken when [sp-20] != 0x0 -> 0x1070ac
+      falls through when [sp-20] == 0x0 -> B39
+  B39 0x107094-0x107094 preds: B38
+      normal -> B40
+  B40 0x107098-0x107098 preds: B39
+      normal -> B41
+  B41 0x10709c-0x10709c preds: B40
+      normal -> B42
+  B42 0x1070a0-0x1070a0 preds: B41
+      normal -> B43
+  B43 0x1070a4-0x1070a4 preds: B42
+      call -> 0x106010
+  B44 0x1070a8-0x1070a8 preds: B43
+      jump -> 0x1070c0
+  B45 0x1070ac-0x1070ac preds: B38
+      normal -> B46
+  B46 0x1070b0-0x1070b0 preds: B45
+      normal -> B47
+  B47 0x1070b4-0x1070b4 preds: B46
+      normal -> B48
+  B48 0x1070b8-0x1070b8 preds: B47
+      normal -> B49
+  B49 0x1070bc-0x1070bc preds: B48
+      call -> 0x106f04
+  B50 0x1070c0-0x1070c0 preds: B49, B44
+      normal -> B51
+  B51 0x1070c4-0x1070c4 preds: B50
+      normal -> B52
+  B52 0x1070c8-0x1070c8 preds: B51
+      normal -> B53
+  B53 0x1070cc-0x1070cc preds: B52
+      jump -> 0x10707c
+  B54 0x1070d0-0x1070d0 preds: B35
+      normal -> B55
+  B55 0x1070d4-0x1070d4 preds: B54
+      normal -> B56
+  B56 0x1070d8-0x1070d8 preds: B55
+      call -> 0x1070e8
+  B57 0x1070dc-0x1070dc preds: B56, B30
+      normal -> B58
+  B58 0x1070e0-0x1070e0 preds: B57
+      return
+
+returns (1)
+  0x1070e0: r0 = ?; reached from B57
+
+constants
+  0x107050 r1 = 0x18c270
+  0x107074 r3 = 0x1
+immediates
+  0x4 at 0x107000
+  0xac at 0x107004
+  0x58 at 0x107018
+  0x104a4c at 0x107024
+  0x0 at 0x107034
+  0x107074 at 0x107038
+  0x1073c8 at 0x107040
+  0xa8 at 0x107048
+  0x205bc at 0x107058
+  0xa8 at 0x10705c
+  0x105fb0 at 0x10706c
+  0x1070dc at 0x107070
+  0x1 at 0x107074
+  0x0 at 0x107080
+  0x1070d0 at 0x107084
+  0x0 at 0x10708c
+  0x1070ac at 0x107090
+  0x58 at 0x107094
+  0x106010 at 0x1070a4
+  0x1070c0 at 0x1070a8
+  0x58 at 0x1070ac
+  0x106f04 at 0x1070bc
+  0x10707c at 0x1070cc
+  0x58 at 0x1070d0
+  0x1070e8 at 0x1070d8
+  0xc at 0x1070dc
+instructions
+  0x106ff8 0dc0a0e1 mov ip, sp
+  0x106ffc 00d82de9 push {fp, ip, lr, pc}
+  0x107000 04b04ce2 sub fp, ip, #4
+  0x107004 acd04de2 sub sp, sp, #0xac
+  0x107008 10000be5 str r0, [fp, #-0x10]
+  0x10700c 14100be5 str r1, [fp, #-0x14]
+  0x107010 18200be5 str r2, [fp, #-0x18]
+  0x107014 1c300be5 str r3, [fp, #-0x1c]
+  0x107018 58304be2 sub r3, fp, #0x58
+  0x10701c 1c001be5 ldr r0, [fp, #-0x1c]
+  0x107020 0310a0e1 mov r1, r3
+  0x107024 88f6ffeb bl #0x104a4c
+  0x107028 0030a0e1 mov r3, r0
+  0x10702c ac300be5 str r3, [fp, #-0xac]
+  0x107030 ac301be5 ldr r3, [fp, #-0xac]
+  0x107034 000053e3 cmp r3, #0
+  0x107038 0d00000a beq #0x107074
+  0x10703c ac001be5 ldr r0, [fp, #-0xac]
+  0x107040 e00000eb bl #0x1073c8
+  0x107044 0030a0e1 mov r3, r0
+  0x107048 a8204be2 sub r2, fp, #0xa8
+  0x10704c 0200a0e1 mov r0, r2
+  0x107050 8c109fe5 ldr r1, [pc, #0x8c]
+  0x107054 0320a0e1 mov r2, r3
+  0x107058 5765fceb bl #0x205bc
+  0x10705c a8304be2 sub r3, fp, #0xa8
+  0x107060 14001be5 ldr r0, [fp, #-0x14]
+  0x107064 18101be5 ldr r1, [fp, #-0x18]
+  0x107068 0320a0e1 mov r2, r3
+  0x10706c cffbffeb bl #0x105fb0
+  0x107070 190000ea b #0x1070dc
+  0x107074 0130a0e3 mov r3, #1
+  0x107078 b8300be5 str r3, [fp, #-0xb8]
+  0x10707c b8301be5 ldr r3, [fp, #-0xb8]
+  0x107080 000053e3 cmp r3, #0
+  0x107084 1100000a beq #0x1070d0
+  0x107088 10301be5 ldr r3, [fp, #-0x10]
+  0x10708c 000053e3 cmp r3, #0
+  0x107090 0500001a bne #0x1070ac
+  0x107094 58304be2 sub r3, fp, #0x58
+  0x107098 b8001be5 ldr r0, [fp, #-0xb8]
+  0x10709c 14101be5 ldr r1, [fp, #-0x14]
+  0x1070a0 18201be5 ldr r2, [fp, #-0x18]
+  0x1070a4 d9fbffeb bl #0x106010
+  0x1070a8 040000ea b #0x1070c0
+  0x1070ac 58304be2 sub r3, fp, #0x58
+  0x1070b0 b8001be5 ldr r0, [fp, #-0xb8]
+  0x1070b4 14101be5 ldr r1, [fp, #-0x14]
+  0x1070b8 18201be5 ldr r2, [fp, #-0x18]
+  0x1070bc 90ffffeb bl #0x106f04
+  0x1070c0 b8301be5 ldr r3, [fp, #-0xb8]
+  0x1070c4 8330a0e1 lsl r3, r3, #1
+  0x1070c8 b8300be5 str r3, [fp, #-0xb8]
+  0x1070cc eaffffea b #0x10707c
+  0x1070d0 58304be2 sub r3, fp, #0x58
+  0x1070d4 0300a0e1 mov r0, r3
+  0x1070d8 020000eb bl #0x1070e8
+  0x1070dc 0cd04be2 sub sp, fp, #0xc
+  0x1070e0 00a89de8 ldm sp, {fp, sp, pc}
+  0x1070e4 70c21800 andseq ip, r8, r0, ror r2 (not reached by known edges)
+
+raw undecodable in-span words
