@@ -1,0 +1,172 @@
+routine _csSysIn  0x11f8c8-0x11f968  size 0xa0 (160 bytes)
+  file 6.5.6/usr/cpu/firmware/mmscfw.bin  a.out  ISA x86-32  ABI cdecl32  load 0x108000; size from next a.out symbol (inferred)
+  calling convention: assumed cdecl32; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: 0x11f8d1 dec: unsupported effects invalidated
+  warning: unresolved indirect transfers: access, call and return lists cover known edges only
+
+accesses (9)
+  0x11f8c8 store w4 push base=esp disp -0x4 => sp -0x4 value ebp
+  0x11f8cb load w4 mov base=ebp disp +0x8 => sp +0x4
+  0x11f8ce load w4 mov base=edx disp +0x18 => [sp+4] +0x18
+  0x11f8d7 load w4 jmp base=? disp +0x11f8e8 => ? (unknown effective address)
+  0x11f948 load w4 mov base=edx disp +0x18 => [sp+4] +0x18
+  0x11f94b store w4 push base=esp disp -0x4 => sp -0x8 value [[sp+4]+24]
+  0x11f94c store w4 push base=esp disp -0x4 => sp -0xc value [sp+4]
+  0x11f94d store w4 push base=esp disp -0x4 => sp -0x10 value 0x11f898
+  0x11f95e load w4 pop base=esp disp +0x0 => sp -0x4
+
+calls (1)
+  0x11f952 call _ffscMsg [0x12154c]
+      args: stack arg0=0x11f898, stack arg1=[sp+4], stack arg2=[[sp+4]+24], stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (17)
+  B0 0x11f8c8-0x11f8c8 preds: entry
+      normal -> B1
+  B1 0x11f8c9-0x11f8c9 preds: B0
+      normal -> B2
+  B2 0x11f8cb-0x11f8cb preds: B1
+      normal -> B3
+  B3 0x11f8ce-0x11f8ce preds: B2
+      normal -> B4
+  B4 0x11f8d1-0x11f8d1 preds: B3
+      normal -> B5
+  B5 0x11f8d2-0x11f8d2 preds: B4
+      normal -> B6
+  B6 0x11f8d5-0x11f8d5 preds: B5
+      taken when ? > 0x8 (unsigned, 32-bit) -> 0x11f948
+      falls through when ? <= 0x8 (unsigned, 32-bit) -> B7
+  B7 0x11f8d7-0x11f8d7 preds: B6
+      jump
+  B84 0x11f948-0x11f948 preds: B6
+      normal -> B85
+  B85 0x11f94b-0x11f94b preds: B84
+      normal -> B86
+  B86 0x11f94c-0x11f94c preds: B85
+      normal -> B87
+  B87 0x11f94d-0x11f94d preds: B86
+      normal -> B88
+  B88 0x11f952-0x11f952 preds: B87
+      call -> 0x12154c
+  B89 0x11f957-0x11f957 preds: B88
+      normal -> B90
+  B90 0x11f95c-0x11f95c preds: B89
+      normal -> B91
+  B91 0x11f95e-0x11f95e preds: B90
+      normal -> B92
+  B92 0x11f95f-0x11f95f preds: B91
+      return
+
+returns (1)
+  0x11f95f: eax = 0xffffffff; reached from B91
+
+constants
+  0x11f957 eax = 0xffffffff
+immediates
+  0x8 at 0x11f8d2
+  0x11f948 at 0x11f8d5
+  0x11f898 at 0x11f94d
+  0x12154c at 0x11f952
+  0xffffffff at 0x11f957
+instructions
+  0x11f8c8 55 push ebp
+  0x11f8c9 89e5 mov ebp, esp
+  0x11f8cb 8b5508 mov edx, dword ptr [ebp + 8]
+  0x11f8ce 8b4218 mov eax, dword ptr [edx + 0x18]
+  0x11f8d1 48 dec eax
+  0x11f8d2 83f808 cmp eax, 8
+  0x11f8d5 7771 ja 0x11f948
+  0x11f8d7 ff2485e8f81100 jmp dword ptr [eax*4 + 0x11f8e8]
+  0x11f8de 90 nop  (not reached by known edges)
+  0x11f8df 90 nop  (not reached by known edges)
+  0x11f8e0 90 nop  (not reached by known edges)
+  0x11f8e1 90 nop  (not reached by known edges)
+  0x11f8e2 90 nop  (not reached by known edges)
+  0x11f8e3 90 nop  (not reached by known edges)
+  0x11f8e4 90 nop  (not reached by known edges)
+  0x11f8e5 90 nop  (not reached by known edges)
+  0x11f8e6 90 nop  (not reached by known edges)
+  0x11f8e7 90 nop  (not reached by known edges)
+  0x11f8e8 18f9 sbb cl, bh (not reached by known edges)
+  0x11f8ea 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f8ec 48 dec eax (not reached by known edges)
+  0x11f8ed f9 stc  (not reached by known edges)
+  0x11f8ee 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f8f0 38f9 cmp cl, bh (not reached by known edges)
+  0x11f8f2 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f8f4 28f9 sub cl, bh (not reached by known edges)
+  0x11f8f6 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f8f8 28f9 sub cl, bh (not reached by known edges)
+  0x11f8fa 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f8fc 48 dec eax (not reached by known edges)
+  0x11f8fd f9 stc  (not reached by known edges)
+  0x11f8fe 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f900 28f9 sub cl, bh (not reached by known edges)
+  0x11f902 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f904 48 dec eax (not reached by known edges)
+  0x11f905 f9 stc  (not reached by known edges)
+  0x11f906 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f908 18f9 sbb cl, bh (not reached by known edges)
+  0x11f90a 1100 adc dword ptr [eax], eax (not reached by known edges)
+  0x11f90c 90 nop  (not reached by known edges)
+  0x11f90d 90 nop  (not reached by known edges)
+  0x11f90e 90 nop  (not reached by known edges)
+  0x11f90f 90 nop  (not reached by known edges)
+  0x11f910 90 nop  (not reached by known edges)
+  0x11f911 90 nop  (not reached by known edges)
+  0x11f912 90 nop  (not reached by known edges)
+  0x11f913 90 nop  (not reached by known edges)
+  0x11f914 90 nop  (not reached by known edges)
+  0x11f915 90 nop  (not reached by known edges)
+  0x11f916 90 nop  (not reached by known edges)
+  0x11f917 90 nop  (not reached by known edges)
+  0x11f918 52 push edx (not reached by known edges)
+  0x11f919 e83a040000 call 0x11fd58 (not reached by known edges)
+  0x11f91e 89ec mov esp, ebp (not reached by known edges)
+  0x11f920 5d pop ebp (not reached by known edges)
+  0x11f921 c3 ret  (not reached by known edges)
+  0x11f922 90 nop  (not reached by known edges)
+  0x11f923 90 nop  (not reached by known edges)
+  0x11f924 90 nop  (not reached by known edges)
+  0x11f925 90 nop  (not reached by known edges)
+  0x11f926 90 nop  (not reached by known edges)
+  0x11f927 90 nop  (not reached by known edges)
+  0x11f928 52 push edx (not reached by known edges)
+  0x11f929 e83a000000 call 0x11f968 (not reached by known edges)
+  0x11f92e 89ec mov esp, ebp (not reached by known edges)
+  0x11f930 5d pop ebp (not reached by known edges)
+  0x11f931 c3 ret  (not reached by known edges)
+  0x11f932 90 nop  (not reached by known edges)
+  0x11f933 90 nop  (not reached by known edges)
+  0x11f934 90 nop  (not reached by known edges)
+  0x11f935 90 nop  (not reached by known edges)
+  0x11f936 90 nop  (not reached by known edges)
+  0x11f937 90 nop  (not reached by known edges)
+  0x11f938 52 push edx (not reached by known edges)
+  0x11f939 e8aa000000 call 0x11f9e8 (not reached by known edges)
+  0x11f93e 89ec mov esp, ebp (not reached by known edges)
+  0x11f940 5d pop ebp (not reached by known edges)
+  0x11f941 c3 ret  (not reached by known edges)
+  0x11f942 90 nop  (not reached by known edges)
+  0x11f943 90 nop  (not reached by known edges)
+  0x11f944 90 nop  (not reached by known edges)
+  0x11f945 90 nop  (not reached by known edges)
+  0x11f946 90 nop  (not reached by known edges)
+  0x11f947 90 nop  (not reached by known edges)
+  0x11f948 8b4218 mov eax, dword ptr [edx + 0x18]
+  0x11f94b 50 push eax
+  0x11f94c 52 push edx
+  0x11f94d 6898f81100 push 0x11f898
+  0x11f952 e8f51b0000 call 0x12154c
+  0x11f957 b8ffffffff mov eax, 0xffffffff
+  0x11f95c 89ec mov esp, ebp
+  0x11f95e 5d pop ebp
+  0x11f95f c3 ret
+  0x11f960 90 nop  (not reached by known edges)
+  0x11f961 90 nop  (not reached by known edges)
+  0x11f962 90 nop  (not reached by known edges)
+  0x11f963 90 nop  (not reached by known edges)
+  0x11f964 90 nop  (not reached by known edges)
+  0x11f965 90 nop  (not reached by known edges)
+  0x11f966 90 nop  (not reached by known edges)
+  0x11f967 90 nop  (not reached by known edges)
