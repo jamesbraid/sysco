@@ -122,3 +122,13 @@ Software-now list, in the order to take them:
   Tried: selected full symbol span, native known-edge analysis, a.out symbol metadata
   and bounded contexts. The indirect destination remains unresolved. Next: resolve
   the guarded destination set from the exact image, then read any newly reached paths.
+
+## ARM library console dispatch
+
+- **Route: software now.** Which taken destinations and effects follow the unresolved
+  transfer in `L2CfgMSetConsole`?
+  The [bounded library observations](l1/arm-library-protocol-config-paths-1.44.0.md) retain the selected full symbol span and known-edge facts.
+  Tried: native analysis of that selected span, raw instruction words and bounded
+  contexts, and ELF symbol, segment and relocation metadata. The taken destination
+  remains unknown. Next: establish the guarded destination interpretation from the
+  image relocation records, then read any newly exposed paths.
