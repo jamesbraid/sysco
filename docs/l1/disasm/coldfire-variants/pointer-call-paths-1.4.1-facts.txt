@@ -1,0 +1,2593 @@
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe4db20-0xffe4db5a  size 0x3a (58 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (9)
+  0xffe4db20 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe4db24 load w4 tst.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4db34 load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4db3c load w1 move.b base=a0 disp +0x1 => [0x30000094] +0x1
+  0xffe4db40 store w4 move.l base=a7 disp +0x0 => sp -0x8 value ?
+  0xffe4db42 load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4db4a load w1 move.b base=a0 disp +0x0 => [0x30000094] +0x0
+  0xffe4db4c store w4 move.l base=a7 disp +0x0 => sp -0xc value ?
+  0xffe4db56 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (1)
+  0xffe4db4e jsr (unknown callee) [0xffe6198c]
+      args: stack arg0=?, stack arg1=?, stack arg2=a6, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (17)
+  B0 0xffe4db20-0xffe4db20 preds: entry
+      normal -> B1
+  B1 0xffe4db24-0xffe4db24 preds: B0
+      normal -> B2
+  B2 0xffe4db2a-0xffe4db2a preds: B1
+      taken when [0x30000094] != 0x0 -> 0xffe4db34
+      falls through when [0x30000094] == 0x0 -> B3
+  B3 0xffe4db2c-0xffe4db2c preds: B2
+      normal -> B4
+  B4 0xffe4db32-0xffe4db32 preds: B3
+      jump -> 0xffe4db56
+  B5 0xffe4db34-0xffe4db34 preds: B2
+      normal -> B6
+  B6 0xffe4db3a-0xffe4db3a preds: B5
+      normal -> B7
+  B7 0xffe4db3c-0xffe4db3c preds: B6
+      normal -> B8
+  B8 0xffe4db40-0xffe4db40 preds: B7
+      normal -> B9
+  B9 0xffe4db42-0xffe4db42 preds: B8
+      normal -> B10
+  B10 0xffe4db48-0xffe4db48 preds: B9
+      normal -> B11
+  B11 0xffe4db4a-0xffe4db4a preds: B10
+      normal -> B12
+  B12 0xffe4db4c-0xffe4db4c preds: B11
+      normal -> B13
+  B13 0xffe4db4e-0xffe4db4e preds: B12
+      call -> 0xffe6198c
+  B14 0xffe4db54-0xffe4db54 preds: B13
+      normal -> B15
+  B15 0xffe4db56-0xffe4db56 preds: B4, B14
+      normal -> B16
+  B16 0xffe4db58-0xffe4db58 preds: B15
+      return
+
+returns (1)
+  0xffe4db58: d0 = ?; reached from B15
+
+constants
+  0xffe4db2c d0 = 0xfffffe0c
+  0xffe4db3a d0 = 0x0
+  0xffe4db48 d0 = 0x0
+immediates
+  0x0 at 0xffe4db20
+  0xfffffe0c at 0xffe4db2c
+  0x0 at 0xffe4db3a
+  0x0 at 0xffe4db48
+  0x8 at 0xffe4db54
+instructions
+  0xffe4db20 4e560000 link.w a6, #$0
+  0xffe4db24 4ab930000094 tst.l $30000094.l
+  0xffe4db2a 6608 bne.b $ffe4db34
+  0xffe4db2c 203cfffffe0c move.l #$fffffe0c, d0
+  0xffe4db32 6022 bra.b $ffe4db56
+  0xffe4db34 207930000094 movea.l $30000094.l, a0
+  0xffe4db3a 7000 moveq #$0, d0
+  0xffe4db3c 10280001 move.b $1(a0), d0
+  0xffe4db40 2f00 move.l d0, -(a7)
+  0xffe4db42 207930000094 movea.l $30000094.l, a0
+  0xffe4db48 7000 moveq #$0, d0
+  0xffe4db4a 1010 move.b (a0), d0
+  0xffe4db4c 2f00 move.l d0, -(a7)
+  0xffe4db4e 4eb9ffe6198c jsr $ffe6198c.l
+  0xffe4db54 508f addq.l #$8, a7
+  0xffe4db56 4e5e unlk a6
+  0xffe4db58 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe6ab30-0xffe6ab9c  size 0x6c (108 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (16)
+  0xffe6ab30 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe6ab34 store w4 move.l base=a7 disp +0x0 => sp -0x8 value d7
+  0xffe6ab36 load w4 tst.l base=absolute disp +0x0 => abs 0x30000044
+  0xffe6ab3e store w4 pea.l base=a7 disp -0x4 => sp -0xc value 0x30002238
+  0xffe6ab52 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6ab5a load w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9
+  0xffe6ab64 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6ab6a store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value ?
+  0xffe6ab70 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6ab76 store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x28
+  0xffe6ab7c load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6ab82 store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x38
+  0xffe6ab88 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6ab8e store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x30
+  0xffe6ab94 load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe6ab98 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (1)
+  0xffe6ab44 bsr.w (unknown callee) [0xffe6a310]
+      args: stack arg0=0x30002238, stack arg1=d7, stack arg2=a6, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (30)
+  B0 0xffe6ab30-0xffe6ab30 preds: entry
+      normal -> B1
+  B1 0xffe6ab34-0xffe6ab34 preds: B0
+      normal -> B2
+  B2 0xffe6ab36-0xffe6ab36 preds: B1
+      normal -> B3
+  B3 0xffe6ab3c-0xffe6ab3c preds: B2
+      taken when [0x30000044] != 0x0 -> 0xffe6ab52
+      falls through when [0x30000044] == 0x0 -> B4
+  B4 0xffe6ab3e-0xffe6ab3e preds: B3
+      normal -> B5
+  B5 0xffe6ab44-0xffe6ab44 preds: B4
+      call -> 0xffe6a310
+  B6 0xffe6ab48-0xffe6ab48 preds: B5
+      normal -> B7
+  B7 0xffe6ab4a-0xffe6ab4a preds: B6
+      normal -> B8
+  B8 0xffe6ab4c-0xffe6ab4c preds: B7
+      taken when ret(0xffe6a310) != 0x0 -> 0xffe6ab52
+      falls through when ret(0xffe6a310) == 0x0 -> B9
+  B9 0xffe6ab4e-0xffe6ab4e preds: B8
+      normal -> B10
+  B10 0xffe6ab50-0xffe6ab50 preds: B9
+      jump -> 0xffe6ab94
+  B11 0xffe6ab52-0xffe6ab52 preds: B3, B8
+      normal -> B12
+  B12 0xffe6ab58-0xffe6ab58 preds: B11
+      normal -> B13
+  B13 0xffe6ab5a-0xffe6ab5a preds: B12
+      normal -> B14
+  B14 0xffe6ab5e-0xffe6ab5e preds: B13
+      normal -> B15
+  B15 0xffe6ab64-0xffe6ab64 preds: B14
+      normal -> B16
+  B16 0xffe6ab6a-0xffe6ab6a preds: B15
+      normal -> B17
+  B17 0xffe6ab6e-0xffe6ab6e preds: B16
+      normal -> B18
+  B18 0xffe6ab70-0xffe6ab70 preds: B17
+      normal -> B19
+  B19 0xffe6ab76-0xffe6ab76 preds: B18
+      normal -> B20
+  B20 0xffe6ab7a-0xffe6ab7a preds: B19
+      normal -> B21
+  B21 0xffe6ab7c-0xffe6ab7c preds: B20
+      normal -> B22
+  B22 0xffe6ab82-0xffe6ab82 preds: B21
+      normal -> B23
+  B23 0xffe6ab86-0xffe6ab86 preds: B22
+      normal -> B24
+  B24 0xffe6ab88-0xffe6ab88 preds: B23
+      normal -> B25
+  B25 0xffe6ab8e-0xffe6ab8e preds: B24
+      normal -> B26
+  B26 0xffe6ab92-0xffe6ab92 preds: B25
+      normal -> B27
+  B27 0xffe6ab94-0xffe6ab94 preds: B10, B26
+      normal -> B28
+  B28 0xffe6ab98-0xffe6ab98 preds: B27
+      normal -> B29
+  B29 0xffe6ab9a-0xffe6ab9a preds: B28
+      return
+
+returns (1)
+  0xffe6ab9a: d0 = ?; reached from B28
+
+constants
+  0xffe6ab4e d0 = 0x0
+  0xffe6ab58 d7 = 0x0
+  0xffe6ab6e d7 = 0x28
+  0xffe6ab7a d7 = 0x38
+  0xffe6ab86 d7 = 0x30
+  0xffe6ab92 d0 = 0x1
+immediates
+  0x0 at 0xffe6ab30
+  0x4 at 0xffe6ab48
+  0x0 at 0xffe6ab4e
+  0x0 at 0xffe6ab58
+  0x8 at 0xffe6ab5e
+  0x28 at 0xffe6ab6e
+  0x38 at 0xffe6ab7a
+  0x30 at 0xffe6ab86
+  0x1 at 0xffe6ab92
+instructions
+  0xffe6ab30 4e560000 link.w a6, #$0
+  0xffe6ab34 2f07 move.l d7, -(a7)
+  0xffe6ab36 4ab930000044 tst.l $30000044.l
+  0xffe6ab3c 6614 bne.b $ffe6ab52
+  0xffe6ab3e 487930002238 pea.l $30002238.l
+  0xffe6ab44 6100f7ca bsr.w $ffe6a310
+  0xffe6ab48 588f addq.l #$4, a7
+  0xffe6ab4a 4a80 tst.l d0
+  0xffe6ab4c 6604 bne.b $ffe6ab52
+  0xffe6ab4e 7000 moveq #$0, d0
+  0xffe6ab50 6042 bra.b $ffe6ab94
+  0xffe6ab52 207930000198 movea.l $30000198.l, a0
+  0xffe6ab58 7e00 moveq #$0, d7
+  0xffe6ab5a 1e2801c9 move.b $1c9(a0), d7
+  0xffe6ab5e 8ebc00000008 or.l #$8, d7
+  0xffe6ab64 207930000198 movea.l $30000198.l, a0
+  0xffe6ab6a 114701c9 move.b d7, $1c9(a0)
+  0xffe6ab6e 7e28 moveq #$28, d7
+  0xffe6ab70 207930000198 movea.l $30000198.l, a0
+  0xffe6ab76 114701c9 move.b d7, $1c9(a0)
+  0xffe6ab7a 7e38 moveq #$38, d7
+  0xffe6ab7c 207930000198 movea.l $30000198.l, a0
+  0xffe6ab82 114701c9 move.b d7, $1c9(a0)
+  0xffe6ab86 7e30 moveq #$30, d7
+  0xffe6ab88 207930000198 movea.l $30000198.l, a0
+  0xffe6ab8e 114701c9 move.b d7, $1c9(a0)
+  0xffe6ab92 7001 moveq #$1, d0
+  0xffe6ab94 2e2efffc move.l -$4(a6), d7
+  0xffe6ab98 4e5e unlk a6
+  0xffe6ab9a 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe71148-0xffe711c4  size 0x7c (124 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (19)
+  0xffe71148 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe7114c store w4 move.l base=a7 disp +0x0 => sp -0x8 value d7
+  0xffe7115a load w4 adda.l base=absolute disp +0x0 => abs 0x30000024
+  0xffe71160 load w4 move.l base=a6 disp +0x8 => sp +0x4
+  0xffe71164 store w1 move.b base=a0 disp +0x0 => [0x30000024] +0x30001854 value ([sp+4] & 0xff)
+  0xffe71166 load w4 addq.l base=absolute disp +0x0 => abs 0x30000024
+  0xffe71166 store w4 addq.l base=absolute disp +0x0 => abs 0x30000024 value [0x30000024]+1
+  0xffe7116c load w4 tst.l base=a6 disp +0xc => sp +0x8
+  0xffe71172 load w4 move.l base=absolute disp +0x0 => abs 0x30000024
+  0xffe71180 load w4 move.l base=absolute disp +0x0 => abs 0x30000024
+  0xffe71186 store w4 clr.l base=absolute disp +0x0 => abs 0x30000024 value 0x0
+  0xffe7118c load w4 tst.l base=absolute disp +0x0 => abs 0x30000020
+  0xffe71198 load w4 movea.l base=absolute disp +0x0 => abs 0x30000030
+  0xffe7119e store w4 move.l base=a7 disp +0x0 => sp -0xc value [0x30000024]
+  0xffe711a0 store w4 pea.l base=a7 disp -0x4 => sp -0x10 value 0x30001854
+  0xffe711a6 load w4 move.l base=absolute disp +0x0 => abs 0x30000020
+  0xffe711a6 store w4 move.l base=a7 disp +0x0 => sp -0x14 value [0x30000020]
+  0xffe711bc load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe711c0 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (2)
+  0xffe7114e jsr (unknown callee) [0xffe463c0]
+      args: stack arg0=d7, stack arg1=a6, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe711ac jsr (unknown callee) [unknown target]
+      args: stack arg0=[0x30000020], stack arg1=0x30001854, stack arg2=[0x30000024], stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (33)
+  B0 0xffe71148-0xffe71148 preds: entry
+      normal -> B1
+  B1 0xffe7114c-0xffe7114c preds: B0
+      normal -> B2
+  B2 0xffe7114e-0xffe7114e preds: B1
+      call -> 0xffe463c0
+  B3 0xffe71154-0xffe71154 preds: B2
+      normal -> B4
+  B4 0xffe7115a-0xffe7115a preds: B3
+      normal -> B5
+  B5 0xffe71160-0xffe71160 preds: B4
+      normal -> B6
+  B6 0xffe71164-0xffe71164 preds: B5
+      normal -> B7
+  B7 0xffe71166-0xffe71166 preds: B6
+      normal -> B8
+  B8 0xffe7116c-0xffe7116c preds: B7
+      normal -> B9
+  B9 0xffe71170-0xffe71170 preds: B8
+      taken when [sp+8] != 0x0 -> 0xffe71180
+      falls through when [sp+8] == 0x0 -> B10
+  B10 0xffe71172-0xffe71172 preds: B9
+      normal -> B11
+  B11 0xffe71178-0xffe71178 preds: B10
+      normal -> B12
+  B12 0xffe7117e-0xffe7117e preds: B11
+      taken when [0x30000024] < 0xc4 (unsigned, 32-bit) -> 0xffe711ba
+      falls through when [0x30000024] >= 0xc4 (unsigned, 32-bit) -> B13
+  B13 0xffe71180-0xffe71180 preds: B9, B12
+      normal -> B14
+  B14 0xffe71186-0xffe71186 preds: B13
+      normal -> B15
+  B15 0xffe7118c-0xffe7118c preds: B14
+      normal -> B16
+  B16 0xffe71192-0xffe71192 preds: B15
+      taken when [0x30000020] != 0x0 -> 0xffe71198
+      falls through when [0x30000020] == 0x0 -> B17
+  B17 0xffe71194-0xffe71194 preds: B16
+      normal -> B18
+  B18 0xffe71196-0xffe71196 preds: B17
+      jump -> 0xffe711bc
+  B19 0xffe71198-0xffe71198 preds: B16
+      normal -> B20
+  B20 0xffe7119e-0xffe7119e preds: B19
+      normal -> B21
+  B21 0xffe711a0-0xffe711a0 preds: B20
+      normal -> B22
+  B22 0xffe711a6-0xffe711a6 preds: B21
+      normal -> B23
+  B23 0xffe711ac-0xffe711ac preds: B22
+      call -> B24
+  B24 0xffe711ae-0xffe711ae preds: B23
+      normal -> B25
+  B25 0xffe711b2-0xffe711b2 preds: B24
+      normal -> B26
+  B26 0xffe711b4-0xffe711b4 preds: B25
+      taken when [0x30000024] == ret(unknown) -> 0xffe711ba
+      falls through when [0x30000024] != ret(unknown) -> B27
+  B27 0xffe711b6-0xffe711b6 preds: B26
+      normal -> B28
+  B28 0xffe711b8-0xffe711b8 preds: B27
+      jump -> 0xffe711bc
+  B29 0xffe711ba-0xffe711ba preds: B12, B26
+      normal -> B30
+  B30 0xffe711bc-0xffe711bc preds: B29, B18, B28
+      normal -> B31
+  B31 0xffe711c0-0xffe711c0 preds: B30
+      normal -> B32
+  B32 0xffe711c2-0xffe711c2 preds: B31
+      return
+
+returns (1)
+  0xffe711c2: d0 = ?; reached from B31
+
+constants
+  0xffe71154 a0 = 0x30001854
+  0xffe71194 d0 = 0xffffffff
+  0xffe711b6 d0 = 0xffffffff
+  0xffe711ba d0 = 0x0
+immediates
+  0x0 at 0xffe71148
+  0x30001854 at 0xffe71154
+  0x1 at 0xffe71166
+  0xc4 at 0xffe71178
+  0xff at 0xffe71194
+  0xff at 0xffe711b6
+  0x0 at 0xffe711ba
+instructions
+  0xffe71148 4e560000 link.w a6, #$0
+  0xffe7114c 2f07 move.l d7, -(a7)
+  0xffe7114e 4eb9ffe463c0 jsr $ffe463c0.l
+  0xffe71154 207c30001854 movea.l #$30001854, a0
+  0xffe7115a d1f930000024 adda.l $30000024.l, a0
+  0xffe71160 202e0008 move.l $8(a6), d0
+  0xffe71164 1080 move.b d0, (a0)
+  0xffe71166 52b930000024 addq.l #$1, $30000024.l
+  0xffe7116c 4aae000c tst.l $c(a6)
+  0xffe71170 660e bne.b $ffe71180
+  0xffe71172 203930000024 move.l $30000024.l, d0
+  0xffe71178 b0bc000000c4 cmp.l #$c4, d0
+  0xffe7117e 653a bcs.b $ffe711ba
+  0xffe71180 2e3930000024 move.l $30000024.l, d7
+  0xffe71186 42b930000024 clr.l $30000024.l
+  0xffe7118c 4ab930000020 tst.l $30000020.l
+  0xffe71192 6604 bne.b $ffe71198
+  0xffe71194 70ff moveq #$ff, d0
+  0xffe71196 6024 bra.b $ffe711bc
+  0xffe71198 207930000030 movea.l $30000030.l, a0
+  0xffe7119e 2f07 move.l d7, -(a7)
+  0xffe711a0 487930001854 pea.l $30001854.l
+  0xffe711a6 2f3930000020 move.l $30000020.l, -(a7)
+  0xffe711ac 4e90 jsr (a0)
+  0xffe711ae 4fef000c lea.l $c(a7), a7
+  0xffe711b2 be80 cmp.l d0, d7
+  0xffe711b4 6704 beq.b $ffe711ba
+  0xffe711b6 70ff moveq #$ff, d0
+  0xffe711b8 6002 bra.b $ffe711bc
+  0xffe711ba 7000 moveq #$0, d0
+  0xffe711bc 2e2efffc move.l -$4(a6), d7
+  0xffe711c0 4e5e unlk a6
+  0xffe711c2 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe4dc9c-0xffe4dd1c  size 0x80 (128 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (15)
+  0xffe4dc9c store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe4dca0 store w4 move.l base=a7 disp +0x0 => sp -0x8 value d7
+  0xffe4dca2 load w1 move.b base=a6 disp +0xb => sp +0x7
+  0xffe4dca6 load w4 tst.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4dcb8 load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4dcc0 load w1 move.b base=a0 disp +0x2 => [0x30000094] +0x2
+  0xffe4dcea load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4dcf0 load w1 move.b base=a0 disp +0x6 => [0x30000094] +0x6
+  0xffe4dcf6 load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4dcfc load w1 move.b base=a0 disp +0x7 => [0x30000094] +0x7
+  0xffe4dd02 load w4 movea.l base=absolute disp +0x0 => abs 0x30000094
+  0xffe4dd08 load w1 move.b base=a0 disp +0x8 => [0x30000094] +0x8
+  0xffe4dd0c store w4 move.l base=a7 disp +0x0 => sp -0xc value ?
+  0xffe4dd14 load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe4dd18 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (1)
+  0xffe4dd0e bsr.w (unknown callee) [0xffe4dbf0]
+      args: stack arg0=?, stack arg1=d7, stack arg2=a6, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (37)
+  B0 0xffe4dc9c-0xffe4dc9c preds: entry
+      normal -> B1
+  B1 0xffe4dca0-0xffe4dca0 preds: B0
+      normal -> B2
+  B2 0xffe4dca2-0xffe4dca2 preds: B1
+      normal -> B3
+  B3 0xffe4dca6-0xffe4dca6 preds: B2
+      normal -> B4
+  B4 0xffe4dcac-0xffe4dcac preds: B3
+      taken when [0x30000094] != 0x0 -> 0xffe4dcb8
+      falls through when [0x30000094] == 0x0 -> B5
+  B5 0xffe4dcae-0xffe4dcae preds: B4
+      normal -> B6
+  B6 0xffe4dcb4-0xffe4dcb4 preds: B5
+      jump -> 0xffe4dd14
+  B7 0xffe4dcb8-0xffe4dcb8 preds: B4
+      normal -> B8
+  B8 0xffe4dcbe-0xffe4dcbe preds: B7
+      normal -> B9
+  B9 0xffe4dcc0-0xffe4dcc0 preds: B8
+      normal -> B10
+  B10 0xffe4dcc4-0xffe4dcc4 preds: B9
+      normal -> B11
+  B11 0xffe4dcca-0xffe4dcca preds: B10
+      taken when ? != 0xff -> 0xffe4dcd4
+      falls through when ? == 0xff -> B12
+  B12 0xffe4dccc-0xffe4dccc preds: B11
+      normal -> B13
+  B13 0xffe4dcd2-0xffe4dcd2 preds: B12
+      jump -> 0xffe4dd14
+  B14 0xffe4dcd4-0xffe4dcd4 preds: B11
+      normal -> B15
+  B15 0xffe4dcda-0xffe4dcda preds: B14
+      normal -> B16
+  B16 0xffe4dcdc-0xffe4dcdc preds: B15
+      normal -> B17
+  B17 0xffe4dcde-0xffe4dcde preds: B16
+      taken when ? == 0x0 -> 0xffe4dcea
+      falls through when ? != 0x0 -> B18
+  B18 0xffe4dce0-0xffe4dce0 preds: B17
+      normal -> B19
+  B19 0xffe4dce2-0xffe4dce2 preds: B18
+      taken when Z == 1 -> 0xffe4dcf6
+      falls through when not (Z == 1) -> B20
+  B20 0xffe4dce4-0xffe4dce4 preds: B19
+      normal -> B21
+  B21 0xffe4dce6-0xffe4dce6 preds: B20
+      taken when Z == 1 -> 0xffe4dd02
+      falls through when not (Z == 1) -> B22
+  B22 0xffe4dce8-0xffe4dce8 preds: B21
+      jump -> 0xffe4dd0c
+  B23 0xffe4dcea-0xffe4dcea preds: B17
+      normal -> B24
+  B24 0xffe4dcf0-0xffe4dcf0 preds: B23
+      normal -> B25
+  B25 0xffe4dcf4-0xffe4dcf4 preds: B24
+      jump -> 0xffe4dd0c
+  B26 0xffe4dcf6-0xffe4dcf6 preds: B19
+      normal -> B27
+  B27 0xffe4dcfc-0xffe4dcfc preds: B26
+      normal -> B28
+  B28 0xffe4dd00-0xffe4dd00 preds: B27
+      jump -> 0xffe4dd0c
+  B29 0xffe4dd02-0xffe4dd02 preds: B21
+      normal -> B30
+  B30 0xffe4dd08-0xffe4dd08 preds: B29
+      normal -> B31
+  B31 0xffe4dd0c-0xffe4dd0c preds: B25, B22, B28, B30
+      normal -> B32
+  B32 0xffe4dd0e-0xffe4dd0e preds: B31
+      call -> 0xffe4dbf0
+  B33 0xffe4dd12-0xffe4dd12 preds: B32
+      normal -> B34
+  B34 0xffe4dd14-0xffe4dd14 preds: B6, B13, B33
+      normal -> B35
+  B35 0xffe4dd18-0xffe4dd18 preds: B34
+      normal -> B36
+  B36 0xffe4dd1a-0xffe4dd1a preds: B35
+      return
+
+returns (1)
+  0xffe4dd1a: d0 = ?; reached from B35
+
+constants
+  0xffe4dcae d0 = 0xfffffe0c
+  0xffe4dcbe d0 = 0x0
+  0xffe4dccc d0 = 0xfffffe0b
+immediates
+  0x0 at 0xffe4dc9c
+  0xfffffe0c at 0xffe4dcae
+  0x0 at 0xffe4dcbe
+  0xff at 0xffe4dcc4
+  0xfffffe0b at 0xffe4dccc
+  0xff at 0xffe4dcd4
+  0x1 at 0xffe4dce0
+  0x1 at 0xffe4dce4
+  0x4 at 0xffe4dd12
+instructions
+  0xffe4dc9c 4e560000 link.w a6, #$0
+  0xffe4dca0 2f07 move.l d7, -(a7)
+  0xffe4dca2 1e2e000b move.b $b(a6), d7
+  0xffe4dca6 4ab930000094 tst.l $30000094.l
+  0xffe4dcac 660a bne.b $ffe4dcb8
+  0xffe4dcae 203cfffffe0c move.l #$fffffe0c, d0
+  0xffe4dcb4 6000005e bra.w $ffe4dd14
+  0xffe4dcb8 207930000094 movea.l $30000094.l, a0
+  0xffe4dcbe 7000 moveq #$0, d0
+  0xffe4dcc0 10280002 move.b $2(a0), d0
+  0xffe4dcc4 b0bc000000ff cmp.l #$ff, d0
+  0xffe4dcca 6608 bne.b $ffe4dcd4
+  0xffe4dccc 203cfffffe0b move.l #$fffffe0b, d0
+  0xffe4dcd2 6040 bra.b $ffe4dd14
+  0xffe4dcd4 cebc000000ff and.l #$ff, d7
+  0xffe4dcda 2007 move.l d7, d0
+  0xffe4dcdc 4a80 tst.l d0
+  0xffe4dcde 670a beq.b $ffe4dcea
+  0xffe4dce0 5380 subq.l #$1, d0
+  0xffe4dce2 6712 beq.b $ffe4dcf6
+  0xffe4dce4 5380 subq.l #$1, d0
+  0xffe4dce6 671a beq.b $ffe4dd02
+  0xffe4dce8 6022 bra.b $ffe4dd0c
+  0xffe4dcea 207930000094 movea.l $30000094.l, a0
+  0xffe4dcf0 1e280006 move.b $6(a0), d7
+  0xffe4dcf4 6016 bra.b $ffe4dd0c
+  0xffe4dcf6 207930000094 movea.l $30000094.l, a0
+  0xffe4dcfc 1e280007 move.b $7(a0), d7
+  0xffe4dd00 600a bra.b $ffe4dd0c
+  0xffe4dd02 207930000094 movea.l $30000094.l, a0
+  0xffe4dd08 1e280008 move.b $8(a0), d7
+  0xffe4dd0c 2f07 move.l d7, -(a7)
+  0xffe4dd0e 6100fee0 bsr.w $ffe4dbf0
+  0xffe4dd12 588f addq.l #$4, a7
+  0xffe4dd14 2e2efffc move.l -$4(a6), d7
+  0xffe4dd18 4e5e unlk a6
+  0xffe4dd1a 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe6abb4-0xffe6ac40  size 0x8c (140 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (27)
+  0xffe6abb4 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe6abbc store w4 movem.l base=a7 disp +0x0 => sp -0x20 value d2
+  0xffe6abbc store w4 movem.l base=a7 disp +0x4 => sp -0x1c value d3
+  0xffe6abbc store w4 movem.l base=a7 disp +0x8 => sp -0x18 value d4
+  0xffe6abbc store w4 movem.l base=a7 disp +0xc => sp -0x14 value d5
+  0xffe6abbc store w4 movem.l base=a7 disp +0x10 => sp -0x10 value d6
+  0xffe6abbc store w4 movem.l base=a7 disp +0x14 => sp -0xc value d7
+  0xffe6abbc store w4 movem.l base=a7 disp +0x18 => sp -0x8 value a5
+  0xffe6abc0 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6abc8 load w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9
+  0xffe6ac16 store w4 move.l base=a7 disp +0x0 => sp -0x24 value ?
+  0xffe6ac18 store w4 move.l base=a7 disp +0x0 => sp -0x28 value ?
+  0xffe6ac1a store w4 move.l base=a7 disp +0x0 => sp -0x2c value ?
+  0xffe6ac1c store w4 move.l base=a7 disp +0x0 => sp -0x30 value ?
+  0xffe6ac1e store w4 move.l base=a7 disp +0x0 => sp -0x34 value ?
+  0xffe6ac20 store w4 move.l base=a7 disp +0x0 => sp -0x38 value ?
+  0xffe6ac22 store w4 pea.l base=a7 disp -0x4 => sp -0x3c value 0xffe6afc8
+  0xffe6ac28 load w4 move.l base=a6 disp +0x8 => sp +0x4
+  0xffe6ac28 store w4 move.l base=a7 disp +0x0 => sp -0x40 value [sp+4]
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x1c => sp -0x20
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x18 => sp -0x1c
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x14 => sp -0x18
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x10 => sp -0x14
+  0xffe6ac36 load w4 movem.l base=a6 disp -0xc => sp -0x10
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x8 => sp -0xc
+  0xffe6ac36 load w4 movem.l base=a6 disp -0x4 => sp -0x8
+  0xffe6ac3c load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (1)
+  0xffe6ac2c jsr (unknown callee) [0xffe716d8]
+      args: stack arg0=[sp+4], stack arg1=0xffe6afc8, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (49)
+  B0 0xffe6abb4-0xffe6abb4 preds: entry
+      normal -> B1
+  B1 0xffe6abb8-0xffe6abb8 preds: B0
+      normal -> B2
+  B2 0xffe6abbc-0xffe6abbc preds: B1
+      normal -> B3
+  B3 0xffe6abc0-0xffe6abc0 preds: B2
+      normal -> B4
+  B4 0xffe6abc6-0xffe6abc6 preds: B3
+      normal -> B5
+  B5 0xffe6abc8-0xffe6abc8 preds: B4
+      normal -> B6
+  B6 0xffe6abcc-0xffe6abcc preds: B5
+      normal -> B7
+  B7 0xffe6abd0-0xffe6abd0 preds: B6
+      taken when (? & 0x10) == 0x0 -> 0xffe6abd6
+      falls through when (? & 0x10) != 0x0 -> B8
+  B8 0xffe6abd2-0xffe6abd2 preds: B7
+      normal -> B9
+  B9 0xffe6abd4-0xffe6abd4 preds: B8
+      jump -> 0xffe6abd8
+  B10 0xffe6abd6-0xffe6abd6 preds: B7
+      normal -> B11
+  B11 0xffe6abd8-0xffe6abd8 preds: B10, B9
+      normal -> B12
+  B12 0xffe6abdc-0xffe6abdc preds: B11
+      taken when (? & 0x8) == 0x0 -> 0xffe6abe2
+      falls through when (? & 0x8) != 0x0 -> B13
+  B13 0xffe6abde-0xffe6abde preds: B12
+      normal -> B14
+  B14 0xffe6abe0-0xffe6abe0 preds: B13
+      jump -> 0xffe6abe4
+  B15 0xffe6abe2-0xffe6abe2 preds: B12
+      normal -> B16
+  B16 0xffe6abe4-0xffe6abe4 preds: B15, B14
+      normal -> B17
+  B17 0xffe6abe8-0xffe6abe8 preds: B16
+      taken when (? & 0x40) == 0x0 -> 0xffe6abee
+      falls through when (? & 0x40) != 0x0 -> B18
+  B18 0xffe6abea-0xffe6abea preds: B17
+      normal -> B19
+  B19 0xffe6abec-0xffe6abec preds: B18
+      jump -> 0xffe6abf0
+  B20 0xffe6abee-0xffe6abee preds: B17
+      normal -> B21
+  B21 0xffe6abf0-0xffe6abf0 preds: B20, B19
+      normal -> B22
+  B22 0xffe6abf4-0xffe6abf4 preds: B21
+      taken when (? & 0x20) == 0x0 -> 0xffe6abfa
+      falls through when (? & 0x20) != 0x0 -> B23
+  B23 0xffe6abf6-0xffe6abf6 preds: B22
+      normal -> B24
+  B24 0xffe6abf8-0xffe6abf8 preds: B23
+      jump -> 0xffe6abfc
+  B25 0xffe6abfa-0xffe6abfa preds: B22
+      normal -> B26
+  B26 0xffe6abfc-0xffe6abfc preds: B25, B24
+      normal -> B27
+  B27 0xffe6abfe-0xffe6abfe preds: B26
+      taken when N == 0 -> 0xffe6ac04
+      falls through when not (N == 0) -> B28
+  B28 0xffe6ac00-0xffe6ac00 preds: B27
+      normal -> B29
+  B29 0xffe6ac02-0xffe6ac02 preds: B28
+      jump -> 0xffe6ac06
+  B30 0xffe6ac04-0xffe6ac04 preds: B27
+      normal -> B31
+  B31 0xffe6ac06-0xffe6ac06 preds: B30, B29
+      normal -> B32
+  B32 0xffe6ac0a-0xffe6ac0a preds: B31
+      taken when (? & 0x1) == 0x0 -> 0xffe6ac12
+      falls through when (? & 0x1) != 0x0 -> B33
+  B33 0xffe6ac0c-0xffe6ac0c preds: B32
+      normal -> B34
+  B34 0xffe6ac10-0xffe6ac10 preds: B33
+      jump -> 0xffe6ac16
+  B35 0xffe6ac12-0xffe6ac12 preds: B32
+      normal -> B36
+  B36 0xffe6ac16-0xffe6ac16 preds: B35, B34
+      normal -> B37
+  B37 0xffe6ac18-0xffe6ac18 preds: B36
+      normal -> B38
+  B38 0xffe6ac1a-0xffe6ac1a preds: B37
+      normal -> B39
+  B39 0xffe6ac1c-0xffe6ac1c preds: B38
+      normal -> B40
+  B40 0xffe6ac1e-0xffe6ac1e preds: B39
+      normal -> B41
+  B41 0xffe6ac20-0xffe6ac20 preds: B40
+      normal -> B42
+  B42 0xffe6ac22-0xffe6ac22 preds: B41
+      normal -> B43
+  B43 0xffe6ac28-0xffe6ac28 preds: B42
+      normal -> B44
+  B44 0xffe6ac2c-0xffe6ac2c preds: B43
+      call -> 0xffe716d8
+  B45 0xffe6ac32-0xffe6ac32 preds: B44
+      normal -> B46
+  B46 0xffe6ac36-0xffe6ac36 preds: B45
+      normal -> B47
+  B47 0xffe6ac3c-0xffe6ac3c preds: B46
+      normal -> B48
+  B48 0xffe6ac3e-0xffe6ac3e preds: B47
+      return
+
+returns (1)
+  0xffe6ac3e: d0 = ret(0xffe716d8); reached from B47
+
+constants
+  0xffe6abc6 d7 = 0x0
+  0xffe6abd2 d6 = 0x31
+  0xffe6abd6 d6 = 0x30
+  0xffe6abde d5 = 0x31
+  0xffe6abe2 d5 = 0x30
+  0xffe6abea d4 = 0x31
+  0xffe6abee d4 = 0x30
+  0xffe6abf6 d3 = 0x31
+  0xffe6abfa d3 = 0x30
+  0xffe6ac00 d2 = 0x31
+  0xffe6ac04 d2 = 0x30
+  0xffe6ac0c a5 = 0x31
+  0xffe6ac12 a5 = 0x30
+immediates
+  0x0 at 0xffe6abb4
+  0x0 at 0xffe6abc6
+  0x4 at 0xffe6abcc
+  0x31 at 0xffe6abd2
+  0x30 at 0xffe6abd6
+  0x3 at 0xffe6abd8
+  0x31 at 0xffe6abde
+  0x30 at 0xffe6abe2
+  0x6 at 0xffe6abe4
+  0x31 at 0xffe6abea
+  0x30 at 0xffe6abee
+  0x5 at 0xffe6abf0
+  0x31 at 0xffe6abf6
+  0x30 at 0xffe6abfa
+  0x31 at 0xffe6ac00
+  0x30 at 0xffe6ac04
+  0x0 at 0xffe6ac06
+  0x31 at 0xffe6ac0c
+  0x30 at 0xffe6ac12
+instructions
+  0xffe6abb4 4e560000 link.w a6, #$0
+  0xffe6abb8 4fefffe4 lea.l -$1c(a7), a7
+  0xffe6abbc 48d720fc movem.l d2-d7/a5, (a7)
+  0xffe6abc0 207930000198 movea.l $30000198.l, a0
+  0xffe6abc6 7e00 moveq #$0, d7
+  0xffe6abc8 1e2801c9 move.b $1c9(a0), d7
+  0xffe6abcc 08070004 btst.b #$4, d7
+  0xffe6abd0 6704 beq.b $ffe6abd6
+  0xffe6abd2 7c31 moveq #$31, d6
+  0xffe6abd4 6002 bra.b $ffe6abd8
+  0xffe6abd6 7c30 moveq #$30, d6
+  0xffe6abd8 08070003 btst.b #$3, d7
+  0xffe6abdc 6704 beq.b $ffe6abe2
+  0xffe6abde 7a31 moveq #$31, d5
+  0xffe6abe0 6002 bra.b $ffe6abe4
+  0xffe6abe2 7a30 moveq #$30, d5
+  0xffe6abe4 08070006 btst.b #$6, d7
+  0xffe6abe8 6704 beq.b $ffe6abee
+  0xffe6abea 7831 moveq #$31, d4
+  0xffe6abec 6002 bra.b $ffe6abf0
+  0xffe6abee 7830 moveq #$30, d4
+  0xffe6abf0 08070005 btst.b #$5, d7
+  0xffe6abf4 6704 beq.b $ffe6abfa
+  0xffe6abf6 7631 moveq #$31, d3
+  0xffe6abf8 6002 bra.b $ffe6abfc
+  0xffe6abfa 7630 moveq #$30, d3
+  0xffe6abfc 4a07 tst.b d7
+  0xffe6abfe 6a04 bpl.b $ffe6ac04
+  0xffe6ac00 7431 moveq #$31, d2
+  0xffe6ac02 6002 bra.b $ffe6ac06
+  0xffe6ac04 7430 moveq #$30, d2
+  0xffe6ac06 08070000 btst.b #$0, d7
+  0xffe6ac0a 6706 beq.b $ffe6ac12
+  0xffe6ac0c 3a7c0031 movea.w #$31, a5
+  0xffe6ac10 6004 bra.b $ffe6ac16
+  0xffe6ac12 3a7c0030 movea.w #$30, a5
+  0xffe6ac16 2f0d move.l a5, -(a7)
+  0xffe6ac18 2f02 move.l d2, -(a7)
+  0xffe6ac1a 2f03 move.l d3, -(a7)
+  0xffe6ac1c 2f04 move.l d4, -(a7)
+  0xffe6ac1e 2f05 move.l d5, -(a7)
+  0xffe6ac20 2f06 move.l d6, -(a7)
+  0xffe6ac22 4879ffe6afc8 pea.l $ffe6afc8.l
+  0xffe6ac28 2f2e0008 move.l $8(a6), -(a7)
+  0xffe6ac2c 4eb9ffe716d8 jsr $ffe716d8.l
+  0xffe6ac32 4fef0020 lea.l $20(a7), a7
+  0xffe6ac36 4cee20fcffe4 movem.l -$1c(a6), d2-d7/a5
+  0xffe6ac3c 4e5e unlk a6
+  0xffe6ac3e 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe5f39c-0xffe5f440  size 0xa4 (164 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (20)
+  0xffe5f39c store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe5f3a4 store w4 movem.l base=a7 disp +0x0 => sp -0x14 value d4
+  0xffe5f3a4 store w4 movem.l base=a7 disp +0x4 => sp -0x10 value d5
+  0xffe5f3a4 store w4 movem.l base=a7 disp +0x8 => sp -0xc value d6
+  0xffe5f3a4 store w4 movem.l base=a7 disp +0xc => sp -0x8 value d7
+  0xffe5f3aa load w4 movea.l base=absolute disp +0x0 => abs 0x3000057c
+  0xffe5f3b0 load w1 move.b base=a0 disp +0x80 => [0x3000057c] +0x80
+  0xffe5f3b6 load w4 cmp.l base=absolute disp +0x0 => abs 0x30000580
+  0xffe5f3d8 load w4 tst.l base=a0 disp +0x0 => ? (unknown effective address)
+  0xffe5f3dc load w4 movea.l base=absolute disp +0x0 => abs 0x3000057c
+  0xffe5f3e8 load w1 move.b base=a0 disp +0x2 => ? (unknown effective address)
+  0xffe5f400 store w4 move.l base=a7 disp +0x0 => sp -0x18 value ?
+  0xffe5f40e store w4 move.l base=a7 disp +0x0 => sp -0x1c value ?
+  0xffe5f418 load w4 movea.l base=absolute disp +0x0 => abs 0x3000057c
+  0xffe5f424 store w1 clr.b base=a0 disp +0x1 => ? (unknown effective address) value 0x0
+  0xffe5f436 load w4 movem.l base=a6 disp -0x10 => sp -0x14
+  0xffe5f436 load w4 movem.l base=a6 disp -0xc => sp -0x10
+  0xffe5f436 load w4 movem.l base=a6 disp -0x8 => sp -0xc
+  0xffe5f436 load w4 movem.l base=a6 disp -0x4 => sp -0x8
+  0xffe5f43c load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (1)
+  0xffe5f410 bsr.b (unknown callee) [0xffe5f470]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (52)
+  B0 0xffe5f39c-0xffe5f39c preds: entry
+      normal -> B1
+  B1 0xffe5f3a0-0xffe5f3a0 preds: B0
+      normal -> B2
+  B2 0xffe5f3a4-0xffe5f3a4 preds: B1
+      normal -> B3
+  B3 0xffe5f3a8-0xffe5f3a8 preds: B2
+      normal -> B4
+  B4 0xffe5f3aa-0xffe5f3aa preds: B3
+      normal -> B5
+  B5 0xffe5f3b0-0xffe5f3b0 preds: B4
+      normal -> B6
+  B6 0xffe5f3b4-0xffe5f3b4 preds: B5
+      normal -> B7
+  B7 0xffe5f3b6-0xffe5f3b6 preds: B6, B48
+      normal -> B8
+  B8 0xffe5f3bc-0xffe5f3bc preds: B7
+      taken when ge flags condition (operands unknown) -> 0xffe5f436
+      falls through when not (ge flags condition (operands unknown)) -> B9
+  B9 0xffe5f3c0-0xffe5f3c0 preds: B8
+      normal -> B10
+  B10 0xffe5f3c2-0xffe5f3c2 preds: B9
+      taken when ? == 0x0 -> 0xffe5f436
+      falls through when ? != 0x0 -> B11
+  B11 0xffe5f3c6-0xffe5f3c6 preds: B10
+      normal -> B12
+  B12 0xffe5f3ca-0xffe5f3ca preds: B11
+      taken when (? & 0x1) == 0x0 -> 0xffe5f428
+      falls through when (? & 0x1) != 0x0 -> B13
+  B13 0xffe5f3cc-0xffe5f3cc preds: B12
+      normal -> B14
+  B14 0xffe5f3d2-0xffe5f3d2 preds: B13
+      normal -> B15
+  B15 0xffe5f3d4-0xffe5f3d4 preds: B14
+      normal -> B16
+  B16 0xffe5f3d6-0xffe5f3d6 preds: B15
+      normal -> B17
+  B17 0xffe5f3d8-0xffe5f3d8 preds: B16
+      normal -> B18
+  B18 0xffe5f3da-0xffe5f3da preds: B17
+      taken when Z == 1 -> 0xffe5f418
+      falls through when not (Z == 1) -> B19
+  B19 0xffe5f3dc-0xffe5f3dc preds: B18
+      normal -> B20
+  B20 0xffe5f3e2-0xffe5f3e2 preds: B19
+      normal -> B21
+  B21 0xffe5f3e4-0xffe5f3e4 preds: B20
+      normal -> B22
+  B22 0xffe5f3e6-0xffe5f3e6 preds: B21
+      normal -> B23
+  B23 0xffe5f3e8-0xffe5f3e8 preds: B22
+      normal -> B24
+  B24 0xffe5f3ec-0xffe5f3ec preds: B23
+      normal -> B25
+  B25 0xffe5f3f2-0xffe5f3f2 preds: B24
+      normal -> B26
+  B26 0xffe5f3f8-0xffe5f3f8 preds: B25
+      taken when ? == 0xc1 -> 0xffe5f428
+      falls through when ? != 0xc1 -> B27
+  B27 0xffe5f3fa-0xffe5f3fa preds: B26
+      normal -> B28
+  B28 0xffe5f400-0xffe5f400 preds: B27
+      normal -> B29
+  B29 0xffe5f402-0xffe5f402 preds: B28
+      normal -> B30
+  B30 0xffe5f408-0xffe5f408 preds: B29
+      normal -> B31
+  B31 0xffe5f40a-0xffe5f40a preds: B30
+      normal -> B32
+  B32 0xffe5f40c-0xffe5f40c preds: B31
+      normal -> B33
+  B33 0xffe5f40e-0xffe5f40e preds: B32
+      normal -> B34
+  B34 0xffe5f410-0xffe5f410 preds: B33
+      call -> 0xffe5f470
+  B35 0xffe5f412-0xffe5f412 preds: B34
+      normal -> B36
+  B36 0xffe5f414-0xffe5f414 preds: B35
+      normal -> B37
+  B37 0xffe5f416-0xffe5f416 preds: B36
+      jump -> 0xffe5f428
+  B38 0xffe5f418-0xffe5f418 preds: B18
+      normal -> B39
+  B39 0xffe5f41e-0xffe5f41e preds: B38
+      normal -> B40
+  B40 0xffe5f420-0xffe5f420 preds: B39
+      normal -> B41
+  B41 0xffe5f422-0xffe5f422 preds: B40
+      normal -> B42
+  B42 0xffe5f424-0xffe5f424 preds: B41
+      normal -> B43
+  B43 0xffe5f428-0xffe5f428 preds: B12, B42, B26, B37
+      normal -> B44
+  B44 0xffe5f42a-0xffe5f42a preds: B43
+      normal -> B45
+  B45 0xffe5f42c-0xffe5f42c preds: B44
+      normal -> B46
+  B46 0xffe5f42e-0xffe5f42e preds: B45
+      normal -> B47
+  B47 0xffe5f430-0xffe5f430 preds: B46
+      normal -> B48
+  B48 0xffe5f432-0xffe5f432 preds: B47
+      jump -> 0xffe5f3b6
+  B49 0xffe5f436-0xffe5f436 preds: B8, B10
+      normal -> B50
+  B50 0xffe5f43c-0xffe5f43c preds: B49
+      normal -> B51
+  B51 0xffe5f43e-0xffe5f43e preds: B50
+      return
+
+returns (1)
+  0xffe5f43e: d0 = ?; reached from B50
+
+constants
+  0xffe5f3a8 d5 = 0x0
+  0xffe5f3b4 d4 = 0x0
+  0xffe5f3cc a0 = 0x300031d0
+  0xffe5f402 d0 = 0x300031d0
+  0xffe5f428 d0 = 0x0
+immediates
+  0x0 at 0xffe5f39c
+  0x0 at 0xffe5f3a8
+  0x0 at 0xffe5f3b4
+  0x0 at 0xffe5f3c6
+  0x300031d0 at 0xffe5f3cc
+  0x3 at 0xffe5f3d4
+  0x4 at 0xffe5f3e4
+  0xff at 0xffe5f3ec
+  0xc1 at 0xffe5f3f2
+  0xff at 0xffe5f3fa
+  0x300031d0 at 0xffe5f402
+  0x3 at 0xffe5f40a
+  0x8 at 0xffe5f412
+  0x4 at 0xffe5f420
+  0x0 at 0xffe5f428
+  0x1 at 0xffe5f42c
+  0x1 at 0xffe5f430
+instructions
+  0xffe5f39c 4e560000 link.w a6, #$0
+  0xffe5f3a0 4feffff0 lea.l -$10(a7), a7
+  0xffe5f3a4 48d700f0 movem.l d4-d7, (a7)
+  0xffe5f3a8 7a00 moveq #$0, d5
+  0xffe5f3aa 20793000057c movea.l $3000057c.l, a0
+  0xffe5f3b0 1e280080 move.b $80(a0), d7
+  0xffe5f3b4 7800 moveq #$0, d4
+  0xffe5f3b6 b8b930000580 cmp.l $30000580.l, d4
+  0xffe5f3bc 6c000078 bge.w $ffe5f436
+  0xffe5f3c0 4a07 tst.b d7
+  0xffe5f3c2 67000072 beq.w $ffe5f436
+  0xffe5f3c6 08070000 btst.b #$0, d7
+  0xffe5f3ca 675c beq.b $ffe5f428
+  0xffe5f3cc 207c300031d0 movea.l #$300031d0, a0
+  0xffe5f3d2 2004 move.l d4, d0
+  0xffe5f3d4 e788 lsl.l #$3, d0
+  0xffe5f3d6 d1c0 adda.l d0, a0
+  0xffe5f3d8 4a90 tst.l (a0)
+  0xffe5f3da 673c beq.b $ffe5f418
+  0xffe5f3dc 20793000057c movea.l $3000057c.l, a0
+  0xffe5f3e2 2004 move.l d4, d0
+  0xffe5f3e4 e988 lsl.l #$4, d0
+  0xffe5f3e6 d1c0 adda.l d0, a0
+  0xffe5f3e8 1c280002 move.b $2(a0), d6
+  0xffe5f3ec ccbc000000ff and.l #$ff, d6
+  0xffe5f3f2 bcbc000000c1 cmp.l #$c1, d6
+  0xffe5f3f8 672e beq.b $ffe5f428
+  0xffe5f3fa ccbc000000ff and.l #$ff, d6
+  0xffe5f400 2f06 move.l d6, -(a7)
+  0xffe5f402 203c300031d0 move.l #$300031d0, d0
+  0xffe5f408 2204 move.l d4, d1
+  0xffe5f40a e789 lsl.l #$3, d1
+  0xffe5f40c d081 add.l d1, d0
+  0xffe5f40e 2f00 move.l d0, -(a7)
+  0xffe5f410 615e bsr.b $ffe5f470
+  0xffe5f412 508f addq.l #$8, a7
+  0xffe5f414 da80 add.l d0, d5
+  0xffe5f416 6010 bra.b $ffe5f428
+  0xffe5f418 20793000057c movea.l $3000057c.l, a0
+  0xffe5f41e 2004 move.l d4, d0
+  0xffe5f420 e988 lsl.l #$4, d0
+  0xffe5f422 d1c0 adda.l d0, a0
+  0xffe5f424 42280001 clr.b $1(a0)
+  0xffe5f428 7000 moveq #$0, d0
+  0xffe5f42a 1007 move.b d7, d0
+  0xffe5f42c e288 lsr.l #$1, d0
+  0xffe5f42e 2e00 move.l d0, d7
+  0xffe5f430 5284 addq.l #$1, d4
+  0xffe5f432 6000ff82 bra.w $ffe5f3b6
+  0xffe5f436 4cee00f0fff0 movem.l -$10(a6), d4-d7
+  0xffe5f43c 4e5e unlk a6
+  0xffe5f43e 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe6a310-0xffe6a3ba  size 0xaa (170 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (24)
+  0xffe6a310 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe6a314 load w4 tst.l base=absolute disp +0x0 => abs 0x30000040
+  0xffe6a31c store w4 pea.l base=a7 disp -0x4 => sp -0x8 value 0xffe6aed4
+  0xffe6a32a store w4 pea.l base=a7 disp -0x4 => sp -0x8 value 0xffe6ac40
+  0xffe6a330 store w4 pea.l base=a7 disp -0x4 => sp -0xc value 0xffe6ad0c
+  0xffe6a33e load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a344 load w2 move.w base=a0 disp +0xca => [0x30000198] +0xca
+  0xffe6a34e store w2 move.w base=a0 disp +0xca => [0x30000198] +0xca value ?
+  0xffe6a352 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a35a store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x31
+  0xffe6a35e load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a366 store w1 move.b base=a0 disp +0x1c5 => [0x30000198] +0x1c5 value 0xfe
+  0xffe6a36a load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a372 store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x38
+  0xffe6a376 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a37e store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x28
+  0xffe6a382 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a38a store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x38
+  0xffe6a38e load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a396 store w1 move.b base=a0 disp +0x1c9 => [0x30000198] +0x1c9 value 0x30
+  0xffe6a3a0 load w4 add.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe6a3a6 store w4 move.l base=absolute disp +0x0 => abs 0x30000048 value [0x30000198]+457
+  0xffe6a3ae store w4 move.l base=absolute disp +0x0 => abs 0x30000044 value 0x1
+  0xffe6a3b6 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (2)
+  0xffe6a322 jsr (unknown callee) [0xffe71034]
+      args: stack arg0=0xffe6aed4, stack arg1=a6, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe6a336 jsr (unknown callee) [0xffe6b04c]
+      args: stack arg0=0xffe6ad0c, stack arg1=0xffe6ac40, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (40)
+  B0 0xffe6a310-0xffe6a310 preds: entry
+      normal -> B1
+  B1 0xffe6a314-0xffe6a314 preds: B0
+      normal -> B2
+  B2 0xffe6a31a-0xffe6a31a preds: B1
+      taken when [0x30000040] == 0x0 -> 0xffe6a32a
+      falls through when [0x30000040] != 0x0 -> B3
+  B3 0xffe6a31c-0xffe6a31c preds: B2
+      normal -> B4
+  B4 0xffe6a322-0xffe6a322 preds: B3
+      call -> 0xffe71034
+  B5 0xffe6a328-0xffe6a328 preds: B4
+      normal -> B6
+  B6 0xffe6a32a-0xffe6a32a preds: B2, B5
+      normal -> B7
+  B7 0xffe6a330-0xffe6a330 preds: B6
+      normal -> B8
+  B8 0xffe6a336-0xffe6a336 preds: B7
+      call -> 0xffe6b04c
+  B9 0xffe6a33c-0xffe6a33c preds: B8
+      normal -> B10
+  B10 0xffe6a33e-0xffe6a33e preds: B9
+      normal -> B11
+  B11 0xffe6a344-0xffe6a344 preds: B10
+      normal -> B12
+  B12 0xffe6a348-0xffe6a348 preds: B11
+      normal -> B13
+  B13 0xffe6a34e-0xffe6a34e preds: B12
+      normal -> B14
+  B14 0xffe6a352-0xffe6a352 preds: B13
+      normal -> B15
+  B15 0xffe6a358-0xffe6a358 preds: B14
+      normal -> B16
+  B16 0xffe6a35a-0xffe6a35a preds: B15
+      normal -> B17
+  B17 0xffe6a35e-0xffe6a35e preds: B16
+      normal -> B18
+  B18 0xffe6a364-0xffe6a364 preds: B17
+      normal -> B19
+  B19 0xffe6a366-0xffe6a366 preds: B18
+      normal -> B20
+  B20 0xffe6a36a-0xffe6a36a preds: B19
+      normal -> B21
+  B21 0xffe6a370-0xffe6a370 preds: B20
+      normal -> B22
+  B22 0xffe6a372-0xffe6a372 preds: B21
+      normal -> B23
+  B23 0xffe6a376-0xffe6a376 preds: B22
+      normal -> B24
+  B24 0xffe6a37c-0xffe6a37c preds: B23
+      normal -> B25
+  B25 0xffe6a37e-0xffe6a37e preds: B24
+      normal -> B26
+  B26 0xffe6a382-0xffe6a382 preds: B25
+      normal -> B27
+  B27 0xffe6a388-0xffe6a388 preds: B26
+      normal -> B28
+  B28 0xffe6a38a-0xffe6a38a preds: B27
+      normal -> B29
+  B29 0xffe6a38e-0xffe6a38e preds: B28
+      normal -> B30
+  B30 0xffe6a394-0xffe6a394 preds: B29
+      normal -> B31
+  B31 0xffe6a396-0xffe6a396 preds: B30
+      normal -> B32
+  B32 0xffe6a39a-0xffe6a39a preds: B31
+      normal -> B33
+  B33 0xffe6a3a0-0xffe6a3a0 preds: B32
+      normal -> B34
+  B34 0xffe6a3a6-0xffe6a3a6 preds: B33
+      normal -> B35
+  B35 0xffe6a3ac-0xffe6a3ac preds: B34
+      normal -> B36
+  B36 0xffe6a3ae-0xffe6a3ae preds: B35
+      normal -> B37
+  B37 0xffe6a3b4-0xffe6a3b4 preds: B36
+      normal -> B38
+  B38 0xffe6a3b6-0xffe6a3b6 preds: B37
+      normal -> B39
+  B39 0xffe6a3b8-0xffe6a3b8 preds: B38
+      return
+
+returns (1)
+  0xffe6a3b8: d0 = 0x1; reached from B38
+
+constants
+  0xffe6a358 d0 = 0x31
+  0xffe6a364 d0 = 0xfffffffe
+  0xffe6a370 d0 = 0x38
+  0xffe6a37c d0 = 0x28
+  0xffe6a388 d0 = 0x38
+  0xffe6a394 d0 = 0x30
+  0xffe6a39a d0 = 0x1c9
+  0xffe6a3ac d0 = 0x1
+immediates
+  0x0 at 0xffe6a310
+  0x4 at 0xffe6a328
+  0x8 at 0xffe6a33c
+  0xffcf at 0xffe6a348
+  0x31 at 0xffe6a358
+  0xfe at 0xffe6a364
+  0x38 at 0xffe6a370
+  0x28 at 0xffe6a37c
+  0x38 at 0xffe6a388
+  0x30 at 0xffe6a394
+  0x1c9 at 0xffe6a39a
+  0x1 at 0xffe6a3ac
+  0x1 at 0xffe6a3b4
+instructions
+  0xffe6a310 4e560000 link.w a6, #$0
+  0xffe6a314 4ab930000040 tst.l $30000040.l
+  0xffe6a31a 670e beq.b $ffe6a32a
+  0xffe6a31c 4879ffe6aed4 pea.l $ffe6aed4.l
+  0xffe6a322 4eb9ffe71034 jsr $ffe71034.l
+  0xffe6a328 588f addq.l #$4, a7
+  0xffe6a32a 4879ffe6ac40 pea.l $ffe6ac40.l
+  0xffe6a330 4879ffe6ad0c pea.l $ffe6ad0c.l
+  0xffe6a336 4eb9ffe6b04c jsr $ffe6b04c.l
+  0xffe6a33c 508f addq.l #$8, a7
+  0xffe6a33e 207930000198 movea.l $30000198.l, a0
+  0xffe6a344 302800ca move.w $ca(a0), d0
+  0xffe6a348 c0bc0000ffcf and.l #$ffcf, d0
+  0xffe6a34e 314000ca move.w d0, $ca(a0)
+  0xffe6a352 207930000198 movea.l $30000198.l, a0
+  0xffe6a358 7031 moveq #$31, d0
+  0xffe6a35a 114001c9 move.b d0, $1c9(a0)
+  0xffe6a35e 207930000198 movea.l $30000198.l, a0
+  0xffe6a364 70fe moveq #$fe, d0
+  0xffe6a366 114001c5 move.b d0, $1c5(a0)
+  0xffe6a36a 207930000198 movea.l $30000198.l, a0
+  0xffe6a370 7038 moveq #$38, d0
+  0xffe6a372 114001c9 move.b d0, $1c9(a0)
+  0xffe6a376 207930000198 movea.l $30000198.l, a0
+  0xffe6a37c 7028 moveq #$28, d0
+  0xffe6a37e 114001c9 move.b d0, $1c9(a0)
+  0xffe6a382 207930000198 movea.l $30000198.l, a0
+  0xffe6a388 7038 moveq #$38, d0
+  0xffe6a38a 114001c9 move.b d0, $1c9(a0)
+  0xffe6a38e 207930000198 movea.l $30000198.l, a0
+  0xffe6a394 7030 moveq #$30, d0
+  0xffe6a396 114001c9 move.b d0, $1c9(a0)
+  0xffe6a39a 203c000001c9 move.l #$1c9, d0
+  0xffe6a3a0 d0b930000198 add.l $30000198.l, d0
+  0xffe6a3a6 23c030000048 move.l d0, $30000048.l
+  0xffe6a3ac 7001 moveq #$1, d0
+  0xffe6a3ae 23c030000044 move.l d0, $30000044.l
+  0xffe6a3b4 7001 moveq #$1, d0
+  0xffe6a3b6 4e5e unlk a6
+  0xffe6a3b8 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe65098-0xffe65144  size 0xac (172 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (22)
+  0xffe65098 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe6509c store w4 move.l base=a7 disp +0x0 => sp -0x8 value d7
+  0xffe6509e store w4 move.l base=a7 disp +0x0 => sp -0xc value d6
+  0xffe650a0 load w1 move.b base=a6 disp +0xb => sp +0x7
+  0xffe650aa store w4 move.l base=a7 disp +0x0 => sp -0x10 value ?
+  0xffe650be store w4 move.l base=a7 disp +0x0 => sp -0x10 value ?
+  0xffe650c0 store w4 pea.l base=a7 disp -0x4 => sp -0x14 value 0xffe65794
+  0xffe650c6 store w4 pea.l base=a7 disp -0x4 => sp -0x18 value 0x30004660
+  0xffe650dc load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe650e2 load w1 move.b base=a6 disp +0xf => sp +0xb
+  0xffe650e6 store w1 move.b base=a0 disp +0x1f0 => [0x30000198] +0x1f0 value ?
+  0xffe650ea store w4 pea.l base=a7 disp -0x4 => sp -0x10 value 0x1
+  0xffe65100 store w4 move.l base=a7 disp +0x0 => sp -0x10 value ?
+  0xffe65102 store w4 pea.l base=a7 disp -0x4 => sp -0x14 value 0xffe657cc
+  0xffe65108 store w4 pea.l base=a7 disp -0x4 => sp -0x18 value 0x30004660
+  0xffe65122 load w2 move.w base=a6 disp +0x16 => sp +0x12
+  0xffe65126 store w4 move.l base=a7 disp +0x0 => sp -0x10 value ?
+  0xffe65128 load w4 move.l base=a6 disp +0x10 => sp +0xc
+  0xffe65128 store w4 move.l base=a7 disp +0x0 => sp -0x14 value [sp+12]
+  0xffe6513a load w4 movem.l base=a6 disp -0x8 => sp -0xc
+  0xffe6513a load w4 movem.l base=a6 disp -0x4 => sp -0x8
+  0xffe65140 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (7)
+  0xffe650ac bsr.w (unknown callee) [0xffe65458]
+      args: stack arg0=?, stack arg1=d6, stack arg2=d7, stack arg3=a6, stack arg4=?, stack arg5=?
+  0xffe650cc jsr (unknown callee) [0xffe716d8]
+      args: stack arg0=0x30004660, stack arg1=0xffe65794, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe650ee bsr.w (unknown callee) [0xffe65328]
+      args: stack arg0=0x1, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe6510e jsr (unknown callee) [0xffe716d8]
+      args: stack arg0=0x30004660, stack arg1=0xffe657cc, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe65118 bsr.w (unknown callee) [0xffe654ac]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe6512c bsr.w (unknown callee) [0xffe65578]
+      args: stack arg0=[sp+12], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe65134 bsr.w (unknown callee) [0xffe654ac]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (49)
+  B0 0xffe65098-0xffe65098 preds: entry
+      normal -> B1
+  B1 0xffe6509c-0xffe6509c preds: B0
+      normal -> B2
+  B2 0xffe6509e-0xffe6509e preds: B1
+      normal -> B3
+  B3 0xffe650a0-0xffe650a0 preds: B2
+      normal -> B4
+  B4 0xffe650a4-0xffe650a4 preds: B3
+      normal -> B5
+  B5 0xffe650aa-0xffe650aa preds: B4
+      normal -> B6
+  B6 0xffe650ac-0xffe650ac preds: B5
+      call -> 0xffe65458
+  B7 0xffe650b0-0xffe650b0 preds: B6
+      normal -> B8
+  B8 0xffe650b2-0xffe650b2 preds: B7
+      normal -> B9
+  B9 0xffe650b4-0xffe650b4 preds: B8
+      normal -> B10
+  B10 0xffe650b6-0xffe650b6 preds: B9
+      taken when ret(0xffe65458) == 0x0 -> 0xffe650dc
+      falls through when ret(0xffe65458) != 0x0 -> B11
+  B11 0xffe650b8-0xffe650b8 preds: B10
+      normal -> B12
+  B12 0xffe650be-0xffe650be preds: B11
+      normal -> B13
+  B13 0xffe650c0-0xffe650c0 preds: B12
+      normal -> B14
+  B14 0xffe650c6-0xffe650c6 preds: B13
+      normal -> B15
+  B15 0xffe650cc-0xffe650cc preds: B14
+      call -> 0xffe716d8
+  B16 0xffe650d2-0xffe650d2 preds: B15
+      normal -> B17
+  B17 0xffe650d6-0xffe650d6 preds: B16
+      normal -> B18
+  B18 0xffe650d8-0xffe650d8 preds: B17
+      jump -> 0xffe6513a
+  B19 0xffe650dc-0xffe650dc preds: B10
+      normal -> B20
+  B20 0xffe650e2-0xffe650e2 preds: B19
+      normal -> B21
+  B21 0xffe650e6-0xffe650e6 preds: B20
+      normal -> B22
+  B22 0xffe650ea-0xffe650ea preds: B21
+      normal -> B23
+  B23 0xffe650ee-0xffe650ee preds: B22
+      call -> 0xffe65328
+  B24 0xffe650f2-0xffe650f2 preds: B23
+      normal -> B25
+  B25 0xffe650f4-0xffe650f4 preds: B24
+      normal -> B26
+  B26 0xffe650f6-0xffe650f6 preds: B25
+      normal -> B27
+  B27 0xffe650f8-0xffe650f8 preds: B26
+      taken when ret(0xffe65328) == 0x0 -> 0xffe65120
+      falls through when ret(0xffe65328) != 0x0 -> B28
+  B28 0xffe650fa-0xffe650fa preds: B27
+      normal -> B29
+  B29 0xffe65100-0xffe65100 preds: B28
+      normal -> B30
+  B30 0xffe65102-0xffe65102 preds: B29
+      normal -> B31
+  B31 0xffe65108-0xffe65108 preds: B30
+      normal -> B32
+  B32 0xffe6510e-0xffe6510e preds: B31
+      call -> 0xffe716d8
+  B33 0xffe65114-0xffe65114 preds: B32
+      normal -> B34
+  B34 0xffe65118-0xffe65118 preds: B33
+      call -> 0xffe654ac
+  B35 0xffe6511c-0xffe6511c preds: B34
+      normal -> B36
+  B36 0xffe6511e-0xffe6511e preds: B35
+      jump -> 0xffe6513a
+  B37 0xffe65120-0xffe65120 preds: B27
+      normal -> B38
+  B38 0xffe65122-0xffe65122 preds: B37
+      normal -> B39
+  B39 0xffe65126-0xffe65126 preds: B38
+      normal -> B40
+  B40 0xffe65128-0xffe65128 preds: B39
+      normal -> B41
+  B41 0xffe6512c-0xffe6512c preds: B40
+      call -> 0xffe65578
+  B42 0xffe65130-0xffe65130 preds: B41
+      normal -> B43
+  B43 0xffe65132-0xffe65132 preds: B42
+      normal -> B44
+  B44 0xffe65134-0xffe65134 preds: B43
+      call -> 0xffe654ac
+  B45 0xffe65138-0xffe65138 preds: B44
+      normal -> B46
+  B46 0xffe6513a-0xffe6513a preds: B18, B36, B45
+      normal -> B47
+  B47 0xffe65140-0xffe65140 preds: B46
+      normal -> B48
+  B48 0xffe65142-0xffe65142 preds: B47
+      return
+
+returns (1)
+  0xffe65142: d0 = ?; reached from B47
+
+constants
+  0xffe65120 d0 = 0x0
+immediates
+  0x0 at 0xffe65098
+  0xff at 0xffe650a4
+  0x4 at 0xffe650b0
+  0xff at 0xffe650b8
+  0x4 at 0xffe650f2
+  0xff at 0xffe650fa
+  0x0 at 0xffe65120
+  0x8 at 0xffe65130
+instructions
+  0xffe65098 4e560000 link.w a6, #$0
+  0xffe6509c 2f07 move.l d7, -(a7)
+  0xffe6509e 2f06 move.l d6, -(a7)
+  0xffe650a0 1e2e000b move.b $b(a6), d7
+  0xffe650a4 cebc000000ff and.l #$ff, d7
+  0xffe650aa 2f07 move.l d7, -(a7)
+  0xffe650ac 610003aa bsr.w $ffe65458
+  0xffe650b0 588f addq.l #$4, a7
+  0xffe650b2 2c00 move.l d0, d6
+  0xffe650b4 4a86 tst.l d6
+  0xffe650b6 6724 beq.b $ffe650dc
+  0xffe650b8 cebc000000ff and.l #$ff, d7
+  0xffe650be 2f07 move.l d7, -(a7)
+  0xffe650c0 4879ffe65794 pea.l $ffe65794.l
+  0xffe650c6 487930004660 pea.l $30004660.l
+  0xffe650cc 4eb9ffe716d8 jsr $ffe716d8.l
+  0xffe650d2 4fef000c lea.l $c(a7), a7
+  0xffe650d6 2006 move.l d6, d0
+  0xffe650d8 60000060 bra.w $ffe6513a
+  0xffe650dc 207930000198 movea.l $30000198.l, a0
+  0xffe650e2 102e000f move.b $f(a6), d0
+  0xffe650e6 114001f0 move.b d0, $1f0(a0)
+  0xffe650ea 48780001 pea.l $1.w
+  0xffe650ee 61000238 bsr.w $ffe65328
+  0xffe650f2 588f addq.l #$4, a7
+  0xffe650f4 2c00 move.l d0, d6
+  0xffe650f6 4a86 tst.l d6
+  0xffe650f8 6726 beq.b $ffe65120
+  0xffe650fa cebc000000ff and.l #$ff, d7
+  0xffe65100 2f07 move.l d7, -(a7)
+  0xffe65102 4879ffe657cc pea.l $ffe657cc.l
+  0xffe65108 487930004660 pea.l $30004660.l
+  0xffe6510e 4eb9ffe716d8 jsr $ffe716d8.l
+  0xffe65114 4fef000c lea.l $c(a7), a7
+  0xffe65118 61000392 bsr.w $ffe654ac
+  0xffe6511c 2006 move.l d6, d0
+  0xffe6511e 601a bra.b $ffe6513a
+  0xffe65120 7000 moveq #$0, d0
+  0xffe65122 302e0016 move.w $16(a6), d0
+  0xffe65126 2f00 move.l d0, -(a7)
+  0xffe65128 2f2e0010 move.l $10(a6), -(a7)
+  0xffe6512c 6100044a bsr.w $ffe65578
+  0xffe65130 508f addq.l #$8, a7
+  0xffe65132 2c00 move.l d0, d6
+  0xffe65134 61000376 bsr.w $ffe654ac
+  0xffe65138 2006 move.l d6, d0
+  0xffe6513a 4cee00c0fff8 movem.l -$8(a6), d6-d7
+  0xffe65140 4e5e unlk a6
+  0xffe65142 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe5aeac-0xffe5af7a  size 0xce (206 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (35)
+  0xffe5aeac store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe5aeb4 store w4 movem.l base=a7 disp +0x0 => sp -0x18 value d6
+  0xffe5aeb4 store w4 movem.l base=a7 disp +0x4 => sp -0x14 value d7
+  0xffe5aeb4 store w4 movem.l base=a7 disp +0x8 => sp -0x10 value a5
+  0xffe5aeb8 load w4 move.l base=a6 disp +0x8 => sp +0x4
+  0xffe5aebc load w4 cmp.l base=absolute disp +0x0 => abs 0x300002c8
+  0xffe5aec4 load w4 movea.l base=absolute disp +0x0 => abs 0x300002b0
+  0xffe5aeca load w4 move.l base=a5 disp +0x28 => [0x300002b0] +0x28
+  0xffe5aed0 load w4 cmp.l base=absolute disp +0x0 => abs 0x300002b8
+  0xffe5aed8 load w4 move.l base=a5 disp +0x28 => [0x300002b0] +0x28
+  0xffe5aede store w4 move.l base=absolute disp +0x0 => abs 0x300002b8 value [[0x300002b0]+40]+1
+  0xffe5aee6 load w4 cmp.l base=absolute disp +0x0 => abs 0x300002b4
+  0xffe5aeee load w4 movea.l base=absolute disp +0x0 => abs 0x300002ac
+  0xffe5aef4 load w4 move.l base=a5 disp +0x28 => [0x300002ac] +0x28
+  0xffe5aefa load w4 cmp.l base=absolute disp +0x0 => abs 0x300002bc
+  0xffe5af02 load w4 move.l base=a5 disp +0x28 => [0x300002ac] +0x28
+  0xffe5af08 store w4 move.l base=absolute disp +0x0 => abs 0x300002bc value [[0x300002ac]+40]+1
+  0xffe5af14 store w4 pea.l base=a7 disp -0x4 => sp -0x1c value 0x64
+  0xffe5af18 store w4 pea.l base=a7 disp -0x4 => sp -0x20 value sp-8
+  0xffe5af1c store w4 move.l base=a7 disp +0x0 => sp -0x24 value ?
+  0xffe5af2e load w4 tst.l base=absolute disp +0x0 => abs 0x300002c4
+  0xffe5af38 store w4 move.l base=absolute disp +0x0 => abs 0x300002c4 value 0x1
+  0xffe5af3e store w4 move.l base=a7 disp +0x0 => sp -0x1c value ret(0xffe478c8)
+  0xffe5af40 store w4 move.l base=a7 disp +0x0 => sp -0x20 value [sp+4]
+  0xffe5af42 store w4 pea.l base=a7 disp -0x4 => sp -0x24 value 0xffe5b278
+  0xffe5af48 store w4 clr.l base=a7 disp +0x0 => sp -0x28 value 0x0
+  0xffe5af4a store w4 pea.l base=a7 disp -0x4 => sp -0x2c value 0x83
+  0xffe5af4e store w4 pea.l base=a7 disp -0x4 => sp -0x30 value 0xffe5b25c
+  0xffe5af54 store w4 pea.l base=a7 disp -0x4 => sp -0x34 value 0x1
+  0xffe5af62 store w4 clr.l base=absolute disp +0x0 => abs 0x300002c4 value 0x0
+  0xffe5af6c load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe5af70 load w4 movem.l base=a6 disp -0x14 => sp -0x18
+  0xffe5af70 load w4 movem.l base=a6 disp -0x10 => sp -0x14
+  0xffe5af70 load w4 movem.l base=a6 disp -0xc => sp -0x10
+  0xffe5af76 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (2)
+  0xffe5af1e jsr (unknown callee) [0xffe478c8]
+      args: stack arg0=?, stack arg1=sp-8, stack arg2=0x64, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe5af58 jsr (unknown callee) [0xffe55c04]
+      args: stack arg0=0x1, stack arg1=0xffe5b25c, stack arg2=0x83, stack arg3=0x0, stack arg4=0xffe5b278, stack arg5=[sp+4]
+
+blocks (56)
+  B0 0xffe5aeac-0xffe5aeac preds: entry
+      normal -> B1
+  B1 0xffe5aeb0-0xffe5aeb0 preds: B0
+      normal -> B2
+  B2 0xffe5aeb4-0xffe5aeb4 preds: B1
+      normal -> B3
+  B3 0xffe5aeb8-0xffe5aeb8 preds: B2
+      normal -> B4
+  B4 0xffe5aebc-0xffe5aebc preds: B3
+      normal -> B5
+  B5 0xffe5aec2-0xffe5aec2 preds: B4
+      taken when [sp+4] > [0x300002c8] (unsigned, 32-bit) -> 0xffe5aee6
+      falls through when [sp+4] <= [0x300002c8] (unsigned, 32-bit) -> B6
+  B6 0xffe5aec4-0xffe5aec4 preds: B5
+      normal -> B7
+  B7 0xffe5aeca-0xffe5aeca preds: B6
+      normal -> B8
+  B8 0xffe5aece-0xffe5aece preds: B7
+      normal -> B9
+  B9 0xffe5aed0-0xffe5aed0 preds: B8
+      normal -> B10
+  B10 0xffe5aed6-0xffe5aed6 preds: B9
+      taken when [[0x300002b0]+40]+1 <= [0x300002b8] (unsigned, 32-bit) -> 0xffe5af14
+      falls through when [[0x300002b0]+40]+1 > [0x300002b8] (unsigned, 32-bit) -> B11
+  B11 0xffe5aed8-0xffe5aed8 preds: B10
+      normal -> B12
+  B12 0xffe5aedc-0xffe5aedc preds: B11
+      normal -> B13
+  B13 0xffe5aede-0xffe5aede preds: B12
+      normal -> B14
+  B14 0xffe5aee4-0xffe5aee4 preds: B13
+      jump -> 0xffe5af14
+  B15 0xffe5aee6-0xffe5aee6 preds: B5
+      normal -> B16
+  B16 0xffe5aeec-0xffe5aeec preds: B15
+      taken when [sp+4] > [0x300002b4] (unsigned, 32-bit) -> 0xffe5af10
+      falls through when [sp+4] <= [0x300002b4] (unsigned, 32-bit) -> B17
+  B17 0xffe5aeee-0xffe5aeee preds: B16
+      normal -> B18
+  B18 0xffe5aef4-0xffe5aef4 preds: B17
+      normal -> B19
+  B19 0xffe5aef8-0xffe5aef8 preds: B18
+      normal -> B20
+  B20 0xffe5aefa-0xffe5aefa preds: B19
+      normal -> B21
+  B21 0xffe5af00-0xffe5af00 preds: B20
+      taken when [[0x300002ac]+40]+1 <= [0x300002bc] (unsigned, 32-bit) -> 0xffe5af14
+      falls through when [[0x300002ac]+40]+1 > [0x300002bc] (unsigned, 32-bit) -> B22
+  B22 0xffe5af02-0xffe5af02 preds: B21
+      normal -> B23
+  B23 0xffe5af06-0xffe5af06 preds: B22
+      normal -> B24
+  B24 0xffe5af08-0xffe5af08 preds: B23
+      normal -> B25
+  B25 0xffe5af0e-0xffe5af0e preds: B24
+      jump -> 0xffe5af14
+  B26 0xffe5af10-0xffe5af10 preds: B16
+      normal -> B27
+  B27 0xffe5af12-0xffe5af12 preds: B26
+      jump -> 0xffe5af70
+  B28 0xffe5af14-0xffe5af14 preds: B10, B21, B14, B25
+      normal -> B29
+  B29 0xffe5af18-0xffe5af18 preds: B28
+      normal -> B30
+  B30 0xffe5af1c-0xffe5af1c preds: B29
+      normal -> B31
+  B31 0xffe5af1e-0xffe5af1e preds: B30
+      call -> 0xffe478c8
+  B32 0xffe5af24-0xffe5af24 preds: B31
+      normal -> B33
+  B33 0xffe5af28-0xffe5af28 preds: B32
+      normal -> B34
+  B34 0xffe5af2a-0xffe5af2a preds: B33
+      normal -> B35
+  B35 0xffe5af2c-0xffe5af2c preds: B34
+      taken when ret(0xffe478c8) == 0x0 -> 0xffe5af6c
+      falls through when ret(0xffe478c8) != 0x0 -> B36
+  B36 0xffe5af2e-0xffe5af2e preds: B35
+      normal -> B37
+  B37 0xffe5af34-0xffe5af34 preds: B36
+      taken when [0x300002c4] != 0x0 -> 0xffe5af68
+      falls through when [0x300002c4] == 0x0 -> B38
+  B38 0xffe5af36-0xffe5af36 preds: B37
+      normal -> B39
+  B39 0xffe5af38-0xffe5af38 preds: B38
+      normal -> B40
+  B40 0xffe5af3e-0xffe5af3e preds: B39
+      normal -> B41
+  B41 0xffe5af40-0xffe5af40 preds: B40
+      normal -> B42
+  B42 0xffe5af42-0xffe5af42 preds: B41
+      normal -> B43
+  B43 0xffe5af48-0xffe5af48 preds: B42
+      normal -> B44
+  B44 0xffe5af4a-0xffe5af4a preds: B43
+      normal -> B45
+  B45 0xffe5af4e-0xffe5af4e preds: B44
+      normal -> B46
+  B46 0xffe5af54-0xffe5af54 preds: B45
+      normal -> B47
+  B47 0xffe5af58-0xffe5af58 preds: B46
+      call -> 0xffe55c04
+  B48 0xffe5af5e-0xffe5af5e preds: B47
+      normal -> B49
+  B49 0xffe5af62-0xffe5af62 preds: B48
+      normal -> B50
+  B50 0xffe5af68-0xffe5af68 preds: B37, B49
+      normal -> B51
+  B51 0xffe5af6a-0xffe5af6a preds: B50
+      jump -> 0xffe5af70
+  B52 0xffe5af6c-0xffe5af6c preds: B35
+      normal -> B53
+  B53 0xffe5af70-0xffe5af70 preds: B27, B52, B51
+      normal -> B54
+  B54 0xffe5af76-0xffe5af76 preds: B53
+      normal -> B55
+  B55 0xffe5af78-0xffe5af78 preds: B54
+      return
+
+returns (1)
+  0xffe5af78: d0 = ?; reached from B54
+
+constants
+  0xffe5af10 d0 = 0x0
+  0xffe5af36 d0 = 0x1
+  0xffe5af68 d0 = 0x0
+immediates
+  0xfff8 at 0xffe5aeac
+  0x1 at 0xffe5aece
+  0x1 at 0xffe5aedc
+  0x1 at 0xffe5aef8
+  0x1 at 0xffe5af06
+  0x0 at 0xffe5af10
+  0x1 at 0xffe5af36
+  0x0 at 0xffe5af68
+instructions
+  0xffe5aeac 4e56fff8 link.w a6, #$fff8
+  0xffe5aeb0 4feffff4 lea.l -$c(a7), a7
+  0xffe5aeb4 48d720c0 movem.l d6-d7/a5, (a7)
+  0xffe5aeb8 2e2e0008 move.l $8(a6), d7
+  0xffe5aebc beb9300002c8 cmp.l $300002c8.l, d7
+  0xffe5aec2 6222 bhi.b $ffe5aee6
+  0xffe5aec4 2a79300002b0 movea.l $300002b0.l, a5
+  0xffe5aeca 202d0028 move.l $28(a5), d0
+  0xffe5aece 5280 addq.l #$1, d0
+  0xffe5aed0 b0b9300002b8 cmp.l $300002b8.l, d0
+  0xffe5aed6 633c bls.b $ffe5af14
+  0xffe5aed8 202d0028 move.l $28(a5), d0
+  0xffe5aedc 5280 addq.l #$1, d0
+  0xffe5aede 23c0300002b8 move.l d0, $300002b8.l
+  0xffe5aee4 602e bra.b $ffe5af14
+  0xffe5aee6 beb9300002b4 cmp.l $300002b4.l, d7
+  0xffe5aeec 6222 bhi.b $ffe5af10
+  0xffe5aeee 2a79300002ac movea.l $300002ac.l, a5
+  0xffe5aef4 202d0028 move.l $28(a5), d0
+  0xffe5aef8 5280 addq.l #$1, d0
+  0xffe5aefa b0b9300002bc cmp.l $300002bc.l, d0
+  0xffe5af00 6312 bls.b $ffe5af14
+  0xffe5af02 202d0028 move.l $28(a5), d0
+  0xffe5af06 5280 addq.l #$1, d0
+  0xffe5af08 23c0300002bc move.l d0, $300002bc.l
+  0xffe5af0e 6004 bra.b $ffe5af14
+  0xffe5af10 7000 moveq #$0, d0
+  0xffe5af12 605c bra.b $ffe5af70
+  0xffe5af14 48780064 pea.l $64.w
+  0xffe5af18 486efffc pea.l -$4(a6)
+  0xffe5af1c 2f0d move.l a5, -(a7)
+  0xffe5af1e 4eb9ffe478c8 jsr $ffe478c8.l
+  0xffe5af24 4fef000c lea.l $c(a7), a7
+  0xffe5af28 2c00 move.l d0, d6
+  0xffe5af2a 4a86 tst.l d6
+  0xffe5af2c 673e beq.b $ffe5af6c
+  0xffe5af2e 4ab9300002c4 tst.l $300002c4.l
+  0xffe5af34 6632 bne.b $ffe5af68
+  0xffe5af36 7001 moveq #$1, d0
+  0xffe5af38 23c0300002c4 move.l d0, $300002c4.l
+  0xffe5af3e 2f06 move.l d6, -(a7)
+  0xffe5af40 2f07 move.l d7, -(a7)
+  0xffe5af42 4879ffe5b278 pea.l $ffe5b278.l
+  0xffe5af48 42a7 clr.l -(a7)
+  0xffe5af4a 48780083 pea.l $83.w
+  0xffe5af4e 4879ffe5b25c pea.l $ffe5b25c.l
+  0xffe5af54 48780001 pea.l $1.w
+  0xffe5af58 4eb9ffe55c04 jsr $ffe55c04.l
+  0xffe5af5e 4fef001c lea.l $1c(a7), a7
+  0xffe5af62 42b9300002c4 clr.l $300002c4.l
+  0xffe5af68 7000 moveq #$0, d0
+  0xffe5af6a 6004 bra.b $ffe5af70
+  0xffe5af6c 202efffc move.l -$4(a6), d0
+  0xffe5af70 4cee20c0ffec movem.l -$14(a6), d6-d7/a5
+  0xffe5af76 4e5e unlk a6
+  0xffe5af78 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe6993c-0xffe69a98  size 0x15c (348 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (56)
+  0xffe6993c store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe69944 store w4 movem.l base=a7 disp +0x0 => sp -0x30 value d2
+  0xffe69944 store w4 movem.l base=a7 disp +0x4 => sp -0x2c value d3
+  0xffe69944 store w4 movem.l base=a7 disp +0x8 => sp -0x28 value d4
+  0xffe69944 store w4 movem.l base=a7 disp +0xc => sp -0x24 value d5
+  0xffe69944 store w4 movem.l base=a7 disp +0x10 => sp -0x20 value d6
+  0xffe69944 store w4 movem.l base=a7 disp +0x14 => sp -0x1c value d7
+  0xffe69944 store w4 movem.l base=a7 disp +0x18 => sp -0x18 value a3
+  0xffe69944 store w4 movem.l base=a7 disp +0x1c => sp -0x14 value a4
+  0xffe69944 store w4 movem.l base=a7 disp +0x20 => sp -0x10 value a5
+  0xffe69948 load w4 movea.l base=a6 disp +0x10 => sp +0xc
+  0xffe6994e load w4 tst.l base=absolute disp +0x0 => abs 0x30000f70
+  0xffe69956 store w4 clr.l base=a7 disp +0x0 => sp -0x34 value 0x0
+  0xffe6996a store w4 pea.l base=a7 disp -0x4 => sp -0x34 value 0x700
+  0xffe69976 store w4 move.l base=a6 disp -0x4 => sp -0x8 value ret(0xffe4629c)
+  0xffe6997a load w4 move.l base=absolute disp +0x0 => abs 0x30000f78
+  0xffe69980 load w4 add.l base=a6 disp +0x8 => sp +0x4
+  0xffe69980 store w4 add.l base=a6 disp +0x8 => sp +0x4 value ([sp+4] + [0x30000f78])
+  0xffe6998a load w4 cmp.l base=a6 disp +0x8 => sp +0x4
+  0xffe69990 load w4 move.l base=a6 disp +0xc => sp +0x8
+  0xffe69994 load w4 add.l base=a6 disp +0x8 => sp +0x4
+  0xffe699a4 load w4 move.l base=a6 disp +0x8 => sp +0x4
+  0xffe699a4 store w4 move.l base=a5 disp +0x0 => [sp+12] +0x0 value ([sp+4] + [0x30000f78])
+  0xffe699b2 load w4 move.l base=a6 disp +0x8 => sp +0x4
+  0xffe699be load w4 move.l base=a6 disp +0xc => sp +0x8
+  0xffe699ca load w4 movea.l base=absolute disp +0x0 => abs 0x30000f74
+  0xffe699d0 load w4 move.l base=a0 disp +0x0 => [0x30000f74] +0x0
+  0xffe699d2 load w4 cmp.l base=absolute disp +0x0 => abs 0x30000f7c
+  0xffe699e2 load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe699ea store w1 move.b base=a0 disp +0x43 => [0x30000198] +0x43 value 0x55
+  0xffe699ee load w4 movea.l base=absolute disp +0x0 => abs 0x30000198
+  0xffe699f6 store w1 move.b base=a0 disp +0x43 => [0x30000198] +0x43 value 0xaa
+  0xffe69a12 load w4 movea.l base=absolute disp +0x0 => abs 0x30000f6c
+  0xffe69a1a load w4 move.l base=a0 disp +0x0 => ? (unknown effective address)
+  0xffe69a28 store w4 pea.l base=a7 disp -0x4 => sp -0x34 value sp-8
+  0xffe69a2e load w4 add.l base=absolute disp +0x0 => abs 0x30000f6c
+  0xffe69a34 store w4 move.l base=a7 disp +0x0 => sp -0x38 value ?
+  0xffe69a4e store w4 move.l base=a5 disp +0x0 => [sp+12] +0x0 value ?
+  0xffe69a50 load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe69a50 store w4 move.l base=a7 disp +0x0 => sp -0x34 value [sp-8]
+  0xffe69a64 load w4 movea.l base=absolute disp +0x0 => abs 0x30000f74
+  0xffe69a6a load w4 move.l base=a0 disp +0x0 => ? (unknown effective address)
+  0xffe69a72 load w4 movea.l base=absolute disp +0x0 => abs 0x30000f74
+  0xffe69a78 load w4 move.l base=a0 disp +0x0 => ? (unknown effective address)
+  0xffe69a80 load w4 move.l base=a6 disp -0x4 => sp -0x8
+  0xffe69a80 store w4 move.l base=a7 disp +0x0 => sp -0x34 value [sp-8]
+  0xffe69a8e load w4 movem.l base=a6 disp -0x2c => sp -0x30
+  0xffe69a8e load w4 movem.l base=a6 disp -0x28 => sp -0x2c
+  0xffe69a8e load w4 movem.l base=a6 disp -0x24 => sp -0x28
+  0xffe69a8e load w4 movem.l base=a6 disp -0x20 => sp -0x24
+  0xffe69a8e load w4 movem.l base=a6 disp -0x1c => sp -0x20
+  0xffe69a8e load w4 movem.l base=a6 disp -0x18 => sp -0x1c
+  0xffe69a8e load w4 movem.l base=a6 disp -0x14 => sp -0x18
+  0xffe69a8e load w4 movem.l base=a6 disp -0x10 => sp -0x14
+  0xffe69a8e load w4 movem.l base=a6 disp -0xc => sp -0x10
+  0xffe69a94 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (5)
+  0xffe69958 bsr.w (unknown callee) [0xffe698a0]
+      args: stack arg0=0x0, stack arg1=d2, stack arg2=d3, stack arg3=d4, stack arg4=d5, stack arg5=d6
+  0xffe6996e jsr (unknown callee) [0xffe4629c]
+      args: stack arg0=0x700, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe69a36 jsr (unknown callee) [0x30000e44]
+      args: stack arg0=?, stack arg1=sp-8, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe69a54 jsr (unknown callee) [0xffe4629c]
+      args: stack arg0=[sp-8], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe69a84 jsr (unknown callee) [0xffe4629c]
+      args: stack arg0=?, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (103)
+  B0 0xffe6993c-0xffe6993c preds: entry
+      normal -> B1
+  B1 0xffe69940-0xffe69940 preds: B0
+      normal -> B2
+  B2 0xffe69944-0xffe69944 preds: B1
+      normal -> B3
+  B3 0xffe69948-0xffe69948 preds: B2
+      normal -> B4
+  B4 0xffe6994c-0xffe6994c preds: B3
+      normal -> B5
+  B5 0xffe6994e-0xffe6994e preds: B4
+      normal -> B6
+  B6 0xffe69954-0xffe69954 preds: B5
+      taken when [0x30000f70] != 0x0 -> 0xffe6996a
+      falls through when [0x30000f70] == 0x0 -> B7
+  B7 0xffe69956-0xffe69956 preds: B6
+      normal -> B8
+  B8 0xffe69958-0xffe69958 preds: B7
+      call -> 0xffe698a0
+  B9 0xffe6995c-0xffe6995c preds: B8
+      normal -> B10
+  B10 0xffe6995e-0xffe6995e preds: B9
+      normal -> B11
+  B11 0xffe69960-0xffe69960 preds: B10
+      normal -> B12
+  B12 0xffe69962-0xffe69962 preds: B11
+      taken when N == 0 -> 0xffe6996a
+      falls through when not (N == 0) -> B13
+  B13 0xffe69964-0xffe69964 preds: B12
+      normal -> B14
+  B14 0xffe69966-0xffe69966 preds: B13
+      jump -> 0xffe69a8e
+  B15 0xffe6996a-0xffe6996a preds: B6, B12
+      normal -> B16
+  B16 0xffe6996e-0xffe6996e preds: B15
+      call -> 0xffe4629c
+  B17 0xffe69974-0xffe69974 preds: B16
+      normal -> B18
+  B18 0xffe69976-0xffe69976 preds: B17
+      normal -> B19
+  B19 0xffe6997a-0xffe6997a preds: B18
+      normal -> B20
+  B20 0xffe69980-0xffe69980 preds: B19
+      normal -> B21
+  B21 0xffe69984-0xffe69984 preds: B20
+      normal -> B22
+  B22 0xffe6998a-0xffe6998a preds: B21
+      normal -> B23
+  B23 0xffe6998e-0xffe6998e preds: B22
+      taken when 0xffe00000 > ([sp+4] + [0x30000f78]) (unsigned, 32-bit) -> 0xffe699a0
+      falls through when 0xffe00000 <= ([sp+4] + [0x30000f78]) (unsigned, 32-bit) -> B24
+  B24 0xffe69990-0xffe69990 preds: B23
+      normal -> B25
+  B25 0xffe69994-0xffe69994 preds: B24
+      normal -> B26
+  B26 0xffe69998-0xffe69998 preds: B25
+      normal -> B27
+  B27 0xffe6999e-0xffe6999e preds: B26
+      taken when ([sp+8] + ([sp+4] + [0x30000f78])) <= 0xfff00000 (unsigned, 32-bit) -> 0xffe699b2
+      falls through when ([sp+8] + ([sp+4] + [0x30000f78])) > 0xfff00000 (unsigned, 32-bit) -> B28
+  B28 0xffe699a0-0xffe699a0 preds: B23, B27
+      normal -> B29
+  B29 0xffe699a2-0xffe699a2 preds: B28
+      taken when [sp+12] == 0x0 -> 0xffe699a8
+      falls through when [sp+12] != 0x0 -> B30
+  B30 0xffe699a4-0xffe699a4 preds: B29
+      normal -> B31
+  B31 0xffe699a8-0xffe699a8 preds: B29, B30
+      normal -> B32
+  B32 0xffe699ae-0xffe699ae preds: B31
+      jump -> 0xffe69a8e
+  B33 0xffe699b2-0xffe699b2 preds: B27
+      normal -> B34
+  B34 0xffe699b6-0xffe699b6 preds: B33
+      normal -> B35
+  B35 0xffe699bc-0xffe699bc preds: B34
+      normal -> B36
+  B36 0xffe699be-0xffe699be preds: B35
+      normal -> B37
+  B37 0xffe699c2-0xffe699c2 preds: B36
+      normal -> B38
+  B38 0xffe699c6-0xffe699c6 preds: B37
+      normal -> B39
+  B39 0xffe699c8-0xffe699c8 preds: B38
+      normal -> B40
+  B40 0xffe699ca-0xffe699ca preds: B39
+      normal -> B41
+  B41 0xffe699d0-0xffe699d0 preds: B40
+      normal -> B42
+  B42 0xffe699d2-0xffe699d2 preds: B41, B95
+      normal -> B43
+  B43 0xffe699d8-0xffe699d8 preds: B42
+      taken when ge flags condition (operands unknown) -> 0xffe69a80
+      falls through when not (ge flags condition (operands unknown)) -> B44
+  B44 0xffe699dc-0xffe699dc preds: B43
+      normal -> B45
+  B45 0xffe699de-0xffe699de preds: B44
+      taken when C == 1 -> 0xffe69a80
+      falls through when not (C == 1) -> B46
+  B46 0xffe699e2-0xffe699e2 preds: B45
+      normal -> B47
+  B47 0xffe699e8-0xffe699e8 preds: B46
+      normal -> B48
+  B48 0xffe699ea-0xffe699ea preds: B47
+      normal -> B49
+  B49 0xffe699ee-0xffe699ee preds: B48
+      normal -> B50
+  B50 0xffe699f4-0xffe699f4 preds: B49
+      normal -> B51
+  B51 0xffe699f6-0xffe699f6 preds: B50
+      normal -> B52
+  B52 0xffe699fa-0xffe699fa preds: B51
+      normal -> B53
+  B53 0xffe699fc-0xffe699fc preds: B52
+      taken when Z == 0 -> 0xffe69a0a
+      falls through when not (Z == 0) -> B54
+  B54 0xffe699fe-0xffe699fe preds: B53
+      normal -> B55
+  B55 0xffe69a00-0xffe69a00 preds: B54
+      taken when C == 1 -> 0xffe69a64
+      falls through when not (C == 1) -> B56
+  B56 0xffe69a04-0xffe69a04 preds: B55
+      normal -> B57
+  B57 0xffe69a06-0xffe69a06 preds: B56
+      taken when hi flags condition (operands unknown) -> 0xffe69a64
+      falls through when not (hi flags condition (operands unknown)) -> B58
+  B58 0xffe69a0a-0xffe69a0a preds: B53, B57
+      normal -> B59
+  B59 0xffe69a0c-0xffe69a0c preds: B58
+      normal -> B60
+  B60 0xffe69a0e-0xffe69a0e preds: B59, B68
+      normal -> B61
+  B61 0xffe69a10-0xffe69a10 preds: B60
+      taken when C == 0 -> 0xffe69a24
+      falls through when not (C == 0) -> B62
+  B62 0xffe69a12-0xffe69a12 preds: B61
+      normal -> B63
+  B63 0xffe69a18-0xffe69a18 preds: B62
+      normal -> B64
+  B64 0xffe69a1a-0xffe69a1a preds: B63
+      normal -> B65
+  B65 0xffe69a1c-0xffe69a1c preds: B64
+      normal -> B66
+  B66 0xffe69a1e-0xffe69a1e preds: B65
+      taken when Z == 0 -> 0xffe69a24
+      falls through when not (Z == 0) -> B67
+  B67 0xffe69a20-0xffe69a20 preds: B66
+      normal -> B68
+  B68 0xffe69a22-0xffe69a22 preds: B67
+      jump -> 0xffe69a0e
+  B69 0xffe69a24-0xffe69a24 preds: B61, B66
+      normal -> B70
+  B70 0xffe69a26-0xffe69a26 preds: B69
+      taken when C == 0 -> 0xffe69a64
+      falls through when not (C == 0) -> B71
+  B71 0xffe69a28-0xffe69a28 preds: B70
+      normal -> B72
+  B72 0xffe69a2c-0xffe69a2c preds: B71
+      normal -> B73
+  B73 0xffe69a2e-0xffe69a2e preds: B72
+      normal -> B74
+  B74 0xffe69a34-0xffe69a34 preds: B73
+      normal -> B75
+  B75 0xffe69a36-0xffe69a36 preds: B74
+      call -> 0x30000e44
+  B76 0xffe69a3c-0xffe69a3c preds: B75
+      normal -> B77
+  B77 0xffe69a3e-0xffe69a3e preds: B76
+      normal -> B78
+  B78 0xffe69a40-0xffe69a40 preds: B77
+      taken when N == 0 -> 0xffe69a64
+      falls through when not (N == 0) -> B79
+  B79 0xffe69a42-0xffe69a42 preds: B78
+      normal -> B80
+  B80 0xffe69a44-0xffe69a44 preds: B79
+      taken when [sp+12] == 0x0 -> 0xffe69a50
+      falls through when [sp+12] != 0x0 -> B81
+  B81 0xffe69a46-0xffe69a46 preds: B80
+      normal -> B82
+  B82 0xffe69a4c-0xffe69a4c preds: B81
+      normal -> B83
+  B83 0xffe69a4e-0xffe69a4e preds: B82
+      normal -> B84
+  B84 0xffe69a50-0xffe69a50 preds: B80, B83
+      normal -> B85
+  B85 0xffe69a54-0xffe69a54 preds: B84
+      call -> 0xffe4629c
+  B86 0xffe69a5a-0xffe69a5a preds: B85
+      normal -> B87
+  B87 0xffe69a5c-0xffe69a5c preds: B86
+      normal -> B88
+  B88 0xffe69a62-0xffe69a62 preds: B87
+      jump -> 0xffe69a8e
+  B89 0xffe69a64-0xffe69a64 preds: B55, B57, B70, B78
+      normal -> B90
+  B90 0xffe69a6a-0xffe69a6a preds: B89
+      normal -> B91
+  B91 0xffe69a6e-0xffe69a6e preds: B90
+      normal -> B92
+  B92 0xffe69a70-0xffe69a70 preds: B91
+      normal -> B93
+  B93 0xffe69a72-0xffe69a72 preds: B92
+      normal -> B94
+  B94 0xffe69a78-0xffe69a78 preds: B93
+      normal -> B95
+  B95 0xffe69a7c-0xffe69a7c preds: B94
+      jump -> 0xffe699d2
+  B96 0xffe69a80-0xffe69a80 preds: B43, B45
+      normal -> B97
+  B97 0xffe69a84-0xffe69a84 preds: B96
+      call -> 0xffe4629c
+  B98 0xffe69a8a-0xffe69a8a preds: B97
+      normal -> B99
+  B99 0xffe69a8c-0xffe69a8c preds: B98
+      normal -> B100
+  B100 0xffe69a8e-0xffe69a8e preds: B14, B32, B99, B88
+      normal -> B101
+  B101 0xffe69a94-0xffe69a94 preds: B100
+      normal -> B102
+  B102 0xffe69a96-0xffe69a96 preds: B101
+      return
+
+returns (1)
+  0xffe69a96: d0 = ?; reached from B101
+
+constants
+  0xffe6994c d4 = 0x0
+  0xffe69984 d0 = 0xffe00000
+  0xffe699a8 d0 = 0xfffffbb4
+  0xffe699c6 d6 = 0x0
+  0xffe699c8 d3 = 0x0
+  0xffe699e8 d0 = 0x55
+  0xffe699f4 d0 = 0xffffffaa
+  0xffe69a0a d4 = 0x1
+  0xffe69a46 d0 = 0xffe00000
+  0xffe69a5c d0 = 0xfffffbb1
+  0xffe69a8c d0 = 0x0
+immediates
+  0xfff8 at 0xffe6993c
+  0x0 at 0xffe6994c
+  0x4 at 0xffe6995c
+  0x4 at 0xffe69974
+  0xffe00000 at 0xffe69984
+  0xfff00000 at 0xffe69998
+  0xfffffbb4 at 0xffe699a8
+  0xffe00000 at 0xffe699b6
+  0x0 at 0xffe699c6
+  0x0 at 0xffe699c8
+  0x55 at 0xffe699e8
+  0xaa at 0xffe699f4
+  0x1 at 0xffe69a0a
+  0x1 at 0xffe69a1c
+  0x4 at 0xffe69a20
+  0x8 at 0xffe69a3c
+  0xffe00000 at 0xffe69a46
+  0x4 at 0xffe69a5a
+  0xfffffbb1 at 0xffe69a5c
+  0x1 at 0xffe69a6e
+  0x1 at 0xffe69a70
+  0x4 at 0xffe69a8a
+  0x0 at 0xffe69a8c
+instructions
+  0xffe6993c 4e56fff8 link.w a6, #$fff8
+  0xffe69940 4fefffdc lea.l -$24(a7), a7
+  0xffe69944 48d738fc movem.l d2-d7/a3-a5, (a7)
+  0xffe69948 2a6e0010 movea.l $10(a6), a5
+  0xffe6994c 7800 moveq #$0, d4
+  0xffe6994e 4ab930000f70 tst.l $30000f70.l
+  0xffe69954 6614 bne.b $ffe6996a
+  0xffe69956 42a7 clr.l -(a7)
+  0xffe69958 6100ff46 bsr.w $ffe698a0
+  0xffe6995c 588f addq.l #$4, a7
+  0xffe6995e 2640 movea.l d0, a3
+  0xffe69960 4a8b tst.l a3
+  0xffe69962 6a06 bpl.b $ffe6996a
+  0xffe69964 200b move.l a3, d0
+  0xffe69966 60000126 bra.w $ffe69a8e
+  0xffe6996a 48780700 pea.l $700.w
+  0xffe6996e 4eb9ffe4629c jsr $ffe4629c.l
+  0xffe69974 588f addq.l #$4, a7
+  0xffe69976 2d40fffc move.l d0, -$4(a6)
+  0xffe6997a 203930000f78 move.l $30000f78.l, d0
+  0xffe69980 d1ae0008 add.l d0, $8(a6)
+  0xffe69984 203cffe00000 move.l #$ffe00000, d0
+  0xffe6998a b0ae0008 cmp.l $8(a6), d0
+  0xffe6998e 6210 bhi.b $ffe699a0
+  0xffe69990 202e000c move.l $c(a6), d0
+  0xffe69994 d0ae0008 add.l $8(a6), d0
+  0xffe69998 b0bcfff00000 cmp.l #$fff00000, d0
+  0xffe6999e 6312 bls.b $ffe699b2
+  0xffe699a0 4a8d tst.l a5
+  0xffe699a2 6704 beq.b $ffe699a8
+  0xffe699a4 2aae0008 move.l $8(a6), (a5)
+  0xffe699a8 203cfffffbb4 move.l #$fffffbb4, d0
+  0xffe699ae 600000de bra.w $ffe69a8e
+  0xffe699b2 2e2e0008 move.l $8(a6), d7
+  0xffe699b6 9ebcffe00000 sub.l #$ffe00000, d7
+  0xffe699bc 2047 movea.l d7, a0
+  0xffe699be 202e000c move.l $c(a6), d0
+  0xffe699c2 49f008ff lea.l -$1(a0, d0.l), a4
+  0xffe699c6 7c00 moveq #$0, d6
+  0xffe699c8 7600 moveq #$0, d3
+  0xffe699ca 207930000f74 movea.l $30000f74.l, a0
+  0xffe699d0 2410 move.l (a0), d2
+  0xffe699d2 bcb930000f7c cmp.l $30000f7c.l, d6
+  0xffe699d8 6c0000a6 bge.w $ffe69a80
+  0xffe699dc b9c3 cmpa.l d3, a4
+  0xffe699de 650000a0 bcs.w $ffe69a80
+  0xffe699e2 207930000198 movea.l $30000198.l, a0
+  0xffe699e8 7055 moveq #$55, d0
+  0xffe699ea 11400043 move.b d0, $43(a0)
+  0xffe699ee 207930000198 movea.l $30000198.l, a0
+  0xffe699f4 70aa moveq #$aa, d0
+  0xffe699f6 11400043 move.b d0, $43(a0)
+  0xffe699fa 4a84 tst.l d4
+  0xffe699fc 660c bne.b $ffe69a0a
+  0xffe699fe be83 cmp.l d3, d7
+  0xffe69a00 65000062 bcs.w $ffe69a64
+  0xffe69a04 be82 cmp.l d2, d7
+  0xffe69a06 6200005c bhi.w $ffe69a64
+  0xffe69a0a 7801 moveq #$1, d4
+  0xffe69a0c 2a03 move.l d3, d5
+  0xffe69a0e ba82 cmp.l d2, d5
+  0xffe69a10 6412 bcc.b $ffe69a24
+  0xffe69a12 207930000f6c movea.l $30000f6c.l, a0
+  0xffe69a18 d1c5 adda.l d5, a0
+  0xffe69a1a 2010 move.l (a0), d0
+  0xffe69a1c 5280 addq.l #$1, d0
+  0xffe69a1e 6604 bne.b $ffe69a24
+  0xffe69a20 5885 addq.l #$4, d5
+  0xffe69a22 60ea bra.b $ffe69a0e
+  0xffe69a24 ba82 cmp.l d2, d5
+  0xffe69a26 643c bcc.b $ffe69a64
+  0xffe69a28 486efffc pea.l -$4(a6)
+  0xffe69a2c 2003 move.l d3, d0
+  0xffe69a2e d0b930000f6c add.l $30000f6c.l, d0
+  0xffe69a34 2f00 move.l d0, -(a7)
+  0xffe69a36 4eb930000e44 jsr $30000e44.l
+  0xffe69a3c 508f addq.l #$8, a7
+  0xffe69a3e 4a80 tst.l d0
+  0xffe69a40 6a22 bpl.b $ffe69a64
+  0xffe69a42 4a8d tst.l a5
+  0xffe69a44 670a beq.b $ffe69a50
+  0xffe69a46 203cffe00000 move.l #$ffe00000, d0
+  0xffe69a4c d083 add.l d3, d0
+  0xffe69a4e 2a80 move.l d0, (a5)
+  0xffe69a50 2f2efffc move.l -$4(a6), -(a7)
+  0xffe69a54 4eb9ffe4629c jsr $ffe4629c.l
+  0xffe69a5a 588f addq.l #$4, a7
+  0xffe69a5c 203cfffffbb1 move.l #$fffffbb1, d0
+  0xffe69a62 602a bra.b $ffe69a8e
+  0xffe69a64 207930000f74 movea.l $30000f74.l, a0
+  0xffe69a6a 26306c00 move.l (a0, d6.l * 4), d3
+  0xffe69a6e 5283 addq.l #$1, d3
+  0xffe69a70 5286 addq.l #$1, d6
+  0xffe69a72 207930000f74 movea.l $30000f74.l, a0
+  0xffe69a78 24306c00 move.l (a0, d6.l * 4), d2
+  0xffe69a7c 6000ff54 bra.w $ffe699d2
+  0xffe69a80 2f2efffc move.l -$4(a6), -(a7)
+  0xffe69a84 4eb9ffe4629c jsr $ffe4629c.l
+  0xffe69a8a 588f addq.l #$4, a7
+  0xffe69a8c 7000 moveq #$0, d0
+  0xffe69a8e 4cee38fcffd4 movem.l -$2c(a6), d2-d7/a3-a5
+  0xffe69a94 4e5e unlk a6
+  0xffe69a96 4e75 rts
+
+Package 6.5.12:l1#0; payload offset 0x28
+routine (unnamed)  0xffe70110-0xffe7029a  size 0x18a (394 bytes)
+  file 6.5.12/usr/cpu/firmware/sysco/l1.bin [6.5.12:l1#0; version 1.4.1; payload at carrier offset 0x28]  flat  ISA coldfire  ABI m68k-sysv  load 0xffe00000; size from given
+  calling convention: assumed m68k-sysv; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  warning: ColdFire uses the 68040 decoder for the common ISA subset; unsupported opcodes are unknown
+
+accesses (61)
+  0xffe70110 store w4 link.w base=a7 disp -0x4 => sp -0x4 value a6
+  0xffe70118 store w4 movem.l base=a7 disp +0x0 => sp -0x38 value d7
+  0xffe70118 store w4 movem.l base=a7 disp +0x4 => sp -0x34 value a4
+  0xffe70118 store w4 movem.l base=a7 disp +0x8 => sp -0x30 value a5
+  0xffe7011c load w4 movea.l base=a6 disp +0x8 => sp +0x4
+  0xffe70120 load w4 movea.l base=absolute disp +0x0 => abs 0x30000058
+  0xffe7012c load w4 move.l base=a4 disp +0x0 => ? (unknown effective address)
+  0xffe7012e load w4 cmp.l base=a5 disp +0x0 => [sp+4] +0x0
+  0xffe70134 load w4 move.l base=a5 disp +0x0 => [sp+4] +0x0
+  0xffe7013c load w4 cmp.l base=a4 disp +0x0 => ? (unknown effective address)
+  0xffe70142 store w4 pea.l base=a7 disp -0x4 => sp -0x3c value 0xffffffff
+  0xffe70146 store w4 pea.l base=a7 disp -0x4 => sp -0x40 value 0x30002634
+  0xffe7015a store w4 move.l base=a7 disp +0x0 => sp -0x3c value ret(0xffe488d4)
+  0xffe7015c store w4 pea.l base=a7 disp -0x4 => sp -0x40 value 0x1
+  0xffe70160 store w4 pea.l base=a7 disp -0x4 => sp -0x44 value 0x4ea
+  0xffe70164 store w4 pea.l base=a7 disp -0x4 => sp -0x48 value 0xffe70cc0
+  0xffe70174 load w4 movea.l base=a6 disp +0xc => sp +0x8
+  0xffe70178 load w2 move.w base=a0 disp +0x4 => [sp+8] +0x4
+  0xffe7017e store w2 move.w base=a0 disp +0x4 => [sp+8] +0x4 value ?
+  0xffe70182 store w4 pea.l base=a7 disp -0x4 => sp -0x3c value 0x30002634
+  0xffe70196 store w4 move.l base=a7 disp +0x0 => sp -0x3c value ret(0xffe4892c)
+  0xffe70198 store w4 pea.l base=a7 disp -0x4 => sp -0x40 value 0x1
+  0xffe7019c store w4 pea.l base=a7 disp -0x4 => sp -0x44 value 0x4ec
+  0xffe701a0 store w4 pea.l base=a7 disp -0x4 => sp -0x48 value 0xffe70cc0
+  0xffe701b2 load w2 move.w base=a4 disp +0x8 => ? (unknown effective address)
+  0xffe701be load w2 move.w base=a4 disp +0xa => ? (unknown effective address)
+  0xffe701c8 load w2 move.w base=a4 disp +0x10 => ? (unknown effective address)
+  0xffe701d4 load w2 move.w base=a4 disp +0x10 => ? (unknown effective address)
+  0xffe701da store w2 move.w base=a4 disp +0x10 => ? (unknown effective address) value ?
+  0xffe701de load w4 move.l base=a6 disp +0xc => sp +0x8
+  0xffe701de store w4 move.l base=a7 disp +0x0 => sp -0x3c value [sp+8]
+  0xffe701ec store w4 pea.l base=a7 disp -0x4 => sp -0x3c value 0x1f
+  0xffe701f0 store w4 clr.l base=a7 disp +0x0 => sp -0x40 value 0x0
+  0xffe701f2 store w4 clr.l base=a7 disp +0x0 => sp -0x44 value 0x0
+  0xffe701f4 store w4 clr.l base=a7 disp +0x0 => sp -0x48 value 0x0
+  0xffe701f6 load w4 movea.l base=absolute disp +0x0 => abs 0x30000074
+  0xffe701fc load w4 move.l base=a0 disp +0x0 => [0x30000074] +0x0
+  0xffe701fc store w4 move.l base=a7 disp +0x0 => sp -0x4c value [[0x30000074]]
+  0xffe701fe store w4 pea.l base=a7 disp -0x4 => sp -0x50 value 0x1
+  0xffe70202 store w4 pea.l base=a7 disp -0x4 => sp -0x54 value sp+8
+  0xffe70206 load w4 move.l base=a4 disp +0x4 => ? (unknown effective address)
+  0xffe70206 store w4 move.l base=a7 disp +0x0 => sp -0x58 value ?
+  0xffe7022a store w2 move.w base=a4 disp +0xa => ? (unknown effective address) value 0x1
+  0xffe7022e load w4 movea.l base=a4 disp +0x4 => ? (unknown effective address)
+  0xffe70232 store w4 pea.l base=a7 disp -0x4 => sp -0x3c value ?
+  0xffe70236 store w4 pea.l base=a7 disp -0x4 => sp -0x40 value 0xffe70d8c
+  0xffe7023c store w4 pea.l base=a7 disp -0x4 => sp -0x44 value sp-44
+  0xffe7024a store w4 pea.l base=a7 disp -0x4 => sp -0x3c value sp-44
+  0xffe70258 load w2 move.w base=a4 disp +0x10 => ? (unknown effective address)
+  0xffe70264 load w2 move.w base=a4 disp +0x10 => ? (unknown effective address)
+  0xffe7026a store w2 move.w base=a4 disp +0x10 => ? (unknown effective address) value ?
+  0xffe7026e load w4 move.l base=a6 disp +0xc => sp +0x8
+  0xffe7026e store w4 move.l base=a7 disp +0x0 => sp -0x3c value [sp+8]
+  0xffe7027a load w4 movea.l base=a4 disp +0x4 => ? (unknown effective address)
+  0xffe7027e load w4 move.l base=a6 disp +0xc => sp +0x8
+  0xffe7027e store w4 move.l base=a7 disp +0x0 => sp -0x3c value [sp+8]
+  0xffe70286 load w4 movea.l base=a4 disp +0x18 => ? (unknown effective address)
+  0xffe70290 load w4 movem.l base=a6 disp -0x34 => sp -0x38
+  0xffe70290 load w4 movem.l base=a6 disp -0x30 => sp -0x34
+  0xffe70290 load w4 movem.l base=a6 disp -0x2c => sp -0x30
+  0xffe70296 load w4 unlk base=a6 disp +0x0 => sp -0x4
+
+calls (10)
+  0xffe7014c jsr (unknown callee) [0xffe488d4]
+      args: stack arg0=0x30002634, stack arg1=0xffffffff, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe7016a jsr (unknown callee) [0xffe53984]
+      args: stack arg0=0xffe70cc0, stack arg1=0x4ea, stack arg2=0x1, stack arg3=ret(0xffe488d4), stack arg4=?, stack arg5=?
+  0xffe70188 jsr (unknown callee) [0xffe4892c]
+      args: stack arg0=0x30002634, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe701a6 jsr (unknown callee) [0xffe53984]
+      args: stack arg0=0xffe70cc0, stack arg1=0x4ec, stack arg2=0x1, stack arg3=ret(0xffe4892c), stack arg4=?, stack arg5=?
+  0xffe701e2 bsr.w (unknown callee) [0xffe6fc10]
+      args: stack arg0=[sp+8], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe7020a jsr (unknown callee) [0xffe47e00]
+      args: stack arg0=?, stack arg1=sp+8, stack arg2=0x1, stack arg3=[[0x30000074]], stack arg4=0x0, stack arg5=0x0
+  0xffe70240 jsr (unknown callee) [0xffe716d8]
+      args: stack arg0=sp-44, stack arg1=0xffe70d8c, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe7024e jsr (unknown callee) [0xffe581dc]
+      args: stack arg0=sp-44, stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe70272 bsr.w (unknown callee) [0xffe6fc10]
+      args: stack arg0=[sp+8], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+  0xffe70282 jsr (unknown callee) [unknown target]
+      args: stack arg0=[sp+8], stack arg1=?, stack arg2=?, stack arg3=?, stack arg4=?, stack arg5=?
+
+blocks (114)
+  B0 0xffe70110-0xffe70110 preds: entry
+      normal -> B1
+  B1 0xffe70114-0xffe70114 preds: B0
+      normal -> B2
+  B2 0xffe70118-0xffe70118 preds: B1
+      normal -> B3
+  B3 0xffe7011c-0xffe7011c preds: B2
+      normal -> B4
+  B4 0xffe70120-0xffe70120 preds: B3
+      normal -> B5
+  B5 0xffe70126-0xffe70126 preds: B4, B109
+      normal -> B6
+  B6 0xffe70128-0xffe70128 preds: B5
+      taken when Z == 1 -> 0xffe7028e
+      falls through when not (Z == 1) -> B7
+  B7 0xffe7012c-0xffe7012c preds: B6
+      normal -> B8
+  B8 0xffe7012e-0xffe7012e preds: B7
+      normal -> B9
+  B9 0xffe70130-0xffe70130 preds: B8
+      taken when Z == 1 -> 0xffe70286
+      falls through when not (Z == 1) -> B10
+  B10 0xffe70134-0xffe70134 preds: B9
+      normal -> B11
+  B11 0xffe70136-0xffe70136 preds: B10
+      normal -> B12
+  B12 0xffe7013c-0xffe7013c preds: B11
+      normal -> B13
+  B13 0xffe7013e-0xffe7013e preds: B12
+      taken when Z == 1 -> 0xffe70286
+      falls through when not (Z == 1) -> B14
+  B14 0xffe70142-0xffe70142 preds: B13
+      normal -> B15
+  B15 0xffe70146-0xffe70146 preds: B14
+      normal -> B16
+  B16 0xffe7014c-0xffe7014c preds: B15
+      call -> 0xffe488d4
+  B17 0xffe70152-0xffe70152 preds: B16
+      normal -> B18
+  B18 0xffe70154-0xffe70154 preds: B17
+      normal -> B19
+  B19 0xffe70156-0xffe70156 preds: B18
+      normal -> B20
+  B20 0xffe70158-0xffe70158 preds: B19
+      taken when ret(0xffe488d4) == 0x0 -> 0xffe70174
+      falls through when ret(0xffe488d4) != 0x0 -> B21
+  B21 0xffe7015a-0xffe7015a preds: B20
+      normal -> B22
+  B22 0xffe7015c-0xffe7015c preds: B21
+      normal -> B23
+  B23 0xffe70160-0xffe70160 preds: B22
+      normal -> B24
+  B24 0xffe70164-0xffe70164 preds: B23
+      normal -> B25
+  B25 0xffe7016a-0xffe7016a preds: B24
+      call -> 0xffe53984
+  B26 0xffe70170-0xffe70170 preds: B25
+      normal -> B27
+  B27 0xffe70174-0xffe70174 preds: B20, B26
+      normal -> B28
+  B28 0xffe70178-0xffe70178 preds: B27
+      normal -> B29
+  B29 0xffe7017c-0xffe7017c preds: B28
+      normal -> B30
+  B30 0xffe7017e-0xffe7017e preds: B29
+      normal -> B31
+  B31 0xffe70182-0xffe70182 preds: B30
+      normal -> B32
+  B32 0xffe70188-0xffe70188 preds: B31
+      call -> 0xffe4892c
+  B33 0xffe7018e-0xffe7018e preds: B32
+      normal -> B34
+  B34 0xffe70190-0xffe70190 preds: B33
+      normal -> B35
+  B35 0xffe70192-0xffe70192 preds: B34
+      normal -> B36
+  B36 0xffe70194-0xffe70194 preds: B35
+      taken when ret(0xffe4892c) == 0x0 -> 0xffe701b0
+      falls through when ret(0xffe4892c) != 0x0 -> B37
+  B37 0xffe70196-0xffe70196 preds: B36
+      normal -> B38
+  B38 0xffe70198-0xffe70198 preds: B37
+      normal -> B39
+  B39 0xffe7019c-0xffe7019c preds: B38
+      normal -> B40
+  B40 0xffe701a0-0xffe701a0 preds: B39
+      normal -> B41
+  B41 0xffe701a6-0xffe701a6 preds: B40
+      call -> 0xffe53984
+  B42 0xffe701ac-0xffe701ac preds: B41
+      normal -> B43
+  B43 0xffe701b0-0xffe701b0 preds: B36, B42
+      normal -> B44
+  B44 0xffe701b2-0xffe701b2 preds: B43
+      normal -> B45
+  B45 0xffe701b6-0xffe701b6 preds: B44
+      normal -> B46
+  B46 0xffe701b8-0xffe701b8 preds: B45
+      taken when Z == 0 -> 0xffe7027a
+      falls through when not (Z == 0) -> B47
+  B47 0xffe701bc-0xffe701bc preds: B46
+      normal -> B48
+  B48 0xffe701be-0xffe701be preds: B47
+      normal -> B49
+  B49 0xffe701c2-0xffe701c2 preds: B48
+      normal -> B50
+  B50 0xffe701c4-0xffe701c4 preds: B49
+      taken when ? == 0x0 -> 0xffe701ec
+      falls through when ? != 0x0 -> B51
+  B51 0xffe701c6-0xffe701c6 preds: B50
+      normal -> B52
+  B52 0xffe701c8-0xffe701c8 preds: B51
+      normal -> B53
+  B53 0xffe701cc-0xffe701cc preds: B52
+      normal -> B54
+  B54 0xffe701d2-0xffe701d2 preds: B53
+      taken when ? >= 0xffff (signed, 32-bit) -> 0xffe701de
+      falls through when ? < 0xffff (signed, 32-bit) -> B55
+  B55 0xffe701d4-0xffe701d4 preds: B54
+      normal -> B56
+  B56 0xffe701d8-0xffe701d8 preds: B55
+      normal -> B57
+  B57 0xffe701da-0xffe701da preds: B56
+      normal -> B58
+  B58 0xffe701de-0xffe701de preds: B54, B57
+      normal -> B59
+  B59 0xffe701e2-0xffe701e2 preds: B58
+      call -> 0xffe6fc10
+  B60 0xffe701e6-0xffe701e6 preds: B59
+      normal -> B61
+  B61 0xffe701e8-0xffe701e8 preds: B60
+      jump -> 0xffe70286
+  B62 0xffe701ec-0xffe701ec preds: B50
+      normal -> B63
+  B63 0xffe701f0-0xffe701f0 preds: B62
+      normal -> B64
+  B64 0xffe701f2-0xffe701f2 preds: B63
+      normal -> B65
+  B65 0xffe701f4-0xffe701f4 preds: B64
+      normal -> B66
+  B66 0xffe701f6-0xffe701f6 preds: B65
+      normal -> B67
+  B67 0xffe701fc-0xffe701fc preds: B66
+      normal -> B68
+  B68 0xffe701fe-0xffe701fe preds: B67
+      normal -> B69
+  B69 0xffe70202-0xffe70202 preds: B68
+      normal -> B70
+  B70 0xffe70206-0xffe70206 preds: B69
+      normal -> B71
+  B71 0xffe7020a-0xffe7020a preds: B70
+      call -> 0xffe47e00
+  B72 0xffe70210-0xffe70210 preds: B71
+      normal -> B73
+  B73 0xffe70214-0xffe70214 preds: B72
+      normal -> B74
+  B74 0xffe70216-0xffe70216 preds: B73
+      normal -> B75
+  B75 0xffe70218-0xffe70218 preds: B74
+      taken when ret(0xffe47e00) == 0x0 -> 0xffe70286
+      falls through when ret(0xffe47e00) != 0x0 -> B76
+  B76 0xffe7021c-0xffe7021c preds: B75
+      normal -> B77
+  B77 0xffe7021e-0xffe7021e preds: B76
+      normal -> B78
+  B78 0xffe70220-0xffe70220 preds: B77
+      taken when 0xffffffce == ret(0xffe47e00) -> 0xffe70228
+      falls through when 0xffffffce != ret(0xffe47e00) -> B79
+  B79 0xffe70222-0xffe70222 preds: B78
+      normal -> B80
+  B80 0xffe70224-0xffe70224 preds: B79
+      normal -> B81
+  B81 0xffe70226-0xffe70226 preds: B80
+      taken when 0xffffffd2 != ret(0xffe47e00) -> 0xffe7026e
+      falls through when 0xffffffd2 == ret(0xffe47e00) -> B82
+  B82 0xffe70228-0xffe70228 preds: B78, B81
+      normal -> B83
+  B83 0xffe7022a-0xffe7022a preds: B82
+      normal -> B84
+  B84 0xffe7022e-0xffe7022e preds: B83
+      normal -> B85
+  B85 0xffe70232-0xffe70232 preds: B84
+      normal -> B86
+  B86 0xffe70236-0xffe70236 preds: B85
+      normal -> B87
+  B87 0xffe7023c-0xffe7023c preds: B86
+      normal -> B88
+  B88 0xffe70240-0xffe70240 preds: B87
+      call -> 0xffe716d8
+  B89 0xffe70246-0xffe70246 preds: B88
+      normal -> B90
+  B90 0xffe7024a-0xffe7024a preds: B89
+      normal -> B91
+  B91 0xffe7024e-0xffe7024e preds: B90
+      call -> 0xffe581dc
+  B92 0xffe70254-0xffe70254 preds: B91
+      normal -> B93
+  B93 0xffe70256-0xffe70256 preds: B92
+      normal -> B94
+  B94 0xffe70258-0xffe70258 preds: B93
+      normal -> B95
+  B95 0xffe7025c-0xffe7025c preds: B94
+      normal -> B96
+  B96 0xffe70262-0xffe70262 preds: B95
+      taken when ? >= 0xffff (signed, 32-bit) -> 0xffe7026e
+      falls through when ? < 0xffff (signed, 32-bit) -> B97
+  B97 0xffe70264-0xffe70264 preds: B96
+      normal -> B98
+  B98 0xffe70268-0xffe70268 preds: B97
+      normal -> B99
+  B99 0xffe7026a-0xffe7026a preds: B98
+      normal -> B100
+  B100 0xffe7026e-0xffe7026e preds: B81, B96, B99
+      normal -> B101
+  B101 0xffe70272-0xffe70272 preds: B100
+      call -> 0xffe6fc10
+  B102 0xffe70276-0xffe70276 preds: B101
+      normal -> B103
+  B103 0xffe70278-0xffe70278 preds: B102
+      jump -> 0xffe70286
+  B104 0xffe7027a-0xffe7027a preds: B46
+      normal -> B105
+  B105 0xffe7027e-0xffe7027e preds: B104
+      normal -> B106
+  B106 0xffe70282-0xffe70282 preds: B105
+      call -> B107
+  B107 0xffe70284-0xffe70284 preds: B106
+      normal -> B108
+  B108 0xffe70286-0xffe70286 preds: B9, B13, B107, B61, B75, B103
+      normal -> B109
+  B109 0xffe7028a-0xffe7028a preds: B108
+      jump -> 0xffe70126
+  B110 0xffe7028e-0xffe7028e preds: B6
+      normal -> B111
+  B111 0xffe70290-0xffe70290 preds: B110
+      normal -> B112
+  B112 0xffe70296-0xffe70296 preds: B111
+      normal -> B113
+  B113 0xffe70298-0xffe70298 preds: B112
+      return
+
+returns (1)
+  0xffe70298: d0 = 0x0; reached from B112
+
+constants
+  0xffe701b0 d0 = 0x0
+  0xffe701bc d0 = 0x0
+  0xffe701c6 d0 = 0x0
+  0xffe7021c d0 = 0xffffffce
+  0xffe70222 d0 = 0xffffffd2
+  0xffe70228 d0 = 0x1
+  0xffe70256 d0 = 0x0
+  0xffe7028e d0 = 0x0
+immediates
+  0xffd8 at 0xffe70110
+  0xfffff01f at 0xffe70136
+  0x8 at 0xffe70152
+  0x1 at 0xffe7017c
+  0x4 at 0xffe7018e
+  0x0 at 0xffe701b0
+  0x1 at 0xffe701b6
+  0x0 at 0xffe701bc
+  0x0 at 0xffe701c6
+  0xffff at 0xffe701cc
+  0x1 at 0xffe701d8
+  0x4 at 0xffe701e6
+  0xce at 0xffe7021c
+  0xd2 at 0xffe70222
+  0x1 at 0xffe70228
+  0x4 at 0xffe70254
+  0x0 at 0xffe70256
+  0xffff at 0xffe7025c
+  0x1 at 0xffe70268
+  0x4 at 0xffe70276
+  0x4 at 0xffe70284
+  0x0 at 0xffe7028e
+instructions
+  0xffe70110 4e56ffd8 link.w a6, #$ffd8
+  0xffe70114 4feffff4 lea.l -$c(a7), a7
+  0xffe70118 48d73080 movem.l d7/a4-a5, (a7)
+  0xffe7011c 2a6e0008 movea.l $8(a6), a5
+  0xffe70120 287930000058 movea.l $30000058.l, a4
+  0xffe70126 4a8c tst.l a4
+  0xffe70128 67000164 beq.w $ffe7028e
+  0xffe7012c 2014 move.l (a4), d0
+  0xffe7012e b095 cmp.l (a5), d0
+  0xffe70130 67000154 beq.w $ffe70286
+  0xffe70134 2015 move.l (a5), d0
+  0xffe70136 c0bcfffff01f and.l #$fffff01f, d0
+  0xffe7013c b094 cmp.l (a4), d0
+  0xffe7013e 67000146 beq.w $ffe70286
+  0xffe70142 4878ffff pea.l $ffff.w
+  0xffe70146 487930002634 pea.l $30002634.l
+  0xffe7014c 4eb9ffe488d4 jsr $ffe488d4.l
+  0xffe70152 508f addq.l #$8, a7
+  0xffe70154 2e00 move.l d0, d7
+  0xffe70156 4a87 tst.l d7
+  0xffe70158 671a beq.b $ffe70174
+  0xffe7015a 2f07 move.l d7, -(a7)
+  0xffe7015c 48780001 pea.l $1.w
+  0xffe70160 487804ea pea.l $4ea.w
+  0xffe70164 4879ffe70cc0 pea.l $ffe70cc0.l
+  0xffe7016a 4eb9ffe53984 jsr $ffe53984.l
+  0xffe70170 4fef0010 lea.l $10(a7), a7
+  0xffe70174 206e000c movea.l $c(a6), a0
+  0xffe70178 30280004 move.w $4(a0), d0
+  0xffe7017c 5280 addq.l #$1, d0
+  0xffe7017e 31400004 move.w d0, $4(a0)
+  0xffe70182 487930002634 pea.l $30002634.l
+  0xffe70188 4eb9ffe4892c jsr $ffe4892c.l
+  0xffe7018e 588f addq.l #$4, a7
+  0xffe70190 2e00 move.l d0, d7
+  0xffe70192 4a87 tst.l d7
+  0xffe70194 671a beq.b $ffe701b0
+  0xffe70196 2f07 move.l d7, -(a7)
+  0xffe70198 48780001 pea.l $1.w
+  0xffe7019c 487804ec pea.l $4ec.w
+  0xffe701a0 4879ffe70cc0 pea.l $ffe70cc0.l
+  0xffe701a6 4eb9ffe53984 jsr $ffe53984.l
+  0xffe701ac 4fef0010 lea.l $10(a7), a7
+  0xffe701b0 7000 moveq #$0, d0
+  0xffe701b2 302c0008 move.w $8(a4), d0
+  0xffe701b6 5380 subq.l #$1, d0
+  0xffe701b8 660000c0 bne.w $ffe7027a
+  0xffe701bc 7000 moveq #$0, d0
+  0xffe701be 302c000a move.w $a(a4), d0
+  0xffe701c2 4a80 tst.l d0
+  0xffe701c4 6726 beq.b $ffe701ec
+  0xffe701c6 7000 moveq #$0, d0
+  0xffe701c8 302c0010 move.w $10(a4), d0
+  0xffe701cc b0bc0000ffff cmp.l #$ffff, d0
+  0xffe701d2 6c0a bge.b $ffe701de
+  0xffe701d4 302c0010 move.w $10(a4), d0
+  0xffe701d8 5280 addq.l #$1, d0
+  0xffe701da 39400010 move.w d0, $10(a4)
+  0xffe701de 2f2e000c move.l $c(a6), -(a7)
+  0xffe701e2 6100fa2c bsr.w $ffe6fc10
+  0xffe701e6 588f addq.l #$4, a7
+  0xffe701e8 6000009c bra.w $ffe70286
+  0xffe701ec 4878001f pea.l $1f.w
+  0xffe701f0 42a7 clr.l -(a7)
+  0xffe701f2 42a7 clr.l -(a7)
+  0xffe701f4 42a7 clr.l -(a7)
+  0xffe701f6 207930000074 movea.l $30000074.l, a0
+  0xffe701fc 2f10 move.l (a0), -(a7)
+  0xffe701fe 48780001 pea.l $1.w
+  0xffe70202 486e000c pea.l $c(a6)
+  0xffe70206 2f2c0004 move.l $4(a4), -(a7)
+  0xffe7020a 4eb9ffe47e00 jsr $ffe47e00.l
+  0xffe70210 4fef0020 lea.l $20(a7), a7
+  0xffe70214 2e00 move.l d0, d7
+  0xffe70216 4a87 tst.l d7
+  0xffe70218 6700006c beq.w $ffe70286
+  0xffe7021c 70ce moveq #$ce, d0
+  0xffe7021e b087 cmp.l d7, d0
+  0xffe70220 6706 beq.b $ffe70228
+  0xffe70222 70d2 moveq #$d2, d0
+  0xffe70224 b087 cmp.l d7, d0
+  0xffe70226 6646 bne.b $ffe7026e
+  0xffe70228 7001 moveq #$1, d0
+  0xffe7022a 3940000a move.w d0, $a(a4)
+  0xffe7022e 206c0004 movea.l $4(a4), a0
+  0xffe70232 48680010 pea.l $10(a0)
+  0xffe70236 4879ffe70d8c pea.l $ffe70d8c.l
+  0xffe7023c 486effd8 pea.l -$28(a6)
+  0xffe70240 4eb9ffe716d8 jsr $ffe716d8.l
+  0xffe70246 4fef000c lea.l $c(a7), a7
+  0xffe7024a 486effd8 pea.l -$28(a6)
+  0xffe7024e 4eb9ffe581dc jsr $ffe581dc.l
+  0xffe70254 588f addq.l #$4, a7
+  0xffe70256 7000 moveq #$0, d0
+  0xffe70258 302c0010 move.w $10(a4), d0
+  0xffe7025c b0bc0000ffff cmp.l #$ffff, d0
+  0xffe70262 6c0a bge.b $ffe7026e
+  0xffe70264 302c0010 move.w $10(a4), d0
+  0xffe70268 5280 addq.l #$1, d0
+  0xffe7026a 39400010 move.w d0, $10(a4)
+  0xffe7026e 2f2e000c move.l $c(a6), -(a7)
+  0xffe70272 6100f99c bsr.w $ffe6fc10
+  0xffe70276 588f addq.l #$4, a7
+  0xffe70278 600c bra.b $ffe70286
+  0xffe7027a 206c0004 movea.l $4(a4), a0
+  0xffe7027e 2f2e000c move.l $c(a6), -(a7)
+  0xffe70282 4e90 jsr (a0)
+  0xffe70284 588f addq.l #$4, a7
+  0xffe70286 286c0018 movea.l $18(a4), a4
+  0xffe7028a 6000fe9a bra.w $ffe70126
+  0xffe7028e 7000 moveq #$0, d0
+  0xffe70290 4cee3080ffcc movem.l -$34(a6), d7/a4-a5
+  0xffe70296 4e5e unlk a6
+  0xffe70298 4e75 rts
