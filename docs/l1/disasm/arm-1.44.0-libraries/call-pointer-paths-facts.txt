@@ -1,0 +1,1742 @@
+routine IRouterSetAuthority  0x2b78-0x2bac  size 0x34 (52 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libIRouter.armlinux.so; inner SHA256 57c3edeb6354e82cdac736f9c6dab2cd191207dff107b4313dca1e8cfd2ad8c6]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (12)
+  0x2b7c store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x2b7c store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x2b7c store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x2b7c store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x2b88 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x2b8c store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x2b90 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x2b94 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x2b98 store w1 strb base=r2 disp +0x4 => r0 +0x4 value (r1 & 0xff)
+  0x2ba8 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x2ba8 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x2ba8 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (0)
+
+blocks (13)
+  B0 0x2b78-0x2b78 preds: entry
+      normal -> B1
+  B1 0x2b7c-0x2b7c preds: B0
+      normal -> B2
+  B2 0x2b80-0x2b80 preds: B1
+      normal -> B3
+  B3 0x2b84-0x2b84 preds: B2
+      normal -> B4
+  B4 0x2b88-0x2b88 preds: B3
+      normal -> B5
+  B5 0x2b8c-0x2b8c preds: B4
+      normal -> B6
+  B6 0x2b90-0x2b90 preds: B5
+      normal -> B7
+  B7 0x2b94-0x2b94 preds: B6
+      normal -> B8
+  B8 0x2b98-0x2b98 preds: B7
+      normal -> B9
+  B9 0x2b9c-0x2b9c preds: B8
+      normal -> B10
+  B10 0x2ba0-0x2ba0 preds: B9
+      normal -> B11
+  B11 0x2ba4-0x2ba4 preds: B10
+      normal -> B12
+  B12 0x2ba8-0x2ba8 preds: B11
+      return
+
+returns (1)
+  0x2ba8: r0 = 0x0; reached from B11
+
+constants
+  0x2b9c r3 = 0x0
+  0x2ba0 r0 = 0x0
+immediates
+  0x4 at 0x2b80
+  0x8 at 0x2b84
+  0x0 at 0x2b9c
+  0xc at 0x2ba4
+instructions
+  0x2b78 0dc0a0e1 mov ip, sp
+  0x2b7c 00d82de9 push {fp, ip, lr, pc}
+  0x2b80 04b04ce2 sub fp, ip, #4
+  0x2b84 08d04de2 sub sp, sp, #8
+  0x2b88 10000be5 str r0, [fp, #-0x10]
+  0x2b8c 14100be5 str r1, [fp, #-0x14]
+  0x2b90 10201be5 ldr r2, [fp, #-0x10]
+  0x2b94 14301be5 ldr r3, [fp, #-0x14]
+  0x2b98 0430c2e5 strb r3, [r2, #4]
+  0x2b9c 0030a0e3 mov r3, #0
+  0x2ba0 0300a0e1 mov r0, r3
+  0x2ba4 0cd04be2 sub sp, fp, #0xc
+  0x2ba8 00a89de8 ldm sp, {fp, sp, pc}
+
+routine IRouterSetFrameByteOrder  0x3770-0x3a3c  size 0x2cc (716 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libIRouter.armlinux.so; inner SHA256 57c3edeb6354e82cdac736f9c6dab2cd191207dff107b4313dca1e8cfd2ad8c6]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (97)
+  0x3774 store w4 push base=sp disp +0x0 => sp -0x14 value r4
+  0x3774 store w4 push base=sp disp +0x4 => sp -0x10 value r11
+  0x3774 store w4 push base=sp disp +0x8 => sp -0xc value sp
+  0x3774 store w4 push base=sp disp +0xc => sp -0x8 value lr
+  0x3774 store w4 push base=sp disp +0x10 => sp -0x4 value ?
+  0x3780 store w4 str base=r11 disp -0x14 => sp -0x18 value r0
+  0x3784 store w4 str base=r11 disp -0x18 => sp -0x1c value r1
+  0x3788 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x378c load w1 ldrb base=r3 disp +0x6 => r0 +0x6
+  0x379c load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x37ac load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x37b8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37bc load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37c0 load w2 ldrh base=r3 disp +0x10 => r0 +0x10
+  0x37d0 store w2 strh base=r4 disp +0x10 => r0 +0x10 value (ret(linked ELF 0x1da4) & 0xffff)
+  0x37d4 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37d8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37dc load w4 ldr base=r3 disp +0x18 => [sp-24] +0x18
+  0x37e8 store w4 str base=r4 disp +0x18 => [sp-24] +0x18 value ret(linked ELF 0x1c48)
+  0x37ec load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37f0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x37f4 load w4 ldr base=r3 disp +0x1c => [sp-24] +0x1c
+  0x3800 store w4 str base=r4 disp +0x1c => [sp-24] +0x1c value ret(linked ELF 0x1c48)
+  0x3804 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3808 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x380c load w2 ldrh base=r3 disp +0x22 => [sp-24] +0x22
+  0x381c store w2 strh base=r4 disp +0x22 => [sp-24] +0x22 value (ret(linked ELF 0x1da4) & 0xffff)
+  0x3824 store w4 str base=r11 disp -0x1c => sp -0x20 value 0x0
+  0x3828 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x382c load w1 ldrb base=r3 disp +0x20 => [sp-24] +0x20
+  0x3830 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x383c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3840 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x3854 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3858 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x386c load w2 ldrh base=r3 disp +0x2 => ? (unknown effective address)
+  0x387c store w2 strh base=r4 disp +0x2 => ? (unknown effective address) value (ret(linked ELF 0x1da4) & 0xffff)
+  0x3880 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3884 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x3898 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x389c load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x38b0 load w4 ldr base=r3 disp +0x0 => ? (unknown effective address)
+  0x38bc store w4 str base=r4 disp +0x0 => ? (unknown effective address) value ret(linked ELF 0x1c48)
+  0x38c0 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x38c8 store w4 str base=r11 disp -0x1c => sp -0x20 value [sp-32]+1
+  0x38d0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x38d4 load w1 ldrb base=r3 disp +0x6 => [sp-24] +0x6
+  0x38d8 store w1 strb base=r11 disp -0x20 => sp -0x24 value ([[sp-24]+6]:1 & 0xff)
+  0x38dc load w1 ldrb base=r11 disp -0x20 => sp -0x24
+  0x38e8 store w1 strb base=r11 disp -0x20 => sp -0x24 value ?
+  0x38ec load w1 ldrb base=r11 disp -0x20 => sp -0x24
+  0x38f0 store w1 strb base=r3 disp +0x6 => [sp-24] +0x6 value ([sp-36]:1 & 0xff)
+  0x38f8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x38fc load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3900 load w2 ldrh base=r3 disp +0x10 => r0 +0x10
+  0x3910 store w2 strh base=r4 disp +0x10 => r0 +0x10 value (ret(linked ELF 0x1e58) & 0xffff)
+  0x3914 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3918 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x391c load w4 ldr base=r3 disp +0x18 => [sp-24] +0x18
+  0x3928 store w4 str base=r4 disp +0x18 => [sp-24] +0x18 value ret(linked ELF 0x1d20)
+  0x392c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3930 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3934 load w4 ldr base=r3 disp +0x1c => [sp-24] +0x1c
+  0x3940 store w4 str base=r4 disp +0x1c => [sp-24] +0x1c value ret(linked ELF 0x1d20)
+  0x3944 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3948 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x394c load w2 ldrh base=r3 disp +0x22 => [sp-24] +0x22
+  0x395c store w2 strh base=r4 disp +0x22 => [sp-24] +0x22 value (ret(linked ELF 0x1e58) & 0xffff)
+  0x3964 store w4 str base=r11 disp -0x1c => sp -0x20 value 0x0
+  0x3968 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x396c load w1 ldrb base=r3 disp +0x20 => [sp-24] +0x20
+  0x3970 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x397c load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3980 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x3994 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3998 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x39ac load w2 ldrh base=r3 disp +0x2 => ? (unknown effective address)
+  0x39bc store w2 strh base=r4 disp +0x2 => ? (unknown effective address) value (ret(linked ELF 0x1e58) & 0xffff)
+  0x39c0 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x39c4 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x39d8 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x39dc load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x39f0 load w4 ldr base=r3 disp +0x0 => ? (unknown effective address)
+  0x39fc store w4 str base=r4 disp +0x0 => ? (unknown effective address) value ret(linked ELF 0x1d20)
+  0x3a00 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0x3a08 store w4 str base=r11 disp -0x1c => sp -0x20 value [sp-32]+1
+  0x3a10 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x3a14 load w1 ldrb base=r3 disp +0x6 => [sp-24] +0x6
+  0x3a18 store w1 strb base=r11 disp -0x24 => sp -0x28 value ([[sp-24]+6]:1 & 0xff)
+  0x3a1c load w1 ldrb base=r11 disp -0x24 => sp -0x28
+  0x3a28 store w1 strb base=r11 disp -0x24 => sp -0x28 value ?
+  0x3a2c load w1 ldrb base=r11 disp -0x24 => sp -0x28
+  0x3a30 store w1 strb base=r3 disp +0x6 => [sp-24] +0x6 value ([sp-40]:1 & 0xff)
+  0x3a38 load w4 ldm base=sp disp +0x0 => sp -0x14
+  0x3a38 load w4 ldm base=sp disp +0x4 => sp -0x10
+  0x3a38 load w4 ldm base=sp disp +0x8 => sp -0xc
+  0x3a38 load w4 ldm base=sp disp +0xc => sp -0x8
+
+calls (12)
+  0x37c8 bl (unknown callee) [0x1da4]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1da4
+      args: r0=[r0+16]:2, r1=r1, r2=?, r3=[r0+16]:2
+  0x37e0 bl (unknown callee) [0x1c48]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1c48
+      args: r0=[[sp-24]+24], r1=?, r2=?, r3=[sp-24]
+  0x37f8 bl (unknown callee) [0x1c48]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1c48
+      args: r0=[[sp-24]+28], r1=?, r2=?, r3=[sp-24]
+  0x3814 bl (unknown callee) [0x1da4]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1da4
+      args: r0=[[sp-24]+34]:2, r1=?, r2=?, r3=[[sp-24]+34]:2
+  0x3874 bl (unknown callee) [0x1da4]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1da4
+      args: r0=?, r1=0x24, r2=[sp-24], r3=?
+  0x38b4 bl (unknown callee) [0x1c48]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1c48
+      args: r0=?, r1=0x28, r2=[sp-24], r3=?
+  0x3908 bl (unknown callee) [0x1e58]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1e58
+      args: r0=[r0+16]:2, r1=r1, r2=?, r3=[r0+16]:2
+  0x3920 bl (unknown callee) [0x1d20]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1d20
+      args: r0=[[sp-24]+24], r1=?, r2=?, r3=[sp-24]
+  0x3938 bl (unknown callee) [0x1d20]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1d20
+      args: r0=[[sp-24]+28], r1=?, r2=?, r3=[sp-24]
+  0x3954 bl (unknown callee) [0x1e58]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1e58
+      args: r0=[[sp-24]+34]:2, r1=?, r2=?, r3=[[sp-24]+34]:2
+  0x39b4 bl (unknown callee) [0x1e58]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1e58
+      args: r0=?, r1=0x24, r2=[sp-24], r3=?
+  0x39f4 bl (unknown callee) [0x1d20]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1d20
+      args: r0=?, r1=0x28, r2=[sp-24], r3=?
+
+blocks (179)
+  B0 0x3770-0x3770 preds: entry
+      normal -> B1
+  B1 0x3774-0x3774 preds: B0
+      normal -> B2
+  B2 0x3778-0x3778 preds: B1
+      normal -> B3
+  B3 0x377c-0x377c preds: B2
+      normal -> B4
+  B4 0x3780-0x3780 preds: B3
+      normal -> B5
+  B5 0x3784-0x3784 preds: B4
+      normal -> B6
+  B6 0x3788-0x3788 preds: B5
+      normal -> B7
+  B7 0x378c-0x378c preds: B6
+      normal -> B8
+  B8 0x3790-0x3790 preds: B7
+      normal -> B9
+  B9 0x3794-0x3794 preds: B8
+      normal -> B10
+  B10 0x3798-0x3798 preds: B9
+      normal -> B11
+  B11 0x379c-0x379c preds: B10
+      normal -> B12
+  B12 0x37a0-0x37a0 preds: B11
+      normal -> B13
+  B13 0x37a4-0x37a4 preds: B12
+      taken when ? != r1 -> 0x37ac
+      falls through when ? == r1 -> B14
+  B14 0x37a8-0x37a8 preds: B13
+      jump -> 0x3a34
+  B15 0x37ac-0x37ac preds: B13
+      normal -> B16
+  B16 0x37b0-0x37b0 preds: B15
+      normal -> B17
+  B17 0x37b4-0x37b4 preds: B16
+      taken when r1 != 0x2 -> 0x38f8
+      falls through when r1 == 0x2 -> B18
+  B18 0x37b8-0x37b8 preds: B17
+      normal -> B19
+  B19 0x37bc-0x37bc preds: B18
+      normal -> B20
+  B20 0x37c0-0x37c0 preds: B19
+      normal -> B21
+  B21 0x37c4-0x37c4 preds: B20
+      normal -> B22
+  B22 0x37c8-0x37c8 preds: B21
+      call -> 0x1da4
+  B23 0x37cc-0x37cc preds: B22
+      normal -> B24
+  B24 0x37d0-0x37d0 preds: B23
+      normal -> B25
+  B25 0x37d4-0x37d4 preds: B24
+      normal -> B26
+  B26 0x37d8-0x37d8 preds: B25
+      normal -> B27
+  B27 0x37dc-0x37dc preds: B26
+      normal -> B28
+  B28 0x37e0-0x37e0 preds: B27
+      call -> 0x1c48
+  B29 0x37e4-0x37e4 preds: B28
+      normal -> B30
+  B30 0x37e8-0x37e8 preds: B29
+      normal -> B31
+  B31 0x37ec-0x37ec preds: B30
+      normal -> B32
+  B32 0x37f0-0x37f0 preds: B31
+      normal -> B33
+  B33 0x37f4-0x37f4 preds: B32
+      normal -> B34
+  B34 0x37f8-0x37f8 preds: B33
+      call -> 0x1c48
+  B35 0x37fc-0x37fc preds: B34
+      normal -> B36
+  B36 0x3800-0x3800 preds: B35
+      normal -> B37
+  B37 0x3804-0x3804 preds: B36
+      normal -> B38
+  B38 0x3808-0x3808 preds: B37
+      normal -> B39
+  B39 0x380c-0x380c preds: B38
+      normal -> B40
+  B40 0x3810-0x3810 preds: B39
+      normal -> B41
+  B41 0x3814-0x3814 preds: B40
+      call -> 0x1da4
+  B42 0x3818-0x3818 preds: B41
+      normal -> B43
+  B43 0x381c-0x381c preds: B42
+      normal -> B44
+  B44 0x3820-0x3820 preds: B43
+      normal -> B45
+  B45 0x3824-0x3824 preds: B44
+      normal -> B46
+  B46 0x3828-0x3828 preds: B45, B87
+      normal -> B47
+  B47 0x382c-0x382c preds: B46
+      normal -> B48
+  B48 0x3830-0x3830 preds: B47
+      normal -> B49
+  B49 0x3834-0x3834 preds: B48
+      normal -> B50
+  B50 0x3838-0x3838 preds: B49
+      taken when le flags condition (operands unknown) -> 0x38d0
+      falls through when not (le flags condition (operands unknown)) -> B51
+  B51 0x383c-0x383c preds: B50
+      normal -> B52
+  B52 0x3840-0x3840 preds: B51
+      normal -> B53
+  B53 0x3844-0x3844 preds: B52
+      normal -> B54
+  B54 0x3848-0x3848 preds: B53
+      normal -> B55
+  B55 0x384c-0x384c preds: B54
+      normal -> B56
+  B56 0x3850-0x3850 preds: B55
+      normal -> B57
+  B57 0x3854-0x3854 preds: B56
+      normal -> B58
+  B58 0x3858-0x3858 preds: B57
+      normal -> B59
+  B59 0x385c-0x385c preds: B58
+      normal -> B60
+  B60 0x3860-0x3860 preds: B59
+      normal -> B61
+  B61 0x3864-0x3864 preds: B60
+      normal -> B62
+  B62 0x3868-0x3868 preds: B61
+      normal -> B63
+  B63 0x386c-0x386c preds: B62
+      normal -> B64
+  B64 0x3870-0x3870 preds: B63
+      normal -> B65
+  B65 0x3874-0x3874 preds: B64
+      call -> 0x1da4
+  B66 0x3878-0x3878 preds: B65
+      normal -> B67
+  B67 0x387c-0x387c preds: B66
+      normal -> B68
+  B68 0x3880-0x3880 preds: B67
+      normal -> B69
+  B69 0x3884-0x3884 preds: B68
+      normal -> B70
+  B70 0x3888-0x3888 preds: B69
+      normal -> B71
+  B71 0x388c-0x388c preds: B70
+      normal -> B72
+  B72 0x3890-0x3890 preds: B71
+      normal -> B73
+  B73 0x3894-0x3894 preds: B72
+      normal -> B74
+  B74 0x3898-0x3898 preds: B73
+      normal -> B75
+  B75 0x389c-0x389c preds: B74
+      normal -> B76
+  B76 0x38a0-0x38a0 preds: B75
+      normal -> B77
+  B77 0x38a4-0x38a4 preds: B76
+      normal -> B78
+  B78 0x38a8-0x38a8 preds: B77
+      normal -> B79
+  B79 0x38ac-0x38ac preds: B78
+      normal -> B80
+  B80 0x38b0-0x38b0 preds: B79
+      normal -> B81
+  B81 0x38b4-0x38b4 preds: B80
+      call -> 0x1c48
+  B82 0x38b8-0x38b8 preds: B81
+      normal -> B83
+  B83 0x38bc-0x38bc preds: B82
+      normal -> B84
+  B84 0x38c0-0x38c0 preds: B83
+      normal -> B85
+  B85 0x38c4-0x38c4 preds: B84
+      normal -> B86
+  B86 0x38c8-0x38c8 preds: B85
+      normal -> B87
+  B87 0x38cc-0x38cc preds: B86
+      jump -> 0x3828
+  B88 0x38d0-0x38d0 preds: B50
+      normal -> B89
+  B89 0x38d4-0x38d4 preds: B88
+      normal -> B90
+  B90 0x38d8-0x38d8 preds: B89
+      normal -> B91
+  B91 0x38dc-0x38dc preds: B90
+      normal -> B92
+  B92 0x38e0-0x38e0 preds: B91
+      normal -> B93
+  B93 0x38e4-0x38e4 preds: B92
+      normal -> B94
+  B94 0x38e8-0x38e8 preds: B93
+      normal -> B95
+  B95 0x38ec-0x38ec preds: B94
+      normal -> B96
+  B96 0x38f0-0x38f0 preds: B95
+      normal -> B97
+  B97 0x38f4-0x38f4 preds: B96
+      jump -> 0x3a34
+  B98 0x38f8-0x38f8 preds: B17
+      normal -> B99
+  B99 0x38fc-0x38fc preds: B98
+      normal -> B100
+  B100 0x3900-0x3900 preds: B99
+      normal -> B101
+  B101 0x3904-0x3904 preds: B100
+      normal -> B102
+  B102 0x3908-0x3908 preds: B101
+      call -> 0x1e58
+  B103 0x390c-0x390c preds: B102
+      normal -> B104
+  B104 0x3910-0x3910 preds: B103
+      normal -> B105
+  B105 0x3914-0x3914 preds: B104
+      normal -> B106
+  B106 0x3918-0x3918 preds: B105
+      normal -> B107
+  B107 0x391c-0x391c preds: B106
+      normal -> B108
+  B108 0x3920-0x3920 preds: B107
+      call -> 0x1d20
+  B109 0x3924-0x3924 preds: B108
+      normal -> B110
+  B110 0x3928-0x3928 preds: B109
+      normal -> B111
+  B111 0x392c-0x392c preds: B110
+      normal -> B112
+  B112 0x3930-0x3930 preds: B111
+      normal -> B113
+  B113 0x3934-0x3934 preds: B112
+      normal -> B114
+  B114 0x3938-0x3938 preds: B113
+      call -> 0x1d20
+  B115 0x393c-0x393c preds: B114
+      normal -> B116
+  B116 0x3940-0x3940 preds: B115
+      normal -> B117
+  B117 0x3944-0x3944 preds: B116
+      normal -> B118
+  B118 0x3948-0x3948 preds: B117
+      normal -> B119
+  B119 0x394c-0x394c preds: B118
+      normal -> B120
+  B120 0x3950-0x3950 preds: B119
+      normal -> B121
+  B121 0x3954-0x3954 preds: B120
+      call -> 0x1e58
+  B122 0x3958-0x3958 preds: B121
+      normal -> B123
+  B123 0x395c-0x395c preds: B122
+      normal -> B124
+  B124 0x3960-0x3960 preds: B123
+      normal -> B125
+  B125 0x3964-0x3964 preds: B124
+      normal -> B126
+  B126 0x3968-0x3968 preds: B125, B167
+      normal -> B127
+  B127 0x396c-0x396c preds: B126
+      normal -> B128
+  B128 0x3970-0x3970 preds: B127
+      normal -> B129
+  B129 0x3974-0x3974 preds: B128
+      normal -> B130
+  B130 0x3978-0x3978 preds: B129
+      taken when le flags condition (operands unknown) -> 0x3a10
+      falls through when not (le flags condition (operands unknown)) -> B131
+  B131 0x397c-0x397c preds: B130
+      normal -> B132
+  B132 0x3980-0x3980 preds: B131
+      normal -> B133
+  B133 0x3984-0x3984 preds: B132
+      normal -> B134
+  B134 0x3988-0x3988 preds: B133
+      normal -> B135
+  B135 0x398c-0x398c preds: B134
+      normal -> B136
+  B136 0x3990-0x3990 preds: B135
+      normal -> B137
+  B137 0x3994-0x3994 preds: B136
+      normal -> B138
+  B138 0x3998-0x3998 preds: B137
+      normal -> B139
+  B139 0x399c-0x399c preds: B138
+      normal -> B140
+  B140 0x39a0-0x39a0 preds: B139
+      normal -> B141
+  B141 0x39a4-0x39a4 preds: B140
+      normal -> B142
+  B142 0x39a8-0x39a8 preds: B141
+      normal -> B143
+  B143 0x39ac-0x39ac preds: B142
+      normal -> B144
+  B144 0x39b0-0x39b0 preds: B143
+      normal -> B145
+  B145 0x39b4-0x39b4 preds: B144
+      call -> 0x1e58
+  B146 0x39b8-0x39b8 preds: B145
+      normal -> B147
+  B147 0x39bc-0x39bc preds: B146
+      normal -> B148
+  B148 0x39c0-0x39c0 preds: B147
+      normal -> B149
+  B149 0x39c4-0x39c4 preds: B148
+      normal -> B150
+  B150 0x39c8-0x39c8 preds: B149
+      normal -> B151
+  B151 0x39cc-0x39cc preds: B150
+      normal -> B152
+  B152 0x39d0-0x39d0 preds: B151
+      normal -> B153
+  B153 0x39d4-0x39d4 preds: B152
+      normal -> B154
+  B154 0x39d8-0x39d8 preds: B153
+      normal -> B155
+  B155 0x39dc-0x39dc preds: B154
+      normal -> B156
+  B156 0x39e0-0x39e0 preds: B155
+      normal -> B157
+  B157 0x39e4-0x39e4 preds: B156
+      normal -> B158
+  B158 0x39e8-0x39e8 preds: B157
+      normal -> B159
+  B159 0x39ec-0x39ec preds: B158
+      normal -> B160
+  B160 0x39f0-0x39f0 preds: B159
+      normal -> B161
+  B161 0x39f4-0x39f4 preds: B160
+      call -> 0x1d20
+  B162 0x39f8-0x39f8 preds: B161
+      normal -> B163
+  B163 0x39fc-0x39fc preds: B162
+      normal -> B164
+  B164 0x3a00-0x3a00 preds: B163
+      normal -> B165
+  B165 0x3a04-0x3a04 preds: B164
+      normal -> B166
+  B166 0x3a08-0x3a08 preds: B165
+      normal -> B167
+  B167 0x3a0c-0x3a0c preds: B166
+      jump -> 0x3968
+  B168 0x3a10-0x3a10 preds: B130
+      normal -> B169
+  B169 0x3a14-0x3a14 preds: B168
+      normal -> B170
+  B170 0x3a18-0x3a18 preds: B169
+      normal -> B171
+  B171 0x3a1c-0x3a1c preds: B170
+      normal -> B172
+  B172 0x3a20-0x3a20 preds: B171
+      normal -> B173
+  B173 0x3a24-0x3a24 preds: B172
+      normal -> B174
+  B174 0x3a28-0x3a28 preds: B173
+      normal -> B175
+  B175 0x3a2c-0x3a2c preds: B174
+      normal -> B176
+  B176 0x3a30-0x3a30 preds: B175
+      normal -> B177
+  B177 0x3a34-0x3a34 preds: B14, B176, B97
+      normal -> B178
+  B178 0x3a38-0x3a38 preds: B177
+      return
+
+returns (1)
+  0x3a38: r0 = ?; reached from B177
+
+constants
+  0x3820 r3 = 0x0
+  0x3844 r1 = 0x24
+  0x3888 r1 = 0x28
+  0x3960 r3 = 0x0
+  0x3984 r1 = 0x24
+  0x39c8 r1 = 0x28
+immediates
+  0x4 at 0x3778
+  0x14 at 0x377c
+  0x3 at 0x3790
+  0x37ac at 0x37a4
+  0x3a34 at 0x37a8
+  0x2 at 0x37b0
+  0x38f8 at 0x37b4
+  0x1da4 at 0x37c8
+  0x1c48 at 0x37e0
+  0x1c48 at 0x37f8
+  0x1da4 at 0x3814
+  0x0 at 0x3820
+  0x38d0 at 0x3838
+  0x24 at 0x3844
+  0x24 at 0x385c
+  0x1da4 at 0x3874
+  0x28 at 0x3888
+  0x28 at 0x38a0
+  0x1c48 at 0x38b4
+  0x1 at 0x38c4
+  0x3828 at 0x38cc
+  0x1 at 0x38e0
+  0x2 at 0x38e4
+  0x3a34 at 0x38f4
+  0x1e58 at 0x3908
+  0x1d20 at 0x3920
+  0x1d20 at 0x3938
+  0x1e58 at 0x3954
+  0x0 at 0x3960
+  0x3a10 at 0x3978
+  0x24 at 0x3984
+  0x24 at 0x399c
+  0x1e58 at 0x39b4
+  0x28 at 0x39c8
+  0x28 at 0x39e0
+  0x1d20 at 0x39f4
+  0x1 at 0x3a04
+  0x3968 at 0x3a0c
+  0x2 at 0x3a20
+  0x1 at 0x3a24
+  0x10 at 0x3a34
+instructions
+  0x3770 0dc0a0e1 mov ip, sp
+  0x3774 10d82de9 push {r4, fp, ip, lr, pc}
+  0x3778 04b04ce2 sub fp, ip, #4
+  0x377c 14d04de2 sub sp, sp, #0x14
+  0x3780 14000be5 str r0, [fp, #-0x14]
+  0x3784 18100be5 str r1, [fp, #-0x18]
+  0x3788 14301be5 ldr r3, [fp, #-0x14]
+  0x378c 0630d3e5 ldrb r3, [r3, #6]
+  0x3790 033003e2 and r3, r3, #3
+  0x3794 0338a0e1 lsl r3, r3, #0x10
+  0x3798 2328a0e1 lsr r2, r3, #0x10
+  0x379c 18301be5 ldr r3, [fp, #-0x18]
+  0x37a0 030052e1 cmp r2, r3
+  0x37a4 0000001a bne #0x37ac
+  0x37a8 a10000ea b #0x3a34
+  0x37ac 18301be5 ldr r3, [fp, #-0x18]
+  0x37b0 020053e3 cmp r3, #2
+  0x37b4 4f00001a bne #0x38f8
+  0x37b8 14401be5 ldr r4, [fp, #-0x14]
+  0x37bc 14301be5 ldr r3, [fp, #-0x14]
+  0x37c0 b031d3e1 ldrh r3, [r3, #0x10]
+  0x37c4 0300a0e1 mov r0, r3
+  0x37c8 75f9ffeb bl #0x1da4
+  0x37cc 0030a0e1 mov r3, r0
+  0x37d0 b031c4e1 strh r3, [r4, #0x10]
+  0x37d4 14401be5 ldr r4, [fp, #-0x14]
+  0x37d8 14301be5 ldr r3, [fp, #-0x14]
+  0x37dc 180093e5 ldr r0, [r3, #0x18]
+  0x37e0 18f9ffeb bl #0x1c48
+  0x37e4 0030a0e1 mov r3, r0
+  0x37e8 183084e5 str r3, [r4, #0x18]
+  0x37ec 14401be5 ldr r4, [fp, #-0x14]
+  0x37f0 14301be5 ldr r3, [fp, #-0x14]
+  0x37f4 1c0093e5 ldr r0, [r3, #0x1c]
+  0x37f8 12f9ffeb bl #0x1c48
+  0x37fc 0030a0e1 mov r3, r0
+  0x3800 1c3084e5 str r3, [r4, #0x1c]
+  0x3804 14401be5 ldr r4, [fp, #-0x14]
+  0x3808 14301be5 ldr r3, [fp, #-0x14]
+  0x380c b232d3e1 ldrh r3, [r3, #0x22]
+  0x3810 0300a0e1 mov r0, r3
+  0x3814 62f9ffeb bl #0x1da4
+  0x3818 0030a0e1 mov r3, r0
+  0x381c b232c4e1 strh r3, [r4, #0x22]
+  0x3820 0030a0e3 mov r3, #0
+  0x3824 1c300be5 str r3, [fp, #-0x1c]
+  0x3828 14301be5 ldr r3, [fp, #-0x14]
+  0x382c 2020d3e5 ldrb r2, [r3, #0x20]
+  0x3830 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3834 030052e1 cmp r2, r3
+  0x3838 240000da ble #0x38d0
+  0x383c 14201be5 ldr r2, [fp, #-0x14]
+  0x3840 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3844 2410a0e3 mov r1, #0x24
+  0x3848 8331a0e1 lsl r3, r3, #3
+  0x384c 023083e0 add r3, r3, r2
+  0x3850 014083e0 add r4, r3, r1
+  0x3854 14201be5 ldr r2, [fp, #-0x14]
+  0x3858 1c301be5 ldr r3, [fp, #-0x1c]
+  0x385c 2410a0e3 mov r1, #0x24
+  0x3860 8331a0e1 lsl r3, r3, #3
+  0x3864 023083e0 add r3, r3, r2
+  0x3868 013083e0 add r3, r3, r1
+  0x386c b230d3e1 ldrh r3, [r3, #2]
+  0x3870 0300a0e1 mov r0, r3
+  0x3874 4af9ffeb bl #0x1da4
+  0x3878 0030a0e1 mov r3, r0
+  0x387c b230c4e1 strh r3, [r4, #2]
+  0x3880 14201be5 ldr r2, [fp, #-0x14]
+  0x3884 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3888 2810a0e3 mov r1, #0x28
+  0x388c 8331a0e1 lsl r3, r3, #3
+  0x3890 023083e0 add r3, r3, r2
+  0x3894 014083e0 add r4, r3, r1
+  0x3898 14201be5 ldr r2, [fp, #-0x14]
+  0x389c 1c301be5 ldr r3, [fp, #-0x1c]
+  0x38a0 2810a0e3 mov r1, #0x28
+  0x38a4 8331a0e1 lsl r3, r3, #3
+  0x38a8 023083e0 add r3, r3, r2
+  0x38ac 013083e0 add r3, r3, r1
+  0x38b0 000093e5 ldr r0, [r3]
+  0x38b4 e3f8ffeb bl #0x1c48
+  0x38b8 0030a0e1 mov r3, r0
+  0x38bc 003084e5 str r3, [r4]
+  0x38c0 1c301be5 ldr r3, [fp, #-0x1c]
+  0x38c4 013083e2 add r3, r3, #1
+  0x38c8 1c300be5 str r3, [fp, #-0x1c]
+  0x38cc d5ffffea b #0x3828
+  0x38d0 14301be5 ldr r3, [fp, #-0x14]
+  0x38d4 0610d3e5 ldrb r1, [r3, #6]
+  0x38d8 20104be5 strb r1, [fp, #-0x20]
+  0x38dc 20105be5 ldrb r1, [fp, #-0x20]
+  0x38e0 0120c1e3 bic r2, r1, #1
+  0x38e4 022082e3 orr r2, r2, #2
+  0x38e8 20204be5 strb r2, [fp, #-0x20]
+  0x38ec 20205be5 ldrb r2, [fp, #-0x20]
+  0x38f0 0620c3e5 strb r2, [r3, #6]
+  0x38f4 4e0000ea b #0x3a34
+  0x38f8 14401be5 ldr r4, [fp, #-0x14]
+  0x38fc 14301be5 ldr r3, [fp, #-0x14]
+  0x3900 b031d3e1 ldrh r3, [r3, #0x10]
+  0x3904 0300a0e1 mov r0, r3
+  0x3908 52f9ffeb bl #0x1e58
+  0x390c 0030a0e1 mov r3, r0
+  0x3910 b031c4e1 strh r3, [r4, #0x10]
+  0x3914 14401be5 ldr r4, [fp, #-0x14]
+  0x3918 14301be5 ldr r3, [fp, #-0x14]
+  0x391c 180093e5 ldr r0, [r3, #0x18]
+  0x3920 fef8ffeb bl #0x1d20
+  0x3924 0030a0e1 mov r3, r0
+  0x3928 183084e5 str r3, [r4, #0x18]
+  0x392c 14401be5 ldr r4, [fp, #-0x14]
+  0x3930 14301be5 ldr r3, [fp, #-0x14]
+  0x3934 1c0093e5 ldr r0, [r3, #0x1c]
+  0x3938 f8f8ffeb bl #0x1d20
+  0x393c 0030a0e1 mov r3, r0
+  0x3940 1c3084e5 str r3, [r4, #0x1c]
+  0x3944 14401be5 ldr r4, [fp, #-0x14]
+  0x3948 14301be5 ldr r3, [fp, #-0x14]
+  0x394c b232d3e1 ldrh r3, [r3, #0x22]
+  0x3950 0300a0e1 mov r0, r3
+  0x3954 3ff9ffeb bl #0x1e58
+  0x3958 0030a0e1 mov r3, r0
+  0x395c b232c4e1 strh r3, [r4, #0x22]
+  0x3960 0030a0e3 mov r3, #0
+  0x3964 1c300be5 str r3, [fp, #-0x1c]
+  0x3968 14301be5 ldr r3, [fp, #-0x14]
+  0x396c 2020d3e5 ldrb r2, [r3, #0x20]
+  0x3970 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3974 030052e1 cmp r2, r3
+  0x3978 240000da ble #0x3a10
+  0x397c 14201be5 ldr r2, [fp, #-0x14]
+  0x3980 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3984 2410a0e3 mov r1, #0x24
+  0x3988 8331a0e1 lsl r3, r3, #3
+  0x398c 023083e0 add r3, r3, r2
+  0x3990 014083e0 add r4, r3, r1
+  0x3994 14201be5 ldr r2, [fp, #-0x14]
+  0x3998 1c301be5 ldr r3, [fp, #-0x1c]
+  0x399c 2410a0e3 mov r1, #0x24
+  0x39a0 8331a0e1 lsl r3, r3, #3
+  0x39a4 023083e0 add r3, r3, r2
+  0x39a8 013083e0 add r3, r3, r1
+  0x39ac b230d3e1 ldrh r3, [r3, #2]
+  0x39b0 0300a0e1 mov r0, r3
+  0x39b4 27f9ffeb bl #0x1e58
+  0x39b8 0030a0e1 mov r3, r0
+  0x39bc b230c4e1 strh r3, [r4, #2]
+  0x39c0 14201be5 ldr r2, [fp, #-0x14]
+  0x39c4 1c301be5 ldr r3, [fp, #-0x1c]
+  0x39c8 2810a0e3 mov r1, #0x28
+  0x39cc 8331a0e1 lsl r3, r3, #3
+  0x39d0 023083e0 add r3, r3, r2
+  0x39d4 014083e0 add r4, r3, r1
+  0x39d8 14201be5 ldr r2, [fp, #-0x14]
+  0x39dc 1c301be5 ldr r3, [fp, #-0x1c]
+  0x39e0 2810a0e3 mov r1, #0x28
+  0x39e4 8331a0e1 lsl r3, r3, #3
+  0x39e8 023083e0 add r3, r3, r2
+  0x39ec 013083e0 add r3, r3, r1
+  0x39f0 000093e5 ldr r0, [r3]
+  0x39f4 c9f8ffeb bl #0x1d20
+  0x39f8 0030a0e1 mov r3, r0
+  0x39fc 003084e5 str r3, [r4]
+  0x3a00 1c301be5 ldr r3, [fp, #-0x1c]
+  0x3a04 013083e2 add r3, r3, #1
+  0x3a08 1c300be5 str r3, [fp, #-0x1c]
+  0x3a0c d5ffffea b #0x3968
+  0x3a10 14301be5 ldr r3, [fp, #-0x14]
+  0x3a14 0610d3e5 ldrb r1, [r3, #6]
+  0x3a18 24104be5 strb r1, [fp, #-0x24]
+  0x3a1c 24105be5 ldrb r1, [fp, #-0x24]
+  0x3a20 0220c1e3 bic r2, r1, #2
+  0x3a24 012082e3 orr r2, r2, #1
+  0x3a28 24204be5 strb r2, [fp, #-0x24]
+  0x3a2c 24205be5 ldrb r2, [fp, #-0x24]
+  0x3a30 0620c3e5 strb r2, [r3, #6]
+  0x3a34 10d04be2 sub sp, fp, #0x10
+  0x3a38 10a89de8 ldm sp, {r4, fp, sp, pc}
+
+routine IRouterPacketToRouter  0x468c-0x46c8  size 0x3c (60 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libIRouter.armlinux.so; inner SHA256 57c3edeb6354e82cdac736f9c6dab2cd191207dff107b4313dca1e8cfd2ad8c6]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (13)
+  0x4690 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x4690 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x4690 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x4690 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x469c store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x46a0 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0x46a4 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0x46a8 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x46ac load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0x46b0 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0x46c4 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0x46c4 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0x46c4 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0x46b4 bl (unknown callee) [0x1c3c]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1c3c
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (15)
+  B0 0x468c-0x468c preds: entry
+      normal -> B1
+  B1 0x4690-0x4690 preds: B0
+      normal -> B2
+  B2 0x4694-0x4694 preds: B1
+      normal -> B3
+  B3 0x4698-0x4698 preds: B2
+      normal -> B4
+  B4 0x469c-0x469c preds: B3
+      normal -> B5
+  B5 0x46a0-0x46a0 preds: B4
+      normal -> B6
+  B6 0x46a4-0x46a4 preds: B5
+      normal -> B7
+  B7 0x46a8-0x46a8 preds: B6
+      normal -> B8
+  B8 0x46ac-0x46ac preds: B7
+      normal -> B9
+  B9 0x46b0-0x46b0 preds: B8
+      normal -> B10
+  B10 0x46b4-0x46b4 preds: B9
+      call -> 0x1c3c
+  B11 0x46b8-0x46b8 preds: B10
+      normal -> B12
+  B12 0x46bc-0x46bc preds: B11
+      normal -> B13
+  B13 0x46c0-0x46c0 preds: B12
+      normal -> B14
+  B14 0x46c4-0x46c4 preds: B13
+      return
+
+returns (1)
+  0x46c4: r0 = ret(linked ELF 0x1c3c); reached from B13
+
+constants
+immediates
+  0x4 at 0x4694
+  0xc at 0x4698
+  0x1c3c at 0x46b4
+  0xc at 0x46c0
+instructions
+  0x468c 0dc0a0e1 mov ip, sp
+  0x4690 00d82de9 push {fp, ip, lr, pc}
+  0x4694 04b04ce2 sub fp, ip, #4
+  0x4698 0cd04de2 sub sp, sp, #0xc
+  0x469c 10000be5 str r0, [fp, #-0x10]
+  0x46a0 14100be5 str r1, [fp, #-0x14]
+  0x46a4 18200be5 str r2, [fp, #-0x18]
+  0x46a8 10001be5 ldr r0, [fp, #-0x10]
+  0x46ac 14101be5 ldr r1, [fp, #-0x14]
+  0x46b0 18201be5 ldr r2, [fp, #-0x18]
+  0x46b4 60f5ffeb bl #0x1c3c
+  0x46b8 0030a0e1 mov r3, r0
+  0x46bc 0300a0e1 mov r0, r3
+  0x46c0 0cd04be2 sub sp, fp, #0xc
+  0x46c4 00a89de8 ldm sp, {fp, sp, pc}
+
+routine IRouterDisconnectL3  0x4b30-0x4b50  size 0x20 (32 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libIRouter.armlinux.so; inner SHA256 57c3edeb6354e82cdac736f9c6dab2cd191207dff107b4313dca1e8cfd2ad8c6]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (10)
+  0x4b34 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x4b34 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x4b34 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x4b34 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x4b40 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x4b44 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x4b4c load w4 ldm base=sp disp +0x0 => sp -0x14
+  0x4b4c load w4 ldm base=sp disp +0x4 => sp -0x10
+  0x4b4c load w4 ldm base=sp disp +0x8 => sp -0xc
+  0x4b4c load w4 ldm base=sp disp +0xc => sp -0x8
+
+calls (1)
+  0x4b48 bl (unknown callee) [0x1cfc]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x1cfc
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (8)
+  B0 0x4b30-0x4b30 preds: entry
+      normal -> B1
+  B1 0x4b34-0x4b34 preds: B0
+      normal -> B2
+  B2 0x4b38-0x4b38 preds: B1
+      normal -> B3
+  B3 0x4b3c-0x4b3c preds: B2
+      normal -> B4
+  B4 0x4b40-0x4b40 preds: B3
+      normal -> B5
+  B5 0x4b44-0x4b44 preds: B4
+      normal -> B6
+  B6 0x4b48-0x4b48 preds: B5
+      call -> 0x1cfc
+  B7 0x4b4c-0x4b4c preds: B6
+      return
+
+returns (1)
+  0x4b4c: r0 = ret(linked ELF 0x1cfc); reached from B6
+
+constants
+immediates
+  0x4 at 0x4b38
+  0x4 at 0x4b3c
+  0x1cfc at 0x4b48
+instructions
+  0x4b30 0dc0a0e1 mov ip, sp
+  0x4b34 00d82de9 push {fp, ip, lr, pc}
+  0x4b38 04b04ce2 sub fp, ip, #4
+  0x4b3c 04d04de2 sub sp, sp, #4
+  0x4b40 10000be5 str r0, [fp, #-0x10]
+  0x4b44 10001be5 ldr r0, [fp, #-0x10]
+  0x4b48 6bf4ffeb bl #0x1cfc
+  0x4b4c 08a89de8 ldm sp, {r3, fp, sp, pc}
+
+routine sn1SCConnClient  0x9400-0x9458  size 0x58 (88 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libapi.armlinux.so; inner SHA256 b9a9b7b143ef01b81962825f2bff5aafff3657213d0b3048c72c4f111a83e40d]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (17)
+  0x9404 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0x9404 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0x9404 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0x9404 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0x9410 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0x9414 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x9418 load w4 ldr base=r3 disp +0x84 => r0 +0x84
+  0x9424 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x9428 load w4 ldr base=r3 disp +0x84 => r0 +0x84
+  0x943c load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x9444 store w4 str base=r2 disp +0x84 => [sp-20] +0x84 value 0x0
+  0x9448 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0x944c load w4 ldr base=r3 disp +0x84 => ? (unknown effective address)
+  0x9454 load w4 ldm base=sp disp +0x0 => sp -0x14
+  0x9454 load w4 ldm base=sp disp +0x4 => sp -0x10
+  0x9454 load w4 ldm base=sp disp +0x8 => sp -0xc
+  0x9454 load w4 ldm base=sp disp +0xc => sp -0x8
+
+calls (1)
+  0x942c bl (unknown callee) [0x382c]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x382c
+      args: r0=[r0+132], r1=r1, r2=r2, r3=r0
+
+blocks (22)
+  B0 0x9400-0x9400 preds: entry
+      normal -> B1
+  B1 0x9404-0x9404 preds: B0
+      normal -> B2
+  B2 0x9408-0x9408 preds: B1
+      normal -> B3
+  B3 0x940c-0x940c preds: B2
+      normal -> B4
+  B4 0x9410-0x9410 preds: B3
+      normal -> B5
+  B5 0x9414-0x9414 preds: B4
+      normal -> B6
+  B6 0x9418-0x9418 preds: B5
+      normal -> B7
+  B7 0x941c-0x941c preds: B6
+      normal -> B8
+  B8 0x9420-0x9420 preds: B7
+      taken when [r0+132] == 0x0 -> 0x9448
+      falls through when [r0+132] != 0x0 -> B9
+  B9 0x9424-0x9424 preds: B8
+      normal -> B10
+  B10 0x9428-0x9428 preds: B9
+      normal -> B11
+  B11 0x942c-0x942c preds: B10
+      call -> 0x382c
+  B12 0x9430-0x9430 preds: B11
+      normal -> B13
+  B13 0x9434-0x9434 preds: B12
+      normal -> B14
+  B14 0x9438-0x9438 preds: B13
+      taken when ret(linked ELF 0x382c) != 0x0 -> 0x9448
+      falls through when ret(linked ELF 0x382c) == 0x0 -> B15
+  B15 0x943c-0x943c preds: B14
+      normal -> B16
+  B16 0x9440-0x9440 preds: B15
+      normal -> B17
+  B17 0x9444-0x9444 preds: B16
+      normal -> B18
+  B18 0x9448-0x9448 preds: B8, B14, B17
+      normal -> B19
+  B19 0x944c-0x944c preds: B18
+      normal -> B20
+  B20 0x9450-0x9450 preds: B19
+      normal -> B21
+  B21 0x9454-0x9454 preds: B20
+      return
+
+returns (1)
+  0x9454: r0 = ?; reached from B20
+
+constants
+  0x9440 r3 = 0x0
+immediates
+  0x4 at 0x9408
+  0x4 at 0x940c
+  0x0 at 0x941c
+  0x9448 at 0x9420
+  0x382c at 0x942c
+  0x0 at 0x9434
+  0x9448 at 0x9438
+  0x0 at 0x9440
+instructions
+  0x9400 0dc0a0e1 mov ip, sp
+  0x9404 00d82de9 push {fp, ip, lr, pc}
+  0x9408 04b04ce2 sub fp, ip, #4
+  0x940c 04d04de2 sub sp, sp, #4
+  0x9410 10000be5 str r0, [fp, #-0x10]
+  0x9414 10301be5 ldr r3, [fp, #-0x10]
+  0x9418 843093e5 ldr r3, [r3, #0x84]
+  0x941c 000053e3 cmp r3, #0
+  0x9420 0800000a beq #0x9448
+  0x9424 10301be5 ldr r3, [fp, #-0x10]
+  0x9428 840093e5 ldr r0, [r3, #0x84]
+  0x942c fee8ffeb bl #0x382c
+  0x9430 0030a0e1 mov r3, r0
+  0x9434 000053e3 cmp r3, #0
+  0x9438 0200001a bne #0x9448
+  0x943c 10201be5 ldr r2, [fp, #-0x10]
+  0x9440 0030a0e3 mov r3, #0
+  0x9444 843082e5 str r3, [r2, #0x84]
+  0x9448 10301be5 ldr r3, [fp, #-0x10]
+  0x944c 843093e5 ldr r3, [r3, #0x84]
+  0x9450 0300a0e1 mov r0, r3
+  0x9454 08a89de8 ldm sp, {r3, fp, sp, pc}
+
+routine L1DirectConnect  0xa754-0xa774  size 0x20 (32 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libapi.armlinux.so; inner SHA256 b9a9b7b143ef01b81962825f2bff5aafff3657213d0b3048c72c4f111a83e40d]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (7)
+  0xa758 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xa758 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xa758 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xa758 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xa770 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xa770 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xa770 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0xa764 bl (unknown callee) [0x3970]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3970
+      args: r0=0x1, r1=r1, r2=r2, r3=r3
+
+blocks (8)
+  B0 0xa754-0xa754 preds: entry
+      normal -> B1
+  B1 0xa758-0xa758 preds: B0
+      normal -> B2
+  B2 0xa75c-0xa75c preds: B1
+      normal -> B3
+  B3 0xa760-0xa760 preds: B2
+      normal -> B4
+  B4 0xa764-0xa764 preds: B3
+      call -> 0x3970
+  B5 0xa768-0xa768 preds: B4
+      normal -> B6
+  B6 0xa76c-0xa76c preds: B5
+      normal -> B7
+  B7 0xa770-0xa770 preds: B6
+      return
+
+returns (1)
+  0xa770: r0 = ret(linked ELF 0x3970); reached from B6
+
+constants
+  0xa760 r0 = 0x1
+immediates
+  0x4 at 0xa75c
+  0x1 at 0xa760
+  0x3970 at 0xa764
+instructions
+  0xa754 0dc0a0e1 mov ip, sp
+  0xa758 00d82de9 push {fp, ip, lr, pc}
+  0xa75c 04b04ce2 sub fp, ip, #4
+  0xa760 0100a0e3 mov r0, #1
+  0xa764 81e4ffeb bl #0x3970
+  0xa768 0030a0e1 mov r3, r0
+  0xa76c 0300a0e1 mov r0, r3
+  0xa770 00a89de8 ldm sp, {fp, sp, pc}
+
+routine L1DirectOpen  0xa774-0xa794  size 0x20 (32 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libapi.armlinux.so; inner SHA256 b9a9b7b143ef01b81962825f2bff5aafff3657213d0b3048c72c4f111a83e40d]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (7)
+  0xa778 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xa778 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xa778 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xa778 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xa790 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xa790 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xa790 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0xa784 bl (unknown callee) [0x3970]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3970
+      args: r0=0x0, r1=r1, r2=r2, r3=r3
+
+blocks (8)
+  B0 0xa774-0xa774 preds: entry
+      normal -> B1
+  B1 0xa778-0xa778 preds: B0
+      normal -> B2
+  B2 0xa77c-0xa77c preds: B1
+      normal -> B3
+  B3 0xa780-0xa780 preds: B2
+      normal -> B4
+  B4 0xa784-0xa784 preds: B3
+      call -> 0x3970
+  B5 0xa788-0xa788 preds: B4
+      normal -> B6
+  B6 0xa78c-0xa78c preds: B5
+      normal -> B7
+  B7 0xa790-0xa790 preds: B6
+      return
+
+returns (1)
+  0xa790: r0 = ret(linked ELF 0x3970); reached from B6
+
+constants
+  0xa780 r0 = 0x0
+immediates
+  0x4 at 0xa77c
+  0x0 at 0xa780
+  0x3970 at 0xa784
+instructions
+  0xa774 0dc0a0e1 mov ip, sp
+  0xa778 00d82de9 push {fp, ip, lr, pc}
+  0xa77c 04b04ce2 sub fp, ip, #4
+  0xa780 0000a0e3 mov r0, #0
+  0xa784 79e4ffeb bl #0x3970
+  0xa788 0030a0e1 mov r3, r0
+  0xa78c 0300a0e1 mov r0, r3
+  0xa790 00a89de8 ldm sp, {fp, sp, pc}
+
+routine L1DirectClose  0xa794-0xa7b0  size 0x1c (28 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libapi.armlinux.so; inner SHA256 b9a9b7b143ef01b81962825f2bff5aafff3657213d0b3048c72c4f111a83e40d]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (7)
+  0xa798 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xa798 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xa798 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xa798 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xa7ac load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xa7ac load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xa7ac load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0xa7a0 bl (unknown callee) [0x35c8]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x35c8
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (7)
+  B0 0xa794-0xa794 preds: entry
+      normal -> B1
+  B1 0xa798-0xa798 preds: B0
+      normal -> B2
+  B2 0xa79c-0xa79c preds: B1
+      normal -> B3
+  B3 0xa7a0-0xa7a0 preds: B2
+      call -> 0x35c8
+  B4 0xa7a4-0xa7a4 preds: B3
+      normal -> B5
+  B5 0xa7a8-0xa7a8 preds: B4
+      normal -> B6
+  B6 0xa7ac-0xa7ac preds: B5
+      return
+
+returns (1)
+  0xa7ac: r0 = ret(linked ELF 0x35c8); reached from B5
+
+constants
+immediates
+  0x4 at 0xa79c
+  0x35c8 at 0xa7a0
+instructions
+  0xa794 0dc0a0e1 mov ip, sp
+  0xa798 00d82de9 push {fp, ip, lr, pc}
+  0xa79c 04b04ce2 sub fp, ip, #4
+  0xa7a0 88e3ffeb bl #0x35c8
+  0xa7a4 0030a0e1 mov r3, r0
+  0xa7a8 0300a0e1 mov r0, r3
+  0xa7ac 00a89de8 ldm sp, {fp, sp, pc}
+
+routine l1d_tty_close  0xb744-0xb78c  size 0x48 (72 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libapi.armlinux.so; inner SHA256 b9a9b7b143ef01b81962825f2bff5aafff3657213d0b3048c72c4f111a83e40d]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+  warning: 0xb76c mvn: unsupported effects invalidated
+
+ELF relocation-dependent places (0)
+
+accesses (12)
+  0xb748 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xb748 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xb748 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xb748 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xb754 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xb758 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xb770 store w4 str base=r11 disp -0x50 => sp -0x54 value ?
+  0xb77c store w4 str base=r11 disp -0x50 => sp -0x54 value 0x0
+  0xb780 load w4 ldr base=r11 disp -0x50 => sp -0x54
+  0xb788 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xb788 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xb788 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (1)
+  0xb75c bl (unknown callee) [0x34b4]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x34b4
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (18)
+  B0 0xb744-0xb744 preds: entry
+      normal -> B1
+  B1 0xb748-0xb748 preds: B0
+      normal -> B2
+  B2 0xb74c-0xb74c preds: B1
+      normal -> B3
+  B3 0xb750-0xb750 preds: B2
+      normal -> B4
+  B4 0xb754-0xb754 preds: B3
+      normal -> B5
+  B5 0xb758-0xb758 preds: B4
+      normal -> B6
+  B6 0xb75c-0xb75c preds: B5
+      call -> 0x34b4
+  B7 0xb760-0xb760 preds: B6
+      normal -> B8
+  B8 0xb764-0xb764 preds: B7
+      normal -> B9
+  B9 0xb768-0xb768 preds: B8
+      taken when ret(linked ELF 0x34b4) == 0x0 -> 0xb778
+      falls through when ret(linked ELF 0x34b4) != 0x0 -> B10
+  B10 0xb76c-0xb76c preds: B9
+      normal -> B11
+  B11 0xb770-0xb770 preds: B10
+      normal -> B12
+  B12 0xb774-0xb774 preds: B11
+      jump -> 0xb780
+  B13 0xb778-0xb778 preds: B9
+      normal -> B14
+  B14 0xb77c-0xb77c preds: B13
+      normal -> B15
+  B15 0xb780-0xb780 preds: B14, B12
+      normal -> B16
+  B16 0xb784-0xb784 preds: B15
+      normal -> B17
+  B17 0xb788-0xb788 preds: B16
+      return
+
+returns (1)
+  0xb788: r0 = [sp-84]; reached from B16
+
+constants
+  0xb778 r3 = 0x0
+immediates
+  0x4 at 0xb74c
+  0x44 at 0xb750
+  0x34b4 at 0xb75c
+  0x0 at 0xb764
+  0xb778 at 0xb768
+  0x0 at 0xb76c
+  0xb780 at 0xb774
+  0x0 at 0xb778
+  0xc at 0xb784
+instructions
+  0xb744 0dc0a0e1 mov ip, sp
+  0xb748 00d82de9 push {fp, ip, lr, pc}
+  0xb74c 04b04ce2 sub fp, ip, #4
+  0xb750 44d04de2 sub sp, sp, #0x44
+  0xb754 10000be5 str r0, [fp, #-0x10]
+  0xb758 10001be5 ldr r0, [fp, #-0x10]
+  0xb75c 54dfffeb bl #0x34b4
+  0xb760 0030a0e1 mov r3, r0
+  0xb764 000053e3 cmp r3, #0
+  0xb768 0200000a beq #0xb778
+  0xb76c 0030e0e3 mvn r3, #0
+  0xb770 50300be5 str r3, [fp, #-0x50]
+  0xb774 010000ea b #0xb780
+  0xb778 0030a0e3 mov r3, #0
+  0xb77c 50300be5 str r3, [fp, #-0x50]
+  0xb780 50001be5 ldr r0, [fp, #-0x50]
+  0xb784 0cd04be2 sub sp, fp, #0xc
+  0xb788 00a89de8 ldm sp, {fp, sp, pc}
+
+routine PBayFlashFileClose  0xef94-0xefbc  size 0x28 (40 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libmain.armlinux.so; inner SHA256 6a870b62130b1c7c5db86dce8ce7ddbb54692609860e74fb17840f2adb28e6e2]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (10)
+  0xef98 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xef98 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xef98 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xef98 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xefa4 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xefa8 load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xefb8 load w4 ldm base=sp disp +0x0 => sp -0x14
+  0xefb8 load w4 ldm base=sp disp +0x4 => sp -0x10
+  0xefb8 load w4 ldm base=sp disp +0x8 => sp -0xc
+  0xefb8 load w4 ldm base=sp disp +0xc => sp -0x8
+
+calls (1)
+  0xefac bl (unknown callee) [0x3430]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3430
+      args: r0=r0, r1=r1, r2=r2, r3=r3
+
+blocks (10)
+  B0 0xef94-0xef94 preds: entry
+      normal -> B1
+  B1 0xef98-0xef98 preds: B0
+      normal -> B2
+  B2 0xef9c-0xef9c preds: B1
+      normal -> B3
+  B3 0xefa0-0xefa0 preds: B2
+      normal -> B4
+  B4 0xefa4-0xefa4 preds: B3
+      normal -> B5
+  B5 0xefa8-0xefa8 preds: B4
+      normal -> B6
+  B6 0xefac-0xefac preds: B5
+      call -> 0x3430
+  B7 0xefb0-0xefb0 preds: B6
+      normal -> B8
+  B8 0xefb4-0xefb4 preds: B7
+      normal -> B9
+  B9 0xefb8-0xefb8 preds: B8
+      return
+
+returns (1)
+  0xefb8: r0 = 0x0; reached from B8
+
+constants
+  0xefb0 r3 = 0x0
+  0xefb4 r0 = 0x0
+immediates
+  0x4 at 0xef9c
+  0x4 at 0xefa0
+  0x3430 at 0xefac
+  0x0 at 0xefb0
+instructions
+  0xef94 0dc0a0e1 mov ip, sp
+  0xef98 00d82de9 push {fp, ip, lr, pc}
+  0xef9c 04b04ce2 sub fp, ip, #4
+  0xefa0 04d04de2 sub sp, sp, #4
+  0xefa4 10000be5 str r0, [fp, #-0x10]
+  0xefa8 10001be5 ldr r0, [fp, #-0x10]
+  0xefac 1fd1ffeb bl #0x3430
+  0xefb0 0030a0e3 mov r3, #0
+  0xefb4 0300a0e1 mov r0, r3
+  0xefb8 08a89de8 ldm sp, {r3, fp, sp, pc}
+
+routine PBayFlashImageData  0xf110-0xf19c  size 0x8c (140 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libmain.armlinux.so; inner SHA256 6a870b62130b1c7c5db86dce8ce7ddbb54692609860e74fb17840f2adb28e6e2]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (23)
+  0xf114 store w4 push base=sp disp +0x0 => sp -0x10 value r11
+  0xf114 store w4 push base=sp disp +0x4 => sp -0xc value sp
+  0xf114 store w4 push base=sp disp +0x8 => sp -0x8 value lr
+  0xf114 store w4 push base=sp disp +0xc => sp -0x4 value ?
+  0xf120 store w4 str base=r11 disp -0x10 => sp -0x14 value r0
+  0xf124 store w4 str base=r11 disp -0x14 => sp -0x18 value r1
+  0xf128 store w4 str base=r11 disp -0x18 => sp -0x1c value r2
+  0xf12c load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xf140 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xf148 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xf150 store w4 str base=r11 disp -0x1c => sp -0x20 value ret(linked ELF 0x3514)
+  0xf154 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xf164 store w4 str base=r11 disp -0x20 => sp -0x24 value 0x0
+  0xf16c load w4 ldr base=r11 disp -0x10 => sp -0x14
+  0xf170 load w4 ldr base=r11 disp -0x14 => sp -0x18
+  0xf178 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xf180 load w4 ldr base=r11 disp -0x18 => sp -0x1c
+  0xf188 load w4 ldr base=r11 disp -0x1c => sp -0x20
+  0xf18c store w4 str base=r11 disp -0x20 => sp -0x24 value [sp-32]
+  0xf190 load w4 ldr base=r11 disp -0x20 => sp -0x24
+  0xf198 load w4 ldm base=sp disp +0x0 => sp -0x10
+  0xf198 load w4 ldm base=sp disp +0x4 => sp -0xc
+  0xf198 load w4 ldm base=sp disp +0x8 => sp -0x8
+
+calls (2)
+  0xf14c bl (unknown callee) [0x3514]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3514
+      args: r0=r2, r1=r1, r2=r2, r3=?
+  0xf184 bl (unknown callee) [0x3694]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3694
+      args: r0=ret(linked ELF 0x3514), r1=([sp-20] + [sp-24]), r2=[sp-28], r3=([sp-20] + [sp-24])
+
+blocks (35)
+  B0 0xf110-0xf110 preds: entry
+      normal -> B1
+  B1 0xf114-0xf114 preds: B0
+      normal -> B2
+  B2 0xf118-0xf118 preds: B1
+      normal -> B3
+  B3 0xf11c-0xf11c preds: B2
+      normal -> B4
+  B4 0xf120-0xf120 preds: B3
+      normal -> B5
+  B5 0xf124-0xf124 preds: B4
+      normal -> B6
+  B6 0xf128-0xf128 preds: B5
+      normal -> B7
+  B7 0xf12c-0xf12c preds: B6
+      normal -> B8
+  B8 0xf130-0xf130 preds: B7
+      normal -> B9
+  B9 0xf134-0xf134 preds: B8
+      normal -> B10
+  B10 0xf138-0xf138 preds: B9
+      taken when ? == 0x0 -> 0xf148
+      falls through when ? != 0x0 -> B11
+  B11 0xf13c-0xf13c preds: B10
+      normal -> B12
+  B12 0xf140-0xf140 preds: B11
+      normal -> B13
+  B13 0xf144-0xf144 preds: B12
+      jump -> 0xf190
+  B14 0xf148-0xf148 preds: B10
+      normal -> B15
+  B15 0xf14c-0xf14c preds: B14
+      call -> 0x3514
+  B16 0xf150-0xf150 preds: B15
+      normal -> B17
+  B17 0xf154-0xf154 preds: B16
+      normal -> B18
+  B18 0xf158-0xf158 preds: B17
+      normal -> B19
+  B19 0xf15c-0xf15c preds: B18
+      taken when ret(linked ELF 0x3514) != 0x0 -> 0xf16c
+      falls through when ret(linked ELF 0x3514) == 0x0 -> B20
+  B20 0xf160-0xf160 preds: B19
+      normal -> B21
+  B21 0xf164-0xf164 preds: B20
+      normal -> B22
+  B22 0xf168-0xf168 preds: B21
+      jump -> 0xf190
+  B23 0xf16c-0xf16c preds: B19
+      normal -> B24
+  B24 0xf170-0xf170 preds: B23
+      normal -> B25
+  B25 0xf174-0xf174 preds: B24
+      normal -> B26
+  B26 0xf178-0xf178 preds: B25
+      normal -> B27
+  B27 0xf17c-0xf17c preds: B26
+      normal -> B28
+  B28 0xf180-0xf180 preds: B27
+      normal -> B29
+  B29 0xf184-0xf184 preds: B28
+      call -> 0x3694
+  B30 0xf188-0xf188 preds: B29
+      normal -> B31
+  B31 0xf18c-0xf18c preds: B30
+      normal -> B32
+  B32 0xf190-0xf190 preds: B13, B22, B31
+      normal -> B33
+  B33 0xf194-0xf194 preds: B32
+      normal -> B34
+  B34 0xf198-0xf198 preds: B33
+      return
+
+returns (1)
+  0xf198: r0 = ?; reached from B33
+
+constants
+  0xf13c r3 = 0x0
+  0xf160 r3 = 0x0
+immediates
+  0x4 at 0xf118
+  0x14 at 0xf11c
+  0x3 at 0xf130
+  0x0 at 0xf134
+  0xf148 at 0xf138
+  0x0 at 0xf13c
+  0xf190 at 0xf144
+  0x3514 at 0xf14c
+  0x0 at 0xf158
+  0xf16c at 0xf15c
+  0x0 at 0xf160
+  0xf190 at 0xf168
+  0x3694 at 0xf184
+  0xc at 0xf194
+instructions
+  0xf110 0dc0a0e1 mov ip, sp
+  0xf114 00d82de9 push {fp, ip, lr, pc}
+  0xf118 04b04ce2 sub fp, ip, #4
+  0xf11c 14d04de2 sub sp, sp, #0x14
+  0xf120 10000be5 str r0, [fp, #-0x10]
+  0xf124 14100be5 str r1, [fp, #-0x14]
+  0xf128 18200be5 str r2, [fp, #-0x18]
+  0xf12c 18301be5 ldr r3, [fp, #-0x18]
+  0xf130 033003e2 and r3, r3, #3
+  0xf134 000053e3 cmp r3, #0
+  0xf138 0200000a beq #0xf148
+  0xf13c 0030a0e3 mov r3, #0
+  0xf140 20300be5 str r3, [fp, #-0x20]
+  0xf144 110000ea b #0xf190
+  0xf148 18001be5 ldr r0, [fp, #-0x18]
+  0xf14c f0d0ffeb bl #0x3514
+  0xf150 1c000be5 str r0, [fp, #-0x1c]
+  0xf154 1c301be5 ldr r3, [fp, #-0x1c]
+  0xf158 000053e3 cmp r3, #0
+  0xf15c 0200001a bne #0xf16c
+  0xf160 0030a0e3 mov r3, #0
+  0xf164 20300be5 str r3, [fp, #-0x20]
+  0xf168 080000ea b #0xf190
+  0xf16c 10201be5 ldr r2, [fp, #-0x10]
+  0xf170 14301be5 ldr r3, [fp, #-0x14]
+  0xf174 033082e0 add r3, r2, r3
+  0xf178 1c001be5 ldr r0, [fp, #-0x1c]
+  0xf17c 0310a0e1 mov r1, r3
+  0xf180 18201be5 ldr r2, [fp, #-0x18]
+  0xf184 42d1ffeb bl #0x3694
+  0xf188 1c301be5 ldr r3, [fp, #-0x1c]
+  0xf18c 20300be5 str r3, [fp, #-0x20]
+  0xf190 20001be5 ldr r0, [fp, #-0x20]
+  0xf194 0cd04be2 sub sp, fp, #0xc
+  0xf198 00a89de8 ldm sp, {fp, sp, pc}
+
+routine nvramLogFinsert  0x119e8-0x11a30  size 0x48 (72 bytes)
+  file 6.5.30/usr/cpu/firmware/sysco/l1.bin [6.5.30:l1#4; version 1.44.0; inner /stand/sysco/lib/libmain.armlinux.so; inner SHA256 6a870b62130b1c7c5db86dce8ce7ddbb54692609860e74fb17840f2adb28e6e2]  elf  ISA arm  ABI arm-aapcs  load 0x0; size from ELF symbol size
+  calling convention: assumed arm-aapcs; argument count unknown; printed arguments are candidate locations; ? means unknown
+  legend: sp is the stack pointer at entry; [X+N] is a loaded value; ret(F) is a call result
+  coordinates: instructions/direct targets are linked ELF virtual addresses; runtime load base unknown
+  data: PC-derived image references retain unknown ELF load bias; unrelocated scalar constants retain runtime values; relocations are not applied
+
+ELF relocation-dependent places (0)
+
+accesses (14)
+  0x119ec store w4 push base=sp disp +0x0 => sp -0x10 value r0
+  0x119ec store w4 push base=sp disp +0x4 => sp -0xc value r1
+  0x119ec store w4 push base=sp disp +0x8 => sp -0x8 value r2
+  0x119ec store w4 push base=sp disp +0xc => sp -0x4 value r3
+  0x119f0 store w4 push base=sp disp +0x0 => sp -0x20 value r11
+  0x119f0 store w4 push base=sp disp +0x4 => sp -0x1c value sp
+  0x119f0 store w4 push base=sp disp +0x8 => sp -0x18 value lr
+  0x119f0 store w4 push base=sp disp +0xc => sp -0x14 value ?
+  0x11a00 store w4 str base=r11 disp -0x10 => sp -0x24 value sp-12
+  0x11a10 load w4 ldr base=r11 disp +0x4 => sp -0x10
+  0x11a14 load w4 ldr base=r11 disp -0x10 => sp -0x24
+  0x11a2c load w4 ldm base=sp disp +0x0 => sp -0x20
+  0x11a2c load w4 ldm base=sp disp +0x4 => sp -0x1c
+  0x11a2c load w4 ldm base=sp disp +0x8 => sp -0x18
+
+calls (2)
+  0x11a18 bl (unknown callee) [0x36c4]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x36c4
+      args: r0=sp-196, r1=0xa0, r2=r0, r3=sp-12
+  0x11a24 bl (unknown callee) [0x3574]
+      target coordinate basis: linked ELF virtual address
+      target execution state: arm; instruction target: 0x3574
+      args: r0=sp-196, r1=?, r2=?, r3=sp-196
+
+blocks (18)
+  B0 0x119e8-0x119e8 preds: entry
+      normal -> B1
+  B1 0x119ec-0x119ec preds: B0
+      normal -> B2
+  B2 0x119f0-0x119f0 preds: B1
+      normal -> B3
+  B3 0x119f4-0x119f4 preds: B2
+      normal -> B4
+  B4 0x119f8-0x119f8 preds: B3
+      normal -> B5
+  B5 0x119fc-0x119fc preds: B4
+      normal -> B6
+  B6 0x11a00-0x11a00 preds: B5
+      normal -> B7
+  B7 0x11a04-0x11a04 preds: B6
+      normal -> B8
+  B8 0x11a08-0x11a08 preds: B7
+      normal -> B9
+  B9 0x11a0c-0x11a0c preds: B8
+      normal -> B10
+  B10 0x11a10-0x11a10 preds: B9
+      normal -> B11
+  B11 0x11a14-0x11a14 preds: B10
+      normal -> B12
+  B12 0x11a18-0x11a18 preds: B11
+      call -> 0x36c4
+  B13 0x11a1c-0x11a1c preds: B12
+      normal -> B14
+  B14 0x11a20-0x11a20 preds: B13
+      normal -> B15
+  B15 0x11a24-0x11a24 preds: B14
+      call -> 0x3574
+  B16 0x11a28-0x11a28 preds: B15
+      normal -> B17
+  B17 0x11a2c-0x11a2c preds: B16
+      return
+
+returns (1)
+  0x11a2c: r0 = ret(linked ELF 0x3574); reached from B16
+
+constants
+  0x11a0c r1 = 0xa0
+immediates
+  0x14 at 0x119f4
+  0xa4 at 0x119f8
+  0x8 at 0x119fc
+  0xb0 at 0x11a04
+  0xa0 at 0x11a0c
+  0x36c4 at 0x11a18
+  0xb0 at 0x11a1c
+  0x3574 at 0x11a24
+  0xc at 0x11a28
+instructions
+  0x119e8 0dc0a0e1 mov ip, sp
+  0x119ec 0f002de9 push {r0, r1, r2, r3}
+  0x119f0 00d82de9 push {fp, ip, lr, pc}
+  0x119f4 14b04ce2 sub fp, ip, #0x14
+  0x119f8 a4d04de2 sub sp, sp, #0xa4
+  0x119fc 08308be2 add r3, fp, #8
+  0x11a00 10300be5 str r3, [fp, #-0x10]
+  0x11a04 b0304be2 sub r3, fp, #0xb0
+  0x11a08 0300a0e1 mov r0, r3
+  0x11a0c a010a0e3 mov r1, #0xa0
+  0x11a10 04209be5 ldr r2, [fp, #4]
+  0x11a14 10301be5 ldr r3, [fp, #-0x10]
+  0x11a18 29c7ffeb bl #0x36c4
+  0x11a1c b0304be2 sub r3, fp, #0xb0
+  0x11a20 0300a0e1 mov r0, r3
+  0x11a24 d2c6ffeb bl #0x3574
+  0x11a28 0cd04be2 sub sp, fp, #0xc
+  0x11a2c 00a89de8 ldm sp, {fp, sp, pc}
