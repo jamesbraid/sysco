@@ -144,3 +144,10 @@ Software-now list, in the order to take them:
   no exit. Next: justify an extended view using independent entry boundaries, then
   rerun exact native analysis before assigning returns or effects outside the stated
   views.
+
+## ARM router indirect call
+
+- **Route: software now.** Which routine does the indirect call at `0x9f88` in `RouterInput` reach, and what is done with the candidate arguments in `r0` to `r2`?
+  The [bounded library observations](l1/arm-library-router-paths-1.44.0.md) retain the selected full symbol span and the call with its target left open.
+  The target register is loaded at `0x9f7c` from offset `0xf8` of the object at `[sp-24]`, and no store to that offset appears in the span.
+  Tried: native analysis of that span, raw instruction words and bounded contexts, and ELF symbol, segment and relocation metadata. The native list of unresolved transfers is empty, but that does not name the callee. Next: find where the other router routines write that field, then read the routine they store.
