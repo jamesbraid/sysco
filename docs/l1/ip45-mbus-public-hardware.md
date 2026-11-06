@@ -14,7 +14,7 @@ The same appendix prints `I2C_HIGH` and `I2C_LOW` task names in an `istat tasks`
 
 Motorola's *MCF5206e ColdFire Integrated Microprocessor User's Manual* describes an on-chip M-Bus module with bidirectional open-drain SCL and SDA pins. Its section 13 says the module is compatible with I²C, supports master mode, and generates START, STOP, repeated START, and acknowledge cycles. These establish capabilities **if** an Origin 300 board fits an MCF5206e and uses those pins. They do not prove that conditional premise. The manual's separate “two-wire mode” in section 6 concerns arbitration for the processor's parallel external memory bus. It is not the M-Bus serial interface.
 
-Andrej Bukošek's photographed Origin **3400 C-brick** identifies its L1 as a Motorola MCF5206E. That is direct fitment evidence for the pictured Origin 3400 hardware, whose board and system assembly differ from Origin 300 IP45/I/O-8.
+A private collector's photographed Origin **3400 C-brick** identifies its L1 as a Motorola MCF5206E. That is direct fitment evidence for the pictured Origin 3400 hardware, whose board and system assembly differ from Origin 300 IP45/I/O-8.
 
 The Linux EEPROM driver documentation lists 24C01A, 24C02, and 34C02 variants as typical DIMM serial EEPROMs, commonly addressed in the I²C `0x50`–`0x57` range. Microchip's 24C02C is an example 2-Kbit, two-wire serial EEPROM. These sources explain a plausible device class for DIMM SPD and module identity stores. Neither identifies a chip fitted to an Origin 300 DIMM, node, or I/O-8 board. [Linux kernel, `eeprom` driver documentation](https://origin.kernel.org/doc/html/v5.15/misc-devices/eeprom.html). [Microchip, 24C02C product documentation](https://www.microchip.com/en-us/product/24C02C).
 
