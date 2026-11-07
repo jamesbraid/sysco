@@ -27,7 +27,7 @@ The inflated image is a flat PowerPC binary, not an ELF. Its first word is `7c 7
 - MPC8xx on-chip support: `init_8xx_ports() for SGI L2`, `wdt_mpc8xx_init` (watchdog), `cpm_iic_*` with `i2c-algo-8xx.o` (an I2C adapter on the communications processor), `fec` with a PHY probe (the fast Ethernet controller), and the on-chip serial ports;
 - `rtc.c:set_rtc_time` (a real-time clock driver);
 - `lcd137x: Epson SED%s LCD controller detected` and `SGI L2 (SED137x LCD controller) frame buffer device` (the display);
-- a USB host stack (`usb-ohci.c`, `hub.c`) and an SGI driver `sgil1.c` for L1 controllers, whose ioctl interface is read in [daemon.md](daemon.md);
+- a USB host stack (`usb-ohci.c`, `hub.c`) and an SGI driver the controller firmware source unit 68 for L1 controllers, whose ioctl interface is read in [daemon.md](daemon.md);
 - RAM-disk support for a cramfs root (`RAMDISK: Compressed image found`).
 
 No flash-chip or MTD-map string was found, although the root has `/dev/mtd0` to `/dev/mtd3` nodes. The daemon libraries reach the flash through `/dev/mem`, not through those nodes (see [daemon.md](daemon.md)).

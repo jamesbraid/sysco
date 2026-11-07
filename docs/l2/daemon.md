@@ -42,7 +42,7 @@ Two meanings share the word "serial".
 
 ## USB mode and the SGI L1 kernel driver
 
-Established from `l1_open_usb` (`0x10003eec`), the device open (`0x100046c4` onward), the reset routine (`0x10004210`) and the service routine (`0x10004e8c`); the kernel side is the `sgil1.c` code in the inflated kernel.
+Established from `l1_open_usb` (`0x10003eec`), the device open (`0x100046c4` onward), the reset routine (`0x10004210`) and the service routine (`0x10004e8c`); the kernel side is the controller firmware source unit 68 code in the inflated kernel.
 
 - Control node: `/dev/sgil1_cs` (character 180,104), opened read-only. After that the daemon issues the ioctl **`0x40045306`** (read-direction, 4-byte argument, group `'S'` number 6), which returns an integer **driver revision** into `0x10043bc0`; a failed call sets the revision to 0. If `-usbpath` was given and the revision is 0 or 1 the daemon prints that the driver does not support the option and fails. Otherwise it registers `sub_10004e8c` as an input handler on the control descriptor (`EventAddInput`).
 - Service: when the control descriptor is readable, `sub_10004e8c` reads up to 0x28 bytes of connection status (`l1_service_usb_device`); messages `WARNING: can't read USB connection status` and `no devices` show the failure cases. The record is one byte per device slot, 0 or 1 (decoded in [userspace.md](userspace.md)).

@@ -59,7 +59,7 @@ Types 4 and 5 travel as a 62-byte message with an all-zero header except the typ
 
 - Every MMSC on one Ethernet segment, each with a MAC address that is unique: the election key is the lowest unique ID, which is the MAC byte string.
 - A rack ID from 1 to 21 that no other rack uses. A blank NVRAM record gives rack ID 1, so a rack that was never configured collides with rack 1 and is renumbered by the master at the first election after another MMSC joins; rack IDs 0 and 22 can be stored but are never handed out, and the command router refuses a remote request that names a rack above 23.
-- An IP address no other MMSC uses, `100.a.b.c` by default where `a.b.c` are the low three bytes of the MAC address (a host part below `0x10` or above `0xfffffe` is replaced with `0xf`, which the master then reassigns).
+- An IP address no other MMSC uses, `100.a.b.c` by default where the controller firmware source unit 81 are the low three bytes of the MAC address (a host part below `0x10` or above `0xfffffe` is replaced with `0xf`, which the master then reassigns).
 - The module numbers of the MSCs on its two bays, refreshed whenever the module scan changes them, so every peer can route a command to a module by number.
 - A TCP listener on port 5678 (the default tune value) that accepts connections only from IP addresses already in the identity table ([remote-link.md](remote-link.md)).
 - An election at every boot, 2 seconds after the last message, after which exactly one MMSC reports itself master.

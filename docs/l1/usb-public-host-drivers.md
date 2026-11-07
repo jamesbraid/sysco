@@ -10,8 +10,8 @@ Revision read: [`3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74`](https://github.com/s
 
 | Subject | Public software behavior | Exact source |
 | --- | --- | --- |
-| USB identity | Vendor `0x065e`, product `0x1234` | [`include/sgi_l1_ioctl.h`, lines 8–9](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/include/sgi_l1_ioctl.h#L8) |
-| Interface matching | Accepts class/subclass/protocol `ff/ff/00` or `00/00/ff` with that vendor/product pair | [`module/sgi_l1_usb.c`, lines 104–110](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L104) |
+| USB identity | Vendor `0x065e`, product `0x1234` | [the controller firmware header 1, lines 8–9](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/include/sgi_l1_ioctl.h#L8) |
+| Interface matching | Accepts class/subclass/protocol `ff/ff/00` or `00/00/ff` with that vendor/product pair | [the controller firmware source unit 67, lines 104–110](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L104) |
 | Endpoints | Requires at least two endpoints and finds a bulk IN and bulk OUT in the current alternate setting. Endpoint addresses come from descriptors | [lines 771–829](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L771) |
 | Writes | Requires at least two bytes, overwrites those bytes with the total transfer length in big-endian order, then submits one bulk transfer. A short successful transfer returns an error | [lines 382–419](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L382) |
 | Transfer limits | Maximum write setting defaults to 4096 bytes, clamped to 2–4096 and the allocated buffer. Buffers are the smaller of 4096 and host page size. Write timeout is 3000 ms | [lines 33–34, 201–210 and 820–829](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L201) |
@@ -21,7 +21,7 @@ The module does not supply fixed endpoint numbers, endpoint packet sizes, USB sp
 
 ## Reset and reconnection
 
-The module defaults to leaving the USB device unreset on close. An optional `reset_on_close` setting queues a USB device reset. Its device-reset ioctl also queues a reset instead of synchronously waiting through unbind. These are host driver choices, not evidence that an L1 controller reset occurred or that a particular machine reconnects successfully. See [`module/sgi_l1_usb.c`, lines 79–97, 270–290 and 558–569](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L558).
+The module defaults to leaving the USB device unreset on close. An optional `reset_on_close` setting queues a USB device reset. Its device-reset ioctl also queues a reset instead of synchronously waiting through unbind. These are host driver choices, not evidence that an L1 controller reset occurred or that a particular machine reconnects successfully. See [the controller firmware source unit 67, lines 79–97, 270–290 and 558–569](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L558).
 
 Read reset cancels the URB and clears local read state. Write reset clears the OUT endpoint halt. Pipe reset clears OUT and IN halts. The optional legacy mode first sets each halt, waits 20 ms and clears it. These sequences specify what a compatible experimental transport would receive. See [lines 480–546 and 579–588](https://github.com/srcshelton/sgi-l1-usb-control/blob/3a1fe9532a88ab00e4ee910d7f12ebcb337d5a74/module/sgi_l1_usb.c#L480).
 

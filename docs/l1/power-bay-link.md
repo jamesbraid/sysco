@@ -328,7 +328,7 @@ After both destination bytes the handler compares the 16-bit value with zero and
 
 ## Flash sequence (E for the L1 half, I for the loader half)
 
-L1 task `power_bay_flash_task` (`ffe3f480`, file `PBayFlash.c`) answers three requests; requests need the bay semaphore (`ffe4368c`) and refuse during other work:
+L1 task `power_bay_flash_task` (`ffe3f480`, file the controller firmware source unit 85) answers three requests; requests need the bay semaphore (`ffe4368c`) and refuse during other work:
 
 | Request | L1 action |
 |---|---|
@@ -342,7 +342,7 @@ Status codes the `pbay` command reports (`ffe96f9c`): 0 not initialized, 1 busy 
 
 ## Which bricks start the power-bay task (all five ColdFire packages)
 
-Read from the 6.5.30 `l1.bin` packages 0 to 3 and 5 (container ranges; 0 `Base 1MB`, 1 `Fuel/PE/O300 1MB`, 2 `MIPS 2MB`, 3 `Legacy 2MB`, 5 `2MB`), each decoded with the same 68040-mode decoder as the package 1 listing. All five carry the same power-bay module (the poll text, `PBayFlash.c` strings, the `pbay` command table with one brick-type string), so the difference between bricks is in which start-up arms run, not in the code. Grades are E unless marked. Package 0's body starts 0x68 bytes into its range; addresses below are the first-bank addresses the listings use.
+Read from the 6.5.30 `l1.bin` packages 0 to 3 and 5 (container ranges; 0 `Base 1MB`, 1 `Fuel/PE/O300 1MB`, 2 `MIPS 2MB`, 3 `Legacy 2MB`, 5 `2MB`), each decoded with the same 68040-mode decoder as the package 1 listing. All five carry the same power-bay module (the poll text, the controller firmware source unit 85 strings, the `pbay` command table with one brick-type string), so the difference between bricks is in which start-up arms run, not in the code. Grades are E unless marked. Package 0's body starts 0x68 bytes into its range; addresses below are the first-bank addresses the listings use.
 
 **The brick letter.** Packages 0, 1 and 2 read the brick-type byte (the byte the board identity routine stores; `0x300002f8` in package 1, `0x300008cc` in package 2) in the main start-up routine at `ffe1063e-ffe106c2`, subtract `0x30` and index a table of 39 signed 16-bit offsets at `ffe1065e` (letters `0` to `V`); a letter outside that range takes arm B below. The table and the arms are byte-identical in packages 0, 1 and 2.
 

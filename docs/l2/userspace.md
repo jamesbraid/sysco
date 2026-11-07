@@ -76,7 +76,7 @@ Besides nodes: a System V semaphore, key `0x0124f0e5`, created `semget(key, 1, 0
 
 ### Semantics of `/dev/sgil1_N` as the program sees them
 
-Read from the kernel driver (`sgil1.c` in the inflated kernel) and from `l1_read_usb` (`0x10006128`) and `l1_write_usb` (`0x10006dec`) in the daemon. Established unless marked.
+Read from the kernel driver (the controller firmware source unit 68 in the inflated kernel) and from `l1_read_usb` (`0x10006128`) and `l1_write_usb` (`0x10006dec`) in the daemon. Established unless marked.
 
 - **Open.** Fails with `ENODEV` (19) when that slot is not connected. Otherwise allocates one 4 KiB receive buffer and one 4 KiB transmit buffer; out of memory is `ENOMEM` (12). A slot that is already open fails with `EBUSY` (16): the byte at `+0xd` of the slot record is the open flag, tested on entry and set before the buffers are allocated, so a second open is refused until the close clears it (kernel open routine `0x9d9c8` to `0x9db50`, tests at `0x9da20` and `0x9da60`). The control node has its own open routine (`0x9d0d8`, minor 104). No other failure was seen in the routine.
 - **Close.** Resets the USB device (`SGI L1 device reset failed on close` is logged if the reset fails).
