@@ -1,6 +1,6 @@
 # Power-bay serial link: framing, commands and flash sequence
 
-Reads the Origin 300 L1 1.44.0 body (`Fuel/PE/O300 1MB` package, listing in [disasm/](disasm/README.md), the code that the 6.5.30 `l1.bin` carries as package 1) against `pbay.bin`, the 5,888-byte power-bay controller image (sha256 `7428aaf3d5beffcb23fb56aa9f82c013a6f3ebbb5f41175a61781bfcf366f9c6`, identical in every IRIX set; labelled `pbay-00.18.bin` in the 1.62.1 RPM). The image was decoded with a table-driven MCS-51 decoder written for this pass (scratch tooling, not committed); the 8051 family is **inferred** (see [../controllers.md](../controllers.md)). Grades: E established (routine read in full), I inferred, U unknown. L1 addresses are first-bank (`0xffe00000` base).
+Reads the Origin 300 L1 1.44.0 body (`Fuel/PE/O300 1MB` package, listing in [disasm/](disasm/), the code that the 6.5.30 `l1.bin` carries as package 1) against `pbay.bin`, the 5,888-byte power-bay controller image (sha256 `7428aaf3d5beffcb23fb56aa9f82c013a6f3ebbb5f41175a61781bfcf366f9c6`, identical in every IRIX set; labelled `pbay-00.18.bin` in the 1.62.1 RPM). The image was decoded with a table-driven MCS-51 decoder written for this pass (scratch tooling, not committed); the 8051 family is **inferred** (see [../controllers.md](../controllers.md)). Grades: E established (routine read in full), I inferred, U unknown. L1 addresses are first-bank (`0xffe00000` base).
 
 ## Image layout (E from the bytes, I for the load address)
 

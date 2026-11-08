@@ -2,7 +2,7 @@
 
 Reverse-engineering notes for the SGI system-controller firmware of the Origin 300, Origin 3000 and Origin 350 generation, read from the images IRIX ships to flash it. "sysco" is the name of the shipped firmware directory (`usr/cpu/firmware/sysco`).
 
-Two controllers are in scope for the reading notes below; [docs/controllers.md](docs/controllers.md) surveys every other SGI system controller (the Challenge and Onyx controller, the MSC and ELSC, the MMSC, the L3 and the Altix generations), what is held for each, and the reading lanes that follow.
+Two controllers are in scope for the reading notes below; [docs/controllers.md](docs/controllers.md) surveys every other SGI system controller (the Challenge and Onyx controller, the MSC and ELSC, the MMSC, the L3 and the Altix generations), what is held for each, and the order the rest will be read in.
 
 - **L1**, the per-brick controller. The first target is the Origin 300 L1 (the Fuel/PE/O300 1 MB ColdFire MCF5206e image), then the personalities for the C-brick, I-brick and R-brick. The L1 container also carries ColdFire images for other brick families and two embedded-Linux images for ARM S3C2410 controllers; they come after the Origin 300 image.
 - **L2**, the rack controller: a PowerPC MPC860 running Linux 2.4.7 with a cramfs root. It comes second.
@@ -28,6 +28,6 @@ The host needs Podman, git and python3. Everything else runs in a container buil
     tools/re-run python3 scripts/check_claims.py     # compare documented claims with the images
     scripts/check-leaks.sh                           # forbidden names and trailers
 
-`tools/setup-clone.sh --root DIR` links `root/` to a directory you filled. Install the push check once per clone with `ln -s ../../scripts/pre-push .git/hooks/pre-push`.
+`tools/setup-clone.sh --root DIR` links `root/` to a directory you filled. The shared tooling lives in the `retools/` submodule (`git submodule update --init`); `tools/` and `scripts/` link into it. Install the push check once per clone with `ln -s ../../scripts/pre-push .git/hooks/pre-push`.
 
 Licence: BSD-3-Clause, see [LICENSE](LICENSE). The scripts descend from gr4's and keep its notice in [scripts/LICENSE-gr4](scripts/LICENSE-gr4).
