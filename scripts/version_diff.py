@@ -1,1 +1,0 @@
-../retools/scripts/sysco/version_diff.py

@@ -59,10 +59,10 @@ The same layout holds in every image held; only sizes move.
 
 ## Tools
 
-The parser is `scripts/mmsc_aout.py` (the sgi-retools copy under `scripts/sysco/`). Its unit test is `scripts/test_mmsc_aout.py`; with `MMSC_IMAGE` set to an image it also runs the real-image checks.
+The parser is `retools/tools/sysco/mmsc_aout.py` (in the sgi-retools submodule). Its unit test is `retools/tools/sysco/test_mmsc_aout.py`; with `MMSC_IMAGE` set to an image it also runs the real-image checks.
 
-    tools/re-run python3 scripts/mmsc_aout.py IMAGE --segments --check
-    tools/re-run python3 scripts/mmsc_aout.py IMAGE --disasm _cmdVER --count 20
-    tools/re-run python3 scripts/mmsc_aout.py IMAGE --tsv OUT.tsv
+    tools/re-run python3 retools/tools/sysco/mmsc_aout.py IMAGE --segments --check
+    tools/re-run python3 retools/tools/sysco/mmsc_aout.py IMAGE --disasm _cmdVER --count 20
+    tools/re-run python3 retools/tools/sysco/mmsc_aout.py IMAGE --tsv OUT.tsv
 
 For Ghidra, make the table as above, then import the image as a raw binary with language `x86:LE:32:default` and run `retools/ghidra/import/mmsc-aout/ghidra_scripts/MmscAoutImport.java` as a pre-script with the image path and the table as arguments. The script replaces the raw block with the three segments, labels 4,591 symbols and creates 3,328 functions before analysis. `retools/ghidra/import/mmsc-aout/tests/run-ghidra.sh` runs this headless, and `check.py` there compares the result with the parser: blocks, a function at every global text symbol and the symbol count. It passed on 6.5.30 (3 blocks, 3,589 functions after analysis, 4,591 imported symbols, no failures). Ghidra's decompiler logged two warnings during analysis (an unreadable address and a flow into unmapped memory, in two routines); their cause was not investigated.

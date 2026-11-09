@@ -1,1 +1,0 @@
-../retools/scripts/sysco/sysco_tables.py

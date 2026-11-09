@@ -1,1 +1,0 @@
-../retools/scripts/sysco/l2_list.py

@@ -1,6 +1,6 @@
 # L2 `power` command: the send queue, its order and its spacing
 
-Read from the L2 daemon `bin/l2` of L2 1.44.0 (IRIX 6.5.30 `l2.bin`, carved with [../../scripts/l2_extract.py](../../scripts/l2_extract.py), listed with [../../scripts/l2_list.py](../../scripts/l2_list.py)). Addresses are the daemon's load addresses. Grades follow [AGENTS.md](../../AGENTS.md). Only 1.44.0 was read; the other three held L2 sets were not compared for this routine.
+Read from the L2 daemon `bin/l2` of L2 1.44.0 (IRIX 6.5.30 `l2.bin`, carved with [../../retools/tools/sysco/l2_extract.py](../../retools/tools/sysco/l2_extract.py), listed with [../../retools/tools/sysco/l2_list.py](../../retools/tools/sysco/l2_list.py)). Addresses are the daemon's load addresses. Grades follow [AGENTS.md](../../AGENTS.md). Only 1.44.0 was read; the other three held L2 sets were not compared for this routine.
 
 The L2 does not power bricks itself. Every `power`, `reset` and status request is a short text command (`power up`, `power up hold`, `power down`, `power check`, `reset`) sent in a router packet to the L1 of each selected brick, and the order and spacing live in the L2. The L2's own `power` command is the entry for `0x10013ba8`; its eight sub-commands are a jump table at `0x1002c350`.
 

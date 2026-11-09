@@ -1,6 +1,6 @@
 # The L2 daemon: modes, devices, flash, NVRAM and sockets
 
-Read from L2 1.44.0, `/stand/sysco/bin/l2` (248,344 bytes, sha256 `9923b1ee573c28154a012e5510a6f42ad420c956299ff4388f189df464835f32`) and its libraries `libmain`, `libapi`, `libsys`, `libRouter`, `libIRouter`, `libdrivers` under `/stand/sysco/lib/` (listing in [rootfs-1.44.0.tsv](rootfs-1.44.0.tsv)). Addresses are virtual addresses inside the named file: the executable at `0x10000000`, the libraries from 0. All are stripped, so routine names below are either dynamic-symbol names (the libraries export most of their routines) or descriptions of mine, written `sub_<addr>` when only an address names it. `scripts/l2_list.py` regenerates the listings I read.
+Read from L2 1.44.0, `/stand/sysco/bin/l2` (248,344 bytes, sha256 `9923b1ee573c28154a012e5510a6f42ad420c956299ff4388f189df464835f32`) and its libraries `libmain`, `libapi`, `libsys`, `libRouter`, `libIRouter`, `libdrivers` under `/stand/sysco/lib/` (listing in [rootfs-1.44.0.tsv](rootfs-1.44.0.tsv)). Addresses are virtual addresses inside the named file: the executable at `0x10000000`, the libraries from 0. All are stripped, so routine names below are either dynamic-symbol names (the libraries export most of their routines) or descriptions of mine, written `sub_<addr>` when only an address names it. `retools/tools/sysco/l2_list.py` regenerates the listings I read.
 
 Grades: established means the instructions and data were read and the statement follows; inferred means a reading from names, strings or partial code.
 

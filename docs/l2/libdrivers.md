@@ -1,6 +1,6 @@
 # libdrivers: the flash access library
 
-Read in full from L2 1.44.0, `/stand/sysco/lib/libdrivers.ppclinux.so` (14,036 bytes; the same bytes ship in 1.48.0). All 16 exported routines and the two data tables were read, with the listing made by `scripts/l2_list.py`. Addresses are virtual addresses in the library (text from `0x1668`). Grades as in [../../AGENTS.md](../../AGENTS.md). The per-routine rows are in [exports.tsv](exports.tsv). This note corrects the flash paragraph of [daemon.md](daemon.md) where it differs.
+Read in full from L2 1.44.0, `/stand/sysco/lib/libdrivers.ppclinux.so` (14,036 bytes; the same bytes ship in 1.48.0). All 16 exported routines and the two data tables were read, with the listing made by `retools/tools/sysco/l2_list.py`. Addresses are virtual addresses in the library (text from `0x1668`). Grades as in [../../AGENTS.md](../../AGENTS.md). The per-routine rows are in [exports.tsv](exports.tsv). This note corrects the flash paragraph of [daemon.md](daemon.md) where it differs.
 
 ## The window
 

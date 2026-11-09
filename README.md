@@ -21,13 +21,11 @@ The firmware images are not tracked. [IRIX_FILES.md](IRIX_FILES.md) says which f
 
 ## Running the tools
 
-The host needs Podman, git and python3. Everything else runs in a container built from `tools/Containerfile`:
+The host needs Podman, git and python3. Everything else runs in a container built from `retools/tools/Containerfile`:
 
-    tools/re-run python3 scripts/inventory.py        # host-tool ELF tables, root manifest check
-    tools/re-run python3 scripts/sysco_tables.py     # firmware tables and the firmware coverage block
-    tools/re-run python3 scripts/check_claims.py     # compare documented claims with the images
-    scripts/check-leaks.sh                           # forbidden names and trailers
+    tools/re-run python3 retools/tools/inventory.py        # host-tool ELF tables, root manifest check
+    tools/re-run python3 retools/tools/sysco/sysco_tables.py     # firmware tables and the firmware coverage block
 
-`tools/setup-clone.sh --root DIR` links `root/` to a directory you filled. The shared tooling lives in the `retools/` submodule (`git submodule update --init`); `tools/` and `scripts/` link into it. Install the push check once per clone with `ln -s ../../scripts/pre-push .git/hooks/pre-push`.
+`tools/setup-clone.sh --root DIR` links `root/` to a directory you filled. The shared tooling lives in the `retools/` submodule (`git submodule update --init`); shared tools are `retools/tools/`, the ones specific to this repository `retools/tools/sysco/`. Only `tools/re-run` and `tools/ghidra-export.py` link into it. `scripts/` holds this repository's own scripts and configuration.
 
-Licence: BSD-3-Clause, see [LICENSE](LICENSE). The scripts descend from gr4's and keep its notice in [scripts/LICENSE-gr4](scripts/LICENSE-gr4).
+Licence: BSD-3-Clause, see [LICENSE](LICENSE). The scripts descend from gr4's and keep its notice in [retools/tools/LICENSE-gr4](retools/tools/LICENSE-gr4).

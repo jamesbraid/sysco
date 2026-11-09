@@ -1,6 +1,6 @@
 # Pre-container L1 images (6.5.9 to 6.5.15)
 
-The L1 images of IRIX 6.5.9 to 6.5.15 are not containers. Each file is one ColdFire package, and the package starts with the same 32-byte header as the later packages. This note records what the six early images share, where each one's vector table starts, and what was not settled. The sets are in [firmware-versions.md](../firmware-versions.md) and [controllers.md](../controllers.md). The reader that parses them is `scripts/sysco_tables.py` (`pre_container_package`).
+The L1 images of IRIX 6.5.9 to 6.5.15 are not containers. Each file is one ColdFire package, and the package starts with the same 32-byte header as the later packages. This note records what the six early images share, where each one's vector table starts, and what was not settled. The sets are in [firmware-versions.md](../firmware-versions.md) and [controllers.md](../controllers.md). The reader that parses them is `retools/tools/sysco/sysco_tables.py` (`pre_container_package`).
 
 Everything below was measured from the shipped images. Grades follow [AGENTS.md](../../AGENTS.md).
 
@@ -52,7 +52,7 @@ Six L1 images come before the container layout of [package-container.md](package
 
 The 6.5.16 image is the first container, with a package count at `0x2c` (see [package-container.md](package-container.md)).
 
-Grades follow [AGENTS.md](../../AGENTS.md) section 3. Everything here was read from the six files. The reader finds the vector table with `pre_container_body` in the shared `scripts/sysco/sysco_tables.py`; the last-address and loader-table checks below were run on all six files separately.
+Grades follow [AGENTS.md](../../AGENTS.md) section 3. Everything here was read from the six files. The reader finds the vector table with `pre_container_body` in the shared `retools/tools/sysco/sysco_tables.py`; the last-address and loader-table checks below were run on all six files separately.
 
 ## Header
 

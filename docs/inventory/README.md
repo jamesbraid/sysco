@@ -1,6 +1,6 @@
 # Inventory tables
 
-Generated; do not edit. `scripts/inventory.py` writes the host-tool tables, `scripts/sysco_tables.py` the firmware tables. A run of both leaves `git status --short docs` empty when `root/` matches `scripts/inventory-root.sha256`.
+Generated; do not edit. `retools/tools/inventory.py` writes the host-tool tables, `retools/tools/sysco/sysco_tables.py` the firmware tables. A run of both leaves `git status --short docs` empty when `root/` matches `scripts/inventory-root.sha256`.
 
 ## Statuses
 
@@ -8,7 +8,7 @@ Generated; do not edit. `scripts/inventory.py` writes the host-tool tables, `scr
 - `located`: the item's address, offset or hash is cited in a note under `docs/`.
 - `undocumented`: neither.
 
-## Firmware tables (`scripts/sysco_tables.py`)
+## Firmware tables (`retools/tools/sysco/sysco_tables.py`)
 
 | Table | One row per | Columns |
 |---|---|---|
@@ -23,6 +23,6 @@ Generated; do not edit. `scripts/inventory.py` writes the host-tool tables, `scr
 
 Candidate routine entries are found by byte pattern at even offsets (a `link.w a6` prologue, or the operand of an absolute `jsr`), so some are data. A candidate is a place to look, not a function count.
 
-## Host-tool tables (`scripts/inventory.py`)
+## Host-tool tables (`retools/tools/inventory.py`)
 
 `binaries.tsv` and `functions.tsv` (ELF rows for `flashsc`, `l1cmd` and `flashpbay`), and the empty `mmio`, `tokens`, `ioctls`, `ucode` and `spec-registers` tables the shared script always writes. The host tools are stripped MIPS N32 executables; function rows come from their dynamic symbols. `flashsvf` and `l2cmd` have section headers the ELF reader rejects and are not in scope yet.

@@ -4,7 +4,7 @@
 Usage: UV_CACHE_DIR=$HOME/.cache/uv uv run --no-project --with pyelftools python -I \\
            scripts/l2_routine_diff.py --old DIR_OLD --new DIR_NEW [--out docs/version-diffs]
 
-DIR_OLD and DIR_NEW are the output directories of scripts/l2_extract.py (kernel.bin and rootfs/).
+DIR_OLD and DIR_NEW are the output directories of retools/tools/sysco/l2_extract.py (kernel.bin and rootfs/).
 Each ELF present in both roots is read through its program headers. Routines are the defined
 dynamic symbols of type FUNC with a nonzero size: the L2 binaries are stripped, so the exported
 routines are the only named ones. A routine is compared by the hash of its bytes. Internal
@@ -13,7 +13,7 @@ routines of the daemon are not covered.
 Writes docs/version-diffs/cd-ist-3.24-l2-routines.tsv (one row per changed, added or removed
 exported routine, and one row per changed ELF with no routine change) and prints the counts.
 The kernel is compared by 4 KB block when the two kernels are the same length, else by block
-match counts, as scripts/version_diff.py does for the 1.x sets.
+match counts, as retools/tools/sysco/version_diff.py does for the 1.x sets.
 """
 import collections
 import hashlib

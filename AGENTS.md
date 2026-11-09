@@ -35,15 +35,13 @@ Never reword an entry to change its grade. An entry written quickly and not yet 
 - No commit trailers of any kind, no generated-by banners, no sign-off lines.
 - Firmware binaries stay in the ignored `root/`; listings, decompiled text and tables derived from them are committed, under `docs/l1/disasm/<arch>-<version>-<package>/` (and `docs/l2/` for the PowerPC image when it lands).
 
-`scripts/check-leaks.sh` enforces the name rules on every tracked file and commit message, and the pre-push hook runs it.
-
 ## 5. Tables and the finish line
 
-`scripts/inventory.py` (shared byte for byte with the sibling repositories) measures the host tools and checks `root/` against `scripts/inventory-root.sha256`. `scripts/sysco_tables.py` measures the firmware: images, packages, functions per package, request codes, I/O registers and protocols. Both write to [docs/inventory/](docs/inventory/README.md); regenerate in the same commit as any note that explains an item.
+`retools/tools/inventory.py` (shared byte for byte with the sibling repositories) measures the host tools and checks `root/` against `scripts/inventory-root.sha256`. `retools/tools/sysco/sysco_tables.py` measures the firmware: images, packages, functions per package, request codes, I/O registers and protocols. Both write to [docs/inventory/](docs/inventory/README.md); regenerate in the same commit as any note that explains an item.
 
 A row is **understood** when a curated entry in `docs/l1/` (functions, request codes, I/O registers, protocols, packages) gives it a grade, a role and a locator, and its byte checks pass. A row is **located** when its address, offset or hash is cited in a note. The repository is finished when every table reaches understood or has an unknown entry with its routes listed.
 
-Curated entries that name a package are checked against the bytes on every run: a handler address outside the body, or a `check` cell that does not match, fails `scripts/sysco_tables.py`.
+Curated entries that name a package are checked against the bytes on every run: a handler address outside the body, or a `check` cell that does not match, fails `retools/tools/sysco/sysco_tables.py`.
 
 ## 6. Roles
 
@@ -52,7 +50,7 @@ Curated entries that name a package are checked against the bytes on every run: 
 
 ## 7. Shared toolset
 
-The container definitions, wrappers, Ghidra scripts, inventory, fact sheet, claim checker, pre-push hook and leak check are the `retools/` submodule (sgi-retools); the paths under `tools/` and `scripts/` link into it. Change them there and move the pin; do not fork them here; sysco-specific code lives in its own files (`scripts/sysco_tables.py`, `scripts/inventory-config.json`).
+The container definitions, wrapper, Ghidra scripts, inventory and fact sheet are the `retools/` submodule (sgi-retools): shared tools in `retools/tools/`, device-specific ones in `retools/tools/sysco/`. Nothing here links into it except `tools/re-run` and `tools/ghidra-export.py` (see [tools/README.md](tools/README.md)), and there is no local leak check or pre-push hook. Change the shared tools there and move the pin; do not fork them here; sysco-specific code lives in its own files (`retools/tools/sysco/sysco_tables.py`, `scripts/inventory-config.json`).
 
 ColdFire work in Ghidra uses the `68000:BE:32:Coldfire` language; PowerPC uses `PowerPC:BE:32:default` with the MPC860 internal memory map set by hand; ARM uses `ARM:LE:32:v4`. The listings under `docs/l1/disasm/` were made with a 68040-mode decoder, which covers the ColdFire ISA_A subset the compiler emitted; data mixed into the text decodes as `.dw` words or implausible instructions, so confirm a routine's shape from its prologue and return.
 

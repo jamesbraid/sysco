@@ -29,7 +29,7 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | [unclassified-regions.md](unclassified-regions.md), [unguarded-indexed-anchors.md](unguarded-indexed-anchors.md) | what is known about code and data the linear listing cannot place |
 | public evidence: [ip45-board-fitment.md](ip45-board-fitment.md), [ip45-mbus-public-fitment.md](ip45-mbus-public-fitment.md), [ip45-mbus-public-hardware.md](ip45-mbus-public-hardware.md), [mbus-ds1780-candidate.md](mbus-ds1780-candidate.md), [usb-controller-public-hardware.md](usb-controller-public-hardware.md), [usb-bus-public-evidence.md](usb-bus-public-evidence.md), [usb-l2-revision.md](usb-l2-revision.md), [usb-public-host-drivers.md](usb-public-host-drivers.md) | what published manuals, data sheets and posts say about the board; hints, not findings, each with the software route that would settle it |
 
-Curated tables, read by `scripts/sysco_tables.py` (every row carries a grade and a locator):
+Curated tables, read by `retools/tools/sysco/sysco_tables.py` (every row carries a grade and a locator):
 
 | Table | Rows |
 |---|---|

@@ -1,6 +1,6 @@
 # The L2's configuration request to an L1, the L1's reply, and how the daemon turns it into a route
 
-Read from L2 1.44.0 (`/stand/sysco/bin/l2` and `/stand/sysco/lib/libmain.ppclinux.so`, listings by `scripts/l2_list.py`; addresses are virtual addresses in the named file, the executable at `0x10000000`) and, for the L1 half, from L1 1.44.0 package 1 (`Fuel/PE/O300 1MB`, first bank). The L1 package for a C-brick of a larger system was not read; the L1 half is established for package 1 only. Grades as in [../../AGENTS.md](../../AGENTS.md).
+Read from L2 1.44.0 (`/stand/sysco/bin/l2` and `/stand/sysco/lib/libmain.ppclinux.so`, listings by `retools/tools/sysco/l2_list.py`; addresses are virtual addresses in the named file, the executable at `0x10000000`) and, for the L1 half, from L1 1.44.0 package 1 (`Fuel/PE/O300 1MB`, first bank). The L1 package for a C-brick of a larger system was not read; the L1 half is established for package 1 only. Grades as in [../../AGENTS.md](../../AGENTS.md).
 
 The question this note answers: the daemon logs that it has no receiver for a response addressed to a brick, and lists no L1 in its configuration, although an L1 is attached over USB. The route to an L1 is not made by the USB attach. It is made by the L1's reply to the daemon's own recurring request.
 

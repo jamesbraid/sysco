@@ -39,7 +39,7 @@ Which findings below apply to which image:
 Established (run on all thirteen). Needs Python 3 and nothing outside its standard library.
 
 1. Take `l2.bin` from the product's install path above. Do not strip or alter it.
-2. `python3 scripts/l2_extract.py l2.bin OUT --list OUT.tsv`.
+2. `python3 retools/tools/sysco/l2_extract.py l2.bin OUT --list OUT.tsv`.
 3. `OUT/kernel.bin` is the inflated kernel: the first `1f 8b 08` in the file starts one gzip stream (at `0x4a218` in 1.44.0); the script inflates it with a gzip-window decompressor and notes where the stream ends.
 4. The cramfs follows the gzip stream: the script searches forward from the stream's end for the cramfs magic (`28 cd 3d 45`, big-endian). Every offset inside this cramfs counts from 512 bytes **before** the superblock, so the script slices the file from `superblock - 512` and reads the root directory entry at `512 + 64`. A reader that counts from the superblock lands 512 bytes early. Stock cramfs tools were not tried; the byte order is big-endian, so a little-endian host's native cramfs reader is not expected to take it.
 5. File data is one zlib stream per 4 KiB block, preceded by a table of big-endian end offsets; the script inflates each and trims to the inode's size.

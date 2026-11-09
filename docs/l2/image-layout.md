@@ -4,7 +4,7 @@ Read from the L2 image of IRIX 6.5.30 (`/usr/cpu/firmware/sysco/l2.bin`, firmwar
 
 ## Carving it
 
-`scripts/l2_extract.py l2.bin OUTDIR [--list FILE]` needs only the Python standard library. It writes `OUTDIR/kernel.bin` (the inflated kernel) and `OUTDIR/rootfs/` (the file tree). `--list` writes one row per entry: path, kind, mode, size, sha256, link target or device numbers. The 1.44.0 listing is [rootfs-1.44.0.tsv](rootfs-1.44.0.tsv). `scripts/l2_list.py ELF` makes an annotated PowerPC listing of one user-space executable or library: it names PLT and text-relocation targets, resolves constants built with `lis` plus `addi`, and shows strings. It uses capstone and pyelftools from the toolchain image.
+`retools/tools/sysco/l2_extract.py l2.bin OUTDIR [--list FILE]` needs only the Python standard library. It writes `OUTDIR/kernel.bin` (the inflated kernel) and `OUTDIR/rootfs/` (the file tree). `--list` writes one row per entry: path, kind, mode, size, sha256, link target or device numbers. The 1.44.0 listing is [rootfs-1.44.0.tsv](rootfs-1.44.0.tsv). `retools/tools/sysco/l2_list.py ELF` makes an annotated PowerPC listing of one user-space executable or library: it names PLT and text-relocation targets, resolves constants built with `lis` plus `addi`, and shows strings. It uses capstone and pyelftools from the toolchain image.
 
 ## Layout of l2.bin (1.44.0)
 

@@ -17,7 +17,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [power-queue.md](power-queue.md) | the `power` command: the send queue and its runner, the sender's class order, and the order and spacing of `fast` and `slow` power-up and of power-down |
 | [router-packet.md](router-packet.md) | the router packet in memory: segment record, the builder, writer and free routines of `libIRouter` |
 
-Curated tables (rows carry a grade and a locator; they are not yet read by `scripts/sysco_tables.py`):
+Curated tables (rows carry a grade and a locator; they are not yet read by `retools/tools/sysco/sysco_tables.py`):
 
 | Table | Rows |
 |---|---|
@@ -28,8 +28,8 @@ Curated tables (rows carry a grade and a locator; they are not yet read by `scri
 
 ## Tools
 
-- `scripts/l2_extract.py l2.bin OUTDIR [--list FILE]` carves the kernel and the cramfs with the standard library only.
-- `scripts/l2_list.py ELF [--out FILE]` makes the annotated PowerPC listing the notes cite (needs capstone and pyelftools, in the toolchain image). It resolves lazy-PLT and text-relocation targets and constants built from `lis` plus `addi`. A branch to a stripped local routine appears as `sub_<address>`.
+- `retools/tools/sysco/l2_extract.py l2.bin OUTDIR [--list FILE]` carves the kernel and the cramfs with the standard library only.
+- `retools/tools/sysco/l2_list.py ELF [--out FILE]` makes the annotated PowerPC listing the notes cite (needs capstone and pyelftools, in the toolchain image). It resolves lazy-PLT and text-relocation targets and constants built from `lis` plus `addi`. A branch to a stripped local routine appears as `sub_<address>`.
 
 ## Running the user space without hardware
 

@@ -2,7 +2,7 @@
 
 Each seven-package L1 container of IRIX 6.5.30 (version 1.44.0) and patch SG0007149 (version 1.48.1) holds two ARM S3C2410 Linux packages. Their outer layout is in [package-container.md](package-container.md). This note lays out the kernel and filesystem of each, names the brick types and chassis each one can configure, and lists the user-space programs by name. It does not read the programs.
 
-The file-by-file listing is [../inventory/arm-linux-files.tsv](../inventory/arm-linux-files.tsv). `scripts/sysco_tables.py` writes it, and the `detail` column of [../inventory/packages.tsv](../inventory/packages.tsv) carries the layout figures below.
+The file-by-file listing is [../inventory/arm-linux-files.tsv](../inventory/arm-linux-files.tsv). `retools/tools/sysco/sysco_tables.py` writes it, and the `detail` column of [../inventory/packages.tsv](../inventory/packages.tsv) carries the layout figures below.
 
 Grades: **established** means measured from the package bytes or the decompressed kernel or filesystem. **inferred** means read from names or partial evidence, with the reasoning given. **unknown** means nothing read so far settles it. Hashes are SHA-256 of the exact bytes named.
 

@@ -1,1 +1,0 @@
-../retools/scripts/sysco/personality_diff.py
