@@ -3,7 +3,7 @@
 
 Usage: scripts/mmsc_commands.py [--out docs/mmsc/commands.tsv]
 
-Run from the repository root inside the toolchain container (tools/re-run python3
+Run from the repository root inside the toolchain container (retools/tools/re-run python3
 scripts/mmsc_commands.py). Reads root/6.5.30/usr/cpu/firmware/mmscfw.bin, the MMSC
 firmware image (x86 a.out, OMAGIC, with its symbol table), and writes one TSV row per entry
 of the command table (the `_cmdList` array in the image's symbol table). The output is

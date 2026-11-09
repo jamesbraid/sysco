@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """File-level diff of the Linux L1 cramfs roots between two sets.
 
-Usage: tools/re-run python3 scripts/linux_file_diff.py [--out docs/version-diffs]
+Usage: retools/tools/re-run python3 scripts/linux_file_diff.py [--out docs/version-diffs]
 
 Reads the generated table docs/inventory/arm-linux-files.tsv (one row per CramFS entry of each
 Linux L1 package, with type, mode, size, sha256 and symlink target). Each pair below is compared

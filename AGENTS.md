@@ -50,7 +50,7 @@ Curated entries that name a package are checked against the bytes on every run: 
 
 ## 7. Shared toolset
 
-The container definitions, wrapper, Ghidra scripts, inventory and fact sheet are the `retools/` submodule (sgi-retools): shared tools in `retools/tools/`, device-specific ones in `retools/tools/sysco/`. Nothing here links into it except `tools/re-run` and `tools/ghidra-export.py` (see [tools/README.md](tools/README.md)), and there is no local leak check or pre-push hook. Change the shared tools there and move the pin; do not fork them here; sysco-specific code lives in its own files (`retools/tools/sysco/sysco_tables.py`, `scripts/inventory-config.json`).
+The container definitions, wrapper, Ghidra scripts, inventory and fact sheet are the `retools/` submodule (sgi-retools): shared tools in `retools/tools/`, device-specific ones in `retools/tools/sysco/`. Nothing here links into it except `retools/tools/re-run` and `tools/ghidra-export.py` (see [tools/README.md](tools/README.md)), and there is no local leak check or pre-push hook. Change the shared tools there and move the pin; do not fork them here; sysco-specific code lives in its own files (`retools/tools/sysco/sysco_tables.py`, `scripts/inventory-config.json`).
 
 ColdFire work in Ghidra uses the `68000:BE:32:Coldfire` language; PowerPC uses `PowerPC:BE:32:default` with the MPC860 internal memory map set by hand; ARM uses `ARM:LE:32:v4`. The listings under `docs/l1/disasm/` were made with a 68040-mode decoder, which covers the ColdFire ISA_A subset the compiler emitted; data mixed into the text decodes as `.dw` words or implausible instructions, so confirm a routine's shape from its prologue and return.
 

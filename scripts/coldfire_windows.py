@@ -10,7 +10,7 @@
 POOL.json is a list of {"image", "start", "size"} rows. Rows are ordered by image key and address, then cut into
 batches of --batch-size; --index picks one batch (from 1). The binary root is `root/` of this repository.
 
-Every statement is produced from scripts/hostfacts.py output (accesses, calls, blocks, exits, warnings and the
+Every statement is produced from retools/tools/hostfacts.py output (accesses, calls, blocks, exits, warnings and the
 decoded instruction list) for the exact window bytes. Nothing is hand-written. An entry never admits a function:
 it states whether a reached call in a complete decoded caller window of the same payload targets the entry address,
 and stays open when none does. The validate command re-extracts every window and checks each line of the written
@@ -482,7 +482,7 @@ def load_batch(pool_path, index, batch_size):
 
 
 def open_images(batch, work):
-    hf = _load('hostfacts', os.path.join(REPO, 'retools', 'scripts', 'hostfacts.py'))
+    hf = _load('hostfacts', os.path.join(REPO, 'retools', 'tools', 'hostfacts.py'))
     index = build_index(sorted({q['image'] for q in batch}), work)
     return {k: Image(hf, index[k]) for k in sorted({q['image'] for q in batch})}
 

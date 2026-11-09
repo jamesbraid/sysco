@@ -2,9 +2,9 @@
 
 Everything runs in a container built from `retools/tools/Containerfile`, so the host needs only Podman, git and python3.
 
-    tools/re-run python3 retools/tools/inventory.py [--update-root-manifest]
-    tools/re-run python3 retools/tools/sysco/sysco_tables.py
-    tools/re-run --ghidra-export ROOT_FILE ...    # Ghidra decompile export, see re-run's header
+    retools/tools/re-run python3 retools/tools/inventory.py [--update-root-manifest]
+    retools/tools/re-run python3 retools/tools/sysco/sysco_tables.py
+    retools/tools/re-run --ghidra-export ROOT_FILE ...    # Ghidra decompile export, see re-run's header
 
 - `inventory.py` is shared with the sibling repositories. Here it reads the stripped MIPS N32 host tools (`flashsc`, `l1cmd`, `flashpbay`) and checks `root/` against `scripts/inventory-root.sha256`. Its configuration is `scripts/inventory-config.json`.
 - `sysco_tables.py` is specific to this repository. It cuts the L1 containers into packages, finds candidate routine entries in each ColdFire body, joins the curated tables in `docs/l1/` to the images, checks their addresses and byte patterns, and writes `docs/inventory/` and the firmware block of `docs/coverage.md`.

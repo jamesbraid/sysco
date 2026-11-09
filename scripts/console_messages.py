@@ -20,7 +20,7 @@ Curated roles are in docs/l1/console-message-roles.tsv, keyed by call address. A
 curated role keeps the status "extracted": the arguments were read by this script, and nothing
 else about the call was read.
 
-Run inside the toolchain container, from the repository root (tools/re-run python3 ...). The
+Run inside the toolchain container, from the repository root (retools/tools/re-run python3 ...). The
 output is deterministic.
 """
 import bisect

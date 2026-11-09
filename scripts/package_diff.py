@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Routine and request-code diff of paired L1 packages in two shipped sets.
 
-Usage: tools/re-run python3 scripts/package_diff.py [--out docs/version-diffs]
+Usage: retools/tools/re-run python3 scripts/package_diff.py [--out docs/version-diffs]
 
 Pairs are chosen by package label, not by position: a package in the newer set is compared with
 the package of the older set that carries the same product label. The pairs are listed in PAIRS;

@@ -5,7 +5,7 @@ The typed command set of the MMSC firmware, read from the command table in the 6
 [scripts/mmsc_commands.py](../../scripts/mmsc_commands.py) into [commands.tsv](commands.tsv),
 one row per table entry. Handler bodies for ten commands are read in [command-routines.md](command-routines.md). Regenerate it after any change to the script:
 
-    tools/re-run python3 scripts/mmsc_commands.py
+    retools/tools/re-run python3 scripts/mmsc_commands.py
 
 ## The table and the dispatcher (established)
 
