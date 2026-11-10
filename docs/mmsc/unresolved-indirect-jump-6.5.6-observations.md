@@ -16,6 +16,8 @@ Decoded records outside known edges remain in the full facts. Their effects are 
 Those records are not established as dead, data or globally unreachable.
 No destination, extra call or argument is recovered from raw words or unmodeled paths.
 
+Resolved afterwards: the jump is a table dispatch on the console mode word, read in [console-modes.md](console-modes.md). The findings below are the earlier, table-less observations and are kept as recorded.
+
 The [full facts](disasm/unresolved-indirect-jump-6.5.6-observations-facts.txt) preserve the full window and native warnings.
 
 - `_csSysIn`, `6.5.6/usr/cpu/firmware/mmscfw.bin`, `0x11f8c8`.

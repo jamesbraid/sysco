@@ -100,15 +100,6 @@ Software-now list, in the order to take them:
   the guarded destinations against the image relocation records, then read any newly
   reached paths.
 
-## MMSC unresolved indirect jump
-
-- **Route: software now.** Which destinations and effects follow the unresolved
-  transfer in `_csSysIn` in `6.5.6/usr/cpu/firmware/mmscfw.bin`?
-  The [bounded unknown finding](mmsc/unresolved-indirect-jump-6.5.6-observations.md) preserves the full selected symbol window and known-edge observations.
-  Tried: selected full symbol span, native known-edge analysis, a.out symbol metadata
-  and bounded contexts. The indirect destination remains unresolved. Next: resolve
-  the guarded destination set from the exact image, then read any newly reached paths.
-
 ## ARM library console dispatch
 
 - **Route: software now.** Which taken destinations and effects follow the unresolved
