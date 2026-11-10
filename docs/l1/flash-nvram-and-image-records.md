@@ -23,14 +23,16 @@ Read from L1 1.44.0, package 1 (`Fuel/PE/O300 1MB image`, body sha256 `9db44f3bb
 | 3 | `0x0006fd4c` | used length |
 | 4 | pointer to `20060717182038` | build stamp, the string the loader compares |
 | 5 | pointer to `1.44.0` | version string |
-| 6 | `0xffe7fd4c` | end of the used area |
-| 7 | `0x58487f20` | balancing word (the 12-word sum is zero) |
-| 8 | `0xa83e0909` | 32-bit big-endian word sum of the copy from its start to this record (computed here: equal) |
+| 6 | `0xffe7fd4c` | pointer to a 16-byte table that the status routine calls the relocation table (zero word sum; see below) |
+| 7 | `0x58487f20` | balancing word (the 12-word sum is zero); no code reads it as data (below) |
+| 8 | `0xa83e0909` | 32-bit big-endian word sum of the first `word 3` bytes of the copy (computed here: equal); compared by the status routine (below) |
 | 9 | pointer to the string `%4A?` | accepted brick letters |
 | 10 | `1` | (not decoded) |
 | 11 | pointer to `Fuel/PE/O300 1MB image` | image label |
 
-  Only the 12-word sum is verified by the loader (see [the board contract](board-boot-contract.md)). That word 8 equals the sum of the copy's bytes is established by computation; whether any updater or the `flash` task compares it was not read (the task-16 operations `0x0073`, `0x0074` and task 19's `0x0092`-`0x0094` are unread).
+  Only the 12-word sum is verified by the loader (see [the board contract](board-boot-contract.md)). That word 8 equals the sum of the copy's bytes is established by computation; the status routine below is the code that compares it.
+
+  **Who reads the record (established, package 1, 1.44.0).** The record is reached only through the first word of each program copy (`0xffe10000` holds `0xffe7fd1c`, `0xffe80000` holds `0xffeefd1c`; no other instruction or table names the record address). Two routines read it. The loader's pair (`0xffe008ac`, `0xffe008fc`) takes that first word as the record pointer, requires it to be a word-aligned address in `0xffe00000`-`0xffefffff`, takes the halfword at offset 2 as the length and requires the word sum over that length to be zero. The status routine `0xffe3be5c` (called twice from the flash-status handler at `0xffe3c23c` and `0xffe3c2e0`, once per copy) repeats those checks, and in addition: requires the length to be at least `0x20`, requires word 6 to be nonzero (else it logs that the relocation table is missing), requires the 16-byte table at word 6 to sum to zero over the length in its second word, and compares the sum of the first `word 3` bytes of the copy with word 8, accepting a zero word 8 as "no image checksum". The handler then reads words 4 and 5 (build stamp and version pointers) from the record the routine returns, and nothing else. **Word 7 is therefore read only inside the zero-sum loops**, as part of the twelve words, and by no instruction as an operand of its own: its value is whatever makes the sum zero, so a writer of the record computes it last. Word 6 points to a table, not to the end of the used area: the table (`0x00000001`, `0x00000010`, `0xfff8ffef`, `0x00070000` at `0xffe7fd4c`) is checked as a relocation table by the routine's own diagnostic text, and the code does not use its contents beyond the checksum (what the four words mean is unknown; a test that would settle it is to find the code that consumes the table when a copy is relocated, which no routine of package 1 was found to do). Not read: the status routines of the other four ColdFire packages.
 - **Request `0x0072`** (flash status) lists the images (established in [protocols.tsv](protocols.tsv)): its eleven or thirteen values come from this record and from the loader's retained record, which an emulator can supply by providing the flash contents.
 
 ## Settings storage in the NVRAM window
