@@ -40,8 +40,8 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#1	6	0x4000	ffe137e8	general_req_inventory	established	reply 0 then one text field per inventory record; minus 104 when empty
 6.5.30:l1#1	6	0x4002	ffe13d76	general_req_controller_reboot	established	no reply; logs and restarts the controller
 6.5.30:l1#1	16	0x0072	ffe3c166	flash_req_status	inferred	first int at most 4; reply lists the flash images
-6.5.30:l1#1	16	0x0073	ffe3c4c2	flash_req_0x73	inferred	flash operation, not read
-6.5.30:l1#1	16	0x0074	ffe3c41e	flash_req_0x74	inferred	flash operation, not read
+6.5.30:l1#1	16	0x0073	ffe3c4c2	flash_program	established	offset and data in; programs halfwords after a range check; result integer, plus failing address on error (-0x514 range, -0x515 verify)
+6.5.30:l1#1	16	0x0074	ffe3c41e	flash_erase	established	offset and length in; erases the overlapping sectors except the protected span; result integer, plus failing address on error (-0x514 range or protected, -0x517 erase failed)
 6.5.30:l1#1	19	0x0092	ffe3f610	power_bay_flash_req_0x92	inferred	exactly one argument
 6.5.30:l1#1	19	0x0093	ffe3f7e0	power_bay_flash_req_0x93	inferred	exactly one argument
 6.5.30:l1#1	19	0x0094	ffe3f75a	power_bay_flash_req_0x94	inferred	exactly one argument
