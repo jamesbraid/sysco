@@ -1,4 +1,4 @@
-// generated from sysco 76d848c380c5 MCF5206E_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 2d72588a0ce9 MCF5206E_DECODE.h - do not edit, regenerate in sysco
 //!
 //! On-chip registers of the ColdFire MCF5206e that the L1 firmware uses.
 //! Offsets are from the module base register.

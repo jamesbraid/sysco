@@ -1,4 +1,4 @@
-// generated from sysco 76d848c380c5 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 2d72588a0ce9 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Board-level bit layouts and constants of the ColdFire L1 firmware:
 //! expander bytes, flash commands, quad UART, clock window.
