@@ -86,13 +86,3 @@ Software-now list, in the order to take them:
 - **Route: other firmware versions.** What are the sensor tables of the Twister, Chimera, PE and `A` personalities and of packages 0, 1, 3 and 5? Counts for those blocks were not read, and routine addresses differ per package.
 - **Route: software now.** What fills the module records above 0 when no L2 is attached, and what the lower USB read returns with no host? What a C-brick does with the power-state notice from a peer is answered (it stores the word in the peer's module record; the automatic power-up countdown is the one consumer found): [l1/power-reset-cbrick.md](l1/power-reset-cbrick.md) sections 6 and 7, which also read the C-brick reset, soft-reset and NMI bits. Step: read the callers of the record-apply routine `0xffe31f18` and the task-14 response table `0xffe33dcc` in package 0, and the USB state byte writers. Which Bedrock or XBridge input each reset bit reaches is not in any image (the expanders are labelled `BEDROCK CNTL 1`, `BEDROCK CNTL 2` and `XBRIDGE CONTROL` only); a published chip pin description is the route.
 
-
-## ARM library NVRAM dispatch
-
-- **Route: software now.** Which taken destinations and effects follow the unresolved
-  transfers in `nvramSet` and `nvramGet`?
-  The [bounded unknown findings](l1/arm-library-nvram-unresolved-dispatch-1.44.0.md) retain the full selected spans and known-edge observations.
-  Tried: native analysis of both full ELF symbol spans, raw instructions and contexts,
-  and ELF symbol and relocation metadata. The indexed PC-load destinations remain unresolved. Next: resolve
-  the guarded destinations against the image relocation records, then read any newly
-  reached paths.

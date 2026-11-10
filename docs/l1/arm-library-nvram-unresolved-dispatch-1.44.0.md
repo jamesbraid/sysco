@@ -95,3 +95,30 @@ The [complete facts](disasm/arm-1.44.0-libraries/nvram-unresolved-dispatch-facts
   Four-byte load: target `sp -0x18`, base register `r11`, raw displacement `-0x14` (`ldr` at 0x11560).
   Known-edge return (`ldm` at 0x11568): recorded r0 is `[sp-24]`. This does not settle the unresolved taken destination.
   The decoded records from 0x1156c to 0x11570 are outside the modeled known local edges from the entry. Their effects are not listed, and the unresolved transfer prevents an all-path conclusion.
+
+## Resolved: the key dispatch in `nvramGet` and `nvramSet`
+
+Both routines are in `/stand/sysco/lib/libmain.armlinux.so` (package `6.5.30:l1#4`, 1.44.0). The indexed loads at `0x10e44` (`nvramSet`) and `0x112c4` (`nvramGet`) are `ldrls pc, [pc, key-1, lsl 2]` over a 25-entry table of code addresses that sits in the text right after the load (`0x10e4c` and `0x112cc`); the words already hold the linked addresses (read from the file bytes). A key outside 1 to 25 takes the instruction after the load, which returns -1 in `nvramGet` (`0x11558`). Both routines first check bit 0 of a loaded-flag word and call an initialiser (`0x355c`, argument 1) if it is clear. Established.
+
+`nvramGet` (targets `0x11330`-`0x11544`). Each target loads the base pointer of the NVRAM image from a global and returns one field of it. Offsets are bytes from that base; a "bit" is a bit of byte 5.
+
+| Key | Returns |
+|---|---|
+| 1 | byte at +4 |
+| 22 | byte at +3 |
+| 2, 5, 9, 16, 21 | bit 0, 1, 2, 3, 4 of byte 5 |
+| 3 | address of the string at +8 |
+| 4 | address of the string at +0x18 |
+| 6, 7, 8 | words at +0x38, +0x3c, +0x40 |
+| 10, 11, 12, 13, 14, 15 | words at +0x44, +0x48, +0x4c, +0x50, +0x54, +0x58 |
+| 17 | address of the string at +0x5c |
+| 18 | byte at +0xac |
+| 19 | address of the string at +0xb0 |
+| 20 | word at +0xc0 |
+| 23, 24 | bytes at +0xc4, +0xc5 |
+| 25 | word at +0xc8 |
+
+The field offsets and key numbers match the L2 daemon's table ([../l2/daemon.md](../l2/daemon.md#nvram)) for keys 3, 4, 6 to 8, 10 to 15, 17 to 20 and 23 to 25, so the two controllers share the layout; the five single-bit keys sit in byte 5 here (bit 0 for key 2 up to bit 4 for key 21), where the L2 table counts them in the big-endian word at +4 (the same five positions, written in the other byte order's numbering; matching positions inferred, not compared bit by bit). Key 26 exists only in the L2 table.
+
+`nvramSet` (targets `0x10eb0`-`0x11220`). The 25 targets are entry points into one straight-line sequence of field stores, in address order `1, 22, 2, 3, 4, 5, 16, 6, 7, 8, 25, 9, 10, 11, 12, 13, 15, 14, 17, 19, 18, 20, 21, 23, 24`; the stores of a key write the field offsets listed above (string keys copy through the library's string-copy helpers, `0x3748` and `0x3754`; single-bit keys use `bic`/`orr` on byte 5). A key therefore stores its own field and, by falling through, the fields of every key placed after it, from the staged values it reads from global variables, and the sequence ends in two calls (`0x33c4`, `0x12124`) that were not followed here. What the final calls do (inferred: checksum and write-back) is the remaining step. Test that settles it: read `0x33c4` and `0x12124`.
+
