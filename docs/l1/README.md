@@ -5,6 +5,7 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | Note | Subject |
 |---|---|
 | [package-container.md](package-container.md), [coldfire-package-sections.md](coldfire-package-sections.md), [boot-memory-base.md](boot-memory-base.md) | the seven-package container, the reset region, the loader candidates, RAMBAR and MBAR values |
+| [../l1-image-layout.md](../l1-image-layout.md) | the 1.44.0 container and its ColdFire packages 0, 1, 2, 3 and 5 side by side: headers, flat memory map, banks and records, the reset loader's bank selection, what the host updater writes and where, and what a C-brick needs to boot package 0 or 2 |
 | [pre-container-layout.md](pre-container-layout.md) | the six early L1 images (6.5.9 to 6.5.15): one ColdFire package per file, the header words, where each vector table starts, and the early request dispatch |
 | [arm-linux-packages.md](arm-linux-packages.md) | the two ARM Linux L1 packages of each set: kernel and CramFS layout, brick labels and bitstreams, user-space programs by name |
 | [arm-programs.md](arm-programs.md) | the ARM Linux L1 helper programs read routine by routine (watchdog, clock output, memory access, FPGA load, reset button, UART tests, request client) and the `l1` program's start-up, FPGA bitstream choice and GPIO device |
