@@ -1,5 +1,6 @@
 [project]
 name = "sysco"
+plugin = "scripts/mmsc_commands_defs.py"
 
 [rust]
 out_dir = "generated/requests"
@@ -52,3 +53,34 @@ prefix = "L2R"
 module = "l2_router_requests"
 rust_prefix = "L2R_"
 description = ["Request codes of the L2 controller router library.", "Codes are unique within the library."]
+
+[[headers]]
+file = "MMSC_CMD_DECODE.h"
+prefix = "MMSC"
+module = "mmsc_commands"
+rust_prefix = "MMSC_"
+description = [
+  "Typed command table of the multi-module system controller firmware:",
+  "the dispatch position of each command word and the user authority levels.",
+]
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "user authority levels"
+doc = "docs/mmsc/commands.md"
+regex = '`BASIC` (\d+), `SUPERVISOR` (\d+),\s+`SERVICE` (\d+)'
+binds = [["EN", "AUTH.level", "basic", 1], ["EN", "AUTH.level", "supervisor", 2], ["EN", "AUTH.level", "service", 3]]
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "level above 999 required"
+doc = "docs/mmsc/commands.md"
+regex = 'level above (999) required'
+binds = [["EN", "GATE.level", "above_999", 1]]
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "level above 499 required"
+doc = "docs/mmsc/commands.md"
+regex = 'level above (499) required'
+binds = [["EN", "GATE.level", "above_499", 1]]
