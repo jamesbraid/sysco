@@ -69,9 +69,8 @@ Software-now list, in the order to take them:
 
 ## MSC and ELSC host side
 
-- **Route: software now.** What does the controller answer to each request in [elsc-host-requests.md](elsc-host-requests.md)? The words of `pwr q`, `rsw` and `nic`, the two words of `pwr r` and what `fl` and `ok` stand for there, the reply `err pwr_state`, and whether an idle `get` returns an empty reply are fixed only on the host side. Next: read the MSC client in the MMSC image (`mmscfw.bin`, module `elsc`, lane 2 in [controllers.md](controllers.md)), which speaks the same set from the controller's side.
+- **Route: missing binary or release.** What does the controller answer to each request in [elsc-host-requests.md](elsc-host-requests.md)? The words of `pwr q`, `rsw` and `nic`, the two words of `pwr r` and what `fl` and `ok` stand for there, the reply `err pwr_state`, and whether an idle `get` returns an empty reply are fixed only on the host side. Route tried: the MMSC image's MSC client, which speaks the serial dialect of the same controller and sends only `fsc`, `ech`, `mod`, `pas` and `pwr <word>` ([mmsc/msc-client.md](mmsc/msc-client.md)); it does not carry these replies. Step: obtain the MSC (ELSC) firmware, which no scanned medium ships.
 - **Route: missing binary or release.** The kernel-side callers of the driver routines. `elsc_rpwr_query` reads a byte at the absolute address -15069 that no relocation names, `elsc_command` takes a second argument that only `elsc_process` sets to 1, and the byte at slave 0x20 (`elsc_ust_read`, `elsc_ust_write`) has no stated meaning. The IP27 kernel is not in `root/`, so the callers are not readable; obtain the IP27 kernel image of a 6.5 release.
-- **Route: version diff.** Whether the instruction streams of `elsc.o` in 6.5.5, 6.5.6, 6.5.9 and 6.5.10 behave like the 6.5.7 copy beyond the identical routine, string and callee lists ([elsc-host-requests.md](elsc-host-requests.md#versions)). Next: compare the routines whose sizes differ in 6.5.5 (`_elsc_hbt`, `_elscuart_flush`, `_elscuart_puts`).
 
 ## Media
 
