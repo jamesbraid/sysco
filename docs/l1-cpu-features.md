@@ -1,0 +1,145 @@
+# L1 CPU features beyond plain ColdFire
+
+Which MCF5206e instructions and control features the five ColdFire packages of the 1.44.0 L1 container use, with the address of each use. The question this answers: does software that runs this firmware need a core that is specifically an MCF5206e, or is a plain ColdFire integer core enough?
+
+Short answer, with grades in the sections below:
+
+- The integer code is the base ColdFire instruction set (ISA_A) plus the 32-bit hardware multiply and divide. **Established** for every instruction reached by control flow; **inferred** for the unreached remainder (see [Coverage](#coverage-and-method)).
+- The MAC unit is never used, in any package. No line-A word occurs at an instruction boundary in reached code. The core has no use for MAC state (`ACC`, `MACSR`, `MASK`). There is no EMAC in the manual for this part either.
+- What is specific to the part is not an instruction: it is four `MOVEC` control-register codes (`CACR`, `VBR`, `RAMBAR`, `MBAR`), written once each at start-up, plus the ColdFire exception frame, the single supervisor stack and the `HALT` instruction.
+- No instruction outside the base set was found: no `TRAP`, `STOP`, `CPUSHL`, `WDDATA`, `WDEBUG`, `PULSE`, `TAS`, `SATS`, `MOV3Q`, `MVS`, `MVZ`, `BYTEREV`, `FF1`, `LINK.L` or long-displacement branch at an instruction boundary in reached code.
+
+Source: IRIX 6.5.30 `l1.bin` (container SHA-256 `c355c542554a41b23b69dca4c201c566e8352e8f9fb870d2365c74cdd8ab0c0f`, L1 1.44.0). Package numbers are container ranges 0 to 6 as in [package-container.md](l1/package-container.md). Addresses are load addresses (`0xffe00000` base). Every package holds two code banks; bank 2 sits `0x70000` (1 MB packages) or `0xf0000` (2 MB packages) above bank 1. Addresses below are in the first bank or the shared first-stage loader; add the bank offset for the copy. The manual is the MCF5206e User's Manual, MCF5206EUM/D rev. 1, cited by printed page, with the rev. 3 errata where noted.
+
+## Packages scanned
+
+| Range | Label | Body bytes | Loader candidates (entry) | Reached instructions, bank 1 plus loader | Code bytes in that region |
+|---|---|---:|---|---:|---|
+| 0 | Base 1MB | 982,376 | `0xffe10000` (`0xffe10b02`), `0xffe80000` (`0xffe80b02`) | 93,398 | 288,752 of 524,288 (55.1%) |
+| 1 | Fuel/PE/O300 1MB | 982,368 | `0xffe10000` (`0xffe10b02`), `0xffe80000` (`0xffe80b02`) | 94,355 | 291,828 of 524,288 (55.7%) |
+| 2 | MIPS 2MB | 1,755,520 | `0xffe10000` (`0xffe10b02`), `0xfff00000` (`0xfff00b02`) | 118,431 | 366,488 of 1,048,576 (35.0%) |
+| 3 | Legacy 2MB | 1,772,576 | `0xffe10000` (`0xffe10a92`), `0xfff00000` (`0xfff00a92`) | 128,073 | 395,634 of 1,048,576 (37.7%) |
+| 5 | 2MB | 1,778,732 | `0xffe10000` (`0xffe10ab2`), `0xfff00000` (`0xfff00ab2`) | 135,262 | 419,178 of 1,048,576 (40.0%) |
+
+Ranges 4 and 6 are the two ARM (S3C2410) Linux packages; the MCF5206e never executes them, so they have no ColdFire features to list ([package-container.md](l1/package-container.md)). Entry addresses are the third word of each candidate record (established, read at each candidate).
+
+The first-stage code (`0xffe00400` to `0xffe00b3f`) is byte-identical in packages 0 and 1; in packages 2, 3 and 5 it differs from package 1 in exactly three 32-bit constants (`0xffe008c4`, `0xffe009b0`, `0xffe00ae4`: the upper search bound `0xfff00000` becomes `0xfffffff8`). Every opcode word at every reached bank-1 instruction is identical at the same offset in bank 2 (92,871, 93,828, 117,904, 127,546 and 134,735 instructions compared in packages 0, 1, 2, 3 and 5; zero differences). Established.
+
+## Control-register use (`MOVEC`)
+
+`MOVEC Rn,Rc` is opcode `0x4e7b` with the control-register code in the low 12 bits of the extension word. Twelve `MOVEC` instructions are reached in each package, all register-to-control writes; no `MOVEC` read (`0x4e7a`) exists at an instruction boundary. The manual describes `CACR`, `RAMBAR` and `MBAR` as write-only supervisor registers (pp. 4-6, 5-2, 8-7), which agrees. Established for all five packages.
+
+| Rc | Register | Value written | First-stage loader | Program entry, bank 1 |
+|---|---|---|---|---|
+| `0xc04` | `RAMBAR` | `0x30100001` (SRAM base `0x30100000`, valid, no address-space mask bits, not write-protected) | `0xffe0040c` (`move.l #0x30100000,d0; ori.l #1,d0`) | `0xffe10b0e` (packages 0, 1, 2), `0xffe10a9e` (3), `0xffe10abe` (5) |
+| `0xc0f` | `MBAR` | `0x10000001` (peripheral block at `0x10000000`, valid, all address spaces enabled) | none | `0xffe10b2e` (0, 1, 2), `0xffe10abe` (3), `0xffe10ade` (5) |
+| `0x801` | `VBR` | `0x30100000` | `0xffe0089c` (from `A3`) | `0xffe10b50` (0, 1, 2), `0xffe10ae0` (3), `0xffe10b00` (5) |
+| `0x002` | `CACR` | `0x01000000` (CINV), then `0x80000000` (CENB) | none | `0xffe10b88` and `0xffe10b92` (0, 1, 2), `0xffe10b18` and `0xffe10b22` (3), `0xffe10b38` and `0xffe10b42` (5) |
+| `0x004`, `0x005` | `ACR0`, `ACR1` | never written | none | none |
+
+Bank 2 repeats the program-entry rows at the bank offset. The immediate values come from the `move.l #imm,dN` (and `ori.l #1,dN`) just before each `MOVEC`; established by reading those instructions in every package.
+
+Notes on the values:
+
+- `RAMBAR` and `MBAR` both carry only the valid bit in their low half. With the valid bit set and the mask bits clear, the SRAM block and the peripheral block answer in supervisor and user, code and data space (manual pp. 5-2, 8-7). `MBAR` base bits `[31:14]` are the valid address bits per the rev. 3 errata (item for 8.3.2.1); `0x10000000` satisfies that.
+- Two `CACR` writes: invalidate first, then enable (manual p. 4-6: the cache must be invalidated after reset before it is enabled). Every other `CACR` field is zero: default cacheable, no buffered writes, no default write protection, `CLNF` zero, noncacheable bursts off. The cache is an instruction cache only (manual p. 4-1: 4 KB, direct-mapped), so data accesses, including those to the peripheral block, are not affected.
+- `ACR0` and `ACR1` stay at their reset value (zero) in every package: no region is marked noncacheable. Established as absence: every reached `MOVEC` extension word is one of the four codes above.
+- The SRAM at `0x30100000` holds the vector table, the first stack and RAM variables ([board-boot-contract.md](l1/board-boot-contract.md)). The manual gives 8 KB (p. 5-1); the image uses `0x30100000` to `0x30101fff` at most (stack top `0x30101800`, values near `0x30101990`).
+
+## Vector base and exception frame
+
+- **Established.** The first-stage loader copies `0x400` bytes from the word after a candidate's first word (the candidate's `SP`, reset PC and 254 handler words) to `0x30100000` (`0xffe0085c`, loop `0xffe00894` to `0xffe0089a`), loads `A3 = 0x30100000`, executes `MOVEC A3,VBR` (`0xffe0089c`) and calls the candidate entry (`jsr (a4)` at `0xffe008a0`). The candidate then sets `VBR` again from `move.l #0x30100000,d0`. The `VBR` low 20 bits read as zero, so `0x30100000` is a legal 1 MB-aligned base (manual p. 3-5).
+- **Established.** In the candidate's copy of the table, every handler word from vector 2 to 255 except vector 29 points at a four-byte `bsr.w` stub; every stub branches to one common routine (`0xffe10fc8` in packages 0, 1 and 2, `0xffe10f58` in package 3, `0xffe10f78` in package 5; in package 1 the vector number is recovered from the pushed return address, `sub.l #0xffe10bd0`, `asr.l #2`, `addq.l #1`). Vector 29 (level 5 autovector) points at a real handler: `0xffe10ff4` in packages 0, 1, 2, `0xffe10f84` in package 3, `0xffe10fa4` in package 5. It stores `0xff` to `0x10000111` (the timer 1 event register, manual p. 14-3 register map) and jumps to `0xffe4032e` (package 1), which [board-boot-contract.md](l1/board-boot-contract.md) describes as the level-5 timer tick path. The loader's own table in the packaged vector region (`0xffe0042c` on) routes every vector to `0xffe00824`, which pushes the vector number and executes `HALT` (`0xffe0083e`).
+- **Established.** The kernel builds start-up frames for new tasks by hand in the ColdFire layout: program counter longword, then the status word `0x2000`, then the format/vector word `0x4000` (format 4, vector 0) (`0xffe41228`, `0xffe41230`, `0xffe41238` in package 1). The ColdFire frame is the format/vector word and `SR` in the first longword and `PC` in the second (manual p. 3-7, figure 3-5, table 3-2). A 68000-style frame (`SR` then `PC`) would break this. That the frames are consumed by `RTE` is **inferred** from the register-restore and `RTE` sequences below. Tasks start with `SR = 0x2000`: supervisor, interrupt priority zero. A second task-setup site stores `0x2000` into a control-block field (`0xffe54a4e`, package 1); that this is the same saved `SR` is **inferred** from the field being written next to the stack pointer and entry address.
+- **Established.** `RTE` is reached at four sites per bank in every package (package 1: `0xffe413c0`, `0xffe41696`, `0xffe416be`, `0xffe41872`), each after restoring the saved register block or dropping stack words (package 1 `0xffe413ba` to `0xffe413c0`: `lea 0x3c(a7),a7; addq.l #4,a7; rte`). The other packages place them at: package 0 same offsets; package 2 `0xffe47430`, `0xffe47706`, `0xffe4772e`, `0xffe478e2`; package 3 `0xffe4d098`, `0xffe4d36e`, `0xffe4d396`, `0xffe4d54a`; package 5 `0xffe508b0`, `0xffe50b86`, `0xffe50bae`, `0xffe50d62`.
+- No reached instruction uses a word-sized index register or a scale factor of 8, and no full-format extension word occurs. The manual says those raise an address error on this part (p. 3-9). Established for reached code.
+
+## Supervisor mode and the status register
+
+- **Established.** The only immediate ever written to `SR` is `0x2700` (supervisor, interrupt mask 7): 16 sites per package in bank 1 plus the loader (package 1: reset `0xffe00416`, program entry `0xffe10b1e`, then the kernel's interrupt-disable and interrupt-entry paths from `0xffe411ac` to `0xffe41840`). Seven further `move.w d0,sr` and eight `move.w d1,sr` restore a value saved earlier by `move.w sr,dN` (14 such saves per package in bank 1; 15 restores).
+- **Inferred.** The image never leaves supervisor mode: every `SR` write is either the `0x2700` immediate or a restore of an `SR` value read from `SR` itself, and the two task-frame builders above use `0x2000`. The restored values come from register contents, so a user-mode value could in principle arrive through a task frame built from data I did not trace. Test in [Unknowns](#unknowns).
+- **Established.** There is no `STOP` word (`0x4e72`) at any even offset of any body, and the idle path of the kernel spins in a loop ([board-boot-contract.md](l1/board-boot-contract.md)). No `TRAP`, no `MOVE USP`, no user stack pointer use.
+
+## `HALT`, `ILLEGAL` and the deliberate faults
+
+`HALT` is `0x4ac8` (a 68040-mode disassembler does not decode it; every other reached word was cross-checked against that disassembler and agrees on instruction length, with `HALT` the only word it cannot decode). It suspends the core (manual pp. 1-13, 15-5; supervisor-only by default).
+
+| Package | `HALT` sites (bank 1 and loader) | Role |
+|---|---|---|
+| all | `0xffe0083e` | end of the loader's own exception routine `0xffe00824`; all 254 handler words of the packaged vector table are `bsr.w` stubs to it (established, all five packages) |
+| all | `0xffe00b1c` | end of the loader; **inferred** from the branch structure (`0xffe00b06` to `0xffe00b1c`) to be reached when no valid candidate is found or the candidate returns |
+| 0 | `0xffe56a6c` | late-start guard, below |
+| 1 | `0xffe566bc` | late-start guard, below |
+| 2 | `0xffe76ed0` | late-start guard |
+| 3 | `0xffe69a08` | late-start guard |
+| 5 | `0xffe78764` | late-start guard |
+
+The late-start guard (package 1, `0xffe566a8` to `0xffe566bc`): after the routine that arms the software watchdog, the code tests bit 7 of the byte at offset `0x41` from the peripheral base (`SYPCR`, bit `SWE`, manual p. 8-13) and executes `HALT` when it is clear. **Inferred** role: an assertion that the watchdog got armed; it is not reached on a normal start because the arming routine (`0xffe562d4`) sets `SYPCR` to `0xfe` when its once-only flag at `0x3000030c` is nonzero, and no reached instruction writes that flag except by that routine clearing it. The flag's initial image value is a data read, not re-checked here.
+
+`ILLEGAL` (`0x4afc`) appears once per bank, directly after an unconditional branch inside a small shift-and-compare helper (package 1: `0xffe7ee7a`; package 0 `0xffe7eeaa`; package 2 `0xffea8d8a`; package 3 `0xffeae0ae`; package 5 `0xffeb013e`). It is not on any reached path. Established.
+
+## MAC and EMAC
+
+The MCF5206e has a MAC unit (manual pp. 1-1, 1-5, 3-5; the rev. 3 errata add that the 5206e MAC has no fractional operand support). It has no EMAC. Every MAC instruction and every move to or from `ACC`, `MACSR` and `MASK` lives in line A; the manual says any non-MAC line-A word raises vector 10 (p. 3-9).
+
+- **Established, reached code.** Across all five packages, no reached instruction has a word whose top nibble is `0xa`. Line-A words occur only as operand words of reached instructions (low halves of absolute addresses, immediates, displacements) and in unreached bytes. Bank 1 plus loader, packages 0, 1, 2, 3, 5: 851, 878, 714, 370 and 781 line-A words inside reached instructions' operands; 345, 353, 1,059, 1,520 and 1,223 in unreached bytes.
+- **Inferred, unreached bytes.** In package 1, 329 of the 353 unreached line-A words are the low half of a 32-bit address or constant, the preceding word being `0xffe0` to `0xffff`, `0x3000`, `0x1000` or zero. The other 24 are in six places: a table of address pairs (`0xffe44968`, `0xffe449d8`), an immediate that the scan mis-aligned (`0xffe494c2`, inside `move.l #0x3c9ba5e3`), the 256-entry CRC table (`0xffe62a60` to `0xffe62c36`, which [board-boot-contract.md](l1/board-boot-contract.md) already identifies), two words at `0xffe7dbae` and the image metadata word at `0xffe7fd3c`. Package 0 has the same three non-address groups. In packages 2, 3 and 5, 846, 1,395 and 1,084 unreached line-A words sit mostly in dense tables of ascending 16-bit offsets paired with small flag words (for example package 2 `0xffeabe1e`-`0xffeac0ae`, `0xffeb031e`-`0xffeb04ce`; package 3 `0xffe7ee02`-`0xffe7fa42`, `0xffeb149a`-`0xffeb17d6`; package 5 `0xffeb392a`-`0xffeb3d72`), a pattern no instruction stream produces.
+- The MAC model state (`ACC`, `MACSR`, `MASK`) has no reader or writer anywhere in reached code.
+
+## Instruction classes the core must execute
+
+Counts are instructions reached in bank 1 plus the loader, per package (0, 1, 2, 3, 5), so about half the whole-image figure. All forms are the ColdFire encodings; the 68k-only forms never appear (checked: every reached word decoded by a decoder written for the base set plus MAC, and every reached instruction length equals the length a 68040-mode disassembler gives).
+
+| Class | Counts | Notes |
+|---|---|---|
+| `MULS.L` (32x32 to 32, signed) | 268, 272, 362, 561, 655 | No unsigned long multiply, no 64-bit result form |
+| `DIVS.L`, `DIVU.L` quotient | 79+19, 79+19, 82+23, 87+27, 101+23 | 32/32 only |
+| `REMS.L`, `REMU.L` (remainder to a different register) | 63+4, 63+4, 68+4, 67+13, 78+11 | same opcode, remainder register differs from quotient register |
+| `MULU.W`, `MULS.W` | 4 and 1 in every package | |
+| `EXTB.L` | 249, 250, 259, 287, 290 | `0x49c0` |
+| `EXT.W`, `EXT.L` | 46 and 162/157/191/147/155 | |
+| `SWAP`, `Scc`, `ADDX`, `NEGX.L` | 15, 31 to 43, 8, 2 | |
+| shifts `ASR`, `LSL`, `LSR` | register forms only, long size | no `ASL` in reached bank-1 code |
+| `LINK.W`, `UNLK`, `MOVEM.L`, `LEA`, `PEA`, `JSR`, `JMP`, `BSR`, `Bcc` | thousands | `LINK.L`, `MOVEM.W` and long-displacement branches have zero reached instances |
+| `NOP` | 1, 1, 9, 9, 9 | |
+| `MOVE` to `SR` and from `SR` | 31 and 14 | see supervisor section |
+
+Multiply and divide use the extension word with bits 15, 10 and 9-3 zero (32-bit forms only); [board-boot-contract.md](l1/board-boot-contract.md) cites 376 divide sites in package 1 from its linear listing, while this scan reaches 126+159+38+8 = 331 `DIVx.L`/`REMx.L` instructions over both banks (half that per bank). The two counts are not reconciled; see [Unknowns](#unknowns).
+
+The manual lists these instructions and says the 5206e adds hardware divide and the MAC to the MCF5206 (pp. 1-1, 1-5, 1-13 to 1-15, table 1-4: `EXTB`, `MULS`/`MULU`, `DIVS`/`DIVU`, `REMS`/`REMU`, `HALT`, `MOVEC`, `MOVE from SR`). **Inferred** from that wording: a core limited to the original MCF5206 instruction set would not decode `MULS.L`, `DIVx.L` and `REMx.L`, which the image uses in several hundred places.
+
+## What is not used
+
+Reached-code opcode positions with zero hits in every package: line A (which also covers `MOV3Q`); `WDDATA` (`0xfbxx`), `WDEBUG` (`0xfbcx`), `CPUSHL` (`0xf42x`) and every other line-F word; `MVS` and `MVZ` (`0x7xxx` with bit 8 set); `TAS` and `SATS` words; `BYTEREV` and `FF1` words; `PULSE`; `TRAPF`; `STOP`; `TRAP`; `LINK.L`; `MOVEC` from a control register. Line-F words (`0xffxx` erased-flash fill and high address halves) are common as operand words and in unused flash, never as opcodes. One reached word each in packages 2 and 5 decodes as line-F (`0xfff07e88` and `0xfff16592`, the upper half of an absolute address inside an instruction of bank 2); neither has a bank-1 counterpart, and the scan enters there only through a spurious root. Treated as scan noise, not as code. Three more landings of the same kind exist, all in bank 2: a `MOVE (d16,A4),SR` word at `0xfff38280` in package 2 (the low half of a `move.l` absolute address) and two `MULU.L` words at `0xfff42f2e` and `0xfff42f34` in package 5. Bank 1 has none, and the mirror check shows bank 2's real instruction stream equals bank 1's.
+
+## What the image asks of a core
+
+Established for reached code, inferred for the unreached remainder:
+
+- Decode the base ColdFire set as listed above, including `MULS.L`, `DIVS.L`, `DIVU.L`, `REMS.L`, `REMU.L` (32-bit forms), `MULS.W`, `MULU.W`, `EXTB.L`, `MOVE` to and from `SR`, `RTE` and `HALT`. Nothing outside that set, and in particular no MAC, no `MOV3Q`/`MVS`/`MVZ`/`SATS`/`BYTEREV`/`FF1`, and no `TRAP` or `STOP`.
+- Accept `MOVEC` writes to `CACR` (`0x002`), `VBR` (`0x801`), `RAMBAR` (`0xc04`) and `MBAR` (`0xc0f`). Both base registers need their valid bit: the peripheral block (`0x10000000`) and the SRAM (`0x30100000`) are reached through them, and the loader reads the reset-status byte at `0x10000040` before `MBAR` is written ([board-boot-contract.md](l1/board-boot-contract.md)).
+- Build and unwind the ColdFire exception frame (format/vector word and `SR`, then `PC`), fetch vectors from `VBR + 4 * n`, and run everything in supervisor mode with the single stack pointer.
+- Treat `HALT` as a stop that needs a reset to leave; the image uses it only as an end-of-line fault stop.
+
+So the instruction decoder does not need to be MCF5206e-specific: a base-set core with hardware multiply and divide is enough. What is specific to the 5206e is the register file around the core (`MBAR` and `RAMBAR` with their valid bits, the instruction-cache enable and invalidate handshake in `CACR`), not any instruction. A core limited to the original MCF5206 set, without the 32-bit multiply and divide, would not decode the `MULS.L` and `DIVS.L` the kernel executes (inferred from the manual's description of what the 5206e adds).
+
+## Coverage and method
+
+A decoder for the base set plus MAC (instruction lengths and operand-extension rules from the manual's addressing-mode tables) was run by control flow from: the reset vector and all 254 handler words of the packaged table; the first-stage loader; each candidate entry and each of its 254 handler words; every `JSR`/`BSR`/`JMP`/`Bcc` target; every code address that appears as an immediate, `LEA`/`PEA` operand or aligned 32-bit data word and that starts a run of valid instructions; and the case blocks of every `jmp d8(pc,Xn)` jump table (table length from its first entry). Reached code was then checked word for word against the mirrored bank. Cross-check: for every reached instruction a 68040-mode disassembler (the public Capstone library) gives the same length. Zero length mismatches over 186,461, 188,363, 236,447, 255,931 and 269,061 reached instructions (packages 0, 1, 2, 3, 5, both banks). It cannot decode `HALT` (four sites per package), and cannot decode the few noise landings above.
+
+Reached code is 55% of the 1 MB packages' bank-1 region and 35% to 40% of the 2 MB packages'. The rest is text, tables, erased flash (0xff fill is 10.7% of the 1 MB bodies and 21% to 23% of the 2 MB bodies) and code not reached. The reach loop left two undecodable words in each 1 MB package and three or four in each 2 MB package (both banks), all at text or data (for example the two bytes `4e 56` that begin a text string at `0xffe5b154` in package 1), none a real instruction.
+
+## Unknowns
+
+| Unknown | Why it stays open | Software test that settles it |
+|---|---|---|
+| Whether any unreached code uses MAC or another extension instruction | 45% to 65% of each bank is not reached by control flow; the unreached line-A and line-F words are explained as data (above) but not proven | Extend the reached set to a fixed point over indirect calls: list every `jsr (An)` and `jmp (An)` site, trace each register to its last load (RAM variable, task descriptor, static table), add the resolved targets as roots, and re-run the opcode-position scan. Settled when the root set stops growing and the scan still reports only `MOVEC`, `HALT` and `RTE` |
+| Whether the image ever runs in user mode | `SR` restores take register values saved from `SR`; the second task-setup site stores `0x2000` through a control-block pointer I did not follow to the frame | Find every store to the task-control-block field at offset `0x70` (package 1, set up at `0xffe54a52`) and every read of it; confirm each value is `0x2000` or a saved `SR` and that the frame builder at `0xffe41230` is the only reader. Then confirm no `move.w #imm,sr` has an immediate with bit 13 clear (already true: only `0x2700`) |
+| Divide count against the earlier figure of 376 | The earlier count came from a retained linear listing that is not in this repository | Count the `DIVS.L`/`DIVU.L`/`REMS.L`/`REMU.L` opcode words (`0x4c40` class with a valid extension word) in the body of package 1 and compare address by address with the 331 here; every difference is either data (a `0x4c4x` word without a valid extension) or code the reach missed |
+| Behaviour of the other firmware versions | Only 1.44.0 bytes were read; the 1.4.1 to 1.62.1 sets listed in [firmware-versions.md](firmware-versions.md) share the structure but were not scanned | Run the same scan on each version's container and diff the `MOVEC`, `HALT` and `RTE` site lists |
+| Whether the late-start guard `HALT` is ever executed | Reached only if the watchdog-enable bit is clear after arming; no reached path was shown to do that | Search all reached stores to `SYPCR` (`MBAR+0x41`, any register-relative store) for a value with bit 7 clear; if none, the guard is dead on every start |
+
+## Sources
+
+- MCF5206e User's Manual, MCF5206EUM/D rev. 1 (1998): table 1-4 (instruction set summary, pp. 1-12 to 1-15), section 3.2.4.2 (`VBR`, p. 3-5), section 3.4 (exception frame, p. 3-7), sections 3.5.2 and 3.5.3 (address error, line A and line F, p. 3-9), chapter 4 (`CACR`, `ACR`, pp. 4-5 to 4-8), chapter 5 (`RAMBAR`, pp. 5-1 to 5-3), chapter 8 (`MBAR` and `SYPCR`, pp. 8-6 to 8-13), table 15-5 (control register map, p. 15-22), section 15.2.1 (`HALT`, p. 15-5). Rev. 3 errata, items 3.2.2 and 8.3.2.1.
+- [board-boot-contract.md](l1/board-boot-contract.md), [coldfire-package-sections.md](l1/coldfire-package-sections.md), [package-container.md](l1/package-container.md), [mcf5206e-peripherals.md](l1/mcf5206e-peripherals.md): reset order, loader candidates, register values read earlier for package 1.
