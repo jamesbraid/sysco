@@ -69,6 +69,10 @@ So the "nine-byte header" in the published reading of the boot firmware is the L
 3. **Unpartitioned mode** (layout "has partitions" byte 0): any brick gives 0.
 4. **Rack-wide layout** (flag bit 15 of the count halfword set, ids listed as rack fields): a request for brick `0x2041` is masked to `0x0040` (type and slot bits dropped) and matches a table entry `0x0040`. The table side is compared verbatim, so a rack-wide table must hold rack-only identifiers (inferred from the loop at `0x53d4` to `0x5418`, which masks only the request).
 5. **Unknown code** (0 or 9): result descriptor holds -3, count 1, a 28-byte reply, and the log line `l2part task received unknown request %d`.
+6. **No `l2part` registered** (the first seconds after the daemon starts, or any run level but 5). The request fails in the router with `-0x260` and the daemon's send routine answers the requester itself: a 20-byte (`0x14`) class-1 packet with the request's code and sequence, **status byte 8** (wire offset 3: `(-(-0x260)) mod 100`), and no descriptors; it also logs `NO RECEIVER`. Established, `sub_10022e50` in `bin/l2` read in full ([../l2-l1-conversation.md](../l2-l1-conversation.md#122-when-a-request-cannot-be-delivered-the-error-response)); the earlier statement in that note that no reply reaches the sender was wrong. For the boot firmware's reader, block byte `0x23` is then 8, not 0.
+7. **Reply cannot be routed back** (the sender's rack and slot are in no port's table): the reply's own send fails with `NO RECEIVER`; a failed class-1 packet gets no further answer. Established for the rule, inferred for this case.
+
+The probes that would confirm vectors 1 to 7 against the running daemon are P10 to P12 in [../l2-l1-conversation.md](../l2-l1-conversation.md#124-probes-for-a-scripted-peer-to-settle-what-static-reading-cannot).
 
 ## The database body: producer side
 
