@@ -52,7 +52,7 @@ The selected full symbol spans, native facts, raw words, bounded contexts and EL
 symbol, segment and relocation metadata were read. These bounded routes do not claim
 that every possible source was exhausted.
 
-The [open question](../open-questions.md#arm-library-console-dispatch) records the remaining software route for `L2CfgMSetConsole`.
+`L2CfgMSetConsole` is resolved in the last section of this note.
 
 The [complete facts](disasm/arm-1.44.0-libraries/protocol-config-paths-facts.txt) preserve the full native listings for all selected spans.
 
@@ -2264,3 +2264,15 @@ The [complete facts](disasm/arm-1.44.0-libraries/protocol-config-paths-facts.txt
   `ldm` at 0x10534 reports r0 = `[sp-92]` on the modeled known edges.
   Known return boundary (`ldm` at 0x10534): the modeled local edges end before the retained trailing region 0x10538 to 0x1055c (exclusive). This does not prove complete code-only function extent.
   The decoded records from 0x10538 to 0x10558 are outside the modeled known local edges from the entry. Their effects are not listed, without establishing runtime or global nonexecution.
+
+## `L2CfgMSetConsole`: the console routing table
+
+Read in `/stand/sysco/lib/libmain.armlinux.so` of package `6.5.30:l1#4` (1.44.0, ARM), `0xeab4` to `0xed40`, with the jump table at `0xeb98` read from the file bytes (the 77 relocation records of the span are the table's words, which already hold the linked targets). Established.
+
+- **Arguments.** `cfg` (the configuration object), `console` (a number, or -1), and `addr` (a brick address word). In `addr`, bits 27:18 are the rack, bits 17:12 the slot (the same packing the L2 power queue uses, [../l2/power-queue.md](../l2/power-queue.md)).
+- **Console -1.** Clears the second word of each of 256 eight-byte entries of the table whose base pointer is at `cfg + 0x5b4`, and returns 0.
+- **Otherwise.** It looks the brick up with `L2CfgMFindBrickCfg(cfg, rack, slot, 0)`; no such brick returns 0. It then dispatches on the brick's type character (byte 5 of the brick record, minus `0x30`, a 77-entry table, `0xeb90`). Two targets exist. For the type characters `0 3 4 5 6 7 8 9 @ A B C F L M O Q |` the routine requires byte 6 of the brick record to equal `console` (else it returns 0), stores `addr` in the second word of entry `console mod 256` and returns `addr`. For every other character in the range (`1 2 : ; < = > ? D E G H I J K N P R S T U V W X Y Z [ \ ] ^ _` and the lowercase letters and `{`), it returns 0 and changes nothing. Characters outside the table's range (below `0` or above `|`) also return 0 through the bounds test at `0xeb8c`.
+- **Reading.** The table maps a console number to the address of the compute brick that owns it, and only compute-class bricks (the same type characters the L2 sorts into its compute class) can own one; the brick must itself report that console number. The first word of each entry is not touched here.
+
+The earlier "unknown" status came from the indexed `pc` load of the type dispatch having no taken destination in the native model; its two destinations are `0xecd8` (store) and `0xeccc` (return 0).
+
