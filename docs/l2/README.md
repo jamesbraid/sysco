@@ -13,6 +13,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [config-request-reply.md](config-request-reply.md) | the daemon's recurring configuration request to an L1, the L1's reply, how the reply becomes a route (and why `NO RECEIVER` without it), the request period, and the flashed-version check |
 | [../l2-board-contract.md](../l2-board-contract.md) | the board the image expects: the core, boot stages, memory map, chip selects, DRAM program and every device the boot code and kernel touch, with the unknowns and their tests |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
+| [../l2-kernel-interface.md](../l2-kernel-interface.md) | the kernel side: boot-loader hand-off, mapped windows, kernel facilities present and absent, the PCI and USB chain, display, reset, and what must hold to register an L1 |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
 | [partition-record.md](partition-record.md) | the partition record end to end: the code-1 reply byte by byte, how it meets the boot firmware's reply checks, the database producer in `partmgr`, test vectors |
 | [power-queue.md](power-queue.md) | the `power` command: the send queue and its runner, the sender's class order, and the order and spacing of `fast` and `slow` power-up and of power-down |
