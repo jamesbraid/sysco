@@ -81,12 +81,14 @@ Read from the usage and message strings (established that the strings exist; the
 
 Read from the call list and the request set-up around each call (the whole routine was not read line by line, so each item is graded on what was read). The routine sends four kinds of request to the controller's flash task through the same `sn1SCCmd` wrapper `l1cmd` uses, each with two descriptors (established for the three below, from the argument registers at the call sites):
 
-| Step | Request code | Descriptors | Reply wait | Where |
-|---|---|---|---|---|
-| status | `0x0072` | two integers, 0 and 5 (see [l1/package-container.md](l1/package-container.md)) | 30 | call at `0x1000ecb0` |
-| erase | `0x0074` | integer 0: the target address of the image; integer 1: a byte count | 140 (`0x8c`) | call at `0x1000f79c`, set-up at `0x1000f738` to `0x1000f784` |
-| program | `0x0073` | integer 0: image address plus the offset already written; type 1 payload: the next chunk of the image, its length in the descriptor's halfword | 30 | call at `0x1000fcb8`, set-up at `0x1000fc40` to `0x1000fca8` |
-| validate | `0x0072` | as the status request | 30 | call at `0x10010080` |
+| Step | Request code | Descriptors | Reply wait | Where (6.5.30) | Grade |
+|---|---|---|---|---|---|
+| status | `0x0072` | two integers, 0 and 5 (see [l1/package-container.md](l1/package-container.md)) | 30 | call at `0x1000ecb0` | established (code, descriptor count, wait): re-read in the SG0007149 build, below |
+| erase | `0x0074` | integer 0: the target address of the image; integer 1: a byte count | 140 (`0x8c`) | call at `0x1000f79c`, set-up at `0x1000f738` to `0x1000f784` | established (code, descriptor count, wait): re-read in the SG0007149 build |
+| program | `0x0073` | integer 0: image address plus the offset already written; type 1 payload: the next chunk of the image, its length in the descriptor's halfword | 30 | call at `0x1000fcb8`, set-up at `0x1000fc40` to `0x1000fca8` | established (code, descriptor count, wait): re-read in the SG0007149 build |
+| validate | `0x0072` | as the status request | 30 | call at `0x10010080` | established: the code is the status code repeated, not a fourth code |
+
+Check of the codes (gap-fill read, `flashsc` from patch SG0007149, the one build available for this pass; the 6.5.30 binary was not, so the 6.5.30 addresses above are carried from the earlier reading and were not re-checked). In that build the update routine passes the request code in the second argument register and the wait in the sixth, and every request has two descriptors. Status: code `0x72`, wait `0x1e` (30), the descriptor pair set up with 0 and 5. Erase: `0x74`, wait `0x8c`. Program: `0x73`, wait `0x1e`. After the program loop, at `0x10010288` in that build, the routine builds the same descriptor pair (0 and 5) with the same two-attempt loop and sends `0x72` again, wait `0x1e`: so the validate row repeating the status code is right, and the validate step is a second status read (inferred that it is the post-programming check, from its position after the program loop and the matching failure messages; the reply tests were not read). The call addresses in that build differ from the 6.5.30 ones in the table (status call `0x1000eed0`, erase `0x1000f9bc`, program `0x1000fed8`), so the two builds are not byte-identical; code, count and wait are the same.
 
 Details (established from the instructions at the addresses above):
 
