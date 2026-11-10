@@ -186,8 +186,7 @@ account and the daemon's use of it are in
 
 ## Open
 
-- The writer of the 0x70-byte table behind the reply of 3.5 (pointer at `0x30000aa4`), and
-  the consumer of the two requests the L1 sends before it builds that reply.
+- The consumer of the two requests the L1 sends before it builds that reply. The writer of the 0x70-byte table behind the reply of 3.5 is the routine at `0xffe3132c`, and the identity word is stored by `0xffe78314`; see [../l2/config-request-reply.md](../l2/config-request-reply.md).
 - The string compared in the L2 scan of 2.2, and the meaning of `-1` in 2.3.
 - Whether the link tasks time out a partial message outside 1.1 to 1.6 (1.9).
 - Whether the call at `0xffe352fe` to `0xffe7d268` clears the start-frame slot (1.2). It is
