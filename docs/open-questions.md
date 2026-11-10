@@ -11,13 +11,13 @@ Each entry starts with its route, one of:
 - **MAME ColdFire core**: needs MAME's MCF5206E core or a public reset-state description, neither in hand.
 - **missing binary or release**: the file is not in `root/`; the entry names what to obtain.
 
-## Triage (2026-11-01)
+## Triage (2026-11-10)
 
-25 entries. The L2 bullet that held eight questions is split into eight entries, one per question.
+20 entries after five were answered and moved into their notes (the EEPROM retry question, the USB guard word, the IO8 record refresh, the brick-type setting writers and the M-Bus clock). The L2 bullet that held eight questions is split into eight entries, one per question.
 
 | Route | Entries |
 |---|---:|
-| software now | 18 |
+| software now | 13 |
 | version diff | 2 |
 | other firmware versions | 1 |
 | IRIX host objects | 1 |
@@ -26,11 +26,7 @@ Each entry starts with its route, one of:
 
 Software-now list, in the order to take them:
 
-1. Callers of the chunked EEPROM reader: do they retry a failed read.
-2. Writers of the guard word at `0x30004d88`.
-3. Routine `0xffe48370` and what re-reads the IO8 record.
 4. Monitor register offsets, including reads of `0x3e` and `0x3f`.
-5. Writers of settings 9 (brick type) and 0x10 (sub-type).
 6. Readers of bank record word 7.
 7. Base-relative accesses in the MCF5206E routines not yet scanned, including timers.
 8. USB match rules and identity in the L2 kernel's `sgil1` driver.
@@ -52,7 +48,7 @@ Software-now list, in the order to take them:
 
 - **Route: software now.** Which MCF5206e on-chip peripherals does the code program beyond those in [mcf5206e-peripherals.md](l1/mcf5206e-peripherals.md)? Premise partly stale: the chip selects, interrupt controls, watchdog, quad UART and the timer 1 and timer 2 reference writes are read in [l1/board-boot-contract.md](l1/board-boot-contract.md). Still open: the base-relative accesses in the remaining routines of the first-bank listing, tabulated by offset. Step: scan the listing for accesses relative to the base stored at `0x300002e8`; add the timer routine's remaining writes and the on-chip UART 1 driver to the table.
 - **Route: software now.** The fitted USB device-controller part is not named by any image. The probe is USS-820-shaped (revision at offset 0x18, scratch at 0x1b, accepted revisions 0x10, 0x11, 0x13). Premise corrected: the L2 kernel's `sgil1` driver is the host side of the link and sees the controller only through USB descriptors, so its match rules identify the L1 device (vendor and product, class triple), not the controller silicon; reading them cannot name the part ([l1/usb-public-host-drivers.md](l1/usb-public-host-drivers.md) already holds those checks). Step: compare the register offsets, accepted revisions and write sequences in [l1/usb-controller-registers.md](l1/usb-controller-registers.md) with public USS-820-family register maps and record any match as a hint. The part stays unknown unless an image names it.
-- **Route: software now.** Which monitor part answers at M-Bus addresses `0x2c` to `0x2e`? The initialisation routine (`0xffe6836c`) writes offsets `0x40`, `0x43`, `0x44` and `0x47`, which agree with the DS1780 register map ([l1/ip45-monitor-registers.md](l1/ip45-monitor-registers.md), [l1/mbus-ds1780-candidate.md](l1/mbus-ds1780-candidate.md)). Step: tabulate every offset the monitor readers (`0xffe69844`, `0xffe6904c`) and the temperature path (`0xffe5e1bc`) touch, compare with the DS1780 and LM78 maps, and search the listing for reads of `0x3e` and `0x3f`. The `moveq` loads of those values in the listing are not yet tied to a monitor read.
+- **Route: software now.** Which monitor part answers at M-Bus addresses `0x2c` to `0x2e`? The initialisation routine (`0xffe6836c`) writes offsets `0x40`, `0x43`, `0x44` and `0x47`, which agree with the DS1780 register map ([l1/ip45-monitor-registers.md](l1/ip45-monitor-registers.md), [l1/mbus-ds1780-candidate.md](l1/mbus-ds1780-candidate.md)). Premise corrected: `0xffe6904c` is not a reader. It writes one data byte (plus a zero byte) to register 0, 2 or 3 of the device at the descriptor's wire address and rejects any other register (`0xffe69064`–`0xffe69074`, `0xffe690cc`); its wrappers at `0xffe690f8` write registers 2 then 3. Which device that is, and whether it is the same part as the monitors, is unread. Step: tabulate every offset the monitor reader (`0xffe69844`) and the temperature path (`0xffe5e1bc`) touch, compare with the DS1780 and LM78 maps, and search the listing for reads of `0x3e` and `0x3f`. The `moveq` loads of those values in the listing are not yet tied to a monitor read.
 - **Route: missing binary or release.** What does an external read at `0x10000040` return on the fitted board, before the loader has written `MBAR` (the reset-status test at `0xffe00ac8`)? Answered from the image: the test reads offset `0x40` of its first argument `0x10000000` and tests bit 5; bit clear goes to `0xffe00b02`, which clears the retained record's image pointer, and bit set goes to `0xffe00ad2`, which keeps a recorded image that passes the checks ([l1/board-boot-contract.md](l1/board-boot-contract.md)). The loader never writes `MBAR`, so the read reaches the on-chip register only if `MBAR` is valid at reset. Routes tried: the image (above) and MAME's MCF5206E core, which keeps the window off until `MBAR` bit 0 is set (a hint, in the board note). Not in hand: the chip's published reset-state description. Step: read the reset values of `MBAR`, `CSAR0` and `CSMR0` in the public MCF5206E user's manual; the board note's reading that this read lands in flash depends on that decode. The result stays a hint until an image shows the decode.
 
 ## Images not yet read
