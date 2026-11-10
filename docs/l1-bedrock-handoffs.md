@@ -176,3 +176,63 @@ Added beyond the review: the debug text and pin roles of the pulse, the exact po
 Rejected: none. The review's statement that the second `reset(5)` is followed by `hold(5)` unconditionally was narrowed: the hold call is skipped when the routine's argument is nonzero (`0xffe4d1ec` to `0xffe4d1f0`).
 
 Not re-checked: the Owner's Guide quotations (printed pages 194, 199 and 201 of 007-4498-002). The Library search service was unreachable in this pass (the search tool returned zero hits from both backends), so those three quotations keep the grade they had and are unverified here; the test that settles them is to re-run the page lookups once the service is back.
+
+## 11. Per-node reset, enable and disable (brick types with several nodes)
+
+Question: on a brick with more than one node, what do "reset node n" and "disable node" do on the L1, which lines or registers do they drive, what do they tell the L2, and what can the PROM and Bedrock observe. Power is brick-wide in every case below.
+
+Read in IRIX 6.5.30 `l1.bin` (L1 1.44.0, container sha256 `c355c542...`). **Package 0** (`Base 1MB image`, C-brick type `C`, addresses as in section 0) and **package 2** (`MIPS 2MB image`, body sha256 `ac81f501f01c6789e756ab1f5ec69fadb1e4c04225511d541340831686e04e70`, loaded at `0xffe00000`, listing made with the same 68040-mode decoder as the other notes). The item name does not say which brick it means, so both families that carry node-addressed commands are covered: the C-brick (`C`, two processor modules of two CPUs) and the type `6` brick (the board literals `IP53`/`IP59`, printed name "C (Twister)", package 2; four node slots). Type `@` (printed name "Vortix") shares type `6`'s command classes; its hooks were not read (U).
+
+### 11.1 What the console offers, per type (E)
+
+Command records are in [l1/command-table.tsv](l1/command-table.tsv); the class strings are the sets of type characters that may run each record.
+
+| Command text | Handler | Types | Meaning |
+|---|---|---|---|
+| `softreset`, `softreset <exp>` | package 0 `0xffe1bea0`, package 2 `0xffe21678` | `OC14567890QA!@BDSFHL` and `C56@` | the argument form exists only for `C`, `5`, `6`, `@`; no argument passes node `0xff` |
+| `nmi`, `nmi <exp>` | package 0 `0xffe1bc5c` | `c12!`, `C1256@`, `C125@` | same node convention |
+| `cpu`, `cpu e`, `cpu d`, `cpu <node>x e`, `cpu <node>x d` (help: "enable/disable cpu [<node>]a\|b\|c\|d") | package 0 `0xffe14d88`, package 2 `0xffe1a560` | class `c` | per-CPU enable or disable and a status table |
+| `node`, `node e`, `node d`, `node <n> e`, `node <n> d` (help: "enable node <exp>", "disable node <exp>") | package 2 `0xffe165c8` | all-nodes forms `6780EQVO@BFHL` (disable `6780QO@BFHL`); numbered forms `6` and `@` only | per-node enable or disable and a status table |
+| `reset <n>` (table 2, no brick-wide equivalent in the same table) | package 2 `0xffe167a0` | `6` only | hold one node (11.3) |
+
+So a C-brick has **no** node disable command: its only per-part disable is `cpu`. Disabling a node as a unit exists on type `6` (and `@`) only. The word "reset node" in the help text belongs to `softreset <exp>`.
+
+### 11.2 `softreset <n>` and `nmi <n>` (E)
+
+The handler passes the parsed node (record word 1 set, argument at context `+0x28`) or `0xff` to the soft-reset wrapper (package 0 `0xffe4f0ec`, package 2 `0xffe6f550`), which logs and calls the hook at descriptor `+0xa4` with the low byte of the node. The NMI wrapper does the same at `+0xa8`. The handler also drives the front-panel text ("Soft reset", then done or fail) and requires the supply-state routine to report everything on, else it prints a power-off error.
+
+- **Type C (package 0).** The hooks `0xffe445e8` and `0xffe4463c` never read their argument (section 3). `softreset 1` resets exactly what `softreset` resets: both nodes, by the one shared `CNTL 1` bit 7 pulse. Same for `nmi`. E.
+- **Type 6 (package 2).** The descriptor hooks are `0xffe50b68` (soft reset) and `0xffe50b88` (NMI); each calls the node iterator `0xffe5e0d4(node, routine)` with the per-node routine `0xffe63750` or `0xffe637d8`. The iterator runs the routine for node `0xff` over every node that is present and enabled, and for a single node only if it is present and enabled; a disabled node returns a "node disabled" error, an absent one "node not present", an index past the count "invalid node index" (error table at `0xffe7cbd4`-`0xffe7cc20`). The soft-reset routine sets bit 7 (`0x80`) of that node's `ASIC CTRL 1` expander (node record expander base `+3`), waits 10 ticks and clears it; the NMI routine clears then sets bit 6 (`0x40`) of the same expander, no delay. These are the same bits as the C-brick lines, but one set per node, so `softreset 2` pulses only node 2's line. E for the code, I for "per node" meaning one Bedrock per node (each node has its own expander group, E; the chip count is not in the image).
+
+What it tells the L2: **nothing**. Neither wrapper calls the event sender; they write the log ring and the front-panel text and return a status through the command reply. The only L1-initiated message in this area is the power-state notice of section 7, which a reset and a soft reset do not send. E (wrapper and handler bodies read in full; no call to `0xffe79084` or its package 2 twin on the path).
+
+### 11.3 `reset <n>` on type 6 (E for the calls, I for the effect)
+
+The record at `0xffe18680` routes to `0xffe167a0`, which rejects an index above 4 ("invalid node index") and otherwise calls `0xffe63dec(n)`, the same per-node routine the brick-wide hold hook runs for every enabled node (hook `+0x98` is `0xffe50ad0`, iterating with `0xffe5e0d4`). Its steps, in order: if the node's type byte (table at `0x30003046`) is not `0xf`, compare it with the stored type setting and, on a change, log it and store the new one; refuse with an error if the board record is not initialised; clear `ASIC CTRL 1` bit 7, bit 1, then `ASIC CTRL 2` bit 0, then `ASIC CTRL 1` bit 0 (the C-brick hold order of section 3); then the per-type module step `0xffe63d34`, which runs the margin routine for the supported module types, waits 10 ticks and sets bits `0xc0` of the node's third expander (the `VCC OK` role of section 3). Nothing releases the node afterwards inside this command: the release is the brick-wide `reset` or `power up`, whose release hook `+0x9c` is `0xffe50b1c` and runs `0xffe6405c` per enabled node with the C-brick release order (strap byte, 10 ticks, clear bit 3, 10, set `CNTL 1` bit 0, 10, `VCC OK` clear, 3, margin restore, 10, `CNTL 2` bit 0, `CNTL 1` bit 1). So `reset <n>` is **hold one node, leave it held** (E for the sequence and the absence of a release in the command; I that a held node stays held until a later release, because no later code was traced that releases it sooner).
+
+### 11.4 `cpu d` and `node d` (E for the guards, stores and hooks)
+
+Both refuse when the supply-state routine (package 0 `0xffe4c6ac`, package 2 `0xffe6cb10`) is nonzero, that is when any supply is on, with the "power must be down" text. Both then call a board hook, and only when the hook succeeds, persist the result.
+
+- **`cpu d [<node>x]` (package 0).** `0xffe528c8(idx)` for one CPU, or all four for `disable all`. Per CPU: the descriptor hook `+0x84` (`0xffe44ab8`) and, on success, persistent setting `0x58 + idx` := 1 (`0xffe52860`); enable is hook `+0x80` (`0xffe44a90`) and setting := 0 (`0xffe52948`). The hooks reach `0xffe449e4(idx, enable)`: bit 1 of the index selects the module (type byte `0x30000090`/`0x30000091`, expander 12 `PIMM0 POWER` or 14 `PIMM1 POWER`), bit 0 selects the mask (`0x40` for odd CPUs, `0x80` for even), and **disable sets that bit, enable clears it** (`0xffe65ef8` sets, `0xffe65f1c` clears). The module must be present (type not `0xf`, else error `-901`); for a type outside {3, 4, 5, 7, 10} enable silently succeeds and disable fails (`-902`); a hook run before board init returns `-900`. At board init the same function is applied to all four CPUs from the stored settings (loop `0xffe44b1e`), so the disable lines survive an L1 restart. The node/CPU letter mapping of the printed table and of the parser (`0xffe14cac`) uses the shift word at descriptor `+0x78`, whose initial value was not found (U).
+- **`node d <n>` (package 2).** `0xffe5e1f8(n)` for one node, or all present nodes for `0xff`. Per node `0xffe5e188`: the descriptor hook `+0x94` (type 6: `0xffe63404` -> `0xffe63174(n, 0)`), and on success bit n of persistent setting `0x70` is set; enable is hook `+0x90` (`0xffe635f0` -> `0xffe6341c(n, 0)`) and the bit cleared (`0xffe5e278`). A node is "enabled" for the iterator when that bit is clear (`0xffe5e090`). The hooks walk the node record's index ranges (its supply, monitor and LED entries at record bytes `+2..+0x10`) and call small routines that set or clear a per-entry flag byte in the L1's monitoring tables (`0xffe88a78`, `0xffe88bf8`, `0xffe8756c`, `0xffe880b8`, `0xffe785c4`, `0xffe89800` and their partners). The L1 stops or starts monitoring the node's parts; it does not drive an expander line to the node in these two hooks. E for the structure and that no expander write is on this path; I that the flags are monitoring-enable flags (flag-table roles from the neighbouring error text only).
+- At power-up (the diagnostic routine at `0xffe5e368` onward) a nonzero setting `0x70` logs a "Node Disabled" line and sets the flag bytes at `0x30000609`, `+0`, `+1` and `+3` (E for the store; the flags' consumers were not followed, U). Every hold, release, soft reset and NMI call routed through the iterator then skips the disabled node: **a disabled type 6 node is neither held nor released by any brick-wide `reset` or `power up`**, so its reset group keeps whatever state it had when disabled (E for the skip; I for the state, since power was down at that time).
+
+### 11.5 What the PROM and Bedrock can see
+
+- The C-brick `cpu d` line is the only per-part signal: a bit of the `PIMMn POWER` expander (E for address and bit). Where it lands in the node is not in any image (U); the L1 labels it only through the expander name. A PROM or kernel reading CPU presence from Bedrock would see an absent or silent processor, not a message (I).
+- `softreset <n>` on type C is indistinguishable from `softreset`; on type 6 only the chosen node's soft-reset line moves. `nmi` likewise.
+- The strings `FLED_DISABLED` ("CPU is disabled by env variable") and `FLED_KILLED` ("CPU disabled by another") in the package 2 LED-code name table (`0xffe40254`, `0xffe40164`) are PROM-side LED codes the L1 only prints. They show that the PROM has its own disable path (an environment variable) that is separate from the L1 settings above (E for the strings and table; I for their origin).
+- Nothing in these paths changes the power-state word, the peer notice, or the supply sequencing: power remains brick-wide (E).
+
+### 11.6 Open items and the software test for each
+
+| Item | Why open | Test that settles it |
+|---|---|---|
+| Which node-side pin the `PIMMn POWER` bits `0x40`/`0x80` reach, and what a node does when one is set | image labels only | read the processor-module hardware guide and the PROM's CPU-probe code for a "CPU present/enabled" source that matches; match against the expander name and bit polarity (set = disabled) |
+| What the PROM does with a disabled CPU or node | not read | search the IP35 PROM image (`ip35prom.img`) for the disable-by-variable path and for the CPU presence read; record which register it reads and compare with the L1 bit |
+| Whether `softreset`/`nmi` on type `6` reach separate Bedrock chips | node count and chip layout not in the image | read the type 6 registration tables (expander groups per node, `0xffe51790` and the node record array at `0x30000618`) and the PROM's per-NASID soft reset text |
+| Shift word `+0x78` of the descriptor and the node/letter mapping for type C | initial value not found | find the store to the descriptor base `+0x78` in the board init chain, or read the printed table loop (`0xffe14e74`) with the stored value |
+| Type `@` hooks and type C in package 2 | not read | repeat 11.2 and 11.4 on package 2's descriptor initialisers for `C` and `@` |
+| Consumers of the three flag bytes at `0x30000609`, `+1` and `+3` (and the byte at `+0`) | not followed | list the readers of those addresses in package 2 |
+| Whether an attached L2 learns of a disabled node | no L1-to-L2 event on these paths; the inventory/config reply was not checked for the node bit | read the package 2 inventory handler for a call to `0xffe5e090`; compare with [l2/config-request-reply.md](l2/config-request-reply.md) |
