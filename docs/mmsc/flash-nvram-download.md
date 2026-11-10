@@ -126,9 +126,19 @@ Absolute address of an object in the window is `0xa2008 + offset`. Object conten
 
 After building the offset table (rejecting an id above 12, a duplicate, a zero size, or an object ending beyond `0x1ff8`), it reads the header. `-3` (no SRAM magic) runs `_nvramReset` (which writes the header and so installs the SRAM magic) but the routine still falls into the next test with the code `-3`, logs it and fails, so the first start on blank SRAM is reported as a failure and the caller's retry below is what completes it; any other result than 1 logs the code and fails; a missing header magic runs `_nvramReset`. Version 6 skips the upgrade chain. Otherwise the version selects, through a jump table at `0x1296e0` (six entries, the first five used), the entry of a straight-line chain `_nvramUpgrade1to2`, `2to3`, `3to4`, `4to5`, `5to6` (each later step runs after the earlier ones), then a header write; a version outside 1 to 5 logs the value and fails. A failed step zeroes the header magic and fails. Then, for version 6: an object count of 13 requires the stored total to equal the computed one (a mismatch logs a size-changed message and fails); a count above 13 fails; a count below 13 sums the sizes of the objects it had and requires the stored total to match (a mismatch fails), then sets count 13 and the new total and rewrites the header. Objects added since the stored count therefore start invalid. `_ffscEarlyInit` answers any failure by logging it, calling `_nvramReset` and running `_nvramInit` again; if that fails too it reports that the NVRAM services cannot start.
 
-### The six layout versions (established for the steps; the tables of versions 1 to 5 are unknown)
+### The six layout versions (established for versions 2, 5 and 6; versions 1, 3 and 4 not held)
 
-Version 6 is the only object table in any image read. The earlier versions are known only through the upgrade routines, and those routines work on the version-6 ids and sizes, so what the code establishes is what each step rewrites inside the existing objects; the header count and total are what carry any growth in object count, and the version-6 check above reconciles them.
+Every image that creates a store writes the same thirteen-entry object table. Read in `_nvramReset` and `_nvramObjectInfo` of all eleven MMSC images held:
+
+| Images | Version written by `_nvramReset` | Upgrade steps present | Object table |
+|---|---|---|---|
+| 6.4, 6.4-origin | 2 | `1to2` | the table above: 13 objects, total `0x3f4` |
+| 6.5, 6.5.2, patch SG0002378 | 5 | `1to2` to `4to5` | the same |
+| 6.5.5, 6.5.6, 6.5.7, 6.5.9, 6.5.10, 6.5.30 | 6 | `1to2` to `5to6` | the same |
+
+So the object ids, sizes and offsets did not change between layout versions 2 and 6; the version number moved only when a step had to rewrite values inside existing objects (the table of steps below). The 6.4 `_nvramInit` (`0x126988` in 6.4) takes version 2 as current, sends version 1 through `_nvramUpgrade1to2` and rejects any other value, with the same count and total tests as 6.5.30 (13 requires the total `0x3f4`, a count above 13 fails, a lower count must sum to the stored total).
+
+Not held: an image that writes version 1, 3 or 4. The count and total those versions stored are therefore not read. Inferred from the count test: a store with fewer than 13 objects held a prefix of the thirteen (the test sums the first `count` table entries), and the upgrade steps are what must be applied to its contents. What would settle it: an MMSC image older than 6.4 or one built between 6.4 and 6.5; none is on the IRIX media scanned. The steps below work on the version-6 ids and sizes, so what the code establishes is what each step rewrites inside the existing objects.
 
 | Version | Step (6.5.30) | What it writes | Fails when |
 |---|---|---|---|
@@ -261,4 +271,4 @@ The page table, write-bit table, delay record, object table and CRC table are by
 
 ## 8. Not settled
 
-See [../open-questions.md](../open-questions.md): the controller behind ports `0x540`, `0x548`, `0x760`; the purpose of CMOS byte `0x7e` bit 7 on the boot side; the layout of NVRAM versions 1 to 5 as stored (count and total); the console `STATE` fields; the meaning of port-record flag bits.
+See [../open-questions.md](../open-questions.md): the controller behind ports `0x540`, `0x548`, `0x760`; the purpose of CMOS byte `0x7e` bit 7 on the boot side; the console `STATE` fields; the meaning of port-record flag bits.
