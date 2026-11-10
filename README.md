@@ -16,6 +16,7 @@ What is here:
 - [docs/l1-console-behaviour.md](docs/l1-console-behaviour.md): what the Origin 300 L1 prints and answers on its console in each state, with graded facts and the tests that would settle the unknowns.
 - [docs/l2-kernel-interface.md](docs/l2-kernel-interface.md): what the L2 user-space programs need from the kernel and the board (loader hand-off, physical windows, backing drivers, system-call surface, the PCI and USB chain to the first registered L1).
 - [docs/host-tool-options.md](docs/host-tool-options.md): the command lines of `l1cmd`, `l2cmd` and `flashsc`, and what the first two send.
+- [docs/l2-l1-conversation.md](docs/l2-l1-conversation.md): the L2's side of the conversation with an L1, in order: attach, configuration request and route, the routed `p <id> pwr d` shutdown, and the partition-record reply.
 - [docs/inventory/](docs/inventory/README.md): tables measured from the images (images, packages, functions, request codes, I/O registers, protocols) plus the host tools' ELF tables.
 - [docs/coverage.md](docs/coverage.md) is the map of what is covered; [docs/open-questions.md](docs/open-questions.md) lists what the images have not yet answered.
 
