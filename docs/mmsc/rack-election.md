@@ -2,7 +2,7 @@
 
 What the MMSC (the multi-module system controller of an Origin 2000 or Onyx2 rack, also called the full-feature system controller) does to find the other MMSCs on its Ethernet, to agree on one master, to give every rack an ID and an IP address that no other rack uses, and to carry a command to a peer rack. Lane 6 of [controllers.md](../controllers.md).
 
-All of it is read from `mmscfw.bin` in IRIX 6.5.30 (MMSC 2.3), sha256 `6c3db7ffd7fb4cc43ed02146f0c5bea0e85338def2530689c9990f877f2ddedc`, the a.out image described in [controllers.md](../controllers.md). The same bytes ship in 6.5.7 to 6.5.30; the 2.1 and 2.2 builds (6.5.5, 6.5.6) and the 6.4 builds were not read, so nothing here is claimed for them.
+All of it is read from `mmscfw.bin` in IRIX 6.5.30 (MMSC 2.3), sha256 `6c3db7ffd7fb4cc43ed02146f0c5bea0e85338def2530689c9990f877f2ddedc`, the a.out image described in [controllers.md](../controllers.md). The same bytes ship in 6.5.7 to 6.5.30; the other builds are compared with this one in [the same election in the other builds](#the-same-election-in-the-other-builds).
 
 ## Reading the image
 
@@ -72,6 +72,25 @@ What follows for the timings in this note, all established from the code that us
 | per-rack pause before the router reboots the MMSC | 60 times the rack ID | the rack ID in seconds |
 
 Inferred, not read in an image: that the timer's input clock is the PC-standard 1.19318 MHz. The firmware assumes it when it computes the divisor, and the divisor is exact only if it holds. A published description of the MMSC's timer part or a PC-compatible chipset manual would settle it; the tick rate the firmware programs does not depend on it.
+
+## The same election in the other builds
+
+Established by routine-by-routine comparison of the address daemon, identity and remote-command code of every distinct MMSC image against the 6.5.30 image, with in-image addresses masked and routines paired by symbol name (images: 6.4 and 6.4 Origin, the patch SG0002378, 6.5.2, 6.5, 6.5.5, 6.5.6, and the 6.5.30 image that 6.5.7 to 6.5.10 also carry). The `_addrd*` and `_ident*` routines are instruction-for-instruction the same except where listed.
+
+- **Same in all builds.** The frame handler `_addrd` has the same six handlers for types 1 to 6 in every image, with the same code in each; so the type table, the QUERY and IDENTITY exchange, the 3-tick reply delay, the 2-second window (twice `sysClkRateGet`) and the end-of-election pruning and master choice are unchanged from the 6.4 builds to 6.5.30. The clock rate is 60 ticks per second in all of them ([the clock tick](#the-clock-tick)), so the two timings are the same wall-clock values. The master is still the lowest unique ID. `_addrdAssignNewIdentity` is the same in every build.
+- **Type 7 (partition information) arrives in 6.5.** The jump table of `_addrd` has six entries up to 6.5.2 and the patch, and seven from 6.5 (IRIX 6.5 base). The 6.5 handler for type 7 additionally logs a line; from 6.5.5 it matches the 6.5.30 handler. `_addrdUpdatePartInfo`, `_addrdSendPartitionInfo` and `_broadcastPartitionInfo` do not exist before 6.5.
+- **A failed rack-ID search is handled differently before 6.5.5 (established from the code shape).** `_addrdResolveRackIDConflict` is the same modulo addresses in 6.5.5 and later. In 6.4, the patch, 6.5.2 and 6.5 it calls `_addrdFindUnusedRackID`, and when the result is -1 it logs the loser's unique ID and then still calls `_addrdAssignNewIdentity`. From 6.5.5 the -1 case logs and returns -1 without assigning. What `_addrdAssignNewIdentity` does with an unassigned rack ID in the older builds was not read here.
+- **The rack-ID range grows by build.** The largest rack ID the search tries (`_addrdFindUnusedRackID`, loop bound), the limit `_ffscParseRackID` compares an operator's value against, the loop bound in `_destNumRacks`, the size of the rack array in `_MapAllRacks` and the limit in `_identInit` are the same number within a build and differ between builds:
+
+| Build | Largest rack ID tried by the search | Parser compare | `_MapAllRacks` array |
+|---|---:|---:|---:|
+| 6.4, 6.4 Origin | 7 | 8 | 9 words |
+| SG0002378, 6.5.2, 6.5 | 9 | 10 | 11 words |
+| 6.5.5 | 19 | 20 (and a zero test) | 21 words |
+| 6.5.6 and 6.5.30 | 21 | 22 (and a zero test) | 23 words |
+
+  The `_addrdInit` queue-depth argument also grows (5 in 6.4 and the patch, 11 in 6.5.2 and 6.5, 21 in 6.5.5, 23 from 6.5.6): it is the message count of the address pipe (the same call that creates `/pipe/addrd`, with 62-byte messages), which grows with the rack range. A 6.4 or 6.5.2 MMSC therefore cannot hand out a rack ID above 7 or 9, and the rack-ID range an MMSC accepts from an operator also differs; the rack numbers named earlier in this note (1 to 21) are those of 6.5.6 and later. `_identInit` has no range check before 6.5.5.
+- **Still not compared.** The payload layout (version 3 and the field offsets) was compared only through the handlers, which agree; the sender routines `_addrdLocalMsg` (differs from 6.5.5 only in string literals) and the broadcast helpers were not read field by field in 6.4.
 
 ## What a multi-rack Origin 2000 needs from each MMSC
 
