@@ -10,7 +10,7 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#1	6	0x0008	ffe12848	general_req_system_serial	established	reply 0 then text; minus 104 when empty
 6.5.30:l1#1	6	0x0009	ffe128ca	general_req_partition_get	established	reply 0 then int
 6.5.30:l1#1	6	0x000a	ffe128f2	general_req_port_speeds	established	reply 0 then two ints from per-port speed settings
-6.5.30:l1#1	6	0x000b	ffe128de	general_req_two_bit_setting	established	reply 0 then int; meaning of the field unknown
+6.5.30:l1#1	6	0x000b	ffe128de	general_req_two_bit_setting	established	reply 0 then int: setting 0x12, the partition-database flag (1 = partition from the OS via the L2, 0 = from L1 NVRAM)
 6.5.30:l1#1	6	0x000c	ffe12090	general_req_attached_ports_1_to_4	established	reply 0 then four (rack<<6|bay, type) pairs
 6.5.30:l1#1	6	0x000d	ffe1220c	general_req_attached_ports_5_and_10	established	reply 0 then two (rack<<6|bay, type) pairs
 6.5.30:l1#1	6	0x000e	ffe12a4c	general_req_requesting_port	established	reply 0 then int: the link index the request arrived on
@@ -24,7 +24,7 @@ package	task	code	handler	name	grade	note
 6.5.30:l1#1	6	0x1005	ffe12ec2	general_req_display_line_2	established	same entry as 0x1004
 6.5.30:l1#1	6	0x1006	ffe12f20	general_req_partition_set	established	one int; non-volatile write; reply 0
 6.5.30:l1#1	6	0x1007	ffe12fd8	general_req_event_subchannel_set	established	one int; persisted in non-volatile memory; reply 0
-6.5.30:l1#1	6	0x1008	ffe12f7e	general_req_two_bit_setting_set	established	one int; writes the field read by 0x000b; reply 0
+6.5.30:l1#1	6	0x1008	ffe12f7e	general_req_two_bit_setting_set	established	one int; writes the partition-database flag read by 0x000b; reply 0
 6.5.30:l1#1	6	0x1009	ffe13060	general_req_panel_control	established	two ints; selector 0 to 2 else minus 105; reply 0
 6.5.30:l1#1	6	0x100a	ffe131b2	general_req_event_subchannel_clear	established	no reply; clears and unpersists the event subchannel
 6.5.30:l1#1	6	0x100b	ffe131bc	general_req_prom_version_report	established	exactly three ints; no reply on success
