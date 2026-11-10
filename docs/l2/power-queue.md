@@ -1,6 +1,6 @@
 # L2 `power` command: the send queue, its order and its spacing
 
-Read from the L2 daemon `bin/l2` of L2 1.44.0 (IRIX 6.5.30 `l2.bin`, carved with [../../retools/tools/sysco/l2_extract.py](../../retools/tools/sysco/l2_extract.py), listed with [../../retools/tools/sysco/l2_list.py](../../retools/tools/sysco/l2_list.py)). Addresses are the daemon's load addresses. Grades follow [AGENTS.md](../../AGENTS.md). Only 1.44.0 was read; the other three held L2 sets were not compared for this routine.
+Read from the L2 daemon `bin/l2` of L2 1.44.0 (IRIX 6.5.30 `l2.bin`, carved with [../../retools/tools/sysco/l2_extract.py](../../retools/tools/sysco/l2_extract.py), listed with [../../retools/tools/sysco/l2_list.py](../../retools/tools/sysco/l2_list.py)). Addresses are the daemon's load addresses. Grades follow [AGENTS.md](../../AGENTS.md). 1.44.0 is the reference. 1.48.0 was compared for the brick table builder ([below](#the-brick-table-order-the-reply-timer-and-ver-check)).
 
 The L2 does not power bricks itself. Every `power`, `reset` and status request is a short text command (`power up`, `power up hold`, `power down`, `power check`, `reset`) sent in a router packet to the L1 of each selected brick, and the order and spacing live in the L2. The L2's own `power` command is the entry for `0x10013ba8`; its eight sub-commands are a jump table at `0x1002c350`.
 
@@ -27,7 +27,7 @@ The delay is held in the word at `0x10043c4c`, initial value 500 (read from the 
 2. If the delay word is nonzero: `-1` means wait for replies. When any reply is still outstanding (word `0x1c` of the context is nonzero) the runner returns and is called again by the reply handler once the outstanding set empties; when none is outstanding it continues at once (E, `0x1001c550` to `0x1001c5b8`). A positive value is a blocking `usleep(value * 1000)`, so the delay unit is milliseconds (E for the multiply by 1000 at `0x1001c5ec`; the daemon is single threaded, so the sleep also stalls every other service for that time, I).
 3. Next node.
 
-The reply timer is `EventAddTimeOut` with 15 in the seconds argument and 0 in the microseconds argument, from the word at `0x10043c70` (initial value 15, E). On expiry, if a timeout handler is set the handler runs; otherwise the queue is cleared (`0x1001ffe4` to `0x1002008c`; the clearing routine at `0x1001f5a0` was not read, I). Whether the 15 can be changed at run time is not known (U): the one store found is the initial value.
+The reply timer is `EventAddTimeOut` with 15 in the seconds argument and 0 in the microseconds argument, from the word at `0x10043c70` (initial value 15, E). On expiry, if a timeout handler is set the handler runs; otherwise the queue is cleared (`0x1001ffe4` to `0x1002008c`; the clearing routine at `0x1001f5a0` was not read, I). The 15 can be changed at run time: the word is the broadcast response timeout setting, see [below](#the-brick-table-order-the-reply-timer-and-ver-check).
 
 ## The sender `sub_1001c90c`
 
@@ -52,7 +52,7 @@ All sends go through one routine with ten arguments, read in full (`0x1001c90c` 
 | 4 | `$` `,` `.` `0` `3` to `9` `@` `A` `B` `C` `F` `L` `M` `O` `Q` `{` `}` | compute bricks (C and its variants, Chimera, Twister, Opus, Gemini, Dorado and so on) |
 | `0x80` | every other character (for example `%` the PE brick, `^`, `?`) | other |
 
-The loop is outer over class bits from the low bit of the mask to the high bit (doubling each time), then over the slot list, then over the L2's brick table (`0x184 + 4*i` in the destination context, `0x1184` entries). A brick is sent to when its slot (bits 12 to 17 of its address word) equals the list entry, or for every brick when there is no list, and its class bit is in the mask (E). Within a class the order is therefore the order of the destination's brick table; how that table is ordered was read only at its builder's start (`0x1001e554`), where it follows the rack table and each rack's brick array in index order (I).
+The loop is outer over class bits from the low bit of the mask to the high bit (doubling each time), then over the slot list, then over the L2's brick table (`0x184 + 4*i` in the destination context, `0x1184` entries). A brick is sent to when its slot (bits 12 to 17 of its address word) equals the list entry, or for every brick when there is no list, and its class bit is in the mask (E). Within a class the order is therefore the order of the destination's brick table, which [the builder](#the-brick-table-order-the-reply-timer-and-ver-check) fills in an order that depends on the class.
 
 **Trailing steps.** After the loops:
 
@@ -62,7 +62,7 @@ The loop is outer over class bits from the low bit of the mask to the high bit (
 
 ## Power up
 
-Read `0x10013ce4` to `0x10014390`. A `ver check` request is sent first to every selected L1 (`0x10013d04`; the check itself is `sub_10010aac`, not read, U). The destination is then classified by the word at offset `0x180` of the destination context: 2 when the destination names whole racks, 1 otherwise (E for the store at `0x1001e664`; the test is whether the rack mask copy is non-empty, I). The mode is NVRAM key 21.
+Read `0x10013ce4` to `0x10014390`. A `ver check` is run first (`0x10013d04`; the call is `sub_10010aac`, which runs the L2's own `ver check` console command and whose result is ignored, see [below](#the-brick-table-order-the-reply-timer-and-ver-check)). The destination is then classified by the word at offset `0x180` of the destination context: 2 when the destination names whole racks, 1 otherwise (E for the store at `0x1001e664`; the test is whether the rack mask copy is non-empty, I). The mode is NVRAM key 21.
 
 ### Slow (key 21 nonzero) and the destination names racks
 
@@ -102,13 +102,20 @@ Read `0x10014390` to `0x100149e4`. After the same `ver check` precursor and a de
 
 Power down therefore has no delay at all, and the routers appear twice in the queue when the first rule applied (explicit packet, then the broadcast). The reason for the explicit step is not stated in the code (U).
 
+## The brick table order, the reply timer and `ver check`
+
+All read in full in L2 1.44.0 `bin/l2`; the builder is also checked against 1.48.0.
+
+**Order of the brick table (established, builder `0x1001e554` to `0x1001ed24`).** The table the sender walks is `0x184 + 4*i` of the destination context, `0x1184` entries counted at `0x1184`. The builder walks the chain of configuration nodes (next pointer at `+0x124`, starting at the local node `0x10044640`), and in each node the 40 port records (stride `0x1c`, from `+0x15c`), skipping any port whose state word is not 2. For each such port it visits the port's brick records (stride `0x30`) from the **last index down to index 0**, skipping a record whose byte 1 is zero, whose rack byte (3) or slot byte (4) is zero, or whose rack exceeds 255 or slot 63. The table entry is `((rack & 0x3ff) << 6 | (slot & 0x3f)) << 12`, the same address word the sender masks. An entry already in the table is skipped. A brick whose type character (byte 5) is one of the compute characters `C 3 5 4 A 6 9 7 8 0 Q @ O B F L M $ , } . {` is **appended** at the end of the table; every other brick is **inserted at the front** (the builder moves the existing entries up one word with `memmove` and stores at index 0). So, in the order the sender sends: the non-compute bricks (routers and I/O bricks together) come first in the reverse of the visiting order, and the compute bricks follow in the visiting order. Within one class the order is that filtered view: compute bricks in port order and, inside a port, descending brick index; router and I/O bricks in the opposite order (last visited first). The 1.48.0 builder (`0x1001f77c`) is identical instruction for instruction, apart from the address of the configuration object.
+
+**The reply timer (established).** The word at `0x10043c70` is the **broadcast response timeout**, in seconds. It starts at 15 (data segment). At start-up `main` reads NVRAM setting 23 and, when that is nonzero, stores it in the word (`0x10003950`-`0x1000395c`). The request that sets it (the debug sub-command `l2dbg brspto`, help text "set broadcast response timeout limit") stores the new value in the word and writes it back to setting 23 (`0x100123b0`-`0x100123cc`), and the matching display prints "broadcast response timeout %d" (`0x10012870`). The runner passes the word as the seconds argument whenever it arms the reply timer (`0x1001c524`, `0x1001c8c8`, `0x1001d27c`). Only 1.44.0 and 1.48.0 carry the string `brspto`; the 1.24.1 and 1.32.4 daemons have neither it nor its sibling `trspto` (target response timeout), so their reply timers are not settable this way (the string is absent; their timer value was not read).
+
+**`ver check` (established for the call, inferred for the check).** `sub_10010aac` at `0x10010aac` is a thin wrapper: if the command text is non-empty it clears the caller's result word and calls the command interpreter (`CmdProcess`, argument 1, the text, the result pointer, the L2's command table, length `0xbc` and the context). Called with the text `ver check` from the power-up and power-down paths, it therefore runs the L2's own `ver check` console command, whose help text is "display any L1 or L2 firmware versions mismatches". The caller does not read the return value, so `ver check` only prints a mismatch warning and never blocks or changes the power sequence (established from the code that follows the call at `0x10013d10`). What the version comparison itself prints was not read.
+
 ## What is unknown
 
 | Question | Why | Route |
 |---|---|---|
 | Purpose of the slot-parity split and of the 40-slot cut-off | not stated in the code | the L2 and L1 manuals say only that power is ordered; none of the held ones gives slot numbers |
-| Order of the brick table inside a class | builder read only at its start | read `sub_1001e554` (`0x1001e554` to `0x1001ecfc`) in full |
-| Whether the reply timer value 15 can change | one store found | search the daemon for stores to `0x10043c70` |
-| Behaviour of `ver check` | `sub_10010aac` not read | read it |
 | `auto power up` timing and its use of this queue | only the strings and the `* power up` text were seen | read the power timer routine |
-| The same routine in L2 1.24.1, 1.32.4 and 1.48.0 | not compared | carve those sets and compare the entry `0x10013ba8` |
+| The power command in L2 1.24.1 and 1.32.4 | neither image has the class-sorting builder (no comparison against the brick type character `{` appears in either daemon), so the queue is built differently; not read | disassemble the `power` command of those two daemons (the `power` help is present in both; 1.24.1 has no `mode`, 1.32.4 has it) |
