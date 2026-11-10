@@ -110,18 +110,6 @@ Software-now list, in the order to take them:
   remains unknown. Next: establish the guarded destination interpretation from the
   image relocation records, then read any newly exposed paths.
 
-## MMSC interrupt helper continuations
-
-- **Route: software now.** What return state is known beyond the selected
-  native `_intUnlock` symbol windows in the five MMSC builds in the linked findings?
-  The [bounded window findings](mmsc/port-interrupt-leaf-windows.md) retain each known
-  branch destination outside its own view and its boundary fallthrough.
-  Tried: selected complete native symbol windows, a.out nlist metadata, raw bounded
-  neighbor contexts and qualified caller records. Those own-window models contain
-  no exit. Next: justify an extended view using independent entry boundaries, then
-  rerun exact native analysis before assigning returns or effects outside the stated
-  views.
-
 ## ARM router indirect call
 
 - **Route: software now.** Which routine does the indirect call at `0x9f88` in `RouterInput` reach, and what is done with the candidate arguments in `r0` to `r2`?

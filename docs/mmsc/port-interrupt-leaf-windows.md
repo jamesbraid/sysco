@@ -207,3 +207,7 @@ The [full facts](disasm/port-interrupt-leaf-windows-facts.txt) purpose-label can
   Boundary (`sti` at 0x175153): instruction end 0x175154. The native CFG supplies no local successor there.
   Immediate (`and` at 0x17514c): `0x200`.
   Tool warning: `0x175153 sti: unsupported effects invalidated`.
+
+## Where `_intUnlock` returns
+
+Established in all eleven MMSC images held (6.4, 6.4-origin, 6.5, 6.5.2, 6.5.5, 6.5.6, 6.5.7, 6.5.9, 6.5.10, 6.5.30 and patch SG0002378): the 12 bytes of `_intUnlock` are identical in every one, `8b 44 24 04 25 00 02 00 00 74 01 fb`, and the next symbol, the local label `intUnlock0` exactly 12 bytes later, is a single `ret` (`c3`). So the routine is `if (arg & 0x200) sti; return;`: the conditional branch skips the `sti` and lands on the `ret`, and the fall-through after `sti` lands on the same `ret`. Both paths return, with `eax` holding the argument masked to bit 9, the interrupt-enable flag position. The own-window model shows no exit because the `ret` belongs to the next label, not to a missing exit. This does not recover what a caller does with the return value; the routine's role as the counterpart of `_intLock`, which returns the saved flags, is inferred from the pair of names and the shape. The window above stays as recorded.
