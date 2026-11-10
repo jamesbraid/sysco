@@ -65,7 +65,7 @@ Setting numbers are decimal with the hexadecimal form in brackets. A bit field i
 | 55 (0x37) | byte +0x16 bit 2 |
 | 56 (0x38) | byte +0x16 bit 1 |
 | 57 (0x39) | byte +0x16 bit 0 |
-| 60 (0x3c) | byte +0x17 bits 7:4 |
+| 60 (0x3c) | byte +0x17 bits 7:4 (router role nibble; accepted values and users in [../l1-board-contract.md](../l1-board-contract.md), section 9) |
 | 61 (0x3d) | byte +0x17 bits 2:1 |
 | 62 (0x3e) | byte +0x17 bit 0 |
 | 63 (0x3f) | 32-bit word at +0x30 |
