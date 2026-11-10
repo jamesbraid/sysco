@@ -13,6 +13,7 @@ What is here:
 
 - [docs/firmware-versions.md](docs/firmware-versions.md): every L1 and L2 version found, with sizes, hashes and the media or patch each came from.
 - [docs/l1/](docs/l1/): reading notes for the Origin 300 L1 1.44.0 image (package layout, boot, M-Bus and board records, USB device side, RS-422 router, node link, debug console), the request catalogue, I/O register and protocol tables, the symbol map, and the listing of that image under `docs/l1/disasm/`.
+- [docs/l1-console-behaviour.md](docs/l1-console-behaviour.md): what the Origin 300 L1 prints and answers on its console in each state, with graded facts and the tests that would settle the unknowns.
 - [docs/host-tool-options.md](docs/host-tool-options.md): the command lines of `l1cmd`, `l2cmd` and `flashsc`, and what the first two send.
 - [docs/inventory/](docs/inventory/README.md): tables measured from the images (images, packages, functions, request codes, I/O registers, protocols) plus the host tools' ELF tables.
 - [docs/coverage.md](docs/coverage.md) is the map of what is covered; [docs/open-questions.md](docs/open-questions.md) lists what the images have not yet answered.
