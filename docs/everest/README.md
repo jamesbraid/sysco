@@ -22,6 +22,7 @@ The same files exist in `root/6.4-origin/` as different builds (daemon 42,352 by
 - [driver.md](driver.md): the character-device driver (`/dev/sysctlr`), its twelve routines, the state block, the device registers.
 - [daemon-wire.md](daemon-wire.md): how the daemon frames requests and parses replies, the item catalogue, alarms, retries, power-down sequence.
 - [records.md](records.md): the environment reply, the log reply, the PROM diagnostic table and board-type names.
+- [inventory-record.md](inventory-record.md): the 1,768-byte inventory record of `syssgi` selector 102 and the routine that reports it.
 - [scmsg.md](scmsg.md): the one-shot front-panel message tool.
 - [prom-client.md](prom-client.md): the standalone IP19 diagnostic as a second client; the serial-number requests.
 - [early-builds.md](early-builds.md): the daemon, message tool, driver and header of IRIX 5.0 to 6.4, what changed and when.
