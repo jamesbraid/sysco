@@ -1,4 +1,4 @@
-// generated from sysco 7b8c98aed437 MCF5206E_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 3bf6ffcfecb1 MCF5206E_DECODE.h - do not edit, regenerate in sysco
 //!
 //! On-chip registers of the ColdFire MCF5206e that the L1 firmware uses.
 //! Offsets are from the module base register.
@@ -10,6 +10,10 @@
 
 #![allow(dead_code)]
 
+/// rw8, established.
+pub const OFFSET_SIMR: u32 = 3;
+/// established.
+pub const SIMR_START_VALUE: u32 = 192;
 /// rw16, established.
 pub const OFFSET_IMR: u32 = 54;
 /// established.

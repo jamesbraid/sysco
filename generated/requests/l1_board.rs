@@ -1,4 +1,4 @@
-// generated from sysco 80298431ff24 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 3bf6ffcfecb1 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Board-level bit layouts and constants of the ColdFire L1 firmware:
 //! expander bytes, flash commands, quad UART, clock window.
@@ -18,6 +18,8 @@ pub const CNTL2_WIRE: u32 = 68;
 pub const CNTL1_START_VALUE: u32 = 114;
 /// established: applied at cold start.
 pub const CNTL2_START_VALUE: u32 = 138;
+/// established.
+pub const PIMM_VCC_OK_WIRE: u32 = 66;
 /// established.
 pub const CNTL1_INPUT_MASK_CBRICK: u32 = 0;
 /// established.
@@ -94,6 +96,26 @@ pub const QUART_CHANNEL1: u32 = 8;
 pub const QUART_CHANNEL2: u32 = 16;
 /// established.
 pub const QUART_CHANNEL3: u32 = 24;
+/// established: write; interrupt identification on read.
+pub const QUART_REG_FIFO_CONTROL: u32 = 2;
+/// established.
+pub const QUART_REG_LINE_CONTROL: u32 = 3;
+/// established.
+pub const QUART_REG_MODEM_CONTROL: u32 = 4;
+/// established.
+pub const QUART_FIFO_CONTROL_TRIGGER_A: u32 = 15;
+/// established.
+pub const QUART_FIFO_CONTROL_TRIGGER_B: u32 = 143;
+/// established.
+pub const QUART_LINE_CONTROL_8N1: u32 = 3;
+/// established.
+pub const QUART_LINE_CONTROL_8E1: u32 = 27;
+/// established.
+pub const QUART_LINE_CONTROL_8O1: u32 = 11;
+/// established: normal use.
+pub const QUART_MODEM_CONTROL_DTR_RTS: u32 = 3;
+/// established: only when the channel loop-back flag is set.
+pub const QUART_MODEM_CONTROL_LOOPBACK: u32 = 16;
 /// established.
 pub const CLOCK_CONTROL_INDEX: u32 = 0x7f8;
 /// established: register 0x40.
@@ -274,6 +296,25 @@ impl Cntl2 {
     /// Bits 7:3, unknown.
     pub const fn strap(self) -> u32 {
         (self.0 >> 3) & 0x1f
+    }
+}
+
+/// The `PIMM_VCC` word.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct PimmVcc(u32);
+
+impl PimmVcc {
+    pub const fn new(word: u32) -> Self {
+        Self(word)
+    }
+
+    pub const fn raw(self) -> u32 {
+        self.0
+    }
+
+    /// Bits 7:6, established.
+    pub const fn ok(self) -> u32 {
+        (self.0 >> 6) & 0x3
     }
 }
 
@@ -467,5 +508,29 @@ impl Cacr {
     /// Bit 31, inferred.
     pub const fn cenb(self) -> bool {
         (self.0 >> 31) & 1 != 0
+    }
+}
+
+/// The `ROUTER_DEST` word.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RouterDest(u32);
+
+impl RouterDest {
+    pub const fn new(word: u32) -> Self {
+        Self(word)
+    }
+
+    pub const fn raw(self) -> u32 {
+        self.0
+    }
+
+    /// Bits 17:12, established.
+    pub const fn slot(self) -> u32 {
+        (self.0 >> 12) & 0x3f
+    }
+
+    /// Bits 27:18, established.
+    pub const fn rack(self) -> u32 {
+        (self.0 >> 18) & 0x3ff
     }
 }

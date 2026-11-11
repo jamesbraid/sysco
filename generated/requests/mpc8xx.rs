@@ -1,4 +1,4 @@
-// generated from sysco 7b8c98aed437 MPC8XX_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 3bf6ffcfecb1 MPC8XX_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Start-up values of the PowerPC communications controller on the L2
 //! board: machine state, clock registers, serial channel page, PCI bridge.
@@ -106,6 +106,74 @@ pub const PCIB_INIT_F10: u32 = 0;
 pub const PCIB_INIT_F14: u32 = 0xc00000d1;
 /// established.
 pub const PCIB_INIT_F80: u32 = 0x81000000;
+/// established: failure path only.
+pub const SYPCR_FAILURE_PATH_VALUE: u32 = 0xffffff80;
+/// established.
+pub const SWSR_KEY_FIRST: u32 = 0x556c;
+/// established.
+pub const SWSR_KEY_SECOND: u32 = 0xaa39;
+/// established.
+pub const MPTPR_START_VALUE: u32 = 0x200;
+/// established.
+pub const MAMR_START_VALUE: u32 = 0x18804000;
+/// established.
+pub const MAR_START_VALUE: u32 = 136;
+/// established: one store.
+pub const MCR_RUN_FIRST: u32 = 0x8000202d;
+/// established: eight stores.
+pub const MCR_RUN_SECOND: u32 = 0x80002030;
+/// established: one store, after the address register.
+pub const MCR_RUN_LAST: u32 = 0x80002013;
+/// established.
+pub const UPM_PROGRAM_WORDS: u32 = 64;
+/// established: size the kernel maps; the chip select decodes 128 KiB.
+pub const BYTEDEV_MAPPED_SIZE: u32 = 0x1000;
+/// established.
+pub const BYTEDEV_REG0_FIRST: u32 = 0;
+/// established: after a 500 ms wait.
+pub const BYTEDEV_REG0_SECOND: u32 = 128;
+/// established.
+pub const BYTEDEV_REG3_VALUE: u32 = 24;
+/// established.
+pub const BYTEDEV_REG1_FIRST: u32 = 14;
+/// established.
+pub const BYTEDEV_REG1_SECOND: u32 = 15;
+/// established: after a second 500 ms wait.
+pub const BYTEDEV_REG1_LAST: u32 = 14;
+/// established.
+pub const VPD_EEPROM_ADDR8: u32 = 164;
+/// established.
+pub const VPD_EEPROM_ADDR7: u32 = 82;
+/// established.
+pub const VPD_BLOCK_SIZE: u32 = 0x100;
+/// established.
+pub const VPD_CHAIN_START: u32 = 10;
+/// established.
+pub const VPD_TAG_ETHERNET: u32 = 8;
+/// established.
+pub const VPD_TAG_END: u32 = 255;
+/// established.
+pub const FLASH_UNLOCK_OFFSET_1: u32 = 0x1554;
+/// established.
+pub const FLASH_UNLOCK_OFFSET_2: u32 = 0xaa8;
+/// established.
+pub const FLASH_UNLOCK_DATA_1: u32 = 0xaa00aa;
+/// established.
+pub const FLASH_UNLOCK_DATA_2: u32 = 0x550055;
+/// established.
+pub const FLASH_CMD_RESET: u32 = 0xf000f0;
+/// established.
+pub const FLASH_CMD_PROGRAM: u32 = 0xa000a0;
+/// established: followed by the unlock pair.
+pub const FLASH_CMD_ERASE_SETUP: u32 = 0x800080;
+/// established: written at the sector address.
+pub const FLASH_CMD_SECTOR_ERASE: u32 = 0x300030;
+/// established.
+pub const FLASH_CMD_AUTOSELECT: u32 = 0x900090;
+/// established: one bit per device.
+pub const FLASH_STATUS_TOGGLE: u32 = 0x400040;
+/// established: one bit per device.
+pub const FLASH_STATUS_ERROR: u32 = 0x200020;
 
 /// Register `sccr`: read/write, 32-bit; reset unknown; established.
 pub const REG_SCCR: u32 = 0x0280;
@@ -239,6 +307,36 @@ pub const REG_REG_F14_WIDTH: u32 = 32;
 /// Register `reg_f80`: read/write, 32-bit; reset unknown; inferred.
 pub const REG_REG_F80: u32 = 0x0f80;
 pub const REG_REG_F80_WIDTH: u32 = 32;
+/// Register `sypcr`: read/write, 32-bit; reset unknown; established.
+pub const REG_SYPCR: u32 = 0x0004;
+pub const REG_SYPCR_WIDTH: u32 = 32;
+/// Register `swsr`: read/write, 16-bit; reset unknown; established.
+pub const REG_SWSR: u32 = 0x000e;
+pub const REG_SWSR_WIDTH: u32 = 16;
+/// Register `mar`: read/write, 32-bit; reset unknown; established.
+pub const REG_MAR: u32 = 0x0164;
+pub const REG_MAR_WIDTH: u32 = 32;
+/// Register `mcr`: read/write, 32-bit; reset unknown; established.
+pub const REG_MCR: u32 = 0x0168;
+pub const REG_MCR_WIDTH: u32 = 32;
+/// Register `mamr`: read/write, 32-bit; reset unknown; established.
+pub const REG_MAMR: u32 = 0x0170;
+pub const REG_MAMR_WIDTH: u32 = 32;
+/// Register `mptpr`: read/write, 16-bit; reset unknown; established.
+pub const REG_MPTPR: u32 = 0x017a;
+pub const REG_MPTPR_WIDTH: u32 = 16;
+/// Register `mdr`: read/write, 32-bit; reset unknown; established.
+pub const REG_MDR: u32 = 0x017c;
+pub const REG_MDR_WIDTH: u32 = 32;
+/// Register `reg0`: write, 8-bit; reset unknown; established.
+pub const REG_REG0: u32 = 0x0000;
+pub const REG_REG0_WIDTH: u32 = 8;
+/// Register `reg1`: write, 8-bit; reset unknown; established.
+pub const REG_REG1: u32 = 0x0001;
+pub const REG_REG1_WIDTH: u32 = 8;
+/// Register `reg3`: write, 8-bit; reset unknown; established.
+pub const REG_REG3: u32 = 0x0003;
+pub const REG_REG3_WIDTH: u32 = 8;
 
 /// The `MSR` word.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
