@@ -211,84 +211,84 @@ The registration routine installs, in order: the select hook, 17 expanders (`0xf
 
 Expanders:
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name |
-|---:|---:|---|---|---|---|---|---|
-| 0 | 0 | `0x4e` / `0x27` | `0x00` | `0xff` | `0x00` | - | BUS SELECT |
-| 1 | 2 | `0x42` / `0x21` | `0xff` | `0xff` | `0x00` | - | LED0 LOW |
-| 2 | 2 | `0x44` / `0x22` | `0xff` | `0xff` | `0x00` | - | LED0 HIGH |
-| 3 | 2 | `0x46` / `0x23` | `0xff` | `0xff` | `0x00` | - | LED1 LOW |
-| 4 | 2 | `0x48` / `0x24` | `0xff` | `0xff` | `0x00` | - | LED1 HIGH |
-| 5 | 2 | `0x4c` / `0x26` | `0xf1` | `0xff` | `0x00` | yes | COM CONTROL |
-| 6 | 3 | `0x42` / `0x21` | `0x00` | `0x72` | `0x00` | - | BEDROCK CNTL 1 |
-| 7 | 3 | `0x44` / `0x22` | `0x00` | `0x8a` | `0x00` | - | BEDROCK CNTL 2 |
-| 8 | 3 | `0x46` / `0x23` | `0x55` | `0xdd` | `0x11` | yes | PORT CONTROL |
-| 9 | 3 | `0x48` / `0x24` | `0xde` | `0xff` | `0xde` | yes | POWER CONTROL |
-| 10 | 3 | `0x4a` / `0x25` | `0xff` | `0xff` | `0x00` | - | PIMM PSC |
-| 11 | 3 | `0x4c` / `0x26` | `0x40` | `0xff` | `0x40` | yes | FAN CONTROL |
-| 12 | 4 | `0x44` / `0x22` | `0x36` | `0xff` | `0x36` | yes | PIMM0 POWER |
-| 13 | 4 | `0x42` / `0x21` | `0x3c` | `0xff` | `0x00` | yes | PIMM0 VCC OK |
-| 14 | 5 | `0x44` / `0x22` | `0x36` | `0xff` | `0x36` | yes | PIMM1 POWER |
-| 15 | 5 | `0x42` / `0x21` | `0x3c` | `0xff` | `0x00` | yes | PIMM1 VCC OK |
-| 16 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL |
+| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name | Grade |
+|---:|---:|---|---|---|---|---|---|---|
+| 0 | 0 | `0x4e` / `0x27` | `0x00` | `0xff` | `0x00` | - | BUS SELECT | established |
+| 1 | 2 | `0x42` / `0x21` | `0xff` | `0xff` | `0x00` | - | LED0 LOW | established |
+| 2 | 2 | `0x44` / `0x22` | `0xff` | `0xff` | `0x00` | - | LED0 HIGH | established |
+| 3 | 2 | `0x46` / `0x23` | `0xff` | `0xff` | `0x00` | - | LED1 LOW | established |
+| 4 | 2 | `0x48` / `0x24` | `0xff` | `0xff` | `0x00` | - | LED1 HIGH | established |
+| 5 | 2 | `0x4c` / `0x26` | `0xf1` | `0xff` | `0x00` | yes | COM CONTROL | established |
+| 6 | 3 | `0x42` / `0x21` | `0x00` | `0x72` | `0x00` | - | BEDROCK CNTL 1 | established |
+| 7 | 3 | `0x44` / `0x22` | `0x00` | `0x8a` | `0x00` | - | BEDROCK CNTL 2 | established |
+| 8 | 3 | `0x46` / `0x23` | `0x55` | `0xdd` | `0x11` | yes | PORT CONTROL | established |
+| 9 | 3 | `0x48` / `0x24` | `0xde` | `0xff` | `0xde` | yes | POWER CONTROL | established |
+| 10 | 3 | `0x4a` / `0x25` | `0xff` | `0xff` | `0x00` | - | PIMM PSC | established |
+| 11 | 3 | `0x4c` / `0x26` | `0x40` | `0xff` | `0x40` | yes | FAN CONTROL | established |
+| 12 | 4 | `0x44` / `0x22` | `0x36` | `0xff` | `0x36` | yes | PIMM0 POWER | established |
+| 13 | 4 | `0x42` / `0x21` | `0x3c` | `0xff` | `0x00` | yes | PIMM0 VCC OK | established |
+| 14 | 5 | `0x44` / `0x22` | `0x36` | `0xff` | `0x36` | yes | PIMM1 POWER | established |
+| 15 | 5 | `0x42` / `0x21` | `0x3c` | `0xff` | `0x00` | yes | PIMM1 VCC OK | established |
+| 16 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL | established |
 
 The names are the firmware's own log labels. Input-bit mask bits are never driven by the firmware; the applied value is written (ORed with the input bits) once at cold start when the cold-start check passes (section 11).
 
 Identity EEPROMs (kind 1 board record, kind 2 memory serial-presence record; capacity is the configured length, not a probed size):
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name |
-|---:|---:|---|---|---:|---|
-| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | NODE |
-| 1 | 4 | `0xa8` / `0x54` | 512 | 1 | PIMM 0 |
-| 2 | 5 | `0xa8` / `0x54` | 512 | 1 | PIMM 1 |
-| 3 | 6 | `0xa0` / `0x50` | 256 | 2 | DIMM 0 |
-| 4 | 7 | `0xa0` / `0x50` | 256 | 2 | DIMM 2 |
-| 5 | 8 | `0xa0` / `0x50` | 256 | 2 | DIMM 4 |
-| 6 | 9 | `0xa0` / `0x50` | 256 | 2 | DIMM 6 |
-| 7 | 10 | `0xa0` / `0x50` | 256 | 2 | DIMM 1 |
-| 8 | 11 | `0xa0` / `0x50` | 256 | 2 | DIMM 3 |
-| 9 | 12 | `0xa0` / `0x50` | 256 | 2 | DIMM 5 |
-| 10 | 13 | `0xa0` / `0x50` | 256 | 2 | DIMM 7 |
+| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name | Grade |
+|---:|---:|---|---|---:|---|---|
+| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | NODE | established |
+| 1 | 4 | `0xa8` / `0x54` | 512 | 1 | PIMM 0 | established |
+| 2 | 5 | `0xa8` / `0x54` | 512 | 1 | PIMM 1 | established |
+| 3 | 6 | `0xa0` / `0x50` | 256 | 2 | DIMM 0 | established |
+| 4 | 7 | `0xa0` / `0x50` | 256 | 2 | DIMM 2 | established |
+| 5 | 8 | `0xa0` / `0x50` | 256 | 2 | DIMM 4 | established |
+| 6 | 9 | `0xa0` / `0x50` | 256 | 2 | DIMM 6 | established |
+| 7 | 10 | `0xa0` / `0x50` | 256 | 2 | DIMM 1 | established |
+| 8 | 11 | `0xa0` / `0x50` | 256 | 2 | DIMM 3 | established |
+| 9 | 12 | `0xa0` / `0x50` | 256 | 2 | DIMM 5 | established |
+| 10 | 13 | `0xa0` / `0x50` | 256 | 2 | DIMM 7 | established |
 
 DIMM numbering follows the table order, so segments 6 to 13 carry DIMM 0, 2, 4, 6, 1, 3, 5, 7. Board record validation (common header sum, area sums, SPD byte-63 sum) is in [board-records.md](l1/board-records.md) and [mbus.md](l1/mbus.md).
 
 Monitor chips (twelve bytes each; type 1 with the register layout of the LM78 family, a hint from the registers written):
 
-| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name |
-|---:|---:|---:|---|---|---|---|
-| 0 | 1 | 2 | `0x58` / `0x2c` | `0x00` | `0x00a0` | NODE 0 |
-| 1 | 1 | 2 | `0x5a` / `0x2d` | `0x00` | `0x0020` | NODE 1 |
-| 2 | 1 | 2 | `0x5c` / `0x2e` | `0x01` | `0x0000` | NODE 2 |
-| 3 | 1 | 4 | `0x5c` / `0x2e` | `0x00` | `0x0000` | PIMM0 A |
-| 4 | 1 | 4 | `0x5e` / `0x2f` | `0x00` | `0x0000` | PIMM0 B |
-| 5 | 1 | 5 | `0x5c` / `0x2e` | `0x00` | `0x0000` | PIMM1 A |
-| 6 | 1 | 5 | `0x5e` / `0x2f` | `0x00` | `0x0000` | PIMM1 B |
+| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name | Grade |
+|---:|---:|---:|---|---|---|---|---|
+| 0 | 1 | 2 | `0x58` / `0x2c` | `0x00` | `0x00a0` | NODE 0 | established |
+| 1 | 1 | 2 | `0x5a` / `0x2d` | `0x00` | `0x0020` | NODE 1 | established |
+| 2 | 1 | 2 | `0x5c` / `0x2e` | `0x01` | `0x0000` | NODE 2 | established |
+| 3 | 1 | 4 | `0x5c` / `0x2e` | `0x00` | `0x0000` | PIMM0 A | established |
+| 4 | 1 | 4 | `0x5e` / `0x2f` | `0x00` | `0x0000` | PIMM0 B | established |
+| 5 | 1 | 5 | `0x5c` / `0x2e` | `0x00` | `0x0000` | PIMM1 A | established |
+| 6 | 1 | 5 | `0x5e` / `0x2f` | `0x00` | `0x0000` | PIMM1 B | established |
 
 Initialisation of each monitor (established, package 1 `0xffe6836c`; the monitor code pairs): register `0x40` := `0x80`, `0x43` := `0xdf`, `0x44` := `0x13`, `0x47` := low byte of the halfword at +4 (`0xa0`, `0x20`, or 0), then `0x40` := `0x03` unless descriptor flag bit 0 is set (monitor 2 has it set). Reads: voltage channels 0 to 3, 8 and 9 map to registers `0x20`..`0x25` with fixed scale factors, temperature channel 4 to register `0x27` as a signed byte, tachometer channels 6 and 7 to fan registers (not followed). The registers agree with the LM78/DS1780 map; the part is not named (U6).
 
 Supplies (24-byte records; "nominal entry" indexes the 32-entry name and nominal-voltage table at `0xffe4e6e8`, entries 0 to 29 supplies, 30 `ALL`, 31 `NONE`; "enable" is expander index and mask, active low except supply type `0x17`, which no C-brick record uses):
 
-| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name |
-|---:|---|---|---|---|
-| 0 | 8 48V (48) | 11, `0x80` | none | - |
-| 1 | 20 VCPU (0) | 12, `0x01` | 3, 1 | PIMM0 VCPU |
-| 2 | 20 VCPU (0) | 14, `0x01` | 5, 1 | PIMM1 VCPU |
-| 3 | 15 2.5V (2.5) | 9, `0x20` | 1, 0 | DIMM |
-| 4 | 15 2.5V (2.5) | 9, `0x01` | 0, 0 | - |
-| 5 | 12 1.5V (1.5) | none | 0, 1 | - |
-| 6 | 16 3.3V (3.3) | none | 0, 2 | 3.3V AUX |
-| 7 | 16 3.3V (3.3) | none | 1, 2 | 3.3V L1 |
-| 8 | 17 5V (5) | none | 0, 3 | 5V AUX |
-| 9 | 9 12V (12) | none | 0, 8 | 12 BIAS |
-| 10 | 21 SRAM (2.5) | 12, `0x08` | 3, 0 | PIMM0 SRAM |
-| 11 | 12 1.5V (1.5) | none | 3, 9 | PIMM0 1.5V |
-| 12 | 16 3.3V (3.3) | none | 3, 2 | PIMM0 3.3V AUX |
-| 13 | 17 5V (5) | none | 3, 3 | PIMM0 5V AUX |
-| 14 | 9 12V (12) | none | 3, 8 | PIMM0 12V BIAS |
-| 15 | 21 SRAM (2.5) | 14, `0x08` | 5, 0 | PIMM1 SRAM |
-| 16 | 12 1.5V (1.5) | none | 5, 9 | PIMM1 1.5V |
-| 17 | 16 3.3V (3.3) | none | 5, 2 | PIMM1 3.3V AUX |
-| 18 | 17 5V (5) | none | 5, 3 | PIMM1 5V AUX |
-| 19 | 9 12V (12) | none | 5, 8 | PIMM1 12V BIAS |
+| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name | Grade |
+|---:|---|---|---|---|---|
+| 0 | 8 48V (48) | 11, `0x80` | none | - | established |
+| 1 | 20 VCPU (0) | 12, `0x01` | 3, 1 | PIMM0 VCPU | established |
+| 2 | 20 VCPU (0) | 14, `0x01` | 5, 1 | PIMM1 VCPU | established |
+| 3 | 15 2.5V (2.5) | 9, `0x20` | 1, 0 | DIMM | established |
+| 4 | 15 2.5V (2.5) | 9, `0x01` | 0, 0 | - | established |
+| 5 | 12 1.5V (1.5) | none | 0, 1 | - | established |
+| 6 | 16 3.3V (3.3) | none | 0, 2 | 3.3V AUX | established |
+| 7 | 16 3.3V (3.3) | none | 1, 2 | 3.3V L1 | established |
+| 8 | 17 5V (5) | none | 0, 3 | 5V AUX | established |
+| 9 | 9 12V (12) | none | 0, 8 | 12 BIAS | established |
+| 10 | 21 SRAM (2.5) | 12, `0x08` | 3, 0 | PIMM0 SRAM | established |
+| 11 | 12 1.5V (1.5) | none | 3, 9 | PIMM0 1.5V | established |
+| 12 | 16 3.3V (3.3) | none | 3, 2 | PIMM0 3.3V AUX | established |
+| 13 | 17 5V (5) | none | 3, 3 | PIMM0 5V AUX | established |
+| 14 | 9 12V (12) | none | 3, 8 | PIMM0 12V BIAS | established |
+| 15 | 21 SRAM (2.5) | 14, `0x08` | 5, 0 | PIMM1 SRAM | established |
+| 16 | 12 1.5V (1.5) | none | 5, 9 | PIMM1 1.5V | established |
+| 17 | 16 3.3V (3.3) | none | 5, 2 | PIMM1 3.3V AUX | established |
+| 18 | 17 5V (5) | none | 5, 3 | PIMM1 5V AUX | established |
+| 19 | 9 12V (12) | none | 5, 8 | PIMM1 12V BIAS | established |
 
 Tachometers and temperatures:
 
@@ -311,44 +311,44 @@ The temperature records name monitors 3 to 6 (the two PIMM sensors each); the ta
 
 The initialiser sets USB count 0, no soft-reset hook, no NMI hook, no power-down hook, reset hold `0xffe47ddc`, reset release `0xffe48370`. The registration installs 13 expanders (`0xffe467e8`), 2 EEPROMs (`0xffe468b8`), 3 monitors (`0xffe468d0`), 9 supplies (`0xffe468f4`), fan control (`0xffe469cc`), 3 tachometers (`0xffe469d8`), 2 temperatures (`0xffe469fc`), 7 PSC status rows (`0xffe46a7a`), 2 port records (`0xffe46a24`), the display on expander 12, and a one-entry reset table (`0xffe46a0c`, registered by `0xffe47ed8`). Everything is on segment 0.
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name |
-|---:|---:|---|---|---|---|---|---|
-| 0 | 0 | `0x70` / `0x38` | `0x00` | `0xff` | `0x00` | - | POWER ENABLE |
-| 1 | 0 | `0x72` / `0x39` | `0x20` | `0xff` | `0x00` | - | FAN SPEED |
-| 2 | 0 | `0x74` / `0x3a` | `0xff` | `0xff` | `0x0f` | yes | POWER STATUS 1 |
-| 3 | 0 | `0x76` / `0x3b` | `0xff` | `0xff` | `0xff` | yes | POWER STATUS 2 |
-| 4 | 0 | `0x46` / `0x23` | `0x55` | `0xdd` | `0x11` | yes | PORT CONTROL |
-| 5 | 0 | `0x48` / `0x24` | `0x00` | `0xd4` | `0x00` | - | XBRIDGE CONTROL |
-| 6 | 0 | `0x4a` / `0x25` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT1 |
-| 7 | 0 | `0x4c` / `0x26` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT2 |
-| 8 | 0 | `0x4e` / `0x27` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT3 |
-| 9 | 0 | `0x42` / `0x21` | `0x7f` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT4 |
-| 10 | 0 | `0x7c` / `0x3e` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS2 SLOT1 |
-| 11 | 0 | `0x7e` / `0x3f` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS2 SLOT2 |
-| 12 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL |
+| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name | Grade |
+|---:|---:|---|---|---|---|---|---|---|
+| 0 | 0 | `0x70` / `0x38` | `0x00` | `0xff` | `0x00` | - | POWER ENABLE | established |
+| 1 | 0 | `0x72` / `0x39` | `0x20` | `0xff` | `0x00` | - | FAN SPEED | established |
+| 2 | 0 | `0x74` / `0x3a` | `0xff` | `0xff` | `0x0f` | yes | POWER STATUS 1 | established |
+| 3 | 0 | `0x76` / `0x3b` | `0xff` | `0xff` | `0xff` | yes | POWER STATUS 2 | established |
+| 4 | 0 | `0x46` / `0x23` | `0x55` | `0xdd` | `0x11` | yes | PORT CONTROL | established |
+| 5 | 0 | `0x48` / `0x24` | `0x00` | `0xd4` | `0x00` | - | XBRIDGE CONTROL | established |
+| 6 | 0 | `0x4a` / `0x25` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT1 | established |
+| 7 | 0 | `0x4c` / `0x26` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT2 | established |
+| 8 | 0 | `0x4e` / `0x27` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT3 | established |
+| 9 | 0 | `0x42` / `0x21` | `0x7f` | `0x7f` | `0x0b` | yes | PCI BUS1 SLOT4 | established |
+| 10 | 0 | `0x7c` / `0x3e` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS2 SLOT1 | established |
+| 11 | 0 | `0x7e` / `0x3f` | `0x0b` | `0x7f` | `0x0b` | yes | PCI BUS2 SLOT2 | established |
+| 12 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL | established |
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name |
-|---:|---:|---|---|---:|---|
-| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | POWER |
-| 1 | 0 | `0xa8` / `0x54` | 512 | 1 | LOGIC |
+| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name | Grade |
+|---:|---:|---|---|---:|---|---|
+| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | POWER | established |
+| 1 | 0 | `0xa8` / `0x54` | 512 | 1 | LOGIC | established |
 
-| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name |
-|---:|---:|---:|---|---|---|---|
-| 0 | 1 | 0 | `0x58` / `0x2c` | `0x00` | `0x00a0` | POWER 0 |
-| 1 | 1 | 0 | `0x5a` / `0x2d` | `0x00` | `0x0020` | POWER 1 |
-| 2 | 1 | 0 | `0x5c` / `0x2e` | `0x01` | `0x0000` | POWER 2 |
+| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name | Grade |
+|---:|---:|---:|---|---|---|---|---|
+| 0 | 1 | 0 | `0x58` / `0x2c` | `0x00` | `0x00a0` | POWER 0 | established |
+| 1 | 1 | 0 | `0x5a` / `0x2d` | `0x00` | `0x0020` | POWER 1 | established |
+| 2 | 1 | 0 | `0x5c` / `0x2e` | `0x01` | `0x0000` | POWER 2 | established |
 
-| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name |
-|---:|---|---|---|---|
-| 0 | 8 48V (48) | 0, `0x01` | none | - |
-| 1 | 9 12V (12) | 0, `0x04` | 1, 8 | 12V BIAS |
-| 2 | 15 2.5V (2.5) | 0, `0x08` | 0, 0 | - |
-| 3 | 16 3.3V (3.3) | 0, `0x10` | 0, 2 | - |
-| 4 | 9 12V (12) | 0, `0x40` | 0, 8 | - |
-| 5 | 17 5V (5) | 0, `0x20` | 0, 3 | - |
-| 6 | 18 -12V (-12) | 0, `0x80` | 1, 9 | - |
-| 7 | 16 3.3V (3.3) | none | 1, 2 | 3.3V AUX |
-| 8 | 17 5V (5) | none | 1, 3 | 5V AUX |
+| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name | Grade |
+|---:|---|---|---|---|---|
+| 0 | 8 48V (48) | 0, `0x01` | none | - | established |
+| 1 | 9 12V (12) | 0, `0x04` | 1, 8 | 12V BIAS | established |
+| 2 | 15 2.5V (2.5) | 0, `0x08` | 0, 0 | - | established |
+| 3 | 16 3.3V (3.3) | 0, `0x10` | 0, 2 | - | established |
+| 4 | 9 12V (12) | 0, `0x40` | 0, 8 | - | established |
+| 5 | 17 5V (5) | 0, `0x20` | 0, 3 | - | established |
+| 6 | 18 -12V (-12) | 0, `0x80` | 1, 9 | - | established |
+| 7 | 16 3.3V (3.3) | none | 1, 2 | 3.3V AUX | established |
+| 8 | 17 5V (5) | none | 1, 3 | 5V AUX | established |
 
 | Idx | Monitor, channel | Name |
 |---:|---|---|
@@ -367,33 +367,35 @@ Expander 0 (`POWER ENABLE`, `0x70`/`0x38`) drives the seven switched supplies, a
 
 USB count 1; reset hold `0xffe49fe0`, reset release `0xffe4a1b4`; no soft-reset, no NMI, no power-up veto. The registration installs 8 expanders (`0xffe4a3bc`), 2 EEPROMs (`0xffe4a43c`), 1 monitor (`0xffe4a454`), 5 supplies (`0xffe4a460`), 2 PSC status rows (`0xffe4a4d8`), fan control (`0xffe4a4e4`), 2 tachometers (`0xffe4a4f0`), 1 temperature (`0xffe4a508`), 8 port records (`0xffe4a510`, named `A` to `H`), the display on expander 7, the sanity routine, one reset-table entry (`0xffe4a5d0`) and the two polling workers.
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name |
-|---:|---:|---|---|---|---|---|---|
-| 0 | 0 | `0x72` / `0x39` | `0xe0` | `0xff` | `0xe0` | yes | POWER CONTROL |
-| 1 | 0 | `0x44` / `0x22` | `0x00` | `0x00` | `0x00` | yes | WIDGET PRESENT |
-| 2 | 0 | `0x46` / `0x23` | `0x00` | `0xf1` | `0x00` | yes | ROUTER CONTROL |
-| 3 | 0 | `0x48` / `0x24` | `0x55` | `0xd5` | `0x11` | yes | PORT HA CONTROL |
-| 4 | 0 | `0x4a` / `0x25` | `0x55` | `0xdd` | `0x11` | yes | PORT BC CONTROL |
-| 5 | 0 | `0x4c` / `0x26` | `0x55` | `0xdd` | `0x11` | yes | PORT DE CONTROL |
-| 6 | 0 | `0x4e` / `0x27` | `0x55` | `0x5d` | `0x11` | yes | PORT FG CONTROL |
-| 7 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL |
+| Idx | Seg | Wire (8-bit / 7-bit) | Input bits | Applied | Int bits | Hook | Name | Grade |
+|---:|---:|---|---|---|---|---|---|---|
+| 0 | 0 | `0x72` / `0x39` | `0xe0` | `0xff` | `0xe0` | yes | POWER CONTROL | established |
+| 1 | 0 | `0x44` / `0x22` | `0x00` | `0x00` | `0x00` | yes | WIDGET PRESENT | established |
+| 2 | 0 | `0x46` / `0x23` | `0x00` | `0xf1` | `0x00` | yes | ROUTER CONTROL | established |
+| 3 | 0 | `0x48` / `0x24` | `0x55` | `0xd5` | `0x11` | yes | PORT HA CONTROL | established |
+| 4 | 0 | `0x4a` / `0x25` | `0x55` | `0xdd` | `0x11` | yes | PORT BC CONTROL | established |
+| 5 | 0 | `0x4c` / `0x26` | `0x55` | `0xdd` | `0x11` | yes | PORT DE CONTROL | established |
+| 6 | 0 | `0x4e` / `0x27` | `0x55` | `0x5d` | `0x11` | yes | PORT FG CONTROL | established |
+| 7 | 0 | `0x40` / `0x20` | `0x0f` | `0xff` | `0x07` | yes | DISPLAY CONTROL | established |
 
-| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name |
-|---:|---:|---|---|---:|---|
-| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | POWER |
-| 1 | 0 | `0xa8` / `0x54` | 512 | 1 | LOGIC |
+Each brick personality has its own expander array, so one 7-bit address names different expanders on different bricks: `0x24` is the XBRIDGE CONTROL expander on the I-brick (section 8.2) and PORT HA CONTROL here, and `0x39` is FAN SPEED on the I-brick and POWER CONTROL here. Both arrays use segment 0, so no segment tells them apart. Established: each array is a separate table installed by its own registration routine. Inferred: that only the registration routine for the board's own type character runs, which is why the two are not in conflict. The three expander arrays were re-read byte for byte from the package 0 tables at `0xffe455dc`, `0xffe467e8` and `0xffe4a3bc`, and the EEPROM, monitor and supply records of all three bricks from the tables at the addresses listed in each subsection; every row above matches.
 
-| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name |
-|---:|---:|---:|---|---|---|---|
-| 0 | 1 | 0 | `0x58` / `0x2c` | `0x00` | `0x00a0` | POWER |
+| Idx | Seg | Wire (8-bit / 7-bit) | Capacity | Kind | Name | Grade |
+|---:|---:|---|---|---:|---|---|
+| 0 | 0 | `0xa4` / `0x52` | 512 | 1 | POWER | established |
+| 1 | 0 | `0xa8` / `0x54` | 512 | 1 | LOGIC | established |
 
-| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name |
-|---:|---|---|---|---|
-| 0 | 8 48V (48) | 0, `0x01` | none | - |
-| 1 | 9 12V (12) | none | 0, 8 | 12 BIAS |
-| 2 | 15 2.5V (2.5) | 0, `0x04` | 0, 0 | - |
-| 3 | 5 3.3V AUX (3.3) | none | 0, 2 | - |
-| 4 | 6 5V AUX (5) | none | 0, 3 | - |
+| Idx | Type | Seg | Wire (8-bit / 7-bit) | Flags | Halfword at +4 | Name | Grade |
+|---:|---:|---:|---|---|---|---|---|
+| 0 | 1 | 0 | `0x58` / `0x2c` | `0x00` | `0x00a0` | POWER | established |
+
+| Idx | Nominal entry | Enable (exp idx, mask) | Monitor, channel | Name | Grade |
+|---:|---|---|---|---|---|
+| 0 | 8 48V (48) | 0, `0x01` | none | - | established |
+| 1 | 9 12V (12) | none | 0, 8 | 12 BIAS | established |
+| 2 | 15 2.5V (2.5) | 0, `0x04` | 0, 0 | - | established |
+| 3 | 5 3.3V AUX (3.3) | none | 0, 2 | - | established |
+| 4 | 6 5V AUX (5) | none | 0, 3 | - | established |
 
 | Idx | Monitor, channel | Name |
 |---:|---|---|

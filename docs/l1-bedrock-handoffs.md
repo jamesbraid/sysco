@@ -15,10 +15,12 @@ Grades follow [../AGENTS.md](../AGENTS.md): **E** established (routine read in f
 
 Both boards describe the Bedrock-facing controls as two byte-wide expanders on the board's two-wire bus, segment 3, at wire addresses `0x42` and `0x44`, with the same applied start-up values on both boards. E (descriptor tables: package 0 `0xffe455dc`, entries 6 and 7; package 1 `0xffe45c90`, entries 2 and 3).
 
-| Expander | Wire address | Name, C-brick | Name, Origin 300 | Applied at start | Input mask |
-|---|---|---|---|---|---|
-| index 6 (C), 2 (O300) | `0x42` | `BEDROCK CNTL 1` | `ASIC CTRL 1` | `0x72` | none (C), `0x20` (O300) |
-| index 7 (C), 3 (O300) | `0x44` | `BEDROCK CNTL 2` | `ASIC CTRL 2` | `0x8a` | none (C), `0x02` (O300) |
+| Expander | Wire address | Name, C-brick | Name, Origin 300 | Applied at start | Input mask | Grade |
+|---|---|---|---|---|---|---|
+| index 6 (C), 2 (O300) | `0x42` | `BEDROCK CNTL 1` | `ASIC CTRL 1` | `0x72` | none (C), `0x20` (O300) | established |
+| index 7 (C), 3 (O300) | `0x44` | `BEDROCK CNTL 2` | `ASIC CTRL 2` | `0x8a` | none (C), `0x02` (O300) | established |
+
+The Origin 300 start value is the same `0x72` and `0x8a` as the C-brick's; only the input mask differs. `0x20` and `0x02` are input-bit masks, not start values: the firmware ORs the mask into the byte it writes, and both masks are already set in the applied bytes (`0x72` has bit `0x20`, `0x8a` has bit `0x02`). Both packages' tables were re-read for this note (package 0 at `0xffe455dc`, package 1 from the descriptor array the board-boot notes cite).
 
 The bit uses are identical in both images' hooks, so the two boards drive one control block (I: the labels differ, the addresses, applied bytes, bit masks and order of use agree; no image says the O300 `ASIC` is a Bedrock). The manual calls the NMI line "the NMI signal in I/O expander B_0100001x" (SGI Origin 300 Server Owner's Guide 007-4498-002, printed page 194, `nmi`): `0100001x` is wire address `0x42`, which agrees with the NMI bit sitting in this expander (E for the address match in the image; the manual is the source of the signal's name).
 
