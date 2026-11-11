@@ -368,7 +368,7 @@ The power-bay start routine itself begins by comparing the letter with `2` (`ffe
 | `R` | router | started | open | allowed |
 | `%` `#` `=` | PE, PX, IX | started | open | allowed |
 | `6` | Twister | started | open | allowed |
-| `V` | V-brick | not started | closed | refused |
+| `V` | CG Voyager (CG-brick; not shown to be the Onyx 3000 V-brick) | not started | closed | refused |
 | `G` | G-brick | not started (started in packages 3 and 5) | console, not the bay link | refused |
 | `D` | no package lists it | started if an L1 ever reported it (arm B) | open | refused (not in the command's string) |
 | `4` | Origin 300 node board | not started | closed | refused |
