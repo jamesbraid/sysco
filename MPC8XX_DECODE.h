@@ -74,6 +74,23 @@
 #define M8X_BR7_START_VALUE 0xfc000401u /* established: 8 MiB window, 8-bit */
 #define M8X_OR7_START_VALUE 0xff800930u /* established */
 
+/* First baud-rate generator, loaded by stage A of the console loader. Its place in the register
+ * map is the public map's: the store goes through a base that sits 0x30 below the register, and
+ * the same routine uses that base for the communications-processor command register and for
+ * port B (read in l2.bin 1.44.0), so the position is inferred. Stage A computes the divisor
+ * field as (clock word >> 4) / baud, doubled, with the enable bit or-ed in; with its clock word
+ * of 0x32 and baud word 0x9600 the quotient is zero, so it stores only the enable bit. The
+ * wrapper's clock word is 50,000,000, which gives the quotient 81 and the value 0x100a2. */
+/* REG: BRG.brgc1 0x9f0 rw32 reset=unknown inferred */
+#define M8X_BRGC1_STAGE_A_VALUE 0x00010000u /* established */
+#define M8X_BRGC1_WRAPPER_VALUE 0x000100a2u /* established */
+
+/* Register windows the wrapper assigns to its two host-controller devices, as the base address
+ * argument of the device set-up call (l2.bin 1.44.0, wrapper). Both fall
+ * inside the second image of the PCI memory window of bank 5. */
+#define M8X_HC0_WINDOW_BASE 0xc0000000u /* established: argument for device 4 */
+#define M8X_HC1_WINDOW_BASE 0xc0001000u /* established: argument for device 5 */
+
 /* Parameter page of the first serial-management channel, programmed by an initialiser
  * that is not on the boot path. */
 #define M8X_SMC1_PARAM_PAGE 0x3e80u /* established */

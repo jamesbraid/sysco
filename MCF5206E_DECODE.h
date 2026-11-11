@@ -30,6 +30,11 @@
 #define SIM_OFFSET_ICR8 0x1bu /* rw8, established */
 #define SIM_OFFSET_ICR9 0x1cu /* rw8, established */
 #define SIM_OFFSET_ICR10 0x1du /* rw8, established */
+#define SIM_OFFSET_ICR11 0x1eu /* rw8, established */
+#define SIM_OFFSET_ICR12 0x1fu /* rw8, established */
+#define SIM_OFFSET_ICR13 0x20u /* rw8, established */
+#define SIM_OFFSET_ICR14 0x21u /* rw8, established */
+#define SIM_OFFSET_ICR15 0x22u /* rw8, established */
 #define SIM_ICR1_START_VALUE 0x84u /* established */
 #define SIM_ICR2_START_VALUE 0x88u /* established */
 #define SIM_ICR3_START_VALUE 0x80u /* established */
@@ -40,6 +45,23 @@
 #define SIM_ICR8_START_VALUE 0x1du /* established */
 #define SIM_ICR9_START_VALUE 0x94u /* established */
 #define SIM_ICR10_START_VALUE 0x80u /* established */
+/* ICR11 serves the M-Bus module, ICR12 on-chip UART 1, ICR13 UART 2 and ICR14/ICR15 the two
+ * DMA channels. The set-up clears ICR13 and writes the others; the values are read in the
+ * Fuel/PE/O300 1MB package of 1.44.0. Which module each register serves is the manual's layout. */
+#define SIM_ICR11_START_VALUE 0x99u /* established */
+#define SIM_ICR12_START_VALUE 0x1au /* established */
+#define SIM_ICR13_START_VALUE 0x00u /* established: cleared, UART 2 unused */
+#define SIM_ICR14_START_VALUE 0x09u /* established */
+#define SIM_ICR15_START_VALUE 0x0au /* established */
+/* ICR12 is a vectored source: the on-chip UART 1 is opened with the vector number 0x42. The
+ * UART interrupt vector register's offset (0x170) is the manual's and was not seen in an
+ * image, so only the vector value carries a grade. */
+#define SIM_UART1_VECTOR 0x42u /* established: argument to the UART 1 open, not a register offset */
+
+/* DRAM controller mode register: the board set-up clears it with a halfword store, since no
+ * DRAM is fitted (the same routine writes the CS0 to CS2 registers; Fuel/PE/O300 1MB 1.44.0). */
+#define SIM_OFFSET_DMCR 0xc6u /* rw16, established */
+#define SIM_DMCR_START_VALUE 0x0000u /* established */
 
 /* Reset status: one bit is tested at start-up to record the reset cause. */
 #define SIM_OFFSET_RSR 0x40u /* rw8, established */
