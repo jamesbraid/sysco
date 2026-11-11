@@ -48,7 +48,7 @@ Routes tried for the opaque call: selected-span native analysis, full raw words 
 bounded contexts, and ELF symbol, segment and relocation metadata. These bounded routes
 do not claim that every possible source was exhausted.
 
-The [open question](../open-questions.md#arm-router-indirect-call) records the remaining software route.
+The callee is still unresolved. The writers of the field named above are the next routines to read.
 
 The [complete facts](disasm/arm-1.44.0-libraries/router-paths-facts.txt) retain every emitted native field, instruction, raw gap, warning, relocation and constant for the full selected spans.
 
