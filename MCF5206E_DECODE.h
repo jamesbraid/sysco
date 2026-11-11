@@ -14,6 +14,33 @@
 #ifndef MCF5206E_DECODE_H
 #define MCF5206E_DECODE_H
 
+/* Interrupt control: the mask register and the ten interrupt control registers the board
+ * set-up writes, with the values it writes. The mask value masks every source and leaves
+ * each driver to unmask its own bit. The control values are autovector, level and priority
+ * encodings in the manual's layout, which was not re-read in an image. */
+#define SIM_OFFSET_IMR 0x36u /* rw16, established */
+#define SIM_IMR_START_VALUE 0xfffeu /* established */
+#define SIM_OFFSET_ICR1 0x14u /* rw8, established */
+#define SIM_OFFSET_ICR2 0x15u /* rw8, established */
+#define SIM_OFFSET_ICR3 0x16u /* rw8, established */
+#define SIM_OFFSET_ICR4 0x17u /* rw8, established */
+#define SIM_OFFSET_ICR5 0x18u /* rw8, established */
+#define SIM_OFFSET_ICR6 0x19u /* rw8, established */
+#define SIM_OFFSET_ICR7 0x1au /* rw8, established */
+#define SIM_OFFSET_ICR8 0x1bu /* rw8, established */
+#define SIM_OFFSET_ICR9 0x1cu /* rw8, established */
+#define SIM_OFFSET_ICR10 0x1du /* rw8, established */
+#define SIM_ICR1_START_VALUE 0x84u /* established */
+#define SIM_ICR2_START_VALUE 0x88u /* established */
+#define SIM_ICR3_START_VALUE 0x80u /* established */
+#define SIM_ICR4_START_VALUE 0x90u /* established */
+#define SIM_ICR5_START_VALUE 0x80u /* established */
+#define SIM_ICR6_START_VALUE 0x98u /* established */
+#define SIM_ICR7_START_VALUE 0x9cu /* established */
+#define SIM_ICR8_START_VALUE 0x1du /* established */
+#define SIM_ICR9_START_VALUE 0x94u /* established */
+#define SIM_ICR10_START_VALUE 0x80u /* established */
+
 /* Reset status: one bit is tested at start-up to record the reset cause. */
 #define SIM_OFFSET_RSR 0x40u /* rw8, established */
 /* FIELD: RSR.cause5 5:5 established */
@@ -97,6 +124,15 @@
 #define SIM_OFFSET_CSAR5 0xa0u /* rw16, established */
 #define SIM_OFFSET_CSMR5 0xa4u /* rw32, established */
 #define SIM_OFFSET_CSCR5 0xaau /* rw16, established */
+/* Chip-select 3 (USB device controller, 8-bit) and chip-select 4 (quad UART, 8-bit) values
+ * the board set-up writes: the address register, a zero mask and the control register. The
+ * port-size decode of each control value is the manual's and was not re-read in an image. */
+#define SIM_CS3_START_CSAR 0x4000u /* established */
+#define SIM_CS3_START_CSMR 0x00000000u /* established */
+#define SIM_CS3_START_CSCR 0x0953u /* established */
+#define SIM_CS4_START_CSAR 0x5000u /* established */
+#define SIM_CS4_START_CSMR 0x00000000u /* established */
+#define SIM_CS4_START_CSCR 0x095fu /* established */
 
 /* Pin assignment: bit 7 is pulsed by the timer set-up, bits 5:4 are cleared by the scan set-up. */
 #define SIM_OFFSET_PAR 0xcau /* rw16, established */
