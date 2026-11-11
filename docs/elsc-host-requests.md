@@ -150,18 +150,18 @@ One entry per routine in the lane. Sizes are the symbol sizes. A routine called 
 
 The map as the object uses it, with every address in page 7 of the store (slave `0x57`):
 
-| Address | Size | Content | Routines |
-|---|---|---|---|
-| 1792 (`0x700`) | 1 | magic byte `0x37` | `elsc_nvram_magic` |
-| 1793 to 1796 | 4 | password, space padded | `elsc_password_set`, `elsc_password_get` |
-| 1797, 1798 | 1 each | two debug bytes | `elsc_debug_set`, `elsc_debug_get` |
-| 1799 | 1 | not touched by this object | |
-| 1800 | 1 | module number | `elsc_module_set`, `elsc_module_get` |
-| 1801 | 1 | BIST setting | `elsc_bist_set`, `elsc_bist_get` |
-| 1802 | 1 | partition | `elsc_partition_set`, `elsc_partition_get` |
-| 1803 | 1 | domain | `elsc_domain_set`, `elsc_domain_get` |
-| 1804 | 1 | cluster | `elsc_cluster_set`, `elsc_cluster_get` |
-| 1805 | 1 | cell | `elsc_cell_set`, `elsc_cell_get` |
+| Address | Size | Content | Routines | Grade |
+|---|---|---|---|---|
+| 1792 (`0x700`) | 1 | magic byte `0x37` | `elsc_nvram_magic` | established (the value `0x37` is compared in `elsc_nvram_magic`) |
+| 1793 to 1796 | 4 | password, space padded | `elsc_password_set`, `elsc_password_get` | established for the address and size; the name is inferred from the routine names |
+| 1797, 1798 | 1 each | two debug bytes | `elsc_debug_set`, `elsc_debug_get` | established for the address and size; the name is inferred from the routine names |
+| 1799 | 1 | not touched by this object | | established as untouched by this object |
+| 1800 | 1 | module number | `elsc_module_set`, `elsc_module_get` | established for the address and size; the name is inferred from the routine names |
+| 1801 | 1 | BIST setting | `elsc_bist_set`, `elsc_bist_get` | established for the address and size; the name is inferred from the routine names |
+| 1802 | 1 | partition | `elsc_partition_set`, `elsc_partition_get` | established for the address and size; the name is inferred from the routine names |
+| 1803 | 1 | domain | `elsc_domain_set`, `elsc_domain_get` | established for the address and size; the name is inferred from the routine names |
+| 1804 | 1 | cluster | `elsc_cluster_set`, `elsc_cluster_get` | established for the address and size; the name is inferred from the routine names |
+| 1805 | 1 | cell | `elsc_cell_set`, `elsc_cell_get` | established for the address and size; the name is inferred from the routine names |
 
 The field names are the routine names (inferred); the addresses and widths are established. The kernel proper may use other addresses through `elsc_nvram_read` and `elsc_nvram_write`, which are exported.
 

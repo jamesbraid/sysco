@@ -81,22 +81,22 @@ The Linux 2.4 daemon libraries reach the flash through `/dev/mem` at `0xfe000000
 
 Table at flash `0xfe0043b4`, 14 words, copied to IMMR+0x108 through IMMR+0x13c by the routine at flash `0xfe0043ec`. Word value, register:
 
-| IMMR offset | Register | Value |
-|---|---|---|
-| 0x108 | BR1 | `0x00000081` |
-| 0x10c | OR1 | `0xff000400` |
-| 0x110 | BR2 | `0x10000801` |
-| 0x114 | OR2 | `0xfffe0938` |
-| 0x118 | BR3 | `0x00000000` |
-| 0x11c | OR3 | `0x00000000` |
-| 0x120 | BR4 | `0xfa100401` |
-| 0x124 | OR4 | `0xfffe0930` |
-| 0x128 | BR5 | `0x80000001` |
-| 0x12c | OR5 | `0xa0000008` |
-| 0x130 | BR6 | `0xfa210001` |
-| 0x134 | OR6 | `0xffff0108` |
-| 0x138 | BR7 | `0xfc000401` |
-| 0x13c | OR7 | `0xff800930` |
+| IMMR offset | Register | Value | Grade |
+|---|---|---|---|
+| 0x108 | BR1 | `0x00000081` | established; matches the DRAM row of the memory map |
+| 0x10c | OR1 | `0xff000400` | established; matches the DRAM row |
+| 0x110 | BR2 | `0x10000801` | established; matches the LCD window row |
+| 0x114 | OR2 | `0xfffe0938` | established; matches the LCD window row |
+| 0x118 | BR3 | `0x00000000` | established as zero (bank unused: no map row) |
+| 0x11c | OR3 | `0x00000000` | established as zero (bank unused: no map row) |
+| 0x120 | BR4 | `0xfa100401` | established; matches the byte-wide peripheral row |
+| 0x124 | OR4 | `0xfffe0930` | established; matches the byte-wide peripheral row |
+| 0x128 | BR5 | `0x80000001` | established; matches the PCI memory window row |
+| 0x12c | OR5 | `0xa0000008` | established; matches the PCI memory window row |
+| 0x130 | BR6 | `0xfa210001` | established; matches the PCI bridge row |
+| 0x134 | OR6 | `0xffff0108` | established; matches the PCI bridge row |
+| 0x138 | BR7 | `0xfc000401` | established; matches the 8 MiB window row |
+| 0x13c | OR7 | `0xff800930` | established; matches the 8 MiB window row |
 
 Established (the table bytes; the copy loop). The assignment of BR/OR names to offsets is the public 8xx memory-controller register order (hint, confirmed by BR0/OR0 and the UPM-A selection of BR1 in the same code).
 

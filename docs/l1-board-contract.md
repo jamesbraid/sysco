@@ -123,15 +123,15 @@ Size probes (established): flash is 1 MB when the two 1 KB-word windows are equa
 
 **Address map the firmware relies on.**
 
-| Range | Device | Width | Notes |
-|---|---|---|---|
-| `0x10000000`..`0x100001ff` | MCF5206e module registers | 8/16/32 | section 3 |
-| `0x20000000`..`0x200007ff` | NVRAM and clock, 2 KB in a 64 KB window | 8 | section 7 |
-| `0x30000000`..`0x30080000` | external RAM | 16 | 512 KB fitted per the probe; 128 KB if it aliases |
-| `0x30100000`..`0x30101fff` | on-chip SRAM | 32 | vectors `0x30100000` (1 KB), stack top `0x30101800`, retained record `0x30101990`..`0x30101e68` |
-| `0x40000000`..`0x4000001f` | USB device controller (C, R) | 8 | revision register at offset `0x18` |
-| `0x50000000`..`0x5000001f` | quad UART | 8 | four channels at stride 8 |
-| `0xffe00000`..`0xffefffff` | boot flash | 16 | 1 MB |
+| Range | Device | Width | Notes | Grade |
+|---|---|---|---|---|
+| `0x10000000`..`0x100001ff` | MCF5206e module registers | 8/16/32 | section 3 | base established (`MBAR` written `0x10000001`); widths as section 3 |
+| `0x20000000`..`0x200007ff` | NVRAM and clock, 2 KB in a 64 KB window | 8 | section 7 | base established (`CSAR1` `0x2000`); 8-bit width and 64 KB window inferred from the manual's field decode of `CSCR1` `0x1143` and `CSMR1` 0 |
+| `0x30000000`..`0x30080000` | external RAM | 16 | 512 KB fitted per the probe; 128 KB if it aliases | base and both mask values established (`CSAR2` `0x3000`, `CSMR2` `0x00070000` or `0x00010000`); 16-bit width inferred (manual's `CSCR2` decode) |
+| `0x30100000`..`0x30101fff` | on-chip SRAM | 32 | vectors `0x30100000` (1 KB), stack top `0x30101800`, retained record `0x30101990`..`0x30101e68` | base, stack top and record bounds established (package 1 `0xffe00400`, `0xffe00410`, `0xffe54656`, `0xffe00866`); 32-bit width and the 1 KB vector size not re-read |
+| `0x40000000`..`0x4000001f` | USB device controller (C, R) | 8 | revision register at offset `0x18` | base established (`CSAR3` `0x4000`, `CSCR3` `0x0953`; package 1 `0xffe551ce`, `0xffe551de`); 8-bit width inferred; the revision offset was not re-read in this pass |
+| `0x50000000`..`0x5000001f` | quad UART | 8 | four channels at stride 8 | base established (`CSAR4` `0x5000`, `CSCR4` `0x095f`; package 1 `0xffe54c6a`, `0xffe54c78`); stride established by the probe's per-channel scratch writes; 8-bit width inferred |
+| `0xffe00000`..`0xffefffff` | boot flash | 16 | 1 MB | base and the 1 MB size probe established (`CSAR0` `0xffe0`, `CSMR0` `0x001f0000` rewritten `0x000f0000`; package 1 `0xffe549e8`..`0xffe54a48`); 16-bit width inferred |
 
 The program's own address validator accepts only `0xffexxxxx`, `0x200xxxxx`, `0x300xxxxx` and `0x301xxxxx` (package 1 `0xffe56388`).
 
@@ -164,12 +164,12 @@ The table of letters that leave this port closed is `0 4 7 8 9 A E Q V` (jump ta
 
 Port assignment by brick, decoded in package 0 from five jump tables indexed by the type character (`0xffe5506c`, `0xffe55158`, `0xffe5524e`, `0xffe553d6`, `0xffe554be`; the first three are indexed from `#` (`0x23`), the last two from `0` (`0x30`)):
 
-| Software port | Quad channel | Baud (nominal/actual) | Flow | Client | C | I | R |
-|---|---|---|---|---|---|---|---|
-| 3 | 0 | 107,142 / 107,143 | software, `0x11`/`0x13` | RS-422 peer link | yes | yes | no |
-| 4 | 1 | 107,142 / 107,143 | software | RS-422 peer link | yes | yes | no |
-| 5 | 2 | 38,400 / 37,500 | none | L1 console | yes | yes | yes |
-| 6 | 3 | 57,600 / 57,692 | automatic RTS/CTS | link to the node processor | yes | no | yes |
+| Software port | Quad channel | Baud (nominal/actual) | Flow | Client | C | I | R | Grade |
+|---|---|---|---|---|---|---|---|---|
+| 3 | 0 | 107,142 / 107,143 | software, `0x11`/`0x13` | RS-422 peer link | yes | yes | no | established for the port, channel, divisor and C/I/R membership (read entry by entry, see below); the actual rate is the divisor arithmetic with the 12,000,000 Hz clock, which gives 7 for 107,142 baud |
+| 4 | 1 | 107,142 / 107,143 | software | RS-422 peer link | yes | yes | no | as the row above |
+| 5 | 2 | 38,400 / 37,500 | none | L1 console | yes | yes | yes | established for the port, channel, divisor (20 gives 37,500) and membership |
+| 6 | 3 | 57,600 / 57,692 | automatic RTS/CTS | link to the node processor | yes | no | yes | established for the port, channel, divisor (13 gives 57,692) and membership |
 
 Table membership read entry by entry (established): quad UART initialised for `# % & 0 1 2 4 7 8 9 = ? A C E I N P Q R T V X Y` (not G); console on port 5 for `# % 0 1 2 4 7 8 9 = ? A C E I P Q R T V X Y` (not `&` or N); peers on ports 3 and 4 for `# % 0 1 2 4 7 8 = ? C E I P Q T V X Y` (not R, 9, A); node link on port 6 for `0 1 2 4 7 8 9 A C E Q R V`. The peer-link routing is in [rs422-router.md](l1/rs422-router.md): a C-brick maps router slot 1 to device 3 and slot 9 to device 4, an I-brick slot 9 to device 3 and slot 10 to device 4, and an R-brick has no peer slots ([power-reset-ibrick-rbrick.md](l1/power-reset-ibrick-rbrick.md)). Which cable each port reaches is not visible to the image (U10). The console port and the peer ports are UART channels of the quad device; the node link is the fourth channel.
 

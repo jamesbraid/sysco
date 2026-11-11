@@ -29,15 +29,15 @@ The first-stage code (`0xffe00400` to `0xffe00b3f`) is byte-identical in package
 
 `MOVEC Rn,Rc` is opcode `0x4e7b` with the control-register code in the low 12 bits of the extension word. Twelve `MOVEC` instructions are reached in each package, all register-to-control writes; no `MOVEC` read (`0x4e7a`) exists at an instruction boundary. The manual describes `CACR`, `RAMBAR` and `MBAR` as write-only supervisor registers (pp. 4-6, 5-2, 8-7), which agrees. Established for all five packages.
 
-| Rc | Register | Value written | First-stage loader | Program entry, bank 1 |
-|---|---|---|---|---|
-| `0xc04` | `RAMBAR` | `0x30100001` (SRAM base `0x30100000`, valid, no address-space mask bits, not write-protected) | `0xffe0040c` (`move.l #0x30100000,d0; ori.l #1,d0`) | `0xffe10b0e` (packages 0, 1, 2), `0xffe10a9e` (3), `0xffe10abe` (5) |
-| `0xc0f` | `MBAR` | `0x10000001` (peripheral block at `0x10000000`, valid, all address spaces enabled) | none | `0xffe10b2e` (0, 1, 2), `0xffe10abe` (3), `0xffe10ade` (5) |
-| `0x801` | `VBR` | `0x30100000` | `0xffe0089c` (from `A3`) | `0xffe10b50` (0, 1, 2), `0xffe10ae0` (3), `0xffe10b00` (5) |
-| `0x002` | `CACR` | `0x01000000` (CINV), then `0x80000000` (CENB) | none | `0xffe10b88` and `0xffe10b92` (0, 1, 2), `0xffe10b18` and `0xffe10b22` (3), `0xffe10b38` and `0xffe10b42` (5) |
-| `0x004`, `0x005` | `ACR0`, `ACR1` | never written | none | none |
+| Rc | Register | Value written | First-stage loader | Program entry, bank 1 | Grade |
+|---|---|---|---|---|---|
+| `0xc04` | `RAMBAR` | `0x30100001` (SRAM base `0x30100000`, valid, no address-space mask bits, not write-protected) | `0xffe0040c` (`move.l #0x30100000,d0; ori.l #1,d0`) | `0xffe10b0e` (packages 0, 1, 2), `0xffe10a9e` (3), `0xffe10abe` (5) | established |
+| `0xc0f` | `MBAR` | `0x10000001` (peripheral block at `0x10000000`, valid, all address spaces enabled) | none | `0xffe10b2e` (0, 1, 2), `0xffe10abe` (3), `0xffe10ade` (5) | established |
+| `0x801` | `VBR` | `0x30100000` | `0xffe0089c` (from `A3`) | `0xffe10b50` (0, 1, 2), `0xffe10ae0` (3), `0xffe10b00` (5) | established |
+| `0x002` | `CACR` | `0x01000000` (CINV), then `0x80000000` (CENB) | none | `0xffe10b88` and `0xffe10b92` (0, 1, 2), `0xffe10b18` and `0xffe10b22` (3), `0xffe10b38` and `0xffe10b42` (5) | established |
+| `0x004`, `0x005` | `ACR0`, `ACR1` | never written | none | none | established as absence |
 
-Bank 2 repeats the program-entry rows at the bank offset. The immediate values come from the `move.l #imm,dN` (and `ori.l #1,dN`) just before each `MOVEC`; established by reading those instructions in every package.
+Bank 2 repeats the program-entry rows at the bank offset. The immediate values come from the `move.l #imm,dN` (and `ori.l #1,dN`) just before each `MOVEC`; established by reading those instructions in every package. The Grade column restates that reading. The package 1 rows were read again against the committed listing ([l1/disasm/mcf5206e-1.44.0-fuel-pe-o300](l1/disasm/mcf5206e-1.44.0-fuel-pe-o300/README.md)): the loader's `RAMBAR` and `VBR` writes at `0xffe0040c` and `0xffe0089c`, and the program-entry writes at `0xffe10b0e`, `0xffe10b2e`, `0xffe10b50`, `0xffe10b88` and `0xffe10b92`, carry the immediates in the table.
 
 Notes on the values:
 
