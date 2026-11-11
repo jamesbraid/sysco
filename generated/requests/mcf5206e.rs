@@ -1,4 +1,4 @@
-// generated from sysco 2d72588a0ce9 MCF5206E_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 2eeac980c961 MCF5206E_DECODE.h - do not edit, regenerate in sysco
 //!
 //! On-chip registers of the ColdFire MCF5206e that the L1 firmware uses.
 //! Offsets are from the module base register.
@@ -28,6 +28,10 @@ pub const OFFSET_CSAR0: u32 = 100;
 pub const OFFSET_CSMR0: u32 = 104;
 /// rw16, established.
 pub const OFFSET_CSCR0: u32 = 110;
+/// established.
+pub const CS0_START_CSAR: u32 = 0xffe0;
+/// established.
+pub const CS0_START_CSCR: u32 = 0x1183;
 /// rw16, established.
 pub const OFFSET_CSAR1: u32 = 112;
 /// rw32, established.
@@ -40,6 +44,16 @@ pub const OFFSET_CSAR2: u32 = 124;
 pub const OFFSET_CSMR2: u32 = 128;
 /// rw16, established.
 pub const OFFSET_CSCR2: u32 = 134;
+/// established.
+pub const CS1_START_CSAR: u32 = 0x2000;
+/// established.
+pub const CS1_START_CSMR: u32 = 0;
+/// established.
+pub const CS1_START_CSCR: u32 = 0x1143;
+/// established.
+pub const CS2_START_CSAR: u32 = 0x3000;
+/// established.
+pub const CS2_START_CSCR: u32 = 0x983;
 /// rw16, established.
 pub const OFFSET_CSAR3: u32 = 136;
 /// rw32, established.
@@ -130,6 +144,35 @@ impl Csmr0Bam {
     }
 }
 
+/// Values of `bam` in `Csmr2` that the header names.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Csmr2Bam {
+    /// established.
+    Size512kb,
+    /// established.
+    Size128kb,
+    /// A value the notes do not name.
+    Other(u32),
+}
+
+impl Csmr2Bam {
+    pub const fn from_bits(v: u32) -> Self {
+        match v {
+            0x7 => Self::Size512kb,
+            0x1 => Self::Size128kb,
+            _ => Self::Other(v as u32),
+        }
+    }
+
+    pub const fn bits(self) -> u32 {
+        match self {
+            Self::Size512kb => 0x7,
+            Self::Size128kb => 0x1,
+            Self::Other(v) => v as u32,
+        }
+    }
+}
+
 /// The `RSR` word.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Rsr(u32);
@@ -184,6 +227,25 @@ impl Csmr0 {
     /// Bits 31:16, established.
     pub const fn bam(self) -> Csmr0Bam {
         Csmr0Bam::from_bits(self.0 >> 16)
+    }
+}
+
+/// The `CSMR2` word.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Csmr2(u32);
+
+impl Csmr2 {
+    pub const fn new(word: u32) -> Self {
+        Self(word)
+    }
+
+    pub const fn raw(self) -> u32 {
+        self.0
+    }
+
+    /// Bits 31:16, established.
+    pub const fn bam(self) -> Csmr2Bam {
+        Csmr2Bam::from_bits(self.0 >> 16)
     }
 }
 
@@ -294,5 +356,17 @@ mod tests {
     fn testvec_csmr0_f0000() {
         let w = Csmr0::new(0xf0000);
         assert_eq!(w.bam().bits(), 15, "bam");
+    }
+
+    #[test]
+    fn testvec_csmr2_70000() {
+        let w = Csmr2::new(0x70000);
+        assert_eq!(w.bam().bits(), 7, "bam");
+    }
+
+    #[test]
+    fn testvec_csmr2_10000() {
+        let w = Csmr2::new(0x10000);
+        assert_eq!(w.bam().bits(), 1, "bam");
     }
 }

@@ -1,4 +1,4 @@
-// generated from sysco 2d72588a0ce9 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 2eeac980c961 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Board-level bit layouts and constants of the ColdFire L1 firmware:
 //! expander bytes, flash commands, quad UART, clock window.
@@ -96,6 +96,28 @@ pub const MONITOR_INIT_REG_43: u32 = 223;
 pub const MONITOR_INIT_REG_44: u32 = 19;
 /// established.
 pub const MOVEC_RN_RC_OPCODE: u32 = 0x4e7b;
+/// established.
+pub const MOVEC_CODE_CACR: u32 = 2;
+/// established.
+pub const MOVEC_CODE_VBR: u32 = 0x801;
+/// established.
+pub const MOVEC_CODE_RAMBAR: u32 = 0xc04;
+/// established.
+pub const MOVEC_CODE_MBAR: u32 = 0xc0f;
+/// established: on-chip SRAM base with the valid bit.
+pub const RAMBAR_START_VALUE: u32 = 0x30100001;
+/// established: peripheral block base with the valid bit.
+pub const MBAR_START_VALUE: u32 = 0x10000001;
+/// established: vector table at the SRAM base.
+pub const VBR_START_VALUE: u32 = 0x30100000;
+/// established: invalidate.
+pub const CACR_FIRST_WRITE: u32 = 0x1000000;
+/// established: enable.
+pub const CACR_SECOND_WRITE: u32 = 0x80000000;
+/// established.
+pub const RACK_WIDTH_BITS: u32 = 10;
+/// established.
+pub const RACK_MAX: u32 = 0x3ff;
 
 /// The `CNTL1` word.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -321,5 +343,29 @@ impl Clock {
     /// Bit 7, established.
     pub const fn write_enable(self) -> bool {
         (self.0 >> 7) & 1 != 0
+    }
+}
+
+/// The `CACR` word.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Cacr(u32);
+
+impl Cacr {
+    pub const fn new(word: u32) -> Self {
+        Self(word)
+    }
+
+    pub const fn raw(self) -> u32 {
+        self.0
+    }
+
+    /// Bit 24, inferred.
+    pub const fn cinv(self) -> bool {
+        (self.0 >> 24) & 1 != 0
+    }
+
+    /// Bit 31, inferred.
+    pub const fn cenb(self) -> bool {
+        (self.0 >> 31) & 1 != 0
     }
 }
