@@ -8,7 +8,7 @@
       "README.md"
     ],
     "headers": [
-      "include/*.h",
+      "*.h",
       "*/include/*.h"
     ],
     "tables": [
@@ -31,13 +31,93 @@
   },
   "prepare": [],
   "exclude": [],
-  "windows": [],
+  "windows": [
+    {
+      "name": "MBAR",
+      "size": "0x200",
+      "physical": "0x10000000",
+      "docs": [
+        "MCF5206E_DECODE.h",
+        "L1_BOARD_DECODE.h",
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "NVRAM",
+      "size": "0x800",
+      "physical": "0x20000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "RAM",
+      "size": "0x80000",
+      "physical": "0x30000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "SRAM",
+      "size": "0x2000",
+      "physical": "0x30100000",
+      "docs": [
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "USB",
+      "size": "0x20",
+      "physical": "0x40000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "QUART",
+      "size": "0x20",
+      "physical": "0x50000000",
+      "docs": [
+        "L1_BOARD_DECODE.h",
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "FLASH",
+      "size": "0x100000",
+      "physical": "0xffe00000",
+      "docs": [
+        "L1_BOARD_DECODE.h",
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "IMMR",
+      "physical": "0xfa200000",
+      "docs": [
+        "MPC8XX_DECODE.h",
+        "docs/l2-board-contract.md"
+      ]
+    }
+  ],
   "bases": [],
   "accessors": [],
   "tokens": {
-    "value_width": 3,
+    "value_width": 4,
     "name_prefixes": [],
-    "sources": []
+    "sources": [
+      {
+        "type": "header",
+        "label": "L1 request codes",
+        "kind": "request code",
+        "file": "L1P?_DECODE.h",
+        "pattern": "^#define (L1P\\d_CMD_CODE_\\w+)\\s+(0x[0-9a-fA-F]+)\\s*$"
+      }
+    ]
   },
   "ioctls": {
     "send_functions": [],
