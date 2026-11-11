@@ -1,4 +1,4 @@
-// generated from sysco 80298431ff24 MPC8XX_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 7b8c98aed437 MPC8XX_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Start-up values of the PowerPC communications controller on the L2
 //! board: machine state, clock registers, serial channel page, PCI bridge.
@@ -50,6 +50,14 @@ pub const OR6_START_VALUE: u32 = 0xffff0108;
 pub const BR7_START_VALUE: u32 = 0xfc000401;
 /// established.
 pub const OR7_START_VALUE: u32 = 0xff800930;
+/// established.
+pub const BRGC1_STAGE_A_VALUE: u32 = 0x10000;
+/// established.
+pub const BRGC1_WRAPPER_VALUE: u32 = 0x100a2;
+/// established: argument for device 4.
+pub const HC0_WINDOW_BASE: u32 = 0xc0000000;
+/// established: argument for device 5.
+pub const HC1_WINDOW_BASE: u32 = 0xc0001000;
 /// established.
 pub const SMC1_PARAM_PAGE: u32 = 0x3e80;
 /// established.
@@ -153,6 +161,9 @@ pub const REG_BR7_WIDTH: u32 = 32;
 /// Register `or7`: read/write, 32-bit; reset unknown; established.
 pub const REG_OR7: u32 = 0x013c;
 pub const REG_OR7_WIDTH: u32 = 32;
+/// Register `brgc1`: read/write, 32-bit; reset unknown; inferred.
+pub const REG_BRGC1: u32 = 0x09f0;
+pub const REG_BRGC1_WIDTH: u32 = 32;
 /// Register `cfg_addr`: read/write, 32-bit; reset unknown; established.
 pub const REG_CFG_ADDR: u32 = 0x0500;
 pub const REG_CFG_ADDR_WIDTH: u32 = 32;

@@ -1,4 +1,4 @@
-// generated from sysco 80298431ff24 MCF5206E_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 7b8c98aed437 MCF5206E_DECODE.h - do not edit, regenerate in sysco
 //!
 //! On-chip registers of the ColdFire MCF5206e that the L1 firmware uses.
 //! Offsets are from the module base register.
@@ -34,6 +34,16 @@ pub const OFFSET_ICR8: u32 = 27;
 pub const OFFSET_ICR9: u32 = 28;
 /// rw8, established.
 pub const OFFSET_ICR10: u32 = 29;
+/// rw8, established.
+pub const OFFSET_ICR11: u32 = 30;
+/// rw8, established.
+pub const OFFSET_ICR12: u32 = 31;
+/// rw8, established.
+pub const OFFSET_ICR13: u32 = 32;
+/// rw8, established.
+pub const OFFSET_ICR14: u32 = 33;
+/// rw8, established.
+pub const OFFSET_ICR15: u32 = 34;
 /// established.
 pub const ICR1_START_VALUE: u32 = 132;
 /// established.
@@ -54,6 +64,22 @@ pub const ICR8_START_VALUE: u32 = 29;
 pub const ICR9_START_VALUE: u32 = 148;
 /// established.
 pub const ICR10_START_VALUE: u32 = 128;
+/// established.
+pub const ICR11_START_VALUE: u32 = 153;
+/// established.
+pub const ICR12_START_VALUE: u32 = 26;
+/// established: cleared, UART 2 unused.
+pub const ICR13_START_VALUE: u32 = 0;
+/// established.
+pub const ICR14_START_VALUE: u32 = 9;
+/// established.
+pub const ICR15_START_VALUE: u32 = 10;
+/// established: argument to the UART 1 open, not a register offset.
+pub const UART1_VECTOR: u32 = 66;
+/// rw16, established.
+pub const OFFSET_DMCR: u32 = 198;
+/// established.
+pub const DMCR_START_VALUE: u32 = 0;
 /// rw8, established.
 pub const OFFSET_RSR: u32 = 64;
 /// rw8, established.
