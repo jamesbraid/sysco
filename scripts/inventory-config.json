@@ -53,6 +53,7 @@
     },
     {
       "name": "RAM",
+      "memory": true,
       "size": "0x80000",
       "physical": "0x30000000",
       "docs": [
@@ -61,6 +62,7 @@
     },
     {
       "name": "SRAM",
+      "memory": true,
       "size": "0x2000",
       "physical": "0x30100000",
       "docs": [
@@ -87,6 +89,7 @@
     },
     {
       "name": "FLASH",
+      "memory": true,
       "size": "0x100000",
       "physical": "0xffe00000",
       "docs": [
@@ -97,6 +100,7 @@
     },
     {
       "name": "IMMR",
+      "size": "0x4000",
       "physical": "0xfa200000",
       "docs": [
         "MPC8XX_DECODE.h",
@@ -142,6 +146,29 @@
         "*/usr/sbin/flashpbay",
         "patches/*/usr/sbin/flashsc",
         "patches/*/usr/sbin/flashpbay"
+      ]
+    },
+    {
+      "group": "l1-firmware",
+      "role": "sysco-l1-firmware",
+      "arch": "coldfire",
+      "layout": "sysco-l1",
+      "paths": [
+        "*/usr/cpu/firmware/l1.bin",
+        "*/usr/cpu/firmware/sysco/l1.bin",
+        "patches/*/usr/cpu/firmware/sysco/l1.bin"
+      ]
+    },
+    {
+      "group": "l2-firmware",
+      "role": "sysco-l2-firmware",
+      "arch": "ppc32",
+      "layout": "sysco-l2",
+      "kernel_load": "0xc0000000",
+      "paths": [
+        "*/usr/cpu/firmware/l2.bin",
+        "*/usr/cpu/firmware/sysco/l2.bin",
+        "patches/*/usr/cpu/firmware/sysco/l2.bin"
       ]
     }
   ],
