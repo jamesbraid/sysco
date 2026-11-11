@@ -27,7 +27,7 @@ Each entry starts with its route, one of:
 Software-now list, in the order to take them:
 
 4. Monitor register offsets, including reads of `0x3e` and `0x3f`.
-6. Readers of bank record word 7.
+6. Readers of bank record word 7. Settled: word 7 is read only inside the twelve-word zero-sum loops and by no instruction as an operand of its own, see [l1/flash-nvram-and-image-records.md](l1/flash-nvram-and-image-records.md#boot-flash-layout-and-image-records).
 7. Base-relative accesses in the MCF5206E routines not yet scanned, including timers.
 8. USB match rules and identity in the L2 kernel's `sgil1` driver.
 9. Writer of the L1's 0x70-byte module table (pointer at `0x30000aa4`) and of its identity word `0x30000080`: which rack and bay a fresh L1 reports to an L2.
