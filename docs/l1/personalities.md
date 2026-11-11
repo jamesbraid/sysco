@@ -80,6 +80,14 @@ Established for packages 0, 1 and 2 (the three identity routines are the same co
 
 So the type is read from the board's own identification records first, with a stored setting as the fallback. No strap or jumper read is involved in the choice that was read in full; the early flash-size class is a read of a memory word, not a pin.
 
+Host-side numbering of the Chimera characters. Established in the IP35 CPU PROM 6.210 (routine at `0x1fc68ba0`) and in the IRIX 6.5.30 IP35 kernel
+(`set_sn12_type`, `0xc000000000041550`), both described in the chips page `docs/questions/ip35-board-class-and-flash-record.md` and the kudzu page
+`docs/ip35-node-class-and-link-checks.md`: when the host asks the controller for the C-brick type, the character '7' (`Chimera Server`) becomes 1,
+'8' (`Chimera Blade`) 2, '9' (`Chimera WS`) 3, '0' (`CGN Voyager`) 4 and 'Q' (`Rackmount WS`) 5; any other reply leaves the type 0. The PROM prints a different
+banner line for types 1, 2, 3 and 5. The host asks only when the node board's class word (not an L1 value) is outside the Fuel, Origin 300 and PE-brick
+classes, so this table is how the L1's names reach the host, and the L1 plays no part in the class itself. The L1-side reply to that host request was not
+re-read for this note (established elsewhere in this repository only for the character chosen above).
+
 Established for packages 3 and 5 (identity routines at `0xffe6b104` and `0xffe79e70`): the same order but a shorter list. Record `0xff` is tested against `IPF_2UINT` only (to O). Record `0xfe` is tested against `PXBRICK` (to `#`), `IP41` (to 5), `NL4_TEST` (to `!`) and `IPF_2UINT` (to O). Records `0xfd` and `0xfc` are not consulted. Then the key 9 fallback as above. The consequence is that these two packages can only identify the five characters of their supported-brick string by record, plus `!`; a stored setting reaches the rest. In the persistent-setting accessor (package 1 `0xffe59590`) packages 3 and 5 omit keys `0x10`, `0xb1` and `0xb2`, so the sub-type byte of step 5 does not exist there. Packages 0 and 2 have the same 132 keys as package 1.
 
 ### What the boot task does with it
