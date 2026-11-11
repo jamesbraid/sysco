@@ -224,7 +224,7 @@ Question: what grows when a system has more processors (more C-bricks, more rout
 
 ### Answer in short
 
-- **Router levels.** Nothing in the L2 changes. The L1 changes at the router brick: the 2 MB image can be set to one of three metarouter levels, the older images only to meta or ordinary. What a level does on the board is unknown (U16).
+- **Router levels.** Nothing in the L2 changes. The L1 changes at the router brick: the 2 MB image can be set to one of three metarouter levels, the older images only to meta or ordinary. What a level does on the board is unknown (U16). Test, in two halves: for the L2, the search of U16 in section 10 (any use of brick record byte `+0x05` beyond the compute-class compare); for the board, in package 5 list every reader of persistent setting `0x3c` and every store that reaches `ROUTER CONTROL` bits 7 to 4 besides the reset-release write. If the release write is the only consumer, no shipped image says what a level does and only a published description of the router board's control pins can settle it; a second consumer would be read next.
 - **Rack numbers.** Routing and power work for racks 1 to 255; partition tables name racks 1 to 63; the L1 stores 10 bits. A large system is limited by the partition identifier before it is limited by anything else (row 6; U15 asks whether the identifier is ever packed for a larger rack).
 - **The tables.** The reply carries at most 10 records, not 15 (rows 1 and 3). With 40 ports an L2 sees at most 400 records (row 5). Whether a USB-attached L1 shows only itself and its neighbours or the whole system depends on how records above 0 are filled (U14, already open for the single-brick case). The 0x30-byte record stride is not a limit.
 
