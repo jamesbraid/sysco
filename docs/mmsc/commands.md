@@ -80,10 +80,3 @@ Common response forms seen in the handlers: `OK ...`, `R%ld:OK ...`, `ERROR ARG`
 
 Result: the owner's guide documents no typed MMSC command syntax, so the typed catalogue rests
 on the image alone.
-
-## Exposure
-
-A library search for "MMSC RESET_NVRAM" returned snippets from restricted vendor source for the
-MMSC command module and a document titled as the MMSC command language. One snippet was a
-function prototype line from that source. None of those files was opened, and nothing from them
-is written here. Later searches used the public-document filter only.
