@@ -166,4 +166,77 @@
 #define M8X_PCIB_INIT_F14 0xc00000d1u /* established */
 #define M8X_PCIB_INIT_F80 0x81000000u /* established */
 
+/* System protection control and software service registers. The boot code stores one 32-bit
+ * word to the control register only on its failure path (image check failed, or the second
+ * stage returned); a normal boot never writes it. The value keeps the high bits set and
+ * clears the low seven. Both widths are those of the stores. */
+/* REG: SIU.sypcr 0x004 rw32 reset=unknown established */
+/* REG: SIU.swsr 0x00e rw16 reset=unknown established */
+#define M8X_SYPCR_FAILURE_PATH_VALUE 0xffffff80u /* established: failure path only */
+/* The service register receives two halfword writes in this order; the second stage does so
+ * in its console-wait loop and around the kernel decompression. */
+#define M8X_SWSR_KEY_FIRST 0x556cu /* established */
+#define M8X_SWSR_KEY_SECOND 0xaa39u /* established */
+
+/* Memory controller timing and the user-programmable machine A. The second stage writes the
+ * periodic timer prescaler and the machine mode register, loads 64 array words through the
+ * data register (each followed by a store of its index to the command register), then issues
+ * run commands: one at array address 0x2d, eight at 0x30, then the address register is set
+ * and one run at 0x13 is issued. The meaning of the machine mode fields was not decoded. */
+/* REG: UPM.mar 0x164 rw32 reset=unknown established */
+/* REG: UPM.mcr 0x168 rw32 reset=unknown established */
+/* REG: UPM.mamr 0x170 rw32 reset=unknown established */
+/* REG: UPM.mptpr 0x17a rw16 reset=unknown established */
+/* REG: UPM.mdr 0x17c rw32 reset=unknown established */
+#define M8X_MPTPR_START_VALUE 0x0200u /* established */
+#define M8X_MAMR_START_VALUE 0x18804000u /* established */
+#define M8X_MAR_START_VALUE 0x00000088u /* established */
+#define M8X_MCR_RUN_FIRST 0x8000202du /* established: one store */
+#define M8X_MCR_RUN_SECOND 0x80002030u /* established: eight stores */
+#define M8X_MCR_RUN_LAST 0x80002013u /* established: one store, after the address register */
+#define M8X_UPM_PROGRAM_WORDS 64u /* established */
+
+/* Byte-wide peripheral on the fourth chip select. Established: the window decode above, the
+ * 8-bit port, and that the boot code only writes it, in the order given. What the device is
+ * stays unknown, so the three registers are named by offset. Whether the kernel or any
+ * program uses the part after mapping the first 4 KiB is not settled. */
+/* REG: BYTEDEV.reg0 0x0 w8 space=bytedev reset=unknown established */
+/* REG: BYTEDEV.reg1 0x1 w8 space=bytedev reset=unknown established */
+/* REG: BYTEDEV.reg3 0x3 w8 space=bytedev reset=unknown established */
+#define M8X_BYTEDEV_MAPPED_SIZE 0x1000u /* established: size the kernel maps; the chip select decodes 128 KiB */
+#define M8X_BYTEDEV_REG0_FIRST 0x00u /* established */
+#define M8X_BYTEDEV_REG0_SECOND 0x80u /* established: after a 500 ms wait */
+#define M8X_BYTEDEV_REG3_VALUE 0x18u /* established */
+#define M8X_BYTEDEV_REG1_FIRST 0x0eu /* established */
+#define M8X_BYTEDEV_REG1_SECOND 0x0fu /* established */
+#define M8X_BYTEDEV_REG1_LAST 0x0eu /* established: after a second 500 ms wait */
+
+/* Vital-product-data EEPROM on the I2C bus, read by the second stage. The device is
+ * addressed in the 8-bit form (7-bit form 0x52). The stage reads 256 bytes from offset 0 and
+ * accepts the read only when all 256 come back. From byte 10 the block is a chain of records:
+ * one tag byte, one length byte, then the data; the tag 0xff ends the chain. The stage asks
+ * for tag 8 and prints six bytes of it as the Ethernet address. */
+#define M8X_VPD_EEPROM_ADDR8 0xa4u /* established */
+#define M8X_VPD_EEPROM_ADDR7 0x52u /* established */
+#define M8X_VPD_BLOCK_SIZE 256u /* established */
+#define M8X_VPD_CHAIN_START 10u /* established */
+#define M8X_VPD_TAG_ETHERNET 8u /* established */
+#define M8X_VPD_TAG_END 0xffu /* established */
+
+/* L2 flash on the first chip select: two 16-bit parts side by side on the 32-bit bus, so every
+ * command word is the same halfword in both halves. The unlock offsets are four times the
+ * single-device word addresses. */
+#define M8X_FLASH_UNLOCK_OFFSET_1 0x1554u /* established */
+#define M8X_FLASH_UNLOCK_OFFSET_2 0x0aa8u /* established */
+#define M8X_FLASH_UNLOCK_DATA_1 0x00aa00aau /* established */
+#define M8X_FLASH_UNLOCK_DATA_2 0x00550055u /* established */
+#define M8X_FLASH_CMD_RESET 0x00f000f0u /* established */
+#define M8X_FLASH_CMD_PROGRAM 0x00a000a0u /* established */
+#define M8X_FLASH_CMD_ERASE_SETUP 0x00800080u /* established: followed by the unlock pair */
+#define M8X_FLASH_CMD_SECTOR_ERASE 0x00300030u /* established: written at the sector address */
+#define M8X_FLASH_CMD_AUTOSELECT 0x00900090u /* established */
+/* Completion is read by comparing two successive reads of the same word. */
+#define M8X_FLASH_STATUS_TOGGLE 0x00400040u /* established: one bit per device */
+#define M8X_FLASH_STATUS_ERROR 0x00200020u /* established: one bit per device */
+
 #endif

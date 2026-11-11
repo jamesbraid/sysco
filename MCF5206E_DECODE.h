@@ -18,6 +18,10 @@
  * set-up writes, with the values it writes. The mask value masks every source and leaves
  * each driver to unmask its own bit. The control values are autovector, level and priority
  * encodings in the manual's layout, which was not re-read in an image. */
+/* The module's mask-and-reset register is a byte at offset 3, written once by the board
+ * set-up before the interrupt registers. Its field layout is the manual's. */
+#define SIM_OFFSET_SIMR 0x03u /* rw8, established */
+#define SIM_SIMR_START_VALUE 0xc0u /* established */
 #define SIM_OFFSET_IMR 0x36u /* rw16, established */
 #define SIM_IMR_START_VALUE 0xfffeu /* established */
 #define SIM_OFFSET_ICR1 0x14u /* rw8, established */

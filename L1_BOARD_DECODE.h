@@ -41,6 +41,15 @@
 #define L1B_CNTL2_STRAP_SHIFT 3
 #define L1B_CNTL2_STRAP_MASK  0x1fu
 #define L1B_CNTL2_START_VALUE 0x8au /* established: applied at cold start */
+
+/* Processor-module supply-good expanders: one per module, at the wire address of the first
+ * control expander but on its own bus segment (segment 4 for module 0, segment 5 for module 1).
+ * Reset hold sets both bits of the field; release clears both. The mask is not applied to
+ * the written byte as an input mask. */
+#define L1B_PIMM_VCC_OK_WIRE 0x42u /* established */
+/* FIELD: PIMM_VCC.ok 7:6 established */
+#define L1B_PIMM_VCC_OK_SHIFT 6
+#define L1B_PIMM_VCC_OK_MASK  0x3u
 /* Input-bit masks of the two expanders: the firmware ORs these into every byte it writes.
  * The C-brick has none; the Origin 300 board has the bit shown. The start values above are
  * the same on both boards, and both already contain the mask bit. */
@@ -139,6 +148,19 @@
 #define L1B_QUART_CHANNEL1 0x08u /* established */
 #define L1B_QUART_CHANNEL2 0x10u /* established */
 #define L1B_QUART_CHANNEL3 0x18u /* established */
+/* Register byte offsets within one channel, in the 16550 order, and the values the driver
+ * writes. The FIFO control byte is 0x0f when a device-record field equals 2 and 0x8f
+ * otherwise (the upper bits are the receive trigger level). */
+#define L1B_QUART_REG_FIFO_CONTROL 2u /* established: write; interrupt identification on read */
+#define L1B_QUART_REG_LINE_CONTROL 3u /* established */
+#define L1B_QUART_REG_MODEM_CONTROL 4u /* established */
+#define L1B_QUART_FIFO_CONTROL_TRIGGER_A 0x0fu /* established */
+#define L1B_QUART_FIFO_CONTROL_TRIGGER_B 0x8fu /* established */
+#define L1B_QUART_LINE_CONTROL_8N1 0x03u /* established */
+#define L1B_QUART_LINE_CONTROL_8E1 0x1bu /* established */
+#define L1B_QUART_LINE_CONTROL_8O1 0x0bu /* established */
+#define L1B_QUART_MODEM_CONTROL_DTR_RTS 0x03u /* established: normal use */
+#define L1B_QUART_MODEM_CONTROL_LOOPBACK 0x10u /* established: only when the channel loop-back flag is set */
 
 /* Battery-backed clock: control byte at the top of the window; BCD time bytes follow it. */
 #define L1B_CLOCK_CONTROL_INDEX 0x7f8u /* established */
@@ -258,5 +280,16 @@
 /* Rack numbers in L1 setting 1 and the identity word are 10 bits wide. */
 #define L1B_RACK_WIDTH_BITS 10u /* established */
 #define L1B_RACK_MAX 1023u /* established */
+
+/* Router packet destination word, as the L2 router and the L1 target list both build and
+ * read it for brick-directed packets (any destination form other than the L2 form and the
+ * node form): the rack takes 10 bits and the slot 6. */
+/* WORD: ROUTER_DEST 32 */
+/* FIELD: ROUTER_DEST.slot 17:12 established */
+#define L1B_ROUTER_DEST_SLOT_SHIFT 12
+#define L1B_ROUTER_DEST_SLOT_MASK  0x3fu
+/* FIELD: ROUTER_DEST.rack 27:18 established */
+#define L1B_ROUTER_DEST_RACK_SHIFT 18
+#define L1B_ROUTER_DEST_RACK_MASK  0x3ffu
 
 #endif
