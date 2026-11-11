@@ -1,4 +1,4 @@
-// generated from sysco 2eeac980c961 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 80298431ff24 L1_BOARD_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Board-level bit layouts and constants of the ColdFire L1 firmware:
 //! expander bytes, flash commands, quad UART, clock window.
@@ -18,6 +18,14 @@ pub const CNTL2_WIRE: u32 = 68;
 pub const CNTL1_START_VALUE: u32 = 114;
 /// established: applied at cold start.
 pub const CNTL2_START_VALUE: u32 = 138;
+/// established.
+pub const CNTL1_INPUT_MASK_CBRICK: u32 = 0;
+/// established.
+pub const CNTL2_INPUT_MASK_CBRICK: u32 = 0;
+/// established.
+pub const CNTL1_INPUT_MASK_O300: u32 = 32;
+/// established.
+pub const CNTL2_INPUT_MASK_O300: u32 = 2;
 /// established.
 pub const BUS_SELECT_ADDR7: u32 = 39;
 /// established.
@@ -114,6 +122,98 @@ pub const VBR_START_VALUE: u32 = 0x30100000;
 pub const CACR_FIRST_WRITE: u32 = 0x1000000;
 /// established: enable.
 pub const CACR_SECOND_WRITE: u32 = 0x80000000;
+/// established.
+pub const IBRICK_POWER_ENABLE_ADDR7: u32 = 56;
+/// established.
+pub const IBRICK_FAN_SPEED_ADDR7: u32 = 57;
+/// established.
+pub const IBRICK_POWER_STATUS1_ADDR7: u32 = 58;
+/// established.
+pub const IBRICK_POWER_STATUS2_ADDR7: u32 = 59;
+/// established.
+pub const IBRICK_PORT_CONTROL_ADDR7: u32 = 35;
+/// established.
+pub const IBRICK_PCI_BUS1_SLOT1_ADDR7: u32 = 37;
+/// established.
+pub const IBRICK_PCI_BUS1_SLOT2_ADDR7: u32 = 38;
+/// established.
+pub const IBRICK_PCI_BUS1_SLOT3_ADDR7: u32 = 39;
+/// established.
+pub const IBRICK_PCI_BUS1_SLOT4_ADDR7: u32 = 33;
+/// established.
+pub const IBRICK_PCI_BUS2_SLOT1_ADDR7: u32 = 62;
+/// established.
+pub const IBRICK_PCI_BUS2_SLOT2_ADDR7: u32 = 63;
+/// established.
+pub const RBRICK_POWER_CONTROL_ADDR7: u32 = 57;
+/// established.
+pub const RBRICK_WIDGET_PRESENT_ADDR7: u32 = 34;
+/// established.
+pub const RBRICK_PORT_HA_CONTROL_ADDR7: u32 = 36;
+/// established.
+pub const RBRICK_PORT_BC_CONTROL_ADDR7: u32 = 37;
+/// established.
+pub const RBRICK_PORT_DE_CONTROL_ADDR7: u32 = 38;
+/// established.
+pub const RBRICK_PORT_FG_CONTROL_ADDR7: u32 = 39;
+/// established: C-brick node board, segment 0.
+pub const EEPROM_NODE_ADDR7: u32 = 82;
+/// established.
+pub const EEPROM_NODE_CAPACITY: u32 = 0x200;
+/// established: PIMM 0 on segment 4, PIMM 1 on segment 5.
+pub const EEPROM_PIMM_ADDR7: u32 = 84;
+/// established.
+pub const EEPROM_PIMM_CAPACITY: u32 = 0x200;
+/// established: DIMM 0 to 7 on segments 6 to 13.
+pub const EEPROM_DIMM_ADDR7: u32 = 80;
+/// established.
+pub const EEPROM_DIMM_CAPACITY: u32 = 0x100;
+/// established: I-brick and R-brick power board.
+pub const EEPROM_POWER_ADDR7: u32 = 82;
+/// established.
+pub const EEPROM_POWER_CAPACITY: u32 = 0x200;
+/// established: I-brick and R-brick logic board.
+pub const EEPROM_LOGIC_ADDR7: u32 = 84;
+/// established.
+pub const EEPROM_LOGIC_CAPACITY: u32 = 0x200;
+/// established.
+pub const EEPROM_KIND_BOARD: u32 = 1;
+/// established.
+pub const EEPROM_KIND_MEMORY: u32 = 2;
+/// established.
+pub const MONITOR_ADDR7_0: u32 = 44;
+/// established.
+pub const MONITOR_ADDR7_1: u32 = 45;
+/// established.
+pub const MONITOR_ADDR7_2: u32 = 46;
+/// established.
+pub const MONITOR_ADDR7_3: u32 = 47;
+/// established.
+pub const MONITOR_INIT_REG_47_ADDR7_0: u32 = 160;
+/// established.
+pub const MONITOR_INIT_REG_47_ADDR7_1: u32 = 32;
+/// established.
+pub const MONITOR_INIT_REG_47_OTHER: u32 = 0;
+/// established.
+pub const MONITOR_FLAG_NO_START: u32 = 1;
+/// established.
+pub const IBRICK_SUPPLY_48V_ENABLE: u32 = 1;
+/// established.
+pub const IBRICK_SUPPLY_12V_BIAS_ENABLE: u32 = 4;
+/// established.
+pub const IBRICK_SUPPLY_2V5_ENABLE: u32 = 8;
+/// established.
+pub const IBRICK_SUPPLY_3V3_ENABLE: u32 = 16;
+/// established.
+pub const IBRICK_SUPPLY_5V_ENABLE: u32 = 32;
+/// established.
+pub const IBRICK_SUPPLY_12V_ENABLE: u32 = 64;
+/// established.
+pub const IBRICK_SUPPLY_M12V_ENABLE: u32 = 128;
+/// established.
+pub const RBRICK_SUPPLY_48V_ENABLE: u32 = 1;
+/// established.
+pub const RBRICK_SUPPLY_2V5_ENABLE: u32 = 4;
 /// established.
 pub const RACK_WIDTH_BITS: u32 = 10;
 /// established.

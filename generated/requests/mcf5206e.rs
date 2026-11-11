@@ -1,4 +1,4 @@
-// generated from sysco 2eeac980c961 MCF5206E_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 80298431ff24 MCF5206E_DECODE.h - do not edit, regenerate in sysco
 //!
 //! On-chip registers of the ColdFire MCF5206e that the L1 firmware uses.
 //! Offsets are from the module base register.
@@ -10,6 +10,50 @@
 
 #![allow(dead_code)]
 
+/// rw16, established.
+pub const OFFSET_IMR: u32 = 54;
+/// established.
+pub const IMR_START_VALUE: u32 = 0xfffe;
+/// rw8, established.
+pub const OFFSET_ICR1: u32 = 20;
+/// rw8, established.
+pub const OFFSET_ICR2: u32 = 21;
+/// rw8, established.
+pub const OFFSET_ICR3: u32 = 22;
+/// rw8, established.
+pub const OFFSET_ICR4: u32 = 23;
+/// rw8, established.
+pub const OFFSET_ICR5: u32 = 24;
+/// rw8, established.
+pub const OFFSET_ICR6: u32 = 25;
+/// rw8, established.
+pub const OFFSET_ICR7: u32 = 26;
+/// rw8, established.
+pub const OFFSET_ICR8: u32 = 27;
+/// rw8, established.
+pub const OFFSET_ICR9: u32 = 28;
+/// rw8, established.
+pub const OFFSET_ICR10: u32 = 29;
+/// established.
+pub const ICR1_START_VALUE: u32 = 132;
+/// established.
+pub const ICR2_START_VALUE: u32 = 136;
+/// established.
+pub const ICR3_START_VALUE: u32 = 128;
+/// established.
+pub const ICR4_START_VALUE: u32 = 144;
+/// established.
+pub const ICR5_START_VALUE: u32 = 128;
+/// established.
+pub const ICR6_START_VALUE: u32 = 152;
+/// established.
+pub const ICR7_START_VALUE: u32 = 156;
+/// established.
+pub const ICR8_START_VALUE: u32 = 29;
+/// established.
+pub const ICR9_START_VALUE: u32 = 148;
+/// established.
+pub const ICR10_START_VALUE: u32 = 128;
 /// rw8, established.
 pub const OFFSET_RSR: u32 = 64;
 /// rw8, established.
@@ -72,6 +116,18 @@ pub const OFFSET_CSAR5: u32 = 160;
 pub const OFFSET_CSMR5: u32 = 164;
 /// rw16, established.
 pub const OFFSET_CSCR5: u32 = 170;
+/// established.
+pub const CS3_START_CSAR: u32 = 0x4000;
+/// established.
+pub const CS3_START_CSMR: u32 = 0;
+/// established.
+pub const CS3_START_CSCR: u32 = 0x953;
+/// established.
+pub const CS4_START_CSAR: u32 = 0x5000;
+/// established.
+pub const CS4_START_CSMR: u32 = 0;
+/// established.
+pub const CS4_START_CSCR: u32 = 0x95f;
 /// rw16, established.
 pub const OFFSET_PAR: u32 = 202;
 /// rw16, inferred.

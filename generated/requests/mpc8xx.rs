@@ -1,4 +1,4 @@
-// generated from sysco 2eeac980c961 MPC8XX_DECODE.h - do not edit, regenerate in sysco
+// generated from sysco 80298431ff24 MPC8XX_DECODE.h - do not edit, regenerate in sysco
 //!
 //! Start-up values of the PowerPC communications controller on the L2
 //! board: machine state, clock registers, serial channel page, PCI bridge.
@@ -18,6 +18,38 @@ pub const IMMR_VALUE: u32 = 0xfa200000;
 pub const SCCR_START_VALUE: u32 = 0x62000000;
 /// established.
 pub const PLPRCR_START_VALUE: u32 = 0x5040;
+/// established: flash window, 32-bit.
+pub const BR0_START_VALUE: u32 = 0xfe000001;
+/// established.
+pub const OR0_START_VALUE: u32 = 0xff800940;
+/// established: DRAM bank.
+pub const BR1_START_VALUE: u32 = 129;
+/// established.
+pub const OR1_START_VALUE: u32 = 0xff000400;
+/// established: LCD window, 16-bit.
+pub const BR2_START_VALUE: u32 = 0x10000801;
+/// established.
+pub const OR2_START_VALUE: u32 = 0xfffe0938;
+/// established: bank unused.
+pub const BR3_START_VALUE: u32 = 0;
+/// established.
+pub const OR3_START_VALUE: u32 = 0;
+/// established: byte-wide peripheral window, 8-bit.
+pub const BR4_START_VALUE: u32 = 0xfa100401;
+/// established.
+pub const OR4_START_VALUE: u32 = 0xfffe0930;
+/// established: PCI memory window, 32-bit.
+pub const BR5_START_VALUE: u32 = 0x80000001;
+/// established.
+pub const OR5_START_VALUE: u32 = 0xa0000008;
+/// established: PCI bridge register window, 32-bit.
+pub const BR6_START_VALUE: u32 = 0xfa210001;
+/// established.
+pub const OR6_START_VALUE: u32 = 0xffff0108;
+/// established: 8 MiB window, 8-bit.
+pub const BR7_START_VALUE: u32 = 0xfc000401;
+/// established.
+pub const OR7_START_VALUE: u32 = 0xff800930;
 /// established.
 pub const SMC1_PARAM_PAGE: u32 = 0x3e80;
 /// established.
@@ -73,6 +105,60 @@ pub const REG_SCCR_WIDTH: u32 = 32;
 /// Register `plprcr`: read/write, 32-bit; reset unknown; established.
 pub const REG_PLPRCR: u32 = 0x0284;
 pub const REG_PLPRCR_WIDTH: u32 = 32;
+/// Register `br0`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR0: u32 = 0x0100;
+pub const REG_BR0_WIDTH: u32 = 32;
+/// Register `or0`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR0: u32 = 0x0104;
+pub const REG_OR0_WIDTH: u32 = 32;
+/// Register `br1`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR1: u32 = 0x0108;
+pub const REG_BR1_WIDTH: u32 = 32;
+/// Register `or1`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR1: u32 = 0x010c;
+pub const REG_OR1_WIDTH: u32 = 32;
+/// Register `br2`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR2: u32 = 0x0110;
+pub const REG_BR2_WIDTH: u32 = 32;
+/// Register `or2`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR2: u32 = 0x0114;
+pub const REG_OR2_WIDTH: u32 = 32;
+/// Register `br3`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR3: u32 = 0x0118;
+pub const REG_BR3_WIDTH: u32 = 32;
+/// Register `or3`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR3: u32 = 0x011c;
+pub const REG_OR3_WIDTH: u32 = 32;
+/// Register `br4`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR4: u32 = 0x0120;
+pub const REG_BR4_WIDTH: u32 = 32;
+/// Register `or4`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR4: u32 = 0x0124;
+pub const REG_OR4_WIDTH: u32 = 32;
+/// Register `br5`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR5: u32 = 0x0128;
+pub const REG_BR5_WIDTH: u32 = 32;
+/// Register `or5`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR5: u32 = 0x012c;
+pub const REG_OR5_WIDTH: u32 = 32;
+/// Register `br6`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR6: u32 = 0x0130;
+pub const REG_BR6_WIDTH: u32 = 32;
+/// Register `or6`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR6: u32 = 0x0134;
+pub const REG_OR6_WIDTH: u32 = 32;
+/// Register `br7`: read/write, 32-bit; reset unknown; established.
+pub const REG_BR7: u32 = 0x0138;
+pub const REG_BR7_WIDTH: u32 = 32;
+/// Register `or7`: read/write, 32-bit; reset unknown; established.
+pub const REG_OR7: u32 = 0x013c;
+pub const REG_OR7_WIDTH: u32 = 32;
+/// Register `cfg_addr`: read/write, 32-bit; reset unknown; established.
+pub const REG_CFG_ADDR: u32 = 0x0500;
+pub const REG_CFG_ADDR_WIDTH: u32 = 32;
+/// Register `cfg_data`: read/write, 32-bit; reset unknown; established.
+pub const REG_CFG_DATA: u32 = 0x0504;
+pub const REG_CFG_DATA_WIDTH: u32 = 32;
 /// Register `reg_004`: read/write, 32-bit; reset unknown; inferred.
 pub const REG_REG_004: u32 = 0x0004;
 pub const REG_REG_004_WIDTH: u32 = 32;
@@ -164,6 +250,40 @@ impl Msr {
     /// Bit 12, inferred.
     pub const fn me(self) -> bool {
         (self.0 >> 12) & 1 != 0
+    }
+}
+
+/// The `PCI_CFG_ADDR` word.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct PciCfgAddr(u32);
+
+impl PciCfgAddr {
+    pub const fn new(word: u32) -> Self {
+        Self(word)
+    }
+
+    pub const fn raw(self) -> u32 {
+        self.0
+    }
+
+    /// Bits 23:16, inferred.
+    pub const fn bus(self) -> u32 {
+        (self.0 >> 16) & 0xff
+    }
+
+    /// Bits 15:8, inferred.
+    pub const fn devfn(self) -> u32 {
+        (self.0 >> 8) & 0xff
+    }
+
+    /// Bits 7:2, established.
+    pub const fn register(self) -> u32 {
+        (self.0 >> 2) & 0x3f
+    }
+
+    /// Bit 0, established.
+    pub const fn type1(self) -> bool {
+        self.0 & 1 != 0
     }
 }
 
