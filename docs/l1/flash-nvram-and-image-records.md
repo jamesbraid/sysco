@@ -15,20 +15,20 @@ Read from L1 1.44.0, package 1 (`Fuel/PE/O300 1MB image`, body sha256 `9db44f3bb
 - **Image header (composite).** Each ColdFire package begins with 44 bytes (`ESTF`, `BINR`, start `0xffe00000`, end, then fields) followed by the body. The 44-byte header of package 1 reads, as big-endian words: `0x45535446`, `0x42494e52`, `0xffe00000`, `0xffeefd5f`, `0xff000000`, `0`, `0xffe00000`, `0xffeefd5f`, `0xffffffff`, `4`, `0`. Range 0's header is 104 bytes because it also carries the composite directory (seven offset and length pairs from `0x30`, count 7 at `0x2c`). An updater stripping the header gets the flat body that the flash holds from `0xffe00000`.
 - **Per-copy metadata record (established, body `0xffe7fd1c`; second copy `0xffeefd1c`).** 48 bytes, twelve big-endian words:
 
-| Word | Value in package 1 | Reading |
-|---|---|---|
-| 0 | `0x00040030` | record type 4, length `0x30` |
-| 1 | `0xffe10000` (second copy `0xffe80000`) | start of this program copy |
-| 2 | `0x00070000` | span reserved for the copy |
-| 3 | `0x0006fd4c` | used length |
-| 4 | pointer to `20060717182038` | build stamp, the string the loader compares |
-| 5 | pointer to `1.44.0` | version string |
-| 6 | `0xffe7fd4c` | pointer to a 16-byte table that the status routine calls the relocation table (zero word sum; see below) |
-| 7 | `0x58487f20` | balancing word (the 12-word sum is zero); no code reads it as data (below) |
-| 8 | `0xa83e0909` | 32-bit big-endian word sum of the first `word 3` bytes of the copy (computed here: equal); compared by the status routine (below) |
-| 9 | pointer to the string `%4A?` | accepted brick letters |
-| 10 | `1` | (not decoded) |
-| 11 | pointer to `Fuel/PE/O300 1MB image` | image label |
+| Word | Value in package 1 | Reading | Grade |
+|---|---|---|---|
+| 0 | `0x00040030` | record type 4, length `0x30` | established |
+| 1 | `0xffe10000` (second copy `0xffe80000`) | start of this program copy | established |
+| 2 | `0x00070000` | span reserved for the copy | established |
+| 3 | `0x0006fd4c` | used length | established |
+| 4 | pointer to `20060717182038` | build stamp, the string the loader compares | established |
+| 5 | pointer to `1.44.0` | version string | established |
+| 6 | `0xffe7fd4c` | pointer to a 16-byte table that the status routine calls the relocation table (zero word sum; see below) | established |
+| 7 | `0x58487f20` | balancing word (the 12-word sum is zero); no code reads it as data (below) | established |
+| 8 | `0xa83e0909` | 32-bit big-endian word sum of the first `word 3` bytes of the copy (computed here: equal); compared by the status routine (below) | established |
+| 9 | pointer to the string `%4A?` | accepted brick letters | established |
+| 10 | `1` | (not decoded) | established |
+| 11 | pointer to `Fuel/PE/O300 1MB image` | image label | established |
 
   Only the 12-word sum is verified by the loader (see [the board contract](board-boot-contract.md)). That word 8 equals the sum of the copy's bytes is established by computation; the status routine below is the code that compares it.
 
@@ -65,21 +65,21 @@ The 2 KB battery-backed window at `CS1` (`0x20000000`) holds, from offset 0:
 - **Record area (established, `0xffe5a188`-`0xffe5a74a`, `0xffe59e94`).** From `0x20000008`, in order: a 0x70-byte settings record, its mirror (+0x70), a 0x24-byte record (+0xe0), its mirror (+0x104), a 0xb4-byte record (+0x128) and its mirror (+0x1dc); total 0x290 bytes, so the area ends at `0x20000298`. Every record's last byte makes the byte sum of the record zero (`0xffe5b3cc` is the negated sum, `0xffe5b3a4` the check). The start-up rule (`0xffe5a188`): if the primary fails its sum (or its first-byte version nibble is 0), the mirror is tried; a valid mirror is copied over the primary (`0xffe5a3ae`); with neither valid the record is zeroed, given its default version, a fresh checksum, and copied to the mirror. The first record's current version nibble is `0xa` (created that way at `0xffe5a210`); a jump table at `0xffe5a858` upgrades older version nibbles 0 to 9 in steps. The second record's first byte is its version, `3` when created; the 0x24-byte record is written by `0xffe59e94`, which also copies words at `+0xe4` to `+0xec` and `+0xf0`.
 - **Settings numbers in the first record (established, getter `0xffe59590`, jump table `0xffe595b0`, 179 entries, 47 of them reach the default arm).** Offsets are from the record start:
 
-| Setting | Location in the record |
-|---|---|
-| 1 rack | bits 23:14 of the big-endian word at +0 (10 bits) |
-| 2 bay | byte +2, bits 5:0 |
-| 3 debug switches | bits 23:8 of the word at +0x1c (bytes +0x1d and +0x1e) |
-| 5 | byte +0x20 |
-| 8, 10 | byte +0x21, two bits each at bits 2:1 and 6:5 |
-| 14 | byte +0x1f |
-| 16 | byte +0x47 |
-| 17 | byte +0x11 |
-| 18 (the two-bit field) | byte +0x14, bits 3:2 |
-| 19 (event subchannel) | byte +0x2f, bits 4:0 |
-| 44, 55 | byte +0x46 bit 3, byte +0x16 bit 2 |
-| 56, 57 | byte +0x16 bit 1, byte +0x16 bit 0 |
-| 61, 62 | byte +0x17 bits 2:1, byte +0x17 bit 0 |
+| Setting | Location in the record | Grade |
+|---|---|---|
+| 1 rack | bits 23:14 of the big-endian word at +0 (10 bits) | established |
+| 2 bay | byte +2, bits 5:0 | established |
+| 3 debug switches | bits 23:8 of the word at +0x1c (bytes +0x1d and +0x1e) | established |
+| 5 | byte +0x20 | established |
+| 8, 10 | byte +0x21, two bits each at bits 2:1 and 6:5 | established |
+| 14 | byte +0x1f | established |
+| 16 | byte +0x47 | established |
+| 17 | byte +0x11 | established |
+| 18 (the two-bit field) | byte +0x14, bits 3:2 | established |
+| 19 (event subchannel) | byte +0x2f, bits 4:0 | established |
+| 44, 55 | byte +0x46 bit 3, byte +0x16 bit 2 | established |
+| 56, 57 | byte +0x16 bit 1, byte +0x16 bit 0 | established |
+| 61, 62 | byte +0x17 bits 2:1, byte +0x17 bit 0 | established |
 
   The other entries reach the same record through computed offsets or multi-step paths and were not decoded one by one. The setter (`0xffe58758`, same jump structure) rewrites the field and then recomputes the record checksum and the mirror (`0xffe594de`). Which setting number is the partition id (14 in the table) rests on the request catalogue's name for that setting; the field itself is the byte shown.
 - **Clock-calendar (established, read `0xffe5e32c`, write `0xffe5e5c4`).** Registers at `0x200007f8` upward, one BCD byte each: control at `0x7f8` (bit 6 freezes the read latch, bit 7 write enable; the low six bits are the two century digits: tens in bits 5:4 and hundreds in bits 3:0), seconds `0x7f9`, minutes `0x7fa`, hours `0x7fb`, day `0x7fc`, date `0x7fd`, month `0x7fe`, year `0x7ff`. The read routine converts BCD to a year as `thousands*1000 + hundreds*100 + year`, and the write routine adds `0x76c` (1900) to a tm-style year. The layout is that of the common 2 KB battery-backed RAM with calendar at the top of its window (the existing datasheet for that part family covers its register behaviour).

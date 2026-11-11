@@ -8,12 +8,12 @@ The question this note answers: the daemon logs that it has no receiver for a re
 
 The configuration object is the structure at `0x10044640` in `bin/l2` (the "local node"; library routines take it as their first argument). Relevant layout (established from `L2CfgMAddPort` `0x13a8c`, `L2CfgMCfgPort` `0x15a54`, `L2CfgMFindBrickIP` `0x160e8`, all in `libmain`):
 
-| Offset | Content |
-|---|---|
-| `+0x000` | the node's own address word (the key the route search copies out as "ip") |
-| `+0x124` | next node in a singly linked list of nodes (0 at the end) |
-| `+0x158` | count of ports in use |
-| `+0x15c + 0x1c * slot` | port record, 40 slots (slot 0 to 39) |
+| Offset | Content | Grade |
+|---|---|---|
+| `+0x000` | the node's own address word (the key the route search copies out as "ip") | established |
+| `+0x124` | next node in a singly linked list of nodes (0 at the end) | established |
+| `+0x158` | count of ports in use | established |
+| `+0x15c + 0x1c * slot` | port record, 40 slots (slot 0 to 39) | established |
 
 Port record (`slot` is the daemon's device index): `+0x00` state (0 free, 1 attached but not configured, 2 configured), `+0x04` connection type (2 for USB), `+0x08` the descriptor number of the device, `+0x0c` and `+0x10` two allocated name strings, `+0x14` count of brick records, `+0x18` pointer to an array of 0x30-byte brick records (all established).
 
@@ -44,22 +44,22 @@ So the L1's reply must have class 1, destination task 4 of the L2 (the request's
 
 **Brick record (0x30 bytes) built from a 0x70-byte source record** (`sub_156f4`; established from the stores; the value of each source word is read as a big-endian 32-bit word and only its low byte is kept, except where noted):
 
-| Source offset | Brick record offset | Use found |
-|---|---|---|
-| (the index byte) | `+0x00` | index of the record in the L1's table; `FindBrickIP` takes the smallest |
-| `+0x00` | `+0x01` | valid flag: **must be nonzero** for the record to be found |
-| `+0x04` | `+0x02` | not used by the route search |
-| `+0x08` | `+0x03` | **rack** (route key) |
-| `+0x0c` | `+0x04` | **bay** (route key) |
-| `+0x10` | `+0x05` | not used by the route search |
-| `+0x3c` | `+0x06` | not used by the route search |
-| `+0x14` (whole word) | `+0x08` | not used by the route search |
-| `+0x18`, `+0x1c`, `+0x1d` | `+0x0c`, `+0x0d`, `+0x0e` | not used by the route search |
-| `+0x2c`, `+0x34`, `+0x38` | `+0x0f`, `+0x10`, `+0x11` | not used by the route search |
-| `+0x60` | `+0x12` | the value 0 here is replaced by 2 when `+0x01` is nonzero |
-| `+0x40` | `+0x18` (12 bytes) | a string (a name, inferred) |
-| `+0x4c` | `+0x24` (12 bytes) | a string (a serial or part text, inferred) |
-| `+0x5c` | `+0x14` (whole word) | not used by the route search |
+| Source offset | Brick record offset | Use found | Grade |
+|---|---|---|---|
+| (the index byte) | `+0x00` | index of the record in the L1's table; `FindBrickIP` takes the smallest | established |
+| `+0x00` | `+0x01` | valid flag: **must be nonzero** for the record to be found | established |
+| `+0x04` | `+0x02` | not used by the route search | established |
+| `+0x08` | `+0x03` | **rack** (route key) | established |
+| `+0x0c` | `+0x04` | **bay** (route key) | established |
+| `+0x10` | `+0x05` | not used by the route search | established |
+| `+0x3c` | `+0x06` | not used by the route search | established |
+| `+0x14` (whole word) | `+0x08` | not used by the route search | established |
+| `+0x18`, `+0x1c`, `+0x1d` | `+0x0c`, `+0x0d`, `+0x0e` | not used by the route search | established |
+| `+0x2c`, `+0x34`, `+0x38` | `+0x0f`, `+0x10`, `+0x11` | not used by the route search | established |
+| `+0x60` | `+0x12` | the value 0 here is replaced by 2 when `+0x01` is nonzero | established |
+| `+0x40` | `+0x18` (12 bytes) | a string (a name, inferred) | established |
+| `+0x4c` | `+0x24` (12 bytes) | a string (a serial or part text, inferred) | established |
+| `+0x5c` | `+0x14` (whole word) | not used by the route search | established |
 
 If every one of the words at source offsets `+0x00`, `+0x04`, `+0x08`, `+0x0c`, `+0x10` is at most 0xff, the low bytes are taken as they are; otherwise `ntohl` is applied first, which is the identity on this big-endian CPU, so the two branches give the same bytes. A source record shorter than 0x70 bytes is zero padded.
 
@@ -91,15 +91,15 @@ Steps for selector 6 with three descriptors (established):
 
 Reply fields, for both builders (established from `0xffe77eb4` and its two callers):
 
-| Field | Value |
-|---|---|
-| class | 1 (response) |
-| destination word | a copy of the request's source word (`0x84000001` in the stock run) |
-| source word | the first word of the L1's endpoint record at `0x30004f88`, set by `endpoint_init` with task 14: the low 20 bits of the L1's identity word `0x30000080` in bits 31 to 12 and the task in the low five bits (top bit clear), so `(identity << 12) | 0x0e`, with the other low bits as the record held them |
-| status byte (`+0x13`, wire byte 3) | 0 |
-| code | the request's code (0) through `response_send`; the request's `+0x0c` value through the other builder. The daemon's handler does not read it |
-| sequence | the request's, through `response_send` |
-| descriptors | 7, `a2` (0), `N`, `0x70`, byte array of `N` indices, `N * 0x70` data bytes |
+| Field | Value | Grade |
+|---|---|---|
+| class | 1 (response) | established |
+| destination word | a copy of the request's source word (`0x84000001` in the stock run) | established |
+| source word | the first word of the L1's endpoint record at `0x30004f88`, set by `endpoint_init` with task 14: the low 20 bits of the L1's identity word `0x30000080` in bits 31 to 12 and the task in the low five bits (top bit clear), so `(identity << 12) \| 0x0e`, with the other low bits as the record held them | established |
+| status byte (`+0x13`, wire byte 3) | 0 | established |
+| code | the request's code (0) through `response_send`; the request's `+0x0c` value through the other builder. The daemon's handler does not read it | established |
+| sequence | the request's, through `response_send` | established |
+| descriptors | 7, `a2` (0), `N`, `0x70`, byte array of `N` indices, `N * 0x70` data bytes | established |
 
 The identity word's low 20 bits (the form in `0xffe782a4`) are the rack in bits 15 to 6 and the bay in bits 5 to 0, which is what the `0x000c` request reply computes as `rack << 6 | bay` from the table words at `+0x08` and `+0x0c` ([../l1/brick-request-handlers-detail.md](../l1/brick-request-handlers-detail.md)). Inferred that the source word's rack and bay are the L1's own rack and bay settings (settings 1 and 2, [../l1/settings-record.md](../l1/settings-record.md)); the routine that stores the identity word is `0xffe78314`, see "Who writes the identity word and the table" below.
 

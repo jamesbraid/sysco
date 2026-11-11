@@ -8,18 +8,18 @@ Grades: established means the instructions and data were read and the statement 
 
 `inittab` starts it with no arguments (see [rootfs.md](rootfs.md)). `main` is at `0x10002f68` (established). It parses these arguments (established: the compares and the stores at `0x10003030` to `0x100036f4`):
 
-| Argument | Effect |
-|---|---|
-| `-net` | connection mode 1: accept L1 controllers over the network (`l1net`, routine at `0x10007cc0`) |
-| `-pc` | sets two flags (`0x10043b90` and discovery `0x10043b80`, both 1) |
-| `-usb` | mode 2: L1 controllers over USB through the SGI kernel driver |
-| `-noconn` | mode 0: no L1 connection at all |
-| `-serial <device>` | mode 3 when the next argument starts with `/` (copied to the device-name buffer at `0x10051298`, default `/dev/com2`); otherwise mode 4: the argument is a host name (buffer `0x10051e58`) and an optional port follows, read with `sscanf` into `0x10043b8c` (initial value 2345) |
-| `-l1sim`, `-l1sim_manual` | mode 5: start or wait for a software L1 simulator (executable name `../utils/l1sim.linux`, looked up through `WORKAREA` and `HOME`); not used on the product |
-| `--copy N` | 0 to 128; sets the port bias `IR_PORT_BIAS` to 10 times N so several daemons can coexist |
-| `-discover`, `-nodiscover` | the L2-to-L2 discovery flag (initial value 1) |
-| `-usbpath b<bus>;p<port>[/<port>...]` | restrict USB monitoring to those USB paths (repeatable, comma list) |
-| `-debug`, `-irtr` (IRouter packet dump), `-nopwrchk`, `-smpenet`, `--mtrace` (malloc trace into `/tmp/l2.mtrace`), `-syncssn` | debug and behaviour switches |
+| Argument | Effect | Grade |
+|---|---|---|
+| `-net` | connection mode 1: accept L1 controllers over the network (`l1net`, routine at `0x10007cc0`) | established |
+| `-pc` | sets two flags (`0x10043b90` and discovery `0x10043b80`, both 1) | established |
+| `-usb` | mode 2: L1 controllers over USB through the SGI kernel driver | established |
+| `-noconn` | mode 0: no L1 connection at all | established |
+| `-serial <device>` | mode 3 when the next argument starts with `/` (copied to the device-name buffer at `0x10051298`, default `/dev/com2`); otherwise mode 4: the argument is a host name (buffer `0x10051e58`) and an optional port follows, read with `sscanf` into `0x10043b8c` (initial value 2345) | established |
+| `-l1sim`, `-l1sim_manual` | mode 5: start or wait for a software L1 simulator (executable name `../utils/l1sim.linux`, looked up through `WORKAREA` and `HOME`); not used on the product | established |
+| `--copy N` | 0 to 128; sets the port bias `IR_PORT_BIAS` to 10 times N so several daemons can coexist | established |
+| `-discover`, `-nodiscover` | the L2-to-L2 discovery flag (initial value 1) | established |
+| `-usbpath b<bus>;p<port>[/<port>...]` | restrict USB monitoring to those USB paths (repeatable, comma list) | established |
+| `-debug`, `-irtr` (IRouter packet dump), `-nopwrchk`, `-smpenet`, `--mtrace` (malloc trace into `/tmp/l2.mtrace`), `-syncssn` | debug and behaviour switches | established |
 
 The connection-mode word is at `0x10043b84` and its **initial value in the file is 2**, so the default with no argument is USB (established from the `.data` bytes). The mode switch is the jump table at `0x10027d00` used by `sub_10005614`: mode 0 nothing, 1 `0x10007cc0`, 2 `0x10003eec` (USB open), 3 `0x10005200`, 4 `0x100053f4`, 5 `0x10007f4c` (established by decoding the table).
 
@@ -61,10 +61,10 @@ Established from `l1_open_usb` (`0x10003eec`), the device open (`0x100046c4` onw
 
 Uses of the flash by absolute address (established from the `lis` immediates):
 
-| Consumer | Address | Role |
-|---|---|---|
-| `nvram.c` in `libmain` | `0xfe3f0000` (new location), `0xfe2e0000` (old) | NVRAM block. If the first 16 bytes at `0xfe3f0000` are all `0xff` the library reads from the old location instead and logs `NVRAM data detected at old flash location--moving to new location`; after a load it rewrites the new location. |
-| `db.c` in `l2part` | `0xfe3e0000`, 64 KiB | the partition mode database (see [partition-task.md](partition-task.md)) |
+| Consumer | Address | Role | Grade |
+|---|---|---|---|
+| `nvram.c` in `libmain` | `0xfe3f0000` (new location), `0xfe2e0000` (old) | NVRAM block. If the first 16 bytes at `0xfe3f0000` are all `0xff` the library reads from the old location instead and logs `NVRAM data detected at old flash location--moving to new location`; after a load it rewrites the new location. | established |
+| `db.c` in `l2part` | `0xfe3e0000`, 64 KiB | the partition mode database (see [partition-task.md](partition-task.md)) | established |
 
 ## NVRAM
 

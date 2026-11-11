@@ -56,12 +56,12 @@ The eight changed routines are the ones that contain these bytes: `0xffe10570` a
 
 **1.44.0 to 1.48.x in the other ColdFire packages (established, from a byte comparison of each pair of bodies).** Packages 0, 2 and 3 have the same length in both sets, and the packages differ in the same classes as package 1 and in nothing else:
 
-| Package | Differing byte positions | Classes |
-|---|---:|---|
-| 0 `Base 1MB` | 44 | two version strings, the build stamp and a second version string beside it, record words 7 and 8, each twice (the bank repeats) |
-| 1 `Fuel/PE/O300 1MB` | 42 | the same classes as package 0; the count is lower only because fewer stamp digits and fewer bytes of words 7 and 8 differ |
-| 2 `MIPS 2MB` | 68 | two version strings, build stamp and version string, record words 7 and 8, one word in the table that follows the record, two words in the tail of that table, each twice |
-| 3 `Legacy 2MB` | 62 | the same classes as package 2 (this package reports 1.48.0 in its own strings and 1.48.1 in its stamp area) |
+| Package | Differing byte positions | Classes | Grade |
+|---|---:|---|---|
+| 0 `Base 1MB` | 44 | two version strings, the build stamp and a second version string beside it, record words 7 and 8, each twice (the bank repeats) | established |
+| 1 `Fuel/PE/O300 1MB` | 42 | the same classes as package 0; the count is lower only because fewer stamp digits and fewer bytes of words 7 and 8 differ | established |
+| 2 `MIPS 2MB` | 68 | two version strings, build stamp and version string, record words 7 and 8, one word in the table that follows the record, two words in the tail of that table, each twice | established |
+| 3 `Legacy 2MB` | 62 | the same classes as package 2 (this package reports 1.48.0 in its own strings and 1.48.1 in its stamp area) | established |
 
 The table after the record in the 2 MB packages is a list of 32-bit entries headed by three words (1, a byte length, one more word). Its entries carry a tag in the top byte and a bank offset in the low 24 bits; the two tag-3 entries name the bank offsets of record words 7 and 8 (`0x9a2a8` and `0x9a2ac` in package 2), and the one differing header word and the two values after the tag-3 entries are the other changed words. The table's role is inferred only, from one message in the 6.5.30 `flashsc`, which refuses an L1 flash binary that has no "relocation tables" (the string sits beside the check for both A and B images); its words were not decoded. Package 5 (`2MB image`) is not the same length in the two sets (1,778,732 and 1,768,320 bytes, last addresses `0xfffb242b` and `0xfffafb7f`), so it is a rebuilt body and was not compared byte by byte.
 
@@ -75,12 +75,12 @@ Because the bodies of packages 0 to 3 differ only in strings, the record and its
 
 The general dispatch accepts these codes in each set (established, from the chain run).
 
-| Set | Codes accepted |
-|---|---|
-| 1.24.8 | 0x0001 to 0x0010; 0x1001 to 0x100b; 0x2001 to 0x2008; 0x3001; 0x4000 |
-| 1.32.15 | 0x0001 to 0x0011; 0x1001 to 0x100c; 0x2001 to 0x2008; 0x4000 |
-| 1.44.0 | 0x0001 to 0x0011; 0x1001 to 0x100c; 0x2001 to 0x2008; 0x4000; 0x4002 |
-| 1.48.1 | as 1.44.0 |
+| Set | Codes accepted | Grade |
+|---|---|---|
+| 1.24.8 | 0x0001 to 0x0010; 0x1001 to 0x100b; 0x2001 to 0x2008; 0x3001; 0x4000 | established |
+| 1.32.15 | 0x0001 to 0x0011; 0x1001 to 0x100c; 0x2001 to 0x2008; 0x4000 | established |
+| 1.44.0 | 0x0001 to 0x0011; 0x1001 to 0x100c; 0x2001 to 0x2008; 0x4000; 0x4002 | established |
+| 1.48.1 | as 1.44.0 | established |
 
 Code changes:
 
@@ -237,13 +237,13 @@ The L3 tools disc (`cd-ist-3.24`, the `snxsc_firmware` 1.62.1-1 RPM) carries L1 
 
 Pairs (established: the labels are read from the images in [inventory/packages.tsv](inventory/packages.tsv)):
 
-| 1.62.1 package | 1.48.1 package | Pairing |
-|---|---|---|
-| `NL3R 1MB image` | `Base 1MB image` | guess |
-| `Legacy 2MB image` | `Legacy 2MB image` (1.48.0 in its version string) | label |
-| `2MB image` | `2MB image` | label |
-| `Legacy Linux L1 image` | `Legacy Linux L1 image` | label |
-| `Linux L1 image` | `Linux L1 image` | label |
+| 1.62.1 package | 1.48.1 package | Pairing | Grade |
+|---|---|---|---|
+| `NL3R 1MB image` | `Base 1MB image` | guess | established |
+| `Legacy 2MB image` | `Legacy 2MB image` (1.48.0 in its version string) | label | established |
+| `2MB image` | `2MB image` | label | established |
+| `Legacy Linux L1 image` | `Legacy Linux L1 image` | label | established |
+| `Linux L1 image` | `Linux L1 image` | label | established |
 
 `NL3R 1MB` has no label match in 1.48.1. The generic 1 MB package is the one that holds the controller firmware source unit 24 (see [personalities.md](l1/personalities.md)), so it is paired with `Base 1MB`. That is inferred from the module list, not from a label. The 1.48.1 `Fuel/PE/O300 1MB` and `MIPS 2MB` packages have no partner in 1.62.1.
 

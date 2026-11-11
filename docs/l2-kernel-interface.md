@@ -12,11 +12,11 @@ Other versions: the same constants (the `ioremap` argument loads, the USB match 
 
 The kernel's first word is `mr r31,r3` at `0xc0000000`; it saves r3 to r7 and sets up the memory-management registers by hand (the standard 8xx start code). The platform-init routine at `0xc0132688` then reads the five registers as follows. Established.
 
-| Register | Meaning | Read at |
-|---|---|---|
-| r3 | physical address of the board-information block; if nonzero, 28 bytes are copied from `r3 + 0xc0000000` to `0xc015ec74` | `0xc01326bc`, `0xc01326c0` |
-| r4, r5 | physical start and end of an initial RAM disk, stored plus `0xc0000000` at `0xc015e428` and `0xc015e42c` | `0xc01326cc` to `0xc01326e0` |
-| r6, r7 | physical start and end of the kernel command line; a zero byte is stored at the end address, then the text is copied to `0xc0117000` | `0xc01326ec` to `0xc0132704` |
+| Register | Meaning | Read at | Grade |
+|---|---|---|---|
+| r3 | physical address of the board-information block; if nonzero, 28 bytes are copied from `r3 + 0xc0000000` to `0xc015ec74` | `0xc01326bc`, `0xc01326c0` | established |
+| r4, r5 | physical start and end of an initial RAM disk, stored plus `0xc0000000` at `0xc015e428` and `0xc015e42c` | `0xc01326cc` to `0xc01326e0` | established |
+| r6, r7 | physical start and end of the kernel command line; a zero byte is stored at the end address, then the text is copied to `0xc0117000` | `0xc01326ec` to `0xc0132704` | established |
 
 The addition of `0xc0000000` shows that the loader passes **physical** addresses and that physical 0 is where the kernel is linked (virtual `0xc0000000` is physical 0). Established.
 
@@ -39,15 +39,15 @@ The loader supplies, before the daemon can run: memory size, both clocks, the MA
 
 **Command-line options the kernel understands** (the `__setup` table, 24 entries of option string and handler at `0xc015d160` to `0xc015d21f`; each row is the option string and the handler address). Established. The table also holds `profile=`, `ro`, `rw`, `kbd-reset`, `netdev=` and `ether=`, which the rows below name only in passing.
 
-| Option | Handler | Note |
-|---|---|---|
-| `root=` | `0xc01310fc` | the kernel prints the standard "append a correct root= option" message if the root cannot be opened (`0xc0135208`) |
-| `mem=` | parsed in `0xc01319dc` | caps RAM; accepts `k` and `m` suffixes |
-| `noinitrd`, `ramdisk_start=`, `load_ramdisk=`, `prompt_ramdisk=`, `ramdisk=`, `ramdisk_size=`, `ramdisk_blocksize=` | `0xc0137904` to `0xc0137a10` | RAM-disk handling |
-| `console=`, `panic=`, `reserve=`, `memfrac=`, `profile=`, `debug`, `quiet`, `l2cr=` | generic | |
-| `wdt_8xx=` | `0xc0137648` | software watchdog switch (section 8) |
-| `pci=` | `0xc01394ac` | PCI options |
-| `video=` | `0xc013a234` | the generic frame-buffer option: it first handles `scrollback:`, then compares the text against the name of each registered frame-buffer driver followed by a colon and hands the remainder to that driver's own setup routine. The only registered driver is `sgil2fb`, whose setup routine is `0xc013aecc` (section 7). So the panel choice is `video=sgil2fb:color` or `video=sgil2fb:mono` |
+| Option | Handler | Note | Grade |
+|---|---|---|---|
+| `root=` | `0xc01310fc` | the kernel prints the standard "append a correct root= option" message if the root cannot be opened (`0xc0135208`) | established |
+| `mem=` | parsed in `0xc01319dc` | caps RAM; accepts `k` and `m` suffixes | established |
+| `noinitrd`, `ramdisk_start=`, `load_ramdisk=`, `prompt_ramdisk=`, `ramdisk=`, `ramdisk_size=`, `ramdisk_blocksize=` | `0xc0137904` to `0xc0137a10` | RAM-disk handling | established |
+| `console=`, `panic=`, `reserve=`, `memfrac=`, `profile=`, `debug`, `quiet`, `l2cr=` | generic | | established |
+| `wdt_8xx=` | `0xc0137648` | software watchdog switch (section 8) | established |
+| `pci=` | `0xc01394ac` | PCI options | established |
+| `video=` | `0xc013a234` | the generic frame-buffer option: it first handles `scrollback:`, then compares the text against the name of each registered frame-buffer driver followed by a colon and hands the remainder to that driver's own setup routine. The only registered driver is `sgil2fb`, whose setup routine is `0xc013aecc` (section 7). So the panel choice is `video=sgil2fb:color` or `video=sgil2fb:mono` | established |
 
 The initial command line is empty in the image (`0xc0117000` is zero in the file), so the root device, console and panel come from the loader. **What the loader passes**, read in the wrapper (`0x700838` to `0x70099c`): the base text is `root=/dev/ram` when the ramdisk range is non-empty (it always is, see above; the alternative text is a network root, `root=/dev/nfs rw`, never chosen here), then the fixed text ` panic=5 ` (string at `0x705348`), then whatever the operator types on the console during a polling loop of up to 1,999 passes of the delay routine (`0x7008c8` to `0x700970`; the real length of that window depends on the unresolved tick length, so the usual figure of about two seconds is not established). There is no `video=`, `console=` or `wdt_8xx=` text. Established for the fragments and the order; the branch choice rests on the constant range check (inferred, arithmetic only). Consequences: the greyscale panel is used unless the operator types an option (section 7); a kernel panic restarts the processor after five seconds through the reset path in section 8 (the restart-on-timeout behaviour is the public kernel's, hint); no console is named, so which port the kernel console uses is the console set-up's default (section 11, item 1). The kernel can find a cramfs in a RAM disk (it prints "cramfs filesystem found at block"), and the 512-byte pad before the cramfs superblock ([l2/image-layout.md](l2/image-layout.md)) is compatible with the public cramfs reader, which accepts its superblock at offset 0 or at offset 512 (hint: Linux 2.4 `fs/cramfs/inode.c`). Which of the two the kernel's RAM-disk detector expects was not read.
 
@@ -72,25 +72,25 @@ The kernel never touches the flash window itself and has no flash driver (sectio
 
 Established from the kernel's strings, its initialisation-call table and the registered-name records; the user-space need in the last column comes from the import and path scans of section 5.
 
-| Facility | In the kernel | Needed by |
-|---|---|---|
-| Root from a RAM disk with gzip decompression; cramfs, romfs, minix and ext2 detectors | yes (`RAMDISK:` strings, `0x1009d0` to `0x100af0`) | the read-only root |
-| cramfs | yes (file-system name `cramfs`) | the root |
-| `proc`, `tmpfs` (also `shm`), `usbdevfs`, `pipefs`, `sockfs` | yes | `rc.sysinit` mounts `tmpfs` on `/tmp`, `/var`, `/etc` and `proc` and `usbdevfs` from `fstab`; the daemon does not use the files under `/proc/bus/usb` |
-| `devfs`, `devpts`, any modular loading | **no** (`devfs` occurs only as part of `usbdevfs`; there is no `create_module` or `init_module` string and no module loader) | all nodes are static cramfs nodes; ptys are the legacy `ptyp`/`ttyp` pairs |
-| System V semaphores | yes (`sysvipc/sem` and `ipc_init_ids` strings) | `libdrivers`' flash lock (`semget(0x0124f0e5,1,0x3b6)`, `semop`) |
-| Sockets: Unix, TCP/IP, packet, netlink; loopback | yes | the daemon's listeners and clients |
-| Kernel-level IP auto-configuration | **not found**: none of the usual "IP-Config", "Sending BOOTP" or `nfsroot` strings occurs, so the `rc.sysinit` comment "if we weren't auto-configured in the kernel" describes a case this kernel cannot produce (the address then comes from NVRAM through `l2staticip`, or from the DHCP client) | none |
-| NFS, PPP network driver, SLIP | not found by string (the `/dev/ppp` node exists; `pppd` is present but nothing starts it) | none |
-| MTD (flash as a block or character device) | **no**: the string `mtd` does not occur and there is no flash-map code | none: `/dev/mtd0` to `mtd3` are inert nodes |
-| I2C core, `/dev` interface (`i2c-dev`) and the CPM I2C algorithm with a board adapter | yes | no program (section 8) |
-| EEPROM or VPD client driver | **no** (no `eeprom` or `24c` string) | none |
-| Real-time clock (generic PowerPC `rtc.c`) | yes, misc device | `hwclock` |
-| Software watchdog (`wdt_mpc8xx`) | yes, misc device | none (section 8) |
-| Frame buffer (`sgil2fb`) | yes | `l2gui` |
-| Serial: four on-chip serial ports as `ttyS0` to `ttyS3`, plus a kernel console | yes | console, modem port, touch port |
-| USB: core, hub, OHCI host controller driver, usbdevfs, the `sgil1` class driver | yes | the daemon in USB mode |
-| PCI core with a QSpan-bridge host | yes | the OHCI controller |
+| Facility | In the kernel | Needed by | Grade |
+|---|---|---|---|
+| Root from a RAM disk with gzip decompression; cramfs, romfs, minix and ext2 detectors | yes (`RAMDISK:` strings, `0x1009d0` to `0x100af0`) | the read-only root | established |
+| cramfs | yes (file-system name `cramfs`) | the root | established |
+| `proc`, `tmpfs` (also `shm`), `usbdevfs`, `pipefs`, `sockfs` | yes | `rc.sysinit` mounts `tmpfs` on `/tmp`, `/var`, `/etc` and `proc` and `usbdevfs` from `fstab`; the daemon does not use the files under `/proc/bus/usb` | established |
+| `devfs`, `devpts`, any modular loading | **no** (`devfs` occurs only as part of `usbdevfs`; there is no `create_module` or `init_module` string and no module loader) | all nodes are static cramfs nodes; ptys are the legacy `ptyp`/`ttyp` pairs | established |
+| System V semaphores | yes (`sysvipc/sem` and `ipc_init_ids` strings) | `libdrivers`' flash lock (`semget(0x0124f0e5,1,0x3b6)`, `semop`) | established |
+| Sockets: Unix, TCP/IP, packet, netlink; loopback | yes | the daemon's listeners and clients | established |
+| Kernel-level IP auto-configuration | **not found**: none of the usual "IP-Config", "Sending BOOTP" or `nfsroot` strings occurs, so the `rc.sysinit` comment "if we weren't auto-configured in the kernel" describes a case this kernel cannot produce (the address then comes from NVRAM through `l2staticip`, or from the DHCP client) | none | established |
+| NFS, PPP network driver, SLIP | not found by string (the `/dev/ppp` node exists; `pppd` is present but nothing starts it) | none | established |
+| MTD (flash as a block or character device) | **no**: the string `mtd` does not occur and there is no flash-map code | none: `/dev/mtd0` to `mtd3` are inert nodes | established |
+| I2C core, `/dev` interface (`i2c-dev`) and the CPM I2C algorithm with a board adapter | yes | no program (section 8) | established |
+| EEPROM or VPD client driver | **no** (no `eeprom` or `24c` string) | none | established |
+| Real-time clock (generic PowerPC `rtc.c`) | yes, misc device | `hwclock` | established |
+| Software watchdog (`wdt_mpc8xx`) | yes, misc device | none (section 8) | established |
+| Frame buffer (`sgil2fb`) | yes | `l2gui` | established |
+| Serial: four on-chip serial ports as `ttyS0` to `ttyS3`, plus a kernel console | yes | console, modem port, touch port | established |
+| USB: core, hub, OHCI host controller driver, usbdevfs, the `sgil1` class driver | yes | the daemon in USB mode | established |
+| PCI core with a QSpan-bridge host | yes | the OHCI controller | established |
 
 The kernel's initialisation-call table, 25 entries at `0xc015d220` to `0xc015d283`, holds these in table order (the ones I identified): scheduler helper threads, user-count caches, the memory manager's page-out thread, `tmpfs`, file-lock and notification caches, System V IPC, the character-device core (`mem`, `tty`, `console`), the legacy pty driver, the RAM disk, the PCI proc entry, the real-time clock, USB core (`0xc013af88`), the OHCI driver registration (`0xc013b47c`), the `sgil1` driver (`0xc013b500`), and the four network families (TCP/IP at `0xc013d4c8`, Unix at `0xc013d82c`, netlink, packet). The 8xx serial driver, fast Ethernet, frame buffer, I2C and watchdog are not in that table; the ones I followed are reached from the 8xx platform and driver set-up paths instead. Established for the table contents; I did not read how the later drivers are called, so the relative order of those is unknown.
 
@@ -117,16 +117,16 @@ The serial banner text is `ttyS%02d at 0x%04x is a %s`. The processor family is 
 
 Established from the dynamic symbol tables of each file in the 1.44.0 tree (undefined symbols that name a system call or its thin wrapper). These are the kernel entry points the programs rely on; library routines that need more than one call (`system`, `popen`, `syslog`) add `fork`, `execve`, `wait4`, `pipe`, `dup2`, `socket`/`connect` to `/dev/log`.
 
-| File | Calls |
-|---|---|
-| `bin/l2` | `open`, `close`, `read`, `write`, `ioctl`, `select`, `socket`, `bind`, `setsockopt`, `sendto`, `recvfrom`, `tcgetattr`/`tcsetattr`/`cfset*speed` (the `ioctl` terminal requests), `fork`, `execv`, `system`, `dup2`, `setsid`, `sigaction`, `sleep`, `usleep`, `gettimeofday`, `time`, `getpid`, `syslog` |
-| `lib/libRouter` | `socket`, `bind`, `listen`, `accept`, `connect`, `getsockopt`, `setsockopt`, `getsockname`, `getpeername`, `shutdown`, `fcntl`, `select`, `read`, `write`, `unlink`, `gettimeofday`, `signal`, `gethostname`, `gethostbyname` |
-| `lib/libdrivers` | `open`, `mmap`, `semget`, `semop`, `close` |
-| `lib/libmain` | `open`, `read`, `write`, `lseek`, `close`, `time`, `localtime`, `setenv` |
-| `lib/libapi` | the socket calls above, `tcgetattr`/`tcsetattr`, `popen` (to run `/bin/ls -1 /dev/snsc/*c*`), `ioctl` |
-| `bin/l2gui` | `open`, `ioctl`, `mmap`, `munmap`, `read`, `select`, `tcsetattr`, `fopen`, `system`, `signal` |
-| `bin/l2part`, `bin/l2flash` | no direct system calls beyond `sleep`/`syslog`; the socket calls are in `libRouter` |
-| `bin/partmgr` | `open`, `read`, `write`, `rename`, `unlink`, `time` |
+| File | Calls | Grade |
+|---|---|---|
+| `bin/l2` | `open`, `close`, `read`, `write`, `ioctl`, `select`, `socket`, `bind`, `setsockopt`, `sendto`, `recvfrom`, `tcgetattr`/`tcsetattr`/`cfset*speed` (the `ioctl` terminal requests), `fork`, `execv`, `system`, `dup2`, `setsid`, `sigaction`, `sleep`, `usleep`, `gettimeofday`, `time`, `getpid`, `syslog` | established |
+| `lib/libRouter` | `socket`, `bind`, `listen`, `accept`, `connect`, `getsockopt`, `setsockopt`, `getsockname`, `getpeername`, `shutdown`, `fcntl`, `select`, `read`, `write`, `unlink`, `gettimeofday`, `signal`, `gethostname`, `gethostbyname` | established |
+| `lib/libdrivers` | `open`, `mmap`, `semget`, `semop`, `close` | established |
+| `lib/libmain` | `open`, `read`, `write`, `lseek`, `close`, `time`, `localtime`, `setenv` | established |
+| `lib/libapi` | the socket calls above, `tcgetattr`/`tcsetattr`, `popen` (to run `/bin/ls -1 /dev/snsc/*c*`), `ioctl` | established |
+| `bin/l2gui` | `open`, `ioctl`, `mmap`, `munmap`, `read`, `select`, `tcsetattr`, `fopen`, `system`, `signal` | established |
+| `bin/l2part`, `bin/l2flash` | no direct system calls beyond `sleep`/`syslog`; the socket calls are in `libRouter` | established |
+| `bin/partmgr` | `open`, `read`, `write`, `rename`, `unlink`, `time` | established |
 
 What each call needs that the 1.44.0 root provides or does not:
 

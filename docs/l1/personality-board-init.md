@@ -29,24 +29,24 @@ Consequences, all established by the reads above:
 
 Established for the first straight-line part of each initialiser (up to its first `rts`). The descriptor is addressed through argument 0; the offsets below are descriptor offsets. Only the fields that differ in role are listed.
 
-| Offset | Content (package 1 `4`, `0xffe45bac`) | Same offset in package 0 `C` (`0xffe45504`) |
-|---:|---|---|
-| `0x04` | board device-registration routine (`0xffe45990`) | `0xffe453f8` |
-| `0x0c` byte | `0x4d` | `0x4c` |
-| `0x10` | 1 | 1 |
-| `0x14` | `0x0b` | 1 |
-| `0x18`, `0x1c`, `0x20` | `0xff` each | `0xff` each |
-| `0x24` | `0xffe39bc8` | `0xffe39bc8` |
-| `0x2c`, `0x30` | 2, 2 | 4, 4 (and `0x34`, `0x38` also 4) |
-| `0x54` to `0x64` | `0x28`, `0x2e`, `0x31`, `0x31`, `0x25` | not written |
-| `0x74` | 4 | 4 |
-| `0x7c` | `0xffe45040` | `0xffe44530` |
-| `0x98`, `0x9c` | `0xffe453e4`, `0xffe4552c` | `0xffe44bd4`, `0xffe44dfc` |
-| `0xa0` | `0xffe45060` | `0xffe4458c` |
-| `0xa4`, `0xa8` | `0xffe45084`, `0xffe450e0` | `0xffe445e8`, `0xffe4463c` |
-| `0xac`, `0xb0` | `0xffe45714`, `0xffe45764` | `0xffe45034`, `0xffe451e8` |
-| `0xb4`, `0xb8` | `0xb4` cleared | `0xffe4524c`, `0xffe44684` |
-| `0xc0` | `0xffe45af0` | not written |
+| Offset | Content (package 1 `4`, `0xffe45bac`) | Same offset in package 0 `C` (`0xffe45504`) | Grade |
+|---:|---|---|---|
+| `0x04` | board device-registration routine (`0xffe45990`) | `0xffe453f8` | established |
+| `0x0c` byte | `0x4d` | `0x4c` | established |
+| `0x10` | 1 | 1 | established |
+| `0x14` | `0x0b` | 1 | established |
+| `0x18`, `0x1c`, `0x20` | `0xff` each | `0xff` each | established |
+| `0x24` | `0xffe39bc8` | `0xffe39bc8` | established |
+| `0x2c`, `0x30` | 2, 2 | 4, 4 (and `0x34`, `0x38` also 4) | established |
+| `0x54` to `0x64` | `0x28`, `0x2e`, `0x31`, `0x31`, `0x25` | not written | established |
+| `0x74` | 4 | 4 | established |
+| `0x7c` | `0xffe45040` | `0xffe44530` | established |
+| `0x98`, `0x9c` | `0xffe453e4`, `0xffe4552c` | `0xffe44bd4`, `0xffe44dfc` | established |
+| `0xa0` | `0xffe45060` | `0xffe4458c` | established |
+| `0xa4`, `0xa8` | `0xffe45084`, `0xffe450e0` | `0xffe445e8`, `0xffe4463c` | established |
+| `0xac`, `0xb0` | `0xffe45714`, `0xffe45764` | `0xffe45034`, `0xffe451e8` | established |
+| `0xb4`, `0xb8` | `0xb4` cleared | `0xffe4524c`, `0xffe44684` | established |
+| `0xc0` | `0xffe45af0` | not written | established |
 
 The two routines at `0xa4` and `0xa8` are the pair compared in [personality-base-package.md](personality-base-package.md) (set-and-clear and clear-and-set of one expander bit). The type letter at `0x0c` and several of the small integers differ per board; what each integer means is not known.
 

@@ -59,15 +59,15 @@ Bank span: `0x70000` in packages 0 and 1, `0xf0000` in packages 2, 3 and 5 (reco
 
 Established, from the first bank of each package.
 
-| Bank offset | Content |
-|---|---|
-| `+0x00` | Pointer to the bank's 48-byte record (section 2.2) |
-| `+0x04` | Initial stack pointer `0x301017fc`. The 1,024 bytes starting here are the vector table the loader copies to `0x30100000` |
-| `+0x08` | Program entry address |
-| `+0x0c`... | Vector table remainder, code, tables and initialised data |
-| record | The 48-byte record |
-| record end | The relocation table (section 2.3) |
-| table end | `0xff` fill to the end of the span |
+| Bank offset | Content | Grade |
+|---|---|---|
+| `+0x00` | Pointer to the bank's 48-byte record (section 2.2) | established |
+| `+0x04` | Initial stack pointer `0x301017fc`. The 1,024 bytes starting here are the vector table the loader copies to `0x30100000` | established |
+| `+0x08` | Program entry address | established |
+| `+0x0c`... | Vector table remainder, code, tables and initialised data | established |
+| record | The 48-byte record | established |
+| record end | The relocation table (section 2.3) | established |
+| table end | `0xff` fill to the end of the span | established |
 
 Entry addresses, established: package 0 `0xffe10b02` / `0xffe80b02`; package 1 the same; package 2 `0xffe10b02` / `0xfff00b02`; package 3 `0xffe10a92` / `0xfff00a92`; package 5 `0xffe10ab2` / `0xfff00ab2`. The first instructions are the same sequence in all five (read with a 68040-mode decoder, up to the heap set-up after the VBR load): RAMBAR `0x30100001`, stack `0x30101800`, status `0x2700`, MBAR `0x10000001`, the board set-up routine, VBR `0x30100000`. Board set-up routine addresses: package 0 `0xffe54ebc`, 1 `0xffe54b0c`, 2 `0xffe75320`, 3 `0xffe6ab78`, 5 `0xffe798d4`.
 

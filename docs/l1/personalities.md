@@ -41,13 +41,13 @@ Word 7: tried as the xor, the byte sum, the 16-bit-word sum, the little-endian w
 
 Established: the string word 9 points to, read in each package.
 
-| Package | Supported-brick string | Characters, using the print table below |
-|---|---|---|
-| 0 `Base 1MB image` | `CIPXYN&?RG` | C, I, P, X, Y, N, `&`, `?`, R, G |
-| 1 `Fuel/PE/O300 1MB image` | `%4A?` | `%` (PE brick), `4` (IP45), A, `?` |
-| 2 `MIPS 2MB image` | `CIPXYN&%6780VQE9A?RG` | package 0's ten plus `%`, 6, 7, 8, 0, V, Q, E, 9, A |
-| 3 `Legacy 2MB image` | `5O#=?` | 5 (IP41), O, `#`, `=`, `?` |
-| 5 `2MB image` | `O5#=?` | the same five characters as package 3, in another order |
+| Package | Supported-brick string | Characters, using the print table below | Grade |
+|---|---|---|---|
+| 0 `Base 1MB image` | `CIPXYN&?RG` | C, I, P, X, Y, N, `&`, `?`, R, G | established |
+| 1 `Fuel/PE/O300 1MB image` | `%4A?` | `%` (PE brick), `4` (IP45), A, `?` | established |
+| 2 `MIPS 2MB image` | `CIPXYN&%6780VQE9A?RG` | package 0's ten plus `%`, 6, 7, 8, 0, V, Q, E, 9, A | established |
+| 3 `Legacy 2MB image` | `5O#=?` | 5 (IP41), O, `#`, `=`, `?` | established |
+| 5 `2MB image` | `O5#=?` | the same five characters as package 3, in another order | established |
 
 The host updater (`flashsc`, [package-container.md](package-container.md) describes the check) requires a requested brick byte to occur in this string, so the string decides which packages a given brick type can be offered. Established for the packages' side of that rule; the updater's side is already recorded. `?` is the character the firmware prints as `Unknown` and is present in every package.
 

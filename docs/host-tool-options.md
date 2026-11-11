@@ -6,18 +6,18 @@ What the IRIX-side tools accept and what they send, read from the IRIX 6.5.30 fi
 
 The client library's usage text (printed by the library's usage routine at `0x10006490` in `l1cmd`, read in the string table) lists these options (established):
 
-| Option | Argument | Meaning in the usage text |
-|---|---|---|
-| `--l2` | `<host>` | host name or IP address of the L2 to connect to |
-| `--sc` | none | connect through the default system controller (lowest rack and slot) |
-| `--scdev` | `<device>` | connect through the named system controller device |
-| `--interface`, `--if` | `<iface>` | network interface (for example `eth0`) of the L2 network |
-| `--ssn` | `<serial>[:<rack>]` | serial number of the system to connect to |
-| `--sysname` | `<name>[:<rack>]` | system name of the system to connect to |
-| `--pw` | `<password>` | L2 password |
-| `--irtr` | none | debug: show router packets sent and received |
-| `--serial` | `<host>:<port>` | Ethernet-attached serial port (a terminal server) |
-| `--dev` | `<device name>` | local serial port device |
+| Option | Argument | Meaning in the usage text | Grade |
+|---|---|---|---|
+| `--l2` | `<host>` | host name or IP address of the L2 to connect to | established |
+| `--sc` | none | connect through the default system controller (lowest rack and slot) | established |
+| `--scdev` | `<device>` | connect through the named system controller device | established |
+| `--interface`, `--if` | `<iface>` | network interface (for example `eth0`) of the L2 network | established |
+| `--ssn` | `<serial>[:<rack>]` | serial number of the system to connect to | established |
+| `--sysname` | `<name>[:<rack>]` | system name of the system to connect to | established |
+| `--pw` | `<password>` | L2 password | established |
+| `--irtr` | none | debug: show router packets sent and received | established |
+| `--serial` | `<host>:<port>` | Ethernet-attached serial port (a terminal server) | established |
+| `--dev` | `<device name>` | local serial port device | established |
 
 The parser's string table also holds `--rack`, `--copy`, `--quiet` and `--debug` (established that the strings exist; the argument syntax and behaviour of `--rack`, `--quiet` and `--debug` were not read). `--copy <n>` is accepted for 0 through 128 and biases every network port by `n` (the message "using copy %d (biasing all network ports by %d)"). An `--ssn` or `--sysname` value may carry a rack number after a colon, and a bad one is rejected with a "bad rack number" message. The message "--serial/--dev options (direct serial connection) not supported" is present in all three programs, and the `flashsc` usage names `--serial` and `--dev` for `-l2recover` (established from the strings; which tool reaches the rejection was not read).
 

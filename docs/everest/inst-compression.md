@@ -12,11 +12,11 @@ The index of these builds has **no offset field**. The `off(N)` attribute that l
 
 **Established** by walking the images (table below). An image starts with a 12-byte tag, `im001` followed by a 7-character version (for example `im001V530P00`), then one zero byte, then the records, packed with no padding, in the order of the index lines that name that image:
 
-| Field | Size | Meaning |
-|---|---:|---|
-| name length | 2 bytes, big-endian | length of the install path |
-| name | that many bytes | the install path, as in the index |
-| data | `cmpsize` bytes, or `size` bytes when `cmpsize` is zero or absent | the stream, or the stored bytes |
+| Field | Size | Meaning | Grade |
+|---|---:|---|---|
+| name length | 2 bytes, big-endian | length of the install path | established |
+| name | that many bytes | the install path, as in the index | established |
+| data | `cmpsize` bytes, or `size` bytes when `cmpsize` is zero or absent | the stream, or the stored bytes | established |
 
 In every image the walk ends exactly at the end of the file and the name in each record equals the name of the next index line for that image. The index lines belonging to one `.sw` image are those whose subsystem field begins with the image's file name (`eoe1.sw.unix`, `eoe1.sw.dlpi` and so on); lines of the `.man` image belong to that file. Directory and link lines have no record.
 

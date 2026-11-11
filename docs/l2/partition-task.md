@@ -35,14 +35,14 @@ Common exit (`0x10001aa0`): if the incoming packet's class byte (offset 0x16) is
 
 `libpart` (`unpack_mode_db`, `get_cksum`, `create_default_db`, ...) and `l2part` agree on a record with a 0x18-byte header, established from `sub_100021c8` (the validation, `0x100021c8`) and `unpack_mode_db`:
 
-| Offset | Meaning | Check made |
-|---|---|---|
-| 0x00 | magic `0x5a4c4a21` (ASCII `ZLJ!`) | must match, else result -2 |
-| 0x04 | total size in bytes | 0x18 to 0x10000, else -3; larger than the buffer -4 |
-| 0x08 | checksum of the bytes from 0x18 for (size minus 0x18) | must match `get_cksum`, else -5 |
-| 0x0c | timestamp (seconds) | a new image older than the current one is refused with result 7 (`part_set_db: New DB timestamp (%d) < Current DB timestamp (%d)`); equal means nothing to do (result 0) |
-| 0x10 | identifier of the selected mode, the word that `PART_SET_MODE` alone changes | must equal the current one only in the no-change path |
-| 0x14 | version | must be exactly 1: 0 and values above 1 give -6; `unpack_mode_db` applies the same test (message `database version mismatch`) |
+| Offset | Meaning | Check made | Grade |
+|---|---|---|---|
+| 0x00 | magic `0x5a4c4a21` (ASCII `ZLJ!`) | must match, else result -2 | established |
+| 0x04 | total size in bytes | 0x18 to 0x10000, else -3; larger than the buffer -4 | established |
+| 0x08 | checksum of the bytes from 0x18 for (size minus 0x18) | must match `get_cksum`, else -5 | established |
+| 0x0c | timestamp (seconds) | a new image older than the current one is refused with result 7 (`part_set_db: New DB timestamp (%d) < Current DB timestamp (%d)`); equal means nothing to do (result 0) | established |
+| 0x10 | identifier of the selected mode, the word that `PART_SET_MODE` alone changes | must equal the current one only in the no-change path | established |
+| 0x14 | version | must be exactly 1: 0 and values above 1 give -6; `unpack_mode_db` applies the same test (message `database version mismatch`) | established |
 
 The checksum (`chksum` at `0x5944` in `libpart`) is the 32-bit CRC with polynomial `0x04c11db7` (table at `0x15ca4`, first words `0, 0x04c11db7, 0x09823b6e, 0x0d4326d9`), processed most significant bit first with the length folded in a byte at a time and the result inverted. That it is the POSIX `cksum` algorithm is established by reading `chksum` in full (see [libpart.md](libpart.md)). The body from 0x18 is decoded in [libpart.md](libpart.md): layouts (brick to partition tables), environment blobs and modes (16-character names, each naming a layout and choosing a blob per partition). `partmgr` lists the grammar it accepts (`MODE`, `UNPARTITIONED`, `PARTITION`, `BRICKS`, `RACKS`, `ENVIRON`, "environment too large (maximum %d bytes)").
 

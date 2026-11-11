@@ -19,15 +19,15 @@ Grades follow [AGENTS.md](../../AGENTS.md): established means the whole routine 
 
 The set-up routine at `0xffe549d8` (established) writes the following, as 16-bit address (`CSAR`), 32-bit mask (`CSMR`) and 16-bit control (`CSCR`) triples at `MBAR+0x64`/`+0x68`/`+0x6e` for `CS0` and a stride of 12 bytes after that. The table is this routine's complete write set.
 
-| Select | Base | Mask register value | Control | Read as |
-|---|---|---|---|---|
-| `CS0` | `0xffe00000` | `0x001f0000` (2 MB), rewritten `0x000f0000` (1 MB) when the first 1024 words at `+0` equal the first 1024 words at `+1 MB` | `0x1183` | 16-bit port, internal acknowledge, 4 wait states |
-| `CS1` | `0x20000000` | `0` (64 KB window) | `0x1143` | 8-bit port |
-| `CS2` | `0x30000000` | `0x00070000` (512 KB), rewritten `0x00010000` (128 KB) when the probe below fails | `0x0983` | 16-bit port, 2 wait states |
-| `CS3` | `0x40000000` | `0` | `0x0953` | 8-bit port; only when a USB controller is counted (`0xffe55198`) |
-| `CS4` | `0x50000000` | `0` | `0x095f` | 8-bit port, quad UART; not programmed for brick letter `G` |
-| `CS5` | `0x60000000` | `0` | `0x0953` or `0x095f` | second USB controller, or second quad UART for letter `6` |
-| `CS6`, `CS7` | cleared (`0xffe549d8` loop) | | | `PAR` bits 3:0 `0001` give these pins to the write enables |
+| Select | Base | Mask register value | Control | Read as | Grade |
+|---|---|---|---|---|---|
+| `CS0` | `0xffe00000` | `0x001f0000` (2 MB), rewritten `0x000f0000` (1 MB) when the first 1024 words at `+0` equal the first 1024 words at `+1 MB` | `0x1183` | 16-bit port, internal acknowledge, 4 wait states | established |
+| `CS1` | `0x20000000` | `0` (64 KB window) | `0x1143` | 8-bit port | established |
+| `CS2` | `0x30000000` | `0x00070000` (512 KB), rewritten `0x00010000` (128 KB) when the probe below fails | `0x0983` | 16-bit port, 2 wait states | established |
+| `CS3` | `0x40000000` | `0` | `0x0953` | 8-bit port; only when a USB controller is counted (`0xffe55198`) | established |
+| `CS4` | `0x50000000` | `0` | `0x095f` | 8-bit port, quad UART; not programmed for brick letter `G` | established |
+| `CS5` | `0x60000000` | `0` | `0x0953` or `0x095f` | second USB controller, or second quad UART for letter `6` | established |
+| `CS6`, `CS7` | cleared (`0xffe549d8` loop) | | | `PAR` bits 3:0 `0001` give these pins to the write enables | established |
 
 - **Size probes (established).** Flash: the routine compares 1024 words at `0xffe00000` with the same number at `0xfff00000`; equal means a 1 MB part (the upper half mirrors the lower). RAM: it saves the word at `CS2` base `+0x1fffc`, clears it, writes all ones at `+0x7fffc`, and if the cleared word is still zero it takes 512 KB (end `0x30080000`), otherwise it cuts the mask to 128 KB (end `0x30020000`) and the size/end are stored at `0x300002ec`/`0x300002f0`. A model with 512 KB of RAM at `CS2` takes the large branch; one with a 128 KB window that aliases takes the small one.
 - **DRAM and default memory (established).** Every DRAM controller register is cleared and `DMCR` is cleared: no DRAM and no default-memory responder exist. The program's own address validator accepts only `0xffexxxxx`, `0x200xxxxx`, `0x300xxxxx` and `0x301xxxxx` (`0xffe56388`).

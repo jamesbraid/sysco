@@ -31,10 +31,10 @@ inventories from Origin 350, Onyx 350, rack and tower Tezro and Origin 300 syste
 
 Established (package 2 read at the handlers; package 1 handler shape matches).
 
-| Code | Handler (package 2) | Reply |
-|---|---|---|
-| `0x0004` brick serial | `0xffe145f8` | For brick types `6` and `@` the per-node serial routine `0xffe76048`; for every other type the brick-serial routine `0xffe7616c`. A null result is error `-104`; otherwise status 0 and the text. |
-| `0x0008` system serial | `0xffe14b98` | If a hook is installed at `0x3000281c + 0xe0` it supplies the string, otherwise persistent setting `0xd`. An empty string is error `-104` (`moveq #$98` at `0xffe14bd4`); otherwise status 0 and the string with its terminator. |
+| Code | Handler (package 2) | Reply | Grade |
+|---|---|---|---|
+| `0x0004` brick serial | `0xffe145f8` | For brick types `6` and `@` the per-node serial routine `0xffe76048`; for every other type the brick-serial routine `0xffe7616c`. A null result is error `-104`; otherwise status 0 and the text. | established |
+| `0x0008` system serial | `0xffe14b98` | If a hook is installed at `0x3000281c + 0xe0` it supplies the string, otherwise persistent setting `0xd`. An empty string is error `-104` (`moveq #$98` at `0xffe14bd4`); otherwise status 0 and the string with its terminator. | established |
 
 The SSN is stored in the persistent record as eight characters plus a terminator (setting `0xd`). Established in
 package 1: the setter at `0xffe58a86` clears nine bytes and truncates a longer input at eight characters

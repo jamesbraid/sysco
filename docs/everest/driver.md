@@ -16,26 +16,26 @@ IP21 differs in how the registers are read. Both UART reads in the IP21 `syscint
 
 **Established** from the stores and loads of the twelve routines (IP19). Offsets are in bytes from the start of `sysc`.
 
-| Offset | Size | Use |
-|---:|---:|---|
-| 0 | 1 | flags byte: bit 0 initialised, bit 1 opened for one direction, bit 2 opened for the other (see `syscopen`) |
-| 8 | 4 | read lock word (bit 0 held, bit 1 a sleeper waits) |
-| 12 | 4 | write lock word, same bits |
-| 16 | 8 | UART block address (set by `syscinit`) |
-| 24 | 4 | bytes waiting in the read ring (`SYSC_QLEN` returns this) |
-| 28 | 4 | reader's wake threshold: the interrupt wakes the reader when the count reaches it |
-| 32 | - | read sleep channel |
-| 36 | 4 | read ring tail (next write by the interrupt) |
-| 40 | 4 | read ring head (next read by `syscread`) |
-| 44 | 4 | read timeout handle, zero when none is armed |
-| 48 | 4 | read timeout in clock ticks, 100 after reset |
-| 52 | 2,048 | read ring; indices are masked with `0x7ff` |
-| 2100 | 4 | index of the next byte of the pending write |
-| 2104 | 4 | bytes of the pending write still to send |
-| 2108 | - | write sleep channel |
-| 2120 | 4 | write timeout handle, zero when none is armed |
-| 2124 | 4 | write timeout in ticks, 100 after reset |
-| 2128 | 2,048 | write buffer |
+| Offset | Size | Use | Grade |
+|---:|---:|---|---|
+| 0 | 1 | flags byte: bit 0 initialised, bit 1 opened for one direction, bit 2 opened for the other (see `syscopen`) | established |
+| 8 | 4 | read lock word (bit 0 held, bit 1 a sleeper waits) | established |
+| 12 | 4 | write lock word, same bits | established |
+| 16 | 8 | UART block address (set by `syscinit`) | established |
+| 24 | 4 | bytes waiting in the read ring (`SYSC_QLEN` returns this) | established |
+| 28 | 4 | reader's wake threshold: the interrupt wakes the reader when the count reaches it | established |
+| 32 | - | read sleep channel | established |
+| 36 | 4 | read ring tail (next write by the interrupt) | established |
+| 40 | 4 | read ring head (next read by `syscread`) | established |
+| 44 | 4 | read timeout handle, zero when none is armed | established |
+| 48 | 4 | read timeout in clock ticks, 100 after reset | established |
+| 52 | 2,048 | read ring; indices are masked with `0x7ff` | established |
+| 2100 | 4 | index of the next byte of the pending write | established |
+| 2104 | 4 | bytes of the pending write still to send | established |
+| 2108 | - | write sleep channel | established |
+| 2120 | 4 | write timeout handle, zero when none is armed | established |
+| 2124 | 4 | write timeout in ticks, 100 after reset | established |
+| 2128 | 2,048 | write buffer | established |
 
 ## Routines (IP19 offsets; sizes in bytes)
 

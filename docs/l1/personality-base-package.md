@@ -20,10 +20,10 @@ Sample of what "same" means: `0xffe2fb08` (the serial-number reassignment routin
 
 Established. Both pairs are stored in the board descriptor at offsets `0xa4` and `0xa8` ([personality-board-init.md](personality-board-init.md)). Each pair is a fixed sequence on one I/O expander of the board:
 
-| Routine | Package 1 (Origin 300 board) | Package 0 (the `C` board, node type with PIMM modules) |
-|---|---|---|
-| first hook | refuses with minus 2500 (`0xfffff63c`) when the byte at `0x3000009c` equals `0xff`; otherwise sets expander 2 bit mask `0x80`, waits through the task-wait helper at `0xffe40e54` with argument 10, clears the same mask; returns the first nonzero error or 0 | refuses with minus 900 (`0xfffffc7c`) when the byte at `0x30000098` is zero; otherwise the same set, wait with argument 10, clear on expander 6 |
-| second hook | the same refusal as its first hook; clears then sets mask `0x40` on expander 2, with no wait | the same refusal as its first hook; clears then sets mask `0x40` on expander 6, with no wait |
+| Routine | Package 1 (Origin 300 board) | Package 0 (the `C` board, node type with PIMM modules) | Grade |
+|---|---|---|---|
+| first hook | refuses with minus 2500 (`0xfffff63c`) when the byte at `0x3000009c` equals `0xff`; otherwise sets expander 2 bit mask `0x80`, waits through the task-wait helper at `0xffe40e54` with argument 10, clears the same mask; returns the first nonzero error or 0 | refuses with minus 900 (`0xfffffc7c`) when the byte at `0x30000098` is zero; otherwise the same set, wait with argument 10, clear on expander 6 | established |
+| second hook | the same refusal as its first hook; clears then sets mask `0x40` on expander 2, with no wait | the same refusal as its first hook; clears then sets mask `0x40` on expander 6, with no wait | established |
 
 The refusal test is the one real difference besides the expander index. Package 1 tests a byte for the value `0xff`; package 0 tests a flag for nonzero. What the flag byte records is not known.
 

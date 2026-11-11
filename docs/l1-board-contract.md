@@ -31,15 +31,15 @@ This is the hardware contract the shipped L1 firmware assumes on the C-brick, th
 
 **Flash content (established, package 0 bytes).**
 
-| Range | Content |
-|---|---|
-| `0xffe00000` word 0, word 1 | initial stack pointer `0x301017fc`, reset entry `0xffe00400` |
-| `0xffe00004`..`0xffe003ff` | 254 vector words, all pointing into a run of `bsr` stubs that join one routine ending in a `halt` word (`0xffe00b1c` for the loader failure; `0xffe0083e` for stray vectors) |
-| `0xffe00400`..`0xffe00b2b` | reset entry and loader |
-| `0xffe01000` | pointer table: `0xffe10000`, `0xffe80000`, then all-ones |
-| `0xffe10000`..`0xffe7ffff` | bank 1 program (0x70000 bytes); bank record at `0xffe7fd24` |
-| `0xffe80000`..`0xffeeffff` | bank 2 program, same build; bank record at `0xffeefd24` |
-| `0xffeefd68`..`0xffefffff` | unused in the 1 MB package |
+| Range | Content | Grade |
+|---|---|---|
+| `0xffe00000` word 0, word 1 | initial stack pointer `0x301017fc`, reset entry `0xffe00400` | established |
+| `0xffe00004`..`0xffe003ff` | 254 vector words, all pointing into a run of `bsr` stubs that join one routine ending in a `halt` word (`0xffe00b1c` for the loader failure; `0xffe0083e` for stray vectors) | established |
+| `0xffe00400`..`0xffe00b2b` | reset entry and loader | established |
+| `0xffe01000` | pointer table: `0xffe10000`, `0xffe80000`, then all-ones | established |
+| `0xffe10000`..`0xffe7ffff` | bank 1 program (0x70000 bytes); bank record at `0xffe7fd24` | established |
+| `0xffe80000`..`0xffeeffff` | bank 2 program, same build; bank record at `0xffeefd24` | established |
+| `0xffeefd68`..`0xffefffff` | unused in the 1 MB package | established |
 
 A bank record is 48 bytes, twelve big-endian words that add to zero modulo 2^32: type/length `0x00040030`, bank start, bank size, used length, pointer to the build stamp string, pointer to the version string `1.44.0`, end pointer, a balancing word, an additive sum of the bank, a pointer to the supported-brick string, the flash class (1 here) and a pointer to the label `Base 1MB image` ([personalities.md](l1/personalities.md), table of the bank record). The loader verifies only the twelve-word sum.
 
@@ -56,17 +56,17 @@ A bank record is 48 bytes, twelve big-endian words that add to zero modulo 2^32:
 
 Retained-record words the loader and the first boot steps use (established from the loader and the reset-cause routine, `0xffe56964`):
 
-| Offset | Content |
-|---|---|
-| `+0x00` | marker `0xa1b2c3d4` |
-| `+0x04`, `+0x06` | version (1) and length (`0x4d8`) halfwords |
-| `+0x08` | second loader argument, the reset-time `a6` |
-| `+0x0c` | image started before the last one (copied from `+0x14` at each jump) |
-| `+0x10` | first image started since the word was last cleared |
-| `+0x14` | image started last |
-| `+0x18` | watchdog-restart candidate; cleared at each jump |
-| `+0x1c` | "reset-status bit 5 was set", stored by the reset-cause routine |
-| `+0x24` | copy of the word at `0x30101800` (the restart reason) |
+| Offset | Content | Grade |
+|---|---|---|
+| `+0x00` | marker `0xa1b2c3d4` | established |
+| `+0x04`, `+0x06` | version (1) and length (`0x4d8`) halfwords | established |
+| `+0x08` | second loader argument, the reset-time `a6` | established |
+| `+0x0c` | image started before the last one (copied from `+0x14` at each jump) | established |
+| `+0x10` | first image started since the word was last cleared | established |
+| `+0x14` | image started last | established |
+| `+0x18` | watchdog-restart candidate; cleared at each jump | established |
+| `+0x1c` | "reset-status bit 5 was set", stored by the reset-cause routine | established |
+| `+0x24` | copy of the word at `0x30101800` (the restart reason) | established |
 
 Offset `+0x10` is cleared in two places: by the loader on a reset whose status bit 5 is clear, and by the main task at `0xffe10764` (`jsr 0xffe56700`, which clears `0x301019a0`), immediately before the watchdog is armed at `0xffe1076a`. A reset that reaches the loader after the main task passed that point therefore finds `+0x10` clear whatever the status byte says, and the skip rule does not fire; it fires only for a reset with the marker intact between the jump and `0xffe10764`. The watchdog is not armed before `0xffe1076a`, so the program's own watchdog cannot cause such a reset; which reset source can, and what the status byte then reads, is open (U3, U20).
 
@@ -76,20 +76,20 @@ Offset `+0x10` is cleared in two places: by the loader on a reset whose status b
 
 **SIM and interrupt set-up (established, `0xffe54d10`, same bytes as package 1).**
 
-| Register (offset) | Value written | Reading |
-|---|---|---|
-| `SIMR` (`+0x03`) | `0xc0` | as written; field meaning from the manual (hint) |
-| `IMR` (`+0x36`, word) | `0xfffe` | every source masked; drivers unmask their own bit |
-| `ICR1`..`ICR7` (`+0x14`..`+0x1a`) | `84 88 80 90 80 98 9c` | external levels 1 to 7, autovector bit set; level field `1 2 0 4 0 6 7` |
-| `ICR8` (`+0x1b`, watchdog) | `0x1d` | level 7 priority 1, not autovectored; no handler installed |
-| `ICR9` (`+0x1c`, timer 1) | `0x94` | autovector, level 5 |
-| `ICR10` (`+0x1d`, timer 2) | `0x80` | autovector, level 0: never interrupts |
-| `ICR11` (`+0x1e`, M-Bus) | `0x99` | autovector, level 6 priority 1 |
-| `ICR12` (`+0x1f`, UART 1) | `0x1a` | vectored, level 6 priority 2 (vector from `UIVR`, `0x42`) |
-| `ICR13` (`+0x20`, UART 2) | `0x00` | not used |
-| `ICR14`, `ICR15` (`+0x21`, `+0x22`, DMA) | `0x09`, `0x0a` | level 2; no DMA register access was found in the package 1 reading (not rechecked in package 0) |
-| `PAR` (`+0xca`, word) | `0x0071` | pin assignment; bit 7 is pulsed by the timer routine (section 4) |
-| byte `+0x07` | cleared | not a register in the Linux header; harmless (U2) |
+| Register (offset) | Value written | Reading | Grade |
+|---|---|---|---|
+| `SIMR` (`+0x03`) | `0xc0` | as written; field meaning from the manual (hint) | established |
+| `IMR` (`+0x36`, word) | `0xfffe` | every source masked; drivers unmask their own bit | established |
+| `ICR1`..`ICR7` (`+0x14`..`+0x1a`) | `84 88 80 90 80 98 9c` | external levels 1 to 7, autovector bit set; level field `1 2 0 4 0 6 7` | established |
+| `ICR8` (`+0x1b`, watchdog) | `0x1d` | level 7 priority 1, not autovectored; no handler installed | established |
+| `ICR9` (`+0x1c`, timer 1) | `0x94` | autovector, level 5 | established |
+| `ICR10` (`+0x1d`, timer 2) | `0x80` | autovector, level 0: never interrupts | established |
+| `ICR11` (`+0x1e`, M-Bus) | `0x99` | autovector, level 6 priority 1 | established |
+| `ICR12` (`+0x1f`, UART 1) | `0x1a` | vectored, level 6 priority 2 (vector from `UIVR`, `0x42`) | established |
+| `ICR13` (`+0x20`, UART 2) | `0x00` | not used | established |
+| `ICR14`, `ICR15` (`+0x21`, `+0x22`, DMA) | `0x09`, `0x0a` | level 2; no DMA register access was found in the package 1 reading (not rechecked in package 0) | established |
+| `PAR` (`+0xca`, word) | `0x0071` | pin assignment; bit 7 is pulsed by the timer routine (section 4) | established |
+| byte `+0x07` | cleared | not a register in the Linux header; harmless (U2) | established |
 
 The ICR bit layout (AVEC bit 7, level bits 4:2, priority bits 1:0) is the manual's, not read in this pass (inferred).
 
@@ -109,15 +109,15 @@ The main task calls the group set-up `0xffe6c2f4` at `0xffe106ce`, after board r
 
 **Chip selects (established, `0xffe54d88`, plus `0xffe54f90` and `0xffe55548` for the late selects).** Each select is a 16-bit address register, a 32-bit mask register and a 16-bit control register at `CSARn` `+0x64+0xc*n`, `CSMRn` `+0x68+0xc*n`, `CSCRn` `+0x6e+0xc*n`.
 
-| Select | When written | CSAR | CSMR | CSCR | Device and port |
-|---|---|---|---|---|---|
-| CS0 | board set-up | `0xffe0` | `0x001f0000`, rewritten `0x000f0000` when the first 1024 words at `0xffe00000` equal the 1024 words at `0xfff00000` | `0x1183` | boot flash, 16-bit |
-| CS1 | board set-up | `0x2000` | `0` | `0x1143` | NVRAM and clock, 8-bit |
-| CS2 | board set-up | `0x3000` | `0x00070000`, rewritten `0x00010000` when the alias probe fails | `0x0983` | external RAM, 16-bit |
-| CS3 | USB start (`0xffe55548`), count > 0 only | `0x4000` | `0` | `0x0953` | USB device controller slot 0 |
-| CS4 | UART set-up (`0xffe54f90`), all letters but G | `0x5000` | `0` | `0x095f` | quad UART |
-| CS5 | letter `6` (second quad UART) or USB count 2 only | `0x6000` | `0` | `0x095f` or `0x0953` | not used on C, I, R |
-| CS6, CS7 and the DRAM controller | board set-up | cleared | cleared | cleared | `DMCR` (`+0xc6`) cleared too; no DRAM, no default-memory responder |
+| Select | When written | CSAR | CSMR | CSCR | Device and port | Grade |
+|---|---|---|---|---|---|---|
+| CS0 | board set-up | `0xffe0` | `0x001f0000`, rewritten `0x000f0000` when the first 1024 words at `0xffe00000` equal the 1024 words at `0xfff00000` | `0x1183` | boot flash, 16-bit | established |
+| CS1 | board set-up | `0x2000` | `0` | `0x1143` | NVRAM and clock, 8-bit | established |
+| CS2 | board set-up | `0x3000` | `0x00070000`, rewritten `0x00010000` when the alias probe fails | `0x0983` | external RAM, 16-bit | established |
+| CS3 | USB start (`0xffe55548`), count > 0 only | `0x4000` | `0` | `0x0953` | USB device controller slot 0 | established |
+| CS4 | UART set-up (`0xffe54f90`), all letters but G | `0x5000` | `0` | `0x095f` | quad UART | established |
+| CS5 | letter `6` (second quad UART) or USB count 2 only | `0x6000` | `0` | `0x095f` or `0x0953` | not used on C, I, R | established |
+| CS6, CS7 and the DRAM controller | board set-up | cleared | cleared | cleared | `DMCR` (`+0xc6`) cleared too; no DRAM, no default-memory responder | established |
 
 Size probes (established): flash is 1 MB when the two 1 KB-word windows are equal; RAM is 512 KB when, after saving `0x3001fffc`, clearing it and writing all ones at `0x3007fffc`, the cleared word still reads zero, otherwise the mask is cut to 128 KB; the size and end are kept in the block at `0x300002bc` (word 0 the module base pointer, word 1 at `0x300002c0` the size, word 2 at `0x300002c4` the end, `0xffe54e76`..`0xffe54e86`; the stores are repeated after the initialised-data copy at `0xffe54f72`..`0xffe54f78` because that copy overwrites the block). The words at `0x300002ec`/`0x300002f0` hold unrelated initial data. The control-register field decode (port size, wait states, internal acknowledge) is the earlier notes' reading and rests on the manual: inferred. USB count by brick (established, descriptor word `+0x10`): C 1, R 1, I 0; so CS3 is programmed on the C-brick and R-brick and never on the I-brick.
 
@@ -179,17 +179,17 @@ Table membership read entry by entry (established): quad UART initialised for `#
 
 **Layout (established, start-up `0xffe5b184`/`0xffe5b0d4`/`0xffe5abb4`, checks `0xffe5bdd0`, `0xffe5bdf8`).** 2 KB at `0x20000000`.
 
-| Offset | Content |
-|---|---|
-| `0x000`..`0x007` | header: low nibble of byte 0 is the header version (1 when created), byte 1 the record-area offset in 8-byte units (1), byte 7 makes the 8-byte byte-sum zero. A header failing the sum, with version nibble 0 or offset 0, is rebuilt (`0xffe5b0d4`) |
-| `0x008`..`0x077` | settings record, 0x70 bytes, last byte (`+0x6f`) the checksum; first-word bits 27:24 are the record version, stepped by a jump table from 0 to `0xa` |
-| `0x078`..`0x0e7` | mirror of the settings record |
-| `0x0e8`..`0x10b` | 0x24-byte log-control record: version byte (1 when created) at `+0xe0` of the record area, then four pointers at record-area offsets `+0xe4` start, `+0xe8` end, `+0xec` tail, `+0xf0` head, checksum at `+0x103` |
-| `0x10c`..`0x12f` | mirror of the log-control record |
-| `0x130`..`0x1e3` | 0xb4-byte record, version byte 3 when created at record-area `+0x128`, checksum at `+0x1db` |
-| `0x1e4`..`0x297` | mirror of that record |
-| `0x298`..`0x7f7` | log ring: start pointer `0x20000298`, end pointer `0x200007f8`, 0x560 bytes |
-| `0x7f8`..`0x7ff` | clock registers |
+| Offset | Content | Grade |
+|---|---|---|
+| `0x000`..`0x007` | header: low nibble of byte 0 is the header version (1 when created), byte 1 the record-area offset in 8-byte units (1), byte 7 makes the 8-byte byte-sum zero. A header failing the sum, with version nibble 0 or offset 0, is rebuilt (`0xffe5b0d4`) | established |
+| `0x008`..`0x077` | settings record, 0x70 bytes, last byte (`+0x6f`) the checksum; first-word bits 27:24 are the record version, stepped by a jump table from 0 to `0xa` | established |
+| `0x078`..`0x0e7` | mirror of the settings record | established |
+| `0x0e8`..`0x10b` | 0x24-byte log-control record: version byte (1 when created) at `+0xe0` of the record area, then four pointers at record-area offsets `+0xe4` start, `+0xe8` end, `+0xec` tail, `+0xf0` head, checksum at `+0x103` | established |
+| `0x10c`..`0x12f` | mirror of the log-control record | established |
+| `0x130`..`0x1e3` | 0xb4-byte record, version byte 3 when created at record-area `+0x128`, checksum at `+0x1db` | established |
+| `0x1e4`..`0x297` | mirror of that record | established |
+| `0x298`..`0x7f7` | log ring: start pointer `0x20000298`, end pointer `0x200007f8`, 0x560 bytes | established |
+| `0x7f8`..`0x7ff` | clock registers | established |
 
 Offsets are device offsets; the "record area" starts at `0x20000008`. Checksums: each record's last byte is the two's complement of the byte sum of the preceding bytes (so the whole record sums to zero modulo 256); the header uses the same rule over 8 bytes. Start-up rule: a record failing its sum is replaced by its mirror and the mirror copied over it; with neither valid the record is zeroed, given its current version and a fresh checksum. If the log pointers are inconsistent (outside the ring or not equal to the ring bounds) they are reset to the ring bounds and the control record's checksum and mirror are rewritten (`0xffe5b836`..`0xffe5b8b2`, `0xffe5a8c0`). Settings number to byte mapping is in [settings-record.md](l1/settings-record.md) (read in package 1; the NVRAM routines pair as above). The contents of the 0xb4-byte record were not decoded (U13).
 
@@ -444,15 +444,15 @@ All are outputs of the expanders in section 8; the firmware names no downstream 
 
 **C-brick (established, each hook read in package 0).**
 
-| Line | Expander bit | Written by | Cold-start level |
-|---|---|---|---|
-| reset group, line a | `BEDROCK CNTL 1` (index 6) bit 0 | hold clears it last of four; release sets it third | low (`0x72` has it clear) |
-| reset group, line b | `BEDROCK CNTL 1` bit 1 | hold clears it second; release sets it last | high |
-| reset group, line c | `BEDROCK CNTL 2` (index 7) bit 0 | hold clears it third; release sets it second to last | low (`0x8a` has it clear) |
-| soft reset | `BEDROCK CNTL 1` bit 7 | `softreset`: set, 10 ticks, clear (`0xffe445e8`); hold clears it first | low |
-| NMI | `BEDROCK CNTL 1` bit 6 | `nmi`: clear then set with no delay (`0xffe4463c`) | high |
-| strap bits | `BEDROCK CNTL 2` bits 3 to 7 | written once at release under mask `0xf8`; bit 6 is written 0 | `0x8a` |
-| processor-module bits | `PIMM0 VCC OK`, `PIMM1 VCC OK` bits 7:6 | hold sets both, release clears both | not applied |
+| Line | Expander bit | Written by | Cold-start level | Grade |
+|---|---|---|---|---|
+| reset group, line a | `BEDROCK CNTL 1` (index 6) bit 0 | hold clears it last of four; release sets it third | low (`0x72` has it clear) | established |
+| reset group, line b | `BEDROCK CNTL 1` bit 1 | hold clears it second; release sets it last | high | established |
+| reset group, line c | `BEDROCK CNTL 2` (index 7) bit 0 | hold clears it third; release sets it second to last | low (`0x8a` has it clear) | established |
+| soft reset | `BEDROCK CNTL 1` bit 7 | `softreset`: set, 10 ticks, clear (`0xffe445e8`); hold clears it first | low | established |
+| NMI | `BEDROCK CNTL 1` bit 6 | `nmi`: clear then set with no delay (`0xffe4463c`) | high | established |
+| strap bits | `BEDROCK CNTL 2` bits 3 to 7 | written once at release under mask `0xf8`; bit 6 is written 0 | `0x8a` | established |
+| processor-module bits | `PIMM0 VCC OK`, `PIMM1 VCC OK` bits 7:6 | hold sets both, release clears both | not applied | established |
 
 Reset hold (`0xffe44bd4`): for each processor-module type byte (`0x30000090`, `0x30000091`) other than `0xf` (which skips the compare), compare it with setting `0x56` or `0x57`; on a mismatch, log it and call `0xffe4e40c(0)` to reset the voltage margins, and when that returns zero store both type bytes into settings `0x56` and `0x57` (`0xffe44c80`..`0xffe44ca4`), so the next hold sees no mismatch; then refuse with -900 if the flag byte at `0x30000098` is zero (the margin reset and the settings update happen before this refusal); clear the four lines in the order above; for each module run `0xffe44b48`. The `softreset` hook (`0xffe445e8`) and the `nmi` hook (`0xffe4463c`) make the same flag-byte test first and return -900 when it is zero; so do the two power entry points `0xffe44a90` and `0xffe44ab8`. Release (`0xffe44dfc`): strap write, 10 ticks, clear strap bit 3, 10 ticks, set line a, 10 ticks, clear the module bits with 3- and 10-tick waits, set line c, set line b. Supply enables (active low): 48 V on `FAN CONTROL` (index 11) mask `0x80`; each PIMM's core supply on `PIMM0 POWER`/`PIMM1 POWER` (indexes 12, 14) mask `0x01` and its SRAM supply mask `0x08`; two 2.5 V rails on `POWER CONTROL` (index 9) masks `0x20` and `0x01`. The power-sanity and power-up sequences are in [power-reset-cbrick.md](l1/power-reset-cbrick.md) and [power-reset-ibrick-rbrick.md](l1/power-reset-ibrick-rbrick.md).
 

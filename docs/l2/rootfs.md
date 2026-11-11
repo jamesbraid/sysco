@@ -49,18 +49,18 @@ Consequence: at the default level 5 all of `l2`, `l2flash`, `l2gui` and `l2part`
 
 Established from the listing (major,minor). 88 character and 12 block nodes plus one FIFO (`/dev/initctl`).
 
-| Node | Number | Used by |
-|---|---|---|
-| `/dev/sgil1_0` to `sgil1_39` | 180,64 to 180,103 | the daemon, USB mode: one per L1 USB device, opened read-write |
-| `/dev/sgil1_cs` | 180,104 (mode 444) | the daemon's USB control channel (open read-only) |
-| `/dev/ttyS0` to `ttyS3` | 4,64 to 4,67 | `ttyS1` is `/dev/console` (a link); `ttyS0` the modem port (daemon strings); `ttyS3` is opened non-blocking by `l2gui` and given terminal attributes, inferred to be the touch panel since no string names it |
-| `/dev/fb0` | 29,0 | `l2gui` (mmap) |
-| `/dev/mem`, `/dev/kmem`, `/dev/port` | 1,1 / 1,2 / 1,4 | `libdrivers` flash access |
-| `/dev/i2c-0` | 89,0 | kernel I2C adapter |
-| `/dev/rtc`, `/dev/watchdog` | 10,135 / 10,130 | clock and watchdog |
-| `/dev/mtd0` to `mtd3` | 31,0 to 31,3 (block) | present; the daemon does not open them |
-| `/dev/ppp` | 108,0 | `pppd` on `ttyS0` (`options.ttyS0`: `silent noauth crtscts lock 115200`) |
-| `/dev/ptyp0-f`, `ttyp0-f`, `loop0-7`, `null`, `zero`, `full`, `initctl` | standard | |
+| Node | Number | Used by | Grade |
+|---|---|---|---|
+| `/dev/sgil1_0` to `sgil1_39` | 180,64 to 180,103 | the daemon, USB mode: one per L1 USB device, opened read-write | established |
+| `/dev/sgil1_cs` | 180,104 (mode 444) | the daemon's USB control channel (open read-only) | established |
+| `/dev/ttyS0` to `ttyS3` | 4,64 to 4,67 | `ttyS1` is `/dev/console` (a link); `ttyS0` the modem port (daemon strings); `ttyS3` is opened non-blocking by `l2gui` and given terminal attributes, inferred to be the touch panel since no string names it | established |
+| `/dev/fb0` | 29,0 | `l2gui` (mmap) | established |
+| `/dev/mem`, `/dev/kmem`, `/dev/port` | 1,1 / 1,2 / 1,4 | `libdrivers` flash access | established |
+| `/dev/i2c-0` | 89,0 | kernel I2C adapter | established |
+| `/dev/rtc`, `/dev/watchdog` | 10,135 / 10,130 | clock and watchdog | established |
+| `/dev/mtd0` to `mtd3` | 31,0 to 31,3 (block) | present; the daemon does not open them | established |
+| `/dev/ppp` | 108,0 | `pppd` on `ttyS0` (`options.ttyS0`: `silent noauth crtscts lock 115200`) | established |
+| `/dev/ptyp0-f`, `ttyp0-f`, `loop0-7`, `null`, `zero`, `full`, `initctl` | standard | | established |
 
 ## Network and serial access summary
 

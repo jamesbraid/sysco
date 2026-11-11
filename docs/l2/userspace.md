@@ -105,12 +105,12 @@ The wrapper at `0x100041a8` skips the ioctl and returns 0 when the word at `0x10
 
 **The 9-byte device record** (established from the formatter `sub_1000444c`, which prints it, and from the kernel, which fills it):
 
-| Byte | Meaning |
-|---|---|
-| 0 | USB bus number |
-| 1 | the number `P` of hub ports in the path, at most 6 (the kernel stops the walk after 6) |
-| 2 | USB device address on that bus |
-| 3 to 3+P-1 | port numbers from the root hub down, one byte each |
+| Byte | Meaning | Grade |
+|---|---|---|
+| 0 | USB bus number | established |
+| 1 | the number `P` of hub ports in the path, at most 6 (the kernel stops the walk after 6) | established |
+| 2 | USB device address on that bus | established |
+| 3 to 3+P-1 | port numbers from the root hub down, one byte each | established |
 
 The formatter `sub_1000444c(record, form)` has three forms. Form 2 is `b<bus>;p<port>/<port>…` with no device number (for example `b1;p2/3`) and is the name `-usbpath` filters are compared with. Form 0 adds `;d<dev>` (`b1;p2/3;d4`) and is the name shown in `INFO: opened USB device at <path> (<node>)`. Form 1 is the long text `  bus: <b>  path: <p>/<p>…  dev: <d>`; the open routine formats it into a local buffer and does not store it in the slot record.
 
@@ -184,14 +184,14 @@ Tasks and codes here are read from `l2part` and its libraries in 1.44.0 (the thr
 
 **The reply** is built by the library's response path, established from `sn1SCSendRsp` and `IRouterResponseL3` (`libapi` `0xbc80`, `libIRouter` `0x3f6c`) and the common exit of `l2part` (`0x10001aa0`):
 
-| Reply field | Value |
-|---|---|
-| destination | the request's source word (request record `+0x1c`, wire `+0x0c`) |
-| class | 1 (response) |
-| code | the request's code, copied |
-| sequence | the request's 16-bit sequence number copied (record `+0x14` and `+0x21`) |
-| byte at record `+0x13` | `(-a) mod 100` with `a` the status argument; `l2part` always passes 0, so 0 |
-| descriptors | the reply record that `l2part` builds on its stack has the same 8-byte shape as a descriptor at its start (a type byte, a byte, a length halfword, a value word at `+4` that holds the result), so the first descriptor is always an **integer result** (type 0, value = result, 0 on success), followed by the argument descriptors below. The count handed to the sender is the number of descriptors including the result. |
+| Reply field | Value | Grade |
+|---|---|---|
+| destination | the request's source word (request record `+0x1c`, wire `+0x0c`) | established |
+| class | 1 (response) | established |
+| code | the request's code, copied | established |
+| sequence | the request's 16-bit sequence number copied (record `+0x14` and `+0x21`) | established |
+| byte at record `+0x13` | `(-a) mod 100` with `a` the status argument; `l2part` always passes 0, so 0 | established |
+| descriptors | the reply record that `l2part` builds on its stack has the same 8-byte shape as a descriptor at its start (a type byte, a byte, a length halfword, a value word at `+4` that holds the result), so the first descriptor is always an **integer result** (type 0, value = result, 0 on success), followed by the argument descriptors below. The count handed to the sender is the number of descriptors including the result. | established |
 
 | Request code | Descriptors after the result | Result value |
 |---|---|---|
