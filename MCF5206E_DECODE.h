@@ -55,6 +55,10 @@
 /*
  * TESTVEC: 0x000f0000 as CSMR0 => bam=0xf
  */
+/* Chip-select 0 (boot flash, 16-bit) values the board set-up writes; the mask is the
+ * 2 MB value above until the size probe rewrites it. */
+#define SIM_CS0_START_CSAR 0xffe0u /* established */
+#define SIM_CS0_START_CSCR 0x1183u /* established */
 
 #define SIM_OFFSET_CSAR1 0x70u /* rw16, established */
 #define SIM_OFFSET_CSMR1 0x74u /* rw32, established */
@@ -62,6 +66,28 @@
 #define SIM_OFFSET_CSAR2 0x7cu /* rw16, established */
 #define SIM_OFFSET_CSMR2 0x80u /* rw32, established */
 #define SIM_OFFSET_CSCR2 0x86u /* rw16, established */
+/* Chip-select 1 (battery-backed RAM and clock, 8-bit) and chip-select 2 (external RAM,
+ * 16-bit) values the board set-up writes. The RAM mask is cut from 512 KB to 128 KB when
+ * the firmware's alias probe fails. The port-size decode of each control value is the
+ * manual's and was not re-read in an image. */
+#define SIM_CS1_START_CSAR 0x2000u /* established */
+#define SIM_CS1_START_CSMR 0x00000000u /* established */
+#define SIM_CS1_START_CSCR 0x1143u /* established */
+#define SIM_CS2_START_CSAR 0x3000u /* established */
+#define SIM_CS2_START_CSCR 0x0983u /* established */
+/* FIELD: CSMR2.bam 31:16 established */
+#define SIM_CSMR2_BAM_SHIFT 16
+#define SIM_CSMR2_BAM_MASK  0xffffu
+/* ENUM: CSMR2.bam 0x0007 size_512kb established */
+#define SIM_CSMR2_BAM_SIZE_512KB 0x0007
+/* ENUM: CSMR2.bam 0x0001 size_128kb established */
+#define SIM_CSMR2_BAM_SIZE_128KB 0x0001
+/*
+ * TESTVEC: 0x00070000 as CSMR2 => bam=7
+ */
+/*
+ * TESTVEC: 0x00010000 as CSMR2 => bam=1
+ */
 #define SIM_OFFSET_CSAR3 0x88u /* rw16, established */
 #define SIM_OFFSET_CSMR3 0x8cu /* rw32, established */
 #define SIM_OFFSET_CSCR3 0x92u /* rw16, established */

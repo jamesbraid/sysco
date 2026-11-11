@@ -155,5 +155,27 @@
 
 /* ColdFire MOVEC register-to-control opcode. */
 #define L1B_MOVEC_RN_RC_OPCODE 0x4e7bu /* established */
+/* Control-register codes of the MOVEC extension word and the values the firmware writes
+ * at start-up. The register names are the manual's. Instruction cache control is written
+ * twice: invalidate, then enable. */
+#define L1B_MOVEC_CODE_CACR 0x002u /* established */
+#define L1B_MOVEC_CODE_VBR 0x801u /* established */
+#define L1B_MOVEC_CODE_RAMBAR 0xc04u /* established */
+#define L1B_MOVEC_CODE_MBAR 0xc0fu /* established */
+#define L1B_RAMBAR_START_VALUE 0x30100001u /* established: on-chip SRAM base with the valid bit */
+#define L1B_MBAR_START_VALUE 0x10000001u /* established: peripheral block base with the valid bit */
+#define L1B_VBR_START_VALUE 0x30100000u /* established: vector table at the SRAM base */
+/* FIELD: CACR.cinv 24:24 inferred */
+#define L1B_CACR_CINV_SHIFT 24
+#define L1B_CACR_CINV_MASK  0x1u
+/* FIELD: CACR.cenb 31:31 inferred */
+#define L1B_CACR_CENB_SHIFT 31
+#define L1B_CACR_CENB_MASK  0x1u
+#define L1B_CACR_FIRST_WRITE 0x01000000u /* established: invalidate */
+#define L1B_CACR_SECOND_WRITE 0x80000000u /* established: enable */
+
+/* Rack numbers in L1 setting 1 and the identity word are 10 bits wide. */
+#define L1B_RACK_WIDTH_BITS 10u /* established */
+#define L1B_RACK_MAX 1023u /* established */
 
 #endif
