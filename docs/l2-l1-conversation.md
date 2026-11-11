@@ -90,6 +90,8 @@ The router entry `sub_10022e50` hands class 0 and class 1 packets to `sub_100211
 | form 14, any module field | the same task dispatch, task in bits 29 to 24 | see next table |
 | forms 2 and 6 to 13, module field `0xffff` | rejected | `-0x260` |
 
+**Destination word layout (established; read in the `l2` daemon of 1.44.0, sha256 `9923b1ee573c28154a012e5510a6f42ad420c956299ff4388f189df464835f32`, `0x10021170` to `0x10021200` and `0x10021cac` to `0x10021cec`).** If the top bit of the word is set, the form is 14 when bits 31 and 30 are `10` and 15 otherwise; if it is clear, the form is bits 31 to 28 as a four-bit number. The module field is bits 27 to 12 (16 bits) and is compared with `0xffff` where the table says so. The brick route takes the rack from bits 27 to 18 (a 10-bit mask) and the slot from bits 17 to 12 (6 bits) and passes both to the brick lookup. The task for the dispatch is bits 29 to 24 when the top bit is set and the low five bits otherwise. Inside `libmain` the lookup tests the record's valid byte at record offset 1 and compares the byte at offset 3 with the rack and the byte at offset 4 with the slot (`0x161e8` to `0x16248`), the rack and slot being the 10-bit and 6-bit arguments. The routing table above carries this grade for its form and field columns.
+
 Task dispatch (jump table `0x1002e4e0`, index = task minus 2; tasks outside 2 to 13 take the default row). "Request" means class 0:
 
 | Task | Handler | Role (established for the dispatch; role as marked) |

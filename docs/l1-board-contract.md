@@ -292,18 +292,20 @@ Supplies (24-byte records; "nominal entry" indexes the 32-entry name and nominal
 
 Tachometers and temperatures:
 
-| Idx | Monitor, channel | Name |
-|---:|---|---|
-| 0 | 0, 6 | LEFT |
-| 1 | 0, 7 | CENTER |
-| 2 | 1, 6 | RIGHT |
+| Idx | Monitor, channel | Name | Grade |
+|---:|---|---|---|
+| 0 | 0, 6 | LEFT | established |
+| 1 | 0, 7 | CENTER | established |
+| 2 | 1, 6 | RIGHT | established |
 
-| Idx | Monitor, channel, offset |
-|---:|---|
-| 0 | 3, 4, 0 |
-| 1 | 4, 4, 0 |
-| 2 | 5, 4, 0 |
-| 3 | 6, 4, 0 |
+| Idx | Monitor, channel, offset | Grade |
+|---:|---|---|
+| 0 | 3, 4, 0 | established |
+| 1 | 4, 4, 0 | established |
+| 2 | 5, 4, 0 | established |
+| 3 | 6, 4, 0 | established |
+
+Both tables of every brick were re-read from the data (1.44.0 `l1.bin`, package 0 body at file offset `0x68`: C tachometers `0xffe459b0`, C temperatures `0xffe459d4`, I `0xffe469d8` and `0xffe469fc`, R `0xffe4a4f0` and `0xffe4a508`). A tachometer record is 12 bytes: monitor, channel, a pointer to the name string and a zero word. A temperature record is 8 bytes: monitor, channel and the offset word shown in the second table, zero in every row. The names are the three strings the pointers reach (established).
 
 The temperature records name monitors 3 to 6 (the two PIMM sensors each); the tachometers sit on monitors 0 and 1. The 10-byte fan-control record is `01 0b 20 0b 00 1f 03 09 15 1f` at `0xffe459a4`; its fields were not decoded (U14).
 
@@ -350,16 +352,16 @@ The initialiser sets USB count 0, no soft-reset hook, no NMI hook, no power-down
 | 7 | 16 3.3V (3.3) | none | 1, 2 | 3.3V AUX | established |
 | 8 | 17 5V (5) | none | 1, 3 | 5V AUX | established |
 
-| Idx | Monitor, channel | Name |
-|---:|---|---|
-| 0 | 0, 6 | LEFT |
-| 1 | 0, 7 | CENTER |
-| 2 | 1, 6 | RIGHT |
+| Idx | Monitor, channel | Name | Grade |
+|---:|---|---|---|
+| 0 | 0, 6 | LEFT | established |
+| 1 | 0, 7 | CENTER | established |
+| 2 | 1, 6 | RIGHT | established |
 
-| Idx | Monitor, channel, offset |
-|---:|---|
-| 0 | 0, 4, 0 |
-| 1 | 1, 4, 0 |
+| Idx | Monitor, channel, offset | Grade |
+|---:|---|---|
+| 0 | 0, 4, 0 | established |
+| 1 | 1, 4, 0 | established |
 
 Expander 0 (`POWER ENABLE`, `0x70`/`0x38`) drives the seven switched supplies, active low: masks `0x01` (48 V), `0x04` (12 V bias), `0x08` (2.5 V), `0x10` (3.3 V), `0x40` (12 V), `0x20` (5 V), `0x80` (-12 V); bit `0x02` drives none. The 3.3 V and 5 V auxiliary supplies have no enable and are only monitored.
 
@@ -397,14 +399,14 @@ Each brick personality has its own expander array, so one 7-bit address names di
 | 3 | 5 3.3V AUX (3.3) | none | 0, 2 | - | established |
 | 4 | 6 5V AUX (5) | none | 0, 3 | - | established |
 
-| Idx | Monitor, channel | Name |
-|---:|---|---|
-| 0 | 0, 6 | LEFT |
-| 1 | 0, 7 | RIGHT |
+| Idx | Monitor, channel | Name | Grade |
+|---:|---|---|---|
+| 0 | 0, 6 | LEFT | established |
+| 1 | 0, 7 | RIGHT | established |
 
-| Idx | Monitor, channel, offset |
-|---:|---|
-| 0 | 0, 4, 0 |
+| Idx | Monitor, channel, offset | Grade |
+|---:|---|---|
+| 0 | 0, 4, 0 | established |
 
 Switched supplies on expander 0 (`POWER CONTROL`, `0x72`/`0x39`), active low: mask `0x01` (48 V) and `0x04` (2.5 V). Expander 2 carries the router-type nibble (section 9).
 

@@ -288,7 +288,7 @@ The 23 RAM-only handlers were the queue; each now has a row, with its moved oper
 | 1 | NL3R 1MB | 0x4002 (`0xffe130ae`) | controller reboot |
 | 1 | NL3R 1MB | 0x4000 (`0xffe12b20`) | inventory |
 | 2 | both | 0x0008, 0x000a, 0x0010, 0x1007, 0x100b | system serial, port speeds, processor masks, event subchannel, PROM version report |
-| 2 | Legacy 2MB | 0x3001 (`0xffe1517c`) | name `general_req_hook_3001` from the 1.44.0 table, not checked in this package |
+| 2 | Legacy 2MB | 0x3001 (`0xffe1517c`) | name `general_req_hook_3001` from the 1.44.0 table, not checked in this package; inferred from the label match of the pairing (the 1.44.0 headers for packages 3 and 5 carry the name, graded for those packages only); the 1.62.1 handler was not re-read here, so no address in this row is re-read |
 
 Handler addresses are the first instruction of each handler in the 1.62.1 package (from the TSV). The Legacy 2MB and NL3R 0x4000 rows are separate handlers in separate packages.
 
