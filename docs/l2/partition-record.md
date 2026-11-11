@@ -31,7 +31,7 @@ The reply packet is built by `sn1SCSendRsp` from the record the handler leaves o
 | `0x05` | 1 | `0x81`: first segment, one segment |
 | `0x06` | 1 | class 1 (response) |
 | `0x08` | 4 | destination: the request's source word (the one the L1 stamped when it delivered the request) |
-| `0x0c` | 4 | source: the L2's local address (`0x80000000` plus the low 24 bits of its id, [router-packet.md](router-packet.md#iRouterinit)) (inferred; the reply path's source argument was not followed) |
+| `0x0c` | 4 | source: the L2's local address (`0x80000000` plus the low 24 bits of its id, [router-packet.md](router-packet.md#irouterinit)) (inferred; the reply path's source argument was not followed) |
 | `0x10` | 1 | descriptor count: 2 |
 | `0x11` | 1 | high byte of the sequence number |
 | `0x12` | 2 | code, copied: `0x0001` |
