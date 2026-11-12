@@ -188,7 +188,7 @@ selects the line-voltage label (`pbay dps` prints "110Vac" when it is set,
 "220Vac" when clear); the polling task logs bits 1 to 3 on a 0-to-1 change. For
 sensors 7 to 14 (one per DC port) bit 0 set means the 48 V output is off (the
 `pbay dcport` row says so and the polling task skips the port) and bit 1 set
-means the port failed. A model returns a chosen mask per sensor. Bit 4 of
+means the port failed. Bit 4 of
 sensors 1 to 6 comes from the fixed mask `04` (the fifth input's select code
 `a4` tested against snapshot bit 2), so the bay can report it set only when that
 snapshot bit is set. An earlier version of this note said the L1 never reads bit
@@ -213,8 +213,7 @@ the bay appends the checksum and `a5`. Example (count 4, samples `11 22 33
 44`): reply `02 01 00 44 00 85 20 00 22 2c 11 00 04 11 22 33 44 f4 fd`. The bytes
 are whatever the device returns (**U**; the device is presumably a FRU EEPROM per
 device byte, **I**), and a count of 0 streams 256 bytes (the counter wraps). This
-is how the L1 gets the power-supply multirecord data, so a model needs its own
-FRU contents.
+is how the L1 gets the power-supply multirecord data.
 
 ### Error replies
 

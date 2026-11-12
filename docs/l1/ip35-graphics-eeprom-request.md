@@ -20,21 +20,3 @@ Question. What does the host ask the tower L1 for the graphics board's EEPROM, a
   V12 Tezro, which the hinv captures with `ODY128VERSIONB` contradict (I). Components 1 and 4: **U**.
   Settles it: `l1cmd serial all` or a component read from a V12 tower; or reading the 0x0006 handler
   from the compare chain at 0xffe145f8 in the package-2 image.
-
-### Model choice (M, not hardware evidence)
-
-Answer component 2, area 2 (board) on the local node's L1. Area bytes (56, version 1, length 7):
-
-```
-01 07 00 00 00 00 c3 53 47 49 ce 4f 44 59 31 32 38 56 45 52 53 49 4f 4e 42
-c6 45 4d 55 30 30 31 cc 30 33 30 2d 31 36 31 31 2d 30 30 31 c0 c1 43 ff ff
-c0 c1 00 00 00 01
-```
-
-Manufacturer `SGI` (placeholder), name `ODY128VERSIONB`, serial `EMU001` (placeholder), part
-`030-1611-001`, skipped slot 0xc0, SGI field 1 `C`, raw bytes 0xff 0xff, empty field 3, 0xc1 end, three
-pad zeros, checksum 0x01 (sum of the 56 bytes is 0 mod 256). Reply chunks as the kernel requests: at most
-the 64 bytes asked, a short final chunk (the 56-byte area ends the loop). A decode of this record by an
-independent port of the rules above yields part `030-1611-001`, name `ODY128VERSIONB`, rev `C`
-(own script, not the kernel). Keep the name away from `ODY128B1_2`, `CHIM_ODY`, `CHIODY` unless the
-DVI register path is wanted. Also still answer component 0 as today.

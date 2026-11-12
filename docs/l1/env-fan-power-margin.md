@@ -109,7 +109,7 @@ The field layout of a supply record (24 bytes: a name pointer, a type-like byte,
 - `fan auto`: workstation automatic fan control exists only on `A 8 9 0 Q`.
 - `power up hold` is the L1 command the L2 sends before `reset`; its help text is `power up, hold reset` (E).
 
-## Discriminating tests for a model
+## Command checks against the image
 
 | Check | Expected from the image | Grade |
 |---|---|---|
