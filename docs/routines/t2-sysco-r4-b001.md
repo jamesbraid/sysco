@@ -9,12 +9,12 @@ describes software behavior read from the rendered instructions, not hardware be
   to the stream at `__iob`+32 (format at 0x100453e8). After a successful open it calls the unnamed
   callee at 0x1001d2c0 and then the unnamed one at 0x1001d300 with request 0x540e, returning -0x1
   with another error line when either call returns -0x1.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `l1d_tty_close` in `6.5.12/usr/sbin/flashsc` at 0x1001e810
   **Inferred.** Closes the descriptor by calling close at 0x1001e834 with its four arguments passed
   through unchanged. It returns 0 when close returns 0 (the beq at 0x1001e83c) and -0x1 otherwise.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `l1d_write_data` in `6.5.12/usr/sbin/flashsc` at 0x1001eca0
   **Inferred.** Role (from name): writes a block of data to a device; the facts show only a call through
@@ -25,12 +25,12 @@ describes software behavior read from the rendered instructions, not hardware be
   there is a call to the unnamed callee at 0x1001f280 with 0x10047820, a1, a2 and the constant 1,
   followed by an fprintf with the format at 0x100455d0, call 2's result and errno. The fprintf calls are
   not conditioned on the result of call 2, only on that word.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterSetQueueSuspendTime` in `6.5.12/usr/sbin/flashsc` at 0x10020cf0
   **Inferred.** Stores two words into the globals at 0x10047a08 and 0x10047a0c and returns its second
   argument (a1) unchanged. The source of the stored values is unknown from these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterMakePacket` in `6.5.12/usr/sbin/flashsc` at 0x10020d30
   **Inferred.** Role (from name): builds a packet from the caller's record at a0. It reads the 2-byte
@@ -39,14 +39,14 @@ describes software behavior read from the rendered instructions, not hardware be
   the 1-byte and 2-byte values to the helper at 0x10020190 together with a local buffer at sp-80. The
   helper's result decides one branch (the beq at 0x10020db8), and the return value on the other branch
   is unknown from these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRFmtPkt` in `6.5.12/usr/sbin/flashsc` at 0x10022060
   **Inferred.** Formats a packet record at a1 as text into the caller's buffer at a2. It reads the byte
   and word fields from +0x13 to +0x21 and renders two addresses through IRFmtAddr at 0x10021cb0 and the
   class through IRFmtClas at 0x10021c00. Its final sprintf uses the format at 0x100458c8, and the routine
   returns the buffer pointer a2.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRFmtError` in `6.5.12/usr/sbin/flashsc` at 0x10022140
   **Inferred.** Reports a formatting error. When a0 is nonzero (the beq at 0x10022160 skips this when a0
@@ -54,7 +54,7 @@ describes software behavior read from the rendered instructions, not hardware be
   passed through; a0 of that call is derived from the first argument and the facts do not show how.
   It returns that call's result. On the other path it returns the address of the constant string at
   0x100458f0.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterConnectOS` in `6.5.12/usr/sbin/flashsc` at 0x100221d0
   **Inferred.** Opens the device named by a1 read-write (flag 0x2) and keeps the descriptor in the
@@ -62,12 +62,12 @@ describes software behavior read from the rendered instructions, not hardware be
   with text at 0x10045900 and errno through the call at 0x10030eb0, then calls exit with -0x1. On
   success it stores one word through the pointer in a3 (the store at 0x10022270, whose value the facts
   do not show) and returns 0 at 0x10022284.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterDisconnectOS` in `6.5.12/usr/sbin/flashsc` at 0x10022290
   **Inferred.** Closes the descriptor held in the global at 0x10047a10 and returns the result of close.
   Its arguments a1 to a3 pass through to close unchanged.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterRequestOS` in `6.5.12/usr/sbin/flashsc` at 0x100222d0
   **Inferred.** Role (from name): sends a request packet to the OS side over the descriptor in the
@@ -76,7 +76,7 @@ describes software behavior read from the rendered instructions, not hardware be
   It builds the packet with IRouterMakePacket at 0x10020d30 and returns -0x194 when that returns 0.
   Otherwise it writes the packet with IRouterWritePacket at 0x100213a0, passing a1, the constant
   0x10022830, the descriptor and the packet, and returns the write's result.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterResponseOS` in `6.5.12/usr/sbin/flashsc` at 0x100223e0
   **Inferred.** Role (from name): sends a response packet to the OS side. It returns -0x67 when the
@@ -87,7 +87,7 @@ describes software behavior read from the rendered instructions, not hardware be
   calls IRouterWritePacket at 0x100213a0 with a1, 0x10022830, the descriptor and the packet. The facts
   also show 0x64 in a6 at that call, but nothing shows it is an argument or a length: 0x64 is the
   divisor of the remainder stored at +0x13. It returns the write's result.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterGetPacketOS` in `6.5.12/usr/sbin/flashsc` at 0x10022540
   **Inferred.** Role (from name): waits for a packet from the OS side. It returns -0x67 when the
@@ -99,7 +99,7 @@ describes software behavior read from the rendered instructions, not hardware be
   at 0x1002276c is nonzero, it frees the packet with IRouterFreePacket at 0x10020b20 on the path where
   the byte at +0x16 of the packet is not 1. The return of 0 at 0x100227b4 is reached when that argument
   is zero or the byte is 1.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterForwardPacket` in `6.5.12/usr/sbin/flashsc` at 0x10022dd0
   **Inferred.** Role (from name): hands a packet into the router's event path. It reads the globals
@@ -111,12 +111,12 @@ describes software behavior read from the rendered instructions, not hardware be
   with the constant 1 and later with IRByteOrder. It passes the scratch record to RouterPriClientEventOut
   at 0x10027e40, frees it with free, frees the packet with IRouterFreePacket at 0x10020b20, and calls
   RouterFlushOutput at 0x10027f50 only when IRouterEventLoop is zero. It returns 0 at 0x100231f4.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterPacketToRouter` in `6.5.12/usr/sbin/flashsc` at 0x10023200
   **Established.** Calls IRouterForwardPacket at 0x10023234 with its four arguments unchanged and returns
   that call's result at 0x10023248.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `IRouterPacketFromRouter` in `6.5.12/usr/sbin/flashsc` at 0x10023250
   **Inferred.** Role (from name): parses a packet that arrives from the router. It compares the string at
@@ -126,7 +126,7 @@ describes software behavior read from the rendered instructions, not hardware be
   not positive. The loop's backward branch is the bgtz at 0x100233e4. Each pass sets the byte order with
   IRouterSetPacketByteOrder at 0x10021510 from IRByteOrder. It returns an unknown value on this path
   (the facts show 0 or an unnamed value) at 0x100233fc.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventStats` in `6.5.12/usr/sbin/flashsc` at 0x10023410
   **Inferred.** Formats the four event-callback counters (input, output, timer and select) into the
@@ -134,7 +134,7 @@ describes software behavior read from the rendered instructions, not hardware be
   a0 is nonzero (the beq at 0x1002346c skips them otherwise) it also makes four word stores,
   at 0x1002347c, 0x10023484, 0x10023490 and 0x10023498; the facts do not show the stored value or the
   addresses.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventAddInput` in `6.5.12/usr/sbin/flashsc` at 0x100234c0
   **Inferred.** Role (from name): adds an input event callback in slot a0 of the table at 0x1004f2a8
@@ -143,7 +143,7 @@ describes software behavior read from the rendered instructions, not hardware be
   word is already nonzero it logs -0x12d, and it then stores a1 and a2 into the slot's first two words,
   sets bit a0 in the bitmap at 0x100552a8, sets the word at 0x10047560 to a0+1 when a0 is not below it,
   and returns a0.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventReplaceInput` in `6.5.12/usr/sbin/flashsc` at 0x10023680
   **Inferred.** Role (from name): replaces an input event callback in slot a0 of the table at 0x1004f2a8
@@ -153,7 +153,7 @@ describes software behavior read from the rendered instructions, not hardware be
   it (0x10023748). It then writes a1 and a2 into the slot's first two words, sets bit a0 in the bitmap at
   0x100552a8, and sets the word at 0x10047560 to a0+1 when a0 is not below it. The return value is
   unknown from these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventReplaceInputTemp` in `6.5.12/usr/sbin/flashsc` at 0x10023850
   **Inferred.** Role (from name): replaces an input event callback in slot a0 of the table at 0x1004f2a8,
@@ -162,7 +162,7 @@ describes software behavior read from the rendered instructions, not hardware be
   It then writes a1 and a2 into the slot's first two words, sets bit a0 in the bitmap at 0x100552a8, and
   sets the word at 0x10047560 to a0+1 when a0 is not below it. When a0 is 0x401 or more it logs -0x12c
   through LogError at 0x1002f3a0 and carries on. The return value is unknown from these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventRestoreInputTemp` in `6.5.12/usr/sbin/flashsc` at 0x10023a30
   **Inferred.** Role (from name): restores the input event callback that EventReplaceInputTemp at
@@ -172,7 +172,7 @@ describes software behavior read from the rendered instructions, not hardware be
   (0x1004f2b8 and 0x1004f2bc to 0x1004f2a8 and 0x1004f2ac for slot 0). It then sets bit a0 in the
   bitmap at 0x100552a8 and sets the word at 0x10047560 to a0+1 when a0 is not below it. The return
   value is unknown from these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventRemoveInput` in `6.5.12/usr/sbin/flashsc` at 0x10023be0
   **Inferred.** Role (from name): removes an input event callback. Only when a0 is below 0x400
@@ -180,7 +180,7 @@ describes software behavior read from the rendered instructions, not hardware be
   the table at 0x1004f2a8 (24-byte slots), clears bit a0 in the bitmaps at 0x100552a8 and 0x100553a8,
   and calls the unnamed callee at 0x10025230 with a0. The facts show a1 = 0x1004f2a8 on that call. The return value is not established: the
   facts list 0x2b330 or the callee's result.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventAddOutput` in `6.5.12/usr/sbin/flashsc` at 0x10023d10
   **Inferred.** Role (from name): adds an output event callback in slot a0 of the table at 0x1004f2a8,
@@ -189,7 +189,7 @@ describes software behavior read from the rendered instructions, not hardware be
   at +0x8 is already nonzero it logs -0x12e, and it then stores a1 and a2 into the slot's words at +0x8
   and +0xc, sets bit a0 in the bitmap at 0x10055328, sets the word at 0x10047560 to a0+1 when a0 is
   not below it, and returns a0.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventRemoveOutput` in `6.5.12/usr/sbin/flashsc` at 0x10023ed0
   **Inferred.** Role (from name): removes an output event callback. Only when a0 is below 0x400
@@ -197,7 +197,7 @@ describes software behavior read from the rendered instructions, not hardware be
   slot a0 in the table at 0x1004f2a8 (24-byte slots), clears bit a0 in the bitmaps at 0x10055328 and
   0x10055428, and calls the unnamed callee at 0x10025230 with a0. The facts show a1 = 0x1004f2a8 on that call. The return value is not
   established: the facts list 0x2b040 or the callee's result.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventAddTimeOut` in `6.5.12/usr/sbin/flashsc` at 0x10024000
   **Inferred.** Role (from name): adds a timeout event. When the word at 0x1004756c is nonzero it takes
@@ -206,10 +206,10 @@ describes software behavior read from the rendered instructions, not hardware be
   -0x12f through LogError at 0x1002f3a0 and returns 0 at 0x100240a8. Otherwise it fills the record
   through EventCreateTimeOut at 0x10024100, passing the record in a0 and its own four arguments in a1
   to a4, then calls the unnamed callee at 0x10025300 with the record, and returns the record pointer.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `EventCreateTimeOut` in `6.5.12/usr/sbin/flashsc` at 0x10024100
   **Inferred.** Initializes a timeout record at a0. It writes words at +0x0, +0x4, +0x8, +0xc and +0x10,
   reads the +0x0 and +0x4 words back in several places, and gets the current time with gettimeofday at
   0x10024144 into the buffer at sp-72. It returns 0 at 0x10024290.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12

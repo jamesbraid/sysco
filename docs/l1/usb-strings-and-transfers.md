@@ -44,7 +44,7 @@ Established (bytes read; the three device-level strings agree with what an L2's 
 
 Established (bytes). These read like a controller vendor's sample strings left in place. They are reached only by a host that asks for an index of 1 or more with `wIndex` 0. A host that follows the usual order asks for index 0 first (any `wIndex`, answered from set B with the list above), learns language `0x0009`, and then asks set A. The Linux 2.4 USB core does so, so an L2 sees set A (inferred from the host's usual behaviour; the L2 kernel's string code was not read, and the L2's L1 match routine does not check strings at all, [../l2/userspace.md](../l2/userspace.md)).
 
-Discriminating checks for a USB device model: (1) index 0 with `wIndex` 0 and with `wIndex` `0x0009` both give `04 03 09 00`; (2) indices 1 to 3 with `wIndex` `0x0009` give lengths 46, 50, 18 and the serial text is all zeros; (3) the same indices with `wIndex` 0 give lengths 20, 16, 26; (4) index 6 or `wIndex` `0x0409` gives no data (and a model must not answer with set A).
+Discriminating checks on the code's descriptor replies: (1) index 0 with `wIndex` 0 and with `wIndex` `0x0009` both give `04 03 09 00`; (2) indices 1 to 3 with `wIndex` `0x0009` give lengths 46, 50, 18 and the serial text is all zeros; (3) the same indices with `wIndex` 0 give lengths 20, 16, 26; (4) index 6 or `wIndex` `0x0409` gives no data (and the reply is not set A).
 
 ## One bulk transfer, one segment
 

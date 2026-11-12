@@ -7,7 +7,7 @@ Two controllers are in scope for the reading notes below; [docs/controllers.md](
 - **L1**, the per-brick controller. The first target is the Origin 300 L1 (the Fuel/PE/O300 1 MB ColdFire MCF5206e image), then the personalities for the C-brick, I-brick and R-brick. The L1 container also carries ColdFire images for other brick families and two embedded-Linux images for ARM S3C2410 controllers; they come after the Origin 300 image.
 - **L2**, the rack controller: a PowerPC MPC860 running Linux 2.4.7 with a cramfs root. It comes second.
 
-The findings are specifications and reading notes, not a reimplementation. They are meant to be enough for someone to run the real firmware on an emulated machine: which peripherals the code touches, at which addresses and widths, what it expects back, and how it talks to the node, to its peers and to a host over USB.
+The findings are specifications and reading notes, not a reimplementation. They are meant to cover the firmware's whole hardware interface: which peripherals the code touches, at which addresses and widths, what it expects back, and how it talks to the node, to its peers and to a host over USB.
 
 What is here:
 

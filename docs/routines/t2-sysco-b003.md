@@ -18,7 +18,7 @@ pattern that repeats across the file.
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10018f00
 
@@ -26,7 +26,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019430
 
@@ -34,7 +34,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019600
 
@@ -42,7 +42,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x100196c0
 
@@ -50,7 +50,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019ea0
 
@@ -58,7 +58,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019ef0
 
@@ -66,7 +66,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019f60
 
@@ -74,7 +74,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x10019fb0
 
@@ -82,7 +82,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a020
 
@@ -92,7 +92,7 @@ at 0x1001a730. The name suggests a serial-number string, but the facts show only
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a070
 
@@ -101,7 +101,7 @@ and returns the buffer address for a nonempty string, zero otherwise.
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a0e0
 
@@ -109,7 +109,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a450
 
@@ -117,7 +117,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a520
 
@@ -125,7 +125,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a570
 
@@ -133,7 +133,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001a9d0
 
@@ -141,7 +141,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001aa20
 
@@ -149,7 +149,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001aa70
 
@@ -157,7 +157,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001aad0
 
@@ -166,7 +166,7 @@ copy, but the routine copies nothing, and the global is not named in these facts
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001aaf0
 
@@ -174,7 +174,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001ad50
 
@@ -182,7 +182,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001afd0
 
@@ -190,7 +190,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001b230
 
@@ -198,7 +198,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001b490
 
@@ -206,7 +206,7 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### `6.5.12/usr/sbin/flashsc` at 0x1001b680
 
@@ -214,4 +214,4 @@ Reviewed: 2026-11-12 (sonnet)
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12

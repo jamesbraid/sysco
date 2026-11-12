@@ -44,7 +44,7 @@ A type 1 monitor reads a voltage channel as one register byte (`0xffe68954-0xffe
 | 9 | `0x25` | 0.0141 |
 | 4 to 7 | error (`0xfffff0c3`) | none |
 
-The scales are IEEE single constants in the routine at `0xffe67b54-0xffe67c4a`; a channel with no constant there (4 to 7, or above 9) gets the value -100.0. The reading is the raw byte times the scale (the integer-to-float and multiply calls at `0xffe4be16-0xffe4be3e` are identified by position only, so this is inferred). For the supplies of the Origin 300 table in [ip45-io-expanders.md](ip45-io-expanders.md) with a nominal entry of 12, 5, 3.3 and 2.5 volts, the channel scales above times 192 give 12.0, 4.99, 3.30 and 2.50: a model that returns `0xc0` on channels 8, 3, 2 and 0 reads as nominal on those supplies (inferred from the arithmetic). Channel 1, used by the 1.5 V record, is not consistent with a count of 192 and needs about 106 counts to read 1.5 V (inferred).
+The scales are IEEE single constants in the routine at `0xffe67b54-0xffe67c4a`; a channel with no constant there (4 to 7, or above 9) gets the value -100.0. The reading is the raw byte times the scale (the integer-to-float and multiply calls at `0xffe4be16-0xffe4be3e` are identified by position only, so this is inferred). For the supplies of the Origin 300 table in [ip45-io-expanders.md](ip45-io-expanders.md) with a nominal entry of 12, 5, 3.3 and 2.5 volts, the channel scales above times 192 give 12.0, 4.99, 3.30 and 2.50: a raw byte of `0xc0` on channels 8, 3, 2 and 0 reads as nominal on those supplies (inferred from the arithmetic). Channel 1, used by the 1.5 V record, is not consistent with a count of 192 and needs about 106 counts to read 1.5 V (inferred).
 
 ## Temperature reads (established)
 

@@ -8,7 +8,7 @@ Allocates a 0xb18-byte table with malloc, then loops over one discovery exchange
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001bfc0 sn1SCDiscoverL2Start
 
@@ -16,7 +16,7 @@ Creates a socket only when its first argument is -1: socket is called with domai
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001c6c0 sn1SCDiscoverL2Response
 
@@ -24,7 +24,7 @@ Clears a 0x80-byte set with memset and waits on it with select. A select error l
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001cbf0 sn1SCDiscoverL2Done
 
@@ -32,7 +32,7 @@ Passes its four argument registers unchanged into a call to close and returns 0.
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001cc40 find_l2_slot
 
@@ -40,7 +40,7 @@ Scans a table of records in a loop bounded by a counter and a limit argument (th
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d340 L1DirectUsage
 
@@ -48,7 +48,7 @@ Loads one word from the global at 0x10046f4c, then returns the constant address 
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d370 L1DirectParseCmdline
 
@@ -56,7 +56,7 @@ Walks its argument vector in a loop and compares each argument with fixed string
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d7f0 L1DirectConnect
 
@@ -64,7 +64,7 @@ Calls l1d_open at 0x1001dff0 with its first argument set to 1 and passes the rem
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d830 L1DirectOpen
 
@@ -72,7 +72,7 @@ Calls l1d_open at 0x1001dff0 with its first argument set to 0 and passes the res
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d870 L1DirectClose
 
@@ -80,7 +80,7 @@ Forwards its four argument registers to l1d_close at 0x1001e400 and returns that
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d8b0 L1DirectRequest
 
@@ -88,7 +88,7 @@ Reads a halfword at offset 6 of its first argument and stores it as a word throu
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001d980 L1DirectResponse
 
@@ -96,7 +96,7 @@ Loads a halfword at offset 0x22 of its third argument and passes it, with 1, to 
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001dad0 L1DirectSendPacket
 
@@ -104,7 +104,7 @@ Only when the global at 0x10047534 is nonzero does it format the packet with IRF
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001db60 L1DirectGetPacket
 
@@ -112,7 +112,7 @@ When its second argument is 0 it calls EventAddTimeOut at 0x10024000 with the co
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001dce0 l1d_open_serial_direct
 
@@ -120,7 +120,7 @@ Calls l1d_tty_open at 0x1001e660 on the device name at 0x1004ee60. When the glob
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001ddd0 l1d_close_serial_direct
 
@@ -128,7 +128,7 @@ Calls l1d_tty_close at 0x1001e810 on the handle at 0x10047538. If that call fail
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001de60 l1d_open_serial_enet
 
@@ -136,7 +136,7 @@ Opens a network connection through SocketMakeInetConnection at 0x10025e80, using
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001df60 l1d_close_serial_enet
 
@@ -144,7 +144,7 @@ Closes the network handle at 0x10047538 through SocketClose at 0x100266d0. On fa
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001dff0 l1d_open
 
@@ -152,7 +152,7 @@ Chooses between the serial path (l1d_open_serial_direct at 0x1001dce0, taken whe
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e400 l1d_close
 
@@ -160,7 +160,7 @@ Only when the global at 0x1004753c is nonzero it calls EventRemoveInput at 0x100
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e4f0 l1d_tty_debug
 
@@ -168,7 +168,7 @@ Calls an unnamed routine at 0x1001d2c0 with its first argument and a state buffe
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e660 l1d_tty_open
 
@@ -176,7 +176,7 @@ Opens the device path with open at mode 2 (read and write), prints errno on fail
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e810 l1d_tty_close
 
@@ -184,7 +184,7 @@ Calls close at 0x1001e834 on its first argument and returns -1 when that returns
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e880 l1d_read_data
 
@@ -192,7 +192,7 @@ Reads from the transport with SocketRead at 0x1002f090, passing its three argume
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x1001e980 l1d_read_ppp
 
@@ -200,4 +200,4 @@ Calls PPPRead at 0x10030660 with the ppp state, l1d_read_data at 0x1001e880 as t
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12

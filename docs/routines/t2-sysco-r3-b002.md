@@ -12,7 +12,7 @@ effects were not modeled, so data flow through them is unknown.
   writes a word to the fixed address 0xfa200380 twice (0xc00ecd10, 0xc00ecd18). It reads a pointer from the
   table at 0xc00ead18 and makes one call to 0xc0010f08 at 0xc00ecd50 with r3=0xc00c5ed0 and r5=0x3c. Its purpose
   beyond that is not settled, because the multiply and divide instructions in the body have unmodeled effects.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffec7534` in `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffec7534
   **Inferred.** A ColdFire routine with a link.w frame and movem saves at 0xffec753c. It sets bit 6 of the byte
@@ -20,7 +20,7 @@ effects were not modeled, so data flow through them is unknown.
   byte at abs 0x200007ff is only read in between, not set or cleared. Branches at 0xffec7628 to 0xffec7634
   compare a selector with 0x2, 0x3 and 0x4, and it returns d0 = 0 at the single return at 0xffec7666. The
   meaning of the byte values is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe75984` in `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin(l1#1)` at 0xffe75984
   **Inferred.** A ColdFire routine that reads fields at offsets 0x0 to 0x14 of the structure whose pointer is
@@ -34,7 +34,7 @@ effects were not modeled, so data flow through them is unknown.
   field and increments the +0x10 and +0x18 fields of the record returned by 0xffe776c0, and writes bytes within
   abs 0x200007f8 to 0x200007ff. Role (from facts only): a range check on a record of seven compared words
   followed by callouts; the record's meaning is inferred from the limits only.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe7bca0` in `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin(l1#3)` at 0xffe7bca0
   **Inferred.** The same frame and field-limit checks as the routine at 0xffe75984 in the l1#1 copy, down to the
@@ -43,14 +43,14 @@ effects were not modeled, so data flow through them is unknown.
   second call to 0xffe7fd3c (jsr at 0xffe7bd2a) only when the word at +0x20 of the record returned by the first
   0xffe7fd3c call is nonzero, so it is a sibling of that routine with different callees. Its purpose beyond the
   range checks is inferred only from that shape.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffebf300` in `6.5.10/usr/cpu/firmware/l1.bin(l1#0)` at 0xffebf300
   **Inferred.** A ColdFire arithmetic routine with a link.w frame and movem saves at 0xffebf308. Its body is
   dominated by signed divide and multiply instructions (divs.l from 0xffebf378 to 0xffebf5aa, muls.l at
   0xffebf51e) and negations, and it returns d0 = ? at 0xffebf5dc. Because those instructions are unmodeled in
   these facts, the operands and the result are not settled, and the purpose is not established by the instruction mix alone.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffebf5e0` in `6.5.10/usr/cpu/firmware/l1.bin(l1#0)` at 0xffebf5e0
   **Inferred.** A ColdFire routine with a link.w frame of 0x28 bytes (link.w a6,#-0x28). It sets bit 6 of the
@@ -60,7 +60,7 @@ effects were not modeled, so data flow through them is unknown.
   read-modify-write updates on frame slots). It then copies those nine words with nine move.l (a1)+,(a0)+ stores
   to the pointer passed as its first stack argument and returns d0 = 0 at 0xffebf7bc. There is no loop; the
   sequence is straight-line. The record's meaning is not named by these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffebfd8c` in `6.5.10/usr/cpu/firmware/l1.bin(l1#0)` at 0xffebfd8c
   **Inferred.** A ColdFire wrapper with a link.w frame and a movem save of d2-d7 at 0xffebfd94. It calls the
@@ -69,13 +69,13 @@ effects were not modeled, so data flow through them is unknown.
   pushing a register longword and a constant (0x4a, then 0x4c, via pea). It also clears a bit of the byte at abs
   0x200007f8 (bclr.b at 0xffebfe04) and returns d0 = 0 at 0xffebfed8. The callees are not read in this entry, so
   the work they do is unknown.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048e3c` in `6.5.10/usr/cpu/firmware/l2.bin(flash)` at 0xfe048e3c
   **Inferred.** A PowerPC leaf routine that stores registers to fixed addresses in the 0xfa200950 to 0xfa200ac4
   range: sth at 0xfe048e44, 0xfe048e4c and 0xfe048e50 (halfwords) and stw at 0xfe048e58, 0xfe048e60 and 0xfe048e6c.
   It returns r3 unchanged at 0xfe048e88. The device behind the window is not named by these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe0490d8` in `6.5.10/usr/cpu/firmware/l2.bin(flash)` at 0xfe0490d8
   **Inferred.** A PowerPC routine with a 0x20-byte frame that stores to its frame at sp-0x10 to sp+4 relative to
@@ -86,7 +86,7 @@ effects were not modeled, so data flow through them is unknown.
   most 4) 0xfe044770 with 0xe057bc, and finishes with 0xfe044770 with 0xe05628. It then calls 0xfe049204 and
   ends with two calls to 0xfe048e8c, with (r3, r4, r5) = (4, 0xc0000000, 8) and (5, 0xc0001000, 0xa), so it
   appears to register two regions by base and size during setup. That reading rests on the argument shape alone.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00c16e4` in `6.5.10/usr/cpu/firmware/l2.bin(kernel)` at 0xc00c16e4
   **Inferred.** A PowerPC routine with a 0x20-byte frame and an stmw save at 0xc00c16ec. It walks an indexed
@@ -94,7 +94,7 @@ effects were not modeled, so data flow through them is unknown.
   word is nonzero (beq at 0xc00c1714 skips it) it makes one call to 0xc0010f08 at 0xc00c1724 with r3=0xc00db4c0.
   It then reads abs 0xfa200948 (0xc00c1738), ORs in a bit chosen by the first argument and stores the word back
   (stw at 0xc00c1748), and returns r3 at 0xc00c175c. The table's element type is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00c4cfc` in `6.5.10/usr/cpu/firmware/l2.bin(kernel)` at 0xc00c4cfc
   **Inferred.** A PowerPC routine that calls 0xc0006930 at 0xc00c4d1c (after mfmsr at 0xc00c4d18). It then reads
@@ -105,7 +105,7 @@ effects were not modeled, so data flow through them is unknown.
   0xc000697c at 0xc00c4da4 with r3 = the saved state and r9=0xc0100000; otherwise it writes the state back with
   mtmsr at 0xc00c4db0. The mfmsr and mtmsr instructions have unmodeled effects here, so the save and restore is
   read from the opcodes, not from the values.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00f661c` in `6.5.10/usr/cpu/firmware/l2.bin(kernel)` at 0xc00f661c
   **Inferred.** A large PowerPC routine with a 0x30-byte frame and an stmw save. It makes many stw stores to
@@ -115,20 +115,20 @@ effects were not modeled, so data flow through them is unknown.
   nonzero, calls 0xc00c53fc, and ends with three calls to 0xc0010f08 with pointers 0xc00dbb20, 0xc00dbb3c (in a
   loop of five passes) and 0xc00dbb44. Its shape suggests an initialization that prints or logs messages, but
   the callees are not read in this entry and the purpose is not settled.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe5a210` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffe5a210
   **Inferred.** A ColdFire routine with a link.w frame and movem saves at 0xffe5a218, the same frame and divide
   and multiply mix as sub_ffebf300 in the 6.5.10 image. The divs.l and muls.l instructions run from 0xffe5a294 to
   0xffe5a4c6, and the return at 0xffe5a4f8 gives d0 = ? because those effects are unmodeled. The purpose is not
   established: the instruction mix and the shared frame are all the facts show.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe5a4fc` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffe5a4fc
   **Inferred.** A ColdFire routine with the same shape as sub_ffebf5e0 in the 6.5.10 image: bset.b on abs
   0x200007f8 at 0xffe5a502, 18 move.l stores, 9 add.l read-modify-write pairs and a return of d0 = 0 at 0xffe5a6d8.
   It fills or accumulates a block of words, and the block is not named by these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe5aca8` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffe5aca8
   **Inferred.** A ColdFire wrapper with a link.w frame and a movem save of d2-d7 (0x18 bytes). It calls
@@ -136,27 +136,27 @@ effects were not modeled, so data flow through them is unknown.
   (jsr at 0xffe5add4 and 0xffe5ade2), each after pushing a register longword and a constant (0x4a, then 0x4c,
   via pea). It also clears a bit of the byte at abs 0x200007f8 (bclr.b at 0xffe5ad20) and returns d0 = 0 at
   0xffe5adf4. It has the same shape as sub_ffebfd8c; the callees are not read here.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffeca210` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffeca210
   **Inferred.** A ColdFire routine with a link.w frame and movem saves at 0xffeca218, matching the frame and
   instruction counts of sub_ffe5a210 at 0xffe5a210 in the same image. It has the same divide and multiply mix, and
   it returns d0 = ? at 0xffeca4f8. The copy at 0xffeca210 and the copy at 0xffe5a210 are read as the same routine
   from those facts; byte-level equality was not checked in this entry.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffeca4fc` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffeca4fc
   **Inferred.** A ColdFire routine that matches sub_ffe5a4fc at 0xffe5a4fc in the same image: a bset.b on abs
   0x200007f8 at 0xffeca502, 18 move.l stores, 9 add.l pairs and a return of d0 = 0 at 0xffeca6d8. It fills or
   accumulates a block of words, and the block is not named by these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffecaca8` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffecaca8
   **Inferred.** A ColdFire wrapper with the same shape as sub_ffe5aca8 at 0xffe5aca8. It calls 0xffecadf8 twice
   (bsr.w at 0xffecad58 and 0xffecad90), each after pushing one longword, and 0xffec7200 twice (jsr at 0xffecadd4
   and 0xffecade2), each after pushing a register longword and a constant, and returns d0 = 0 at 0xffecadf4. The
   callees are not read in this entry.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00c1e08` in `6.5.12/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00c1e08
   **Inferred.** A PowerPC routine with the same shape as sub_c00c16e4 at 0xc00c16e4: a 0x20-byte frame, stmw at
@@ -164,7 +164,7 @@ effects were not modeled, so data flow through them is unknown.
   the word with one bit ORed in (stw at 0xc00c1e6c). It makes one call to 0xc0010f08 at 0xc00c1e48 with
   r3=0xc00dbec0, only when the loaded table word is nonzero (beq at 0xc00c1e38 skips it). It returns r3 at
   0xc00c1e80. The table it walks is not named by these facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00c4fec` in `6.5.12/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00c4fec
   **Inferred.** A PowerPC routine that reads a pointer from abs 0xc00f9288 and the word at abs 0xfa200e80. When
@@ -174,7 +174,7 @@ effects were not modeled, so data flow through them is unknown.
   variable, offset 8 of the record and a second variable (stw at 0xc00c5050, 0xc00c5058 and 0xc00c505c) and,
   when a next record exists, writes that record's first word to 0xfa200e80 (stw at 0xc00c5068). The indirect
   target is not resolved by these facts, so the call's effect is unknown.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00c5080` in `6.5.12/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00c5080
   **Inferred.** A PowerPC routine with a 0x20-byte frame that reads the machine state register (mfmsr at
@@ -184,7 +184,7 @@ effects were not modeled, so data flow through them is unknown.
   r3 = the saved state and r9=0xc0100000 only when bit 0x8000 of the saved state and a word at abs 0xc00f9034
   are set (the callee pair 0xc0006930 and 0xc000697c matches sub_c00c4cfc at 0xc00c4cfc). The role is inferred
   from that pair and the pointer update.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00f7c04` in `6.5.12/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00f7c04
   **Inferred.** A large PowerPC routine that matches sub_c00f661c at 0xc00f661c in the 6.5.10 image: a 0x30-byte
@@ -192,7 +192,7 @@ effects were not modeled, so data flow through them is unknown.
   in a loop), 0xc0009acc (twice), 0xc000a5c0 (twice), 0xc0003db8, 0xc0010870 (only when 0xc0003db8 returns
   nonzero), 0xc00c58ac and 0xc0010f08 (three times, the second in a loop), with pointers 0xc00dc490, 0xc00dc4ac
   and 0xc00dc4b4. The purpose is inferred from that shape only.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `__start` in `6.5.12/usr/sbin/flashsc` at 0x10006110
   **Inferred.** An n32 start stub. The bal at 0x10006128 targets 0x10006130, the instruction after its delay
@@ -204,7 +204,7 @@ effects were not modeled, so data flow through them is unknown.
   0x40e40 slot and the third (0x100061f8) has a0, a1 and a2 read from the 0x4137c, 0x41380 and 0x40e40 slots;
   the facts leave the other arguments unknown, and the callees are not named, so the stub's full sequence is
   inferred from the call pattern.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `FlashFileOpen` in `6.5.12/usr/sbin/flashsc` at 0x10008000
   **Inferred.** An n32 routine that opens a file with open (jalr at 0x1000805c) using flag 2 when its sixth
@@ -218,7 +218,7 @@ effects were not modeled, so data flow through them is unknown.
   0x100081c0 and 0x10008248). A negative result from FlashValidateFileHeader closes the descriptor and returns
   -1 (v0 = -0x1 at 0x100082a0) with no fprintf in the facts. On success it returns the descriptor at 0x100082dc.
   The destination +32 of __iob is presumably stderr, which the facts do not confirm.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `L2CfgMDeleteNode` in `6.5.12/usr/sbin/flashsc` at 0x1000ec10
   **Inferred.** An n32 routine that prints a debug line through fprintf (format at 0x100438b0, jalr at
@@ -231,4 +231,4 @@ effects were not modeled, so data flow through them is unknown.
   likewise for [a0+0x1ee8] and a0+0x1ee8 (jal at 0x1000edcc, return at 0x1000ede4). 0x1000ef70 is called three
   times in all (once per stage). The routine also returns v0 = 0 at 0x1000ee14. The record layout is inferred
   from the offsets alone.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12

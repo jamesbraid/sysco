@@ -8,7 +8,7 @@ EventDispatchSubset shifts its four incoming arguments up one slot, passes the c
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10025210
 
@@ -16,7 +16,7 @@ EventStop stores one word to the absolute address 0x10047564 (the `sw` at 0x1002
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100257c0
 
@@ -24,7 +24,7 @@ SocketExportInetConnection creates a stream socket with domain 0x2 and type 0x2 
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100259f0
 
@@ -32,7 +32,7 @@ SocketExportUnixConnection creates a stream socket with domain 0x1 (the `jalr` a
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10025b90
 
@@ -40,7 +40,7 @@ SocketAcceptInetConnection calls accept on its first argument, with the peer add
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10025cb0
 
@@ -48,7 +48,7 @@ SocketAcceptUnixConnection follows the same pattern as the Inet accept routine, 
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10025dd0
 
@@ -56,7 +56,7 @@ SocketNodelayMode applies fcntl with command 0x4 and argument 0x4 to its first a
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10025e80
 
@@ -64,7 +64,7 @@ SocketMakeInetConnection resolves its host argument through SocketGetAddr at 0x1
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100260d0
 
@@ -72,7 +72,7 @@ SocketMakeUnixConnection creates a stream socket with domain 0x1 (0x10026100), a
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026300
 
@@ -80,7 +80,7 @@ SocketSetBufferSize sets socket options on its first argument. When its second a
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100266d0
 
@@ -88,7 +88,7 @@ SocketClose calls shutdown on its first argument with second argument 0x2 (0x100
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026750
 
@@ -96,7 +96,7 @@ SocketCloseOnly calls close on its first argument and returns the result (0x1002
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100267c0
 
@@ -104,7 +104,7 @@ SocketCloseUnixServer builds a socket address at sp-144 through the routine at 0
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026830
 
@@ -112,7 +112,7 @@ SocketGetAddr turns a host string in its first argument into four bytes at its s
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026950
 
@@ -120,7 +120,7 @@ SocketGetPeerAddr calls getpeername on its first argument, with an address buffe
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026a00
 
@@ -128,7 +128,7 @@ SocketGetSockAddr has the same shape as SocketGetPeerAddr, calling getsockname o
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026ab0
 
@@ -136,7 +136,7 @@ SocketGetName clears the buffer at its second argument with memset (0x10026aec),
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026b70
 
@@ -144,7 +144,7 @@ SocketIsLocalHost calls LoggerDisable at 0x1002f340 (0x10026b94) and fetches thi
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026c10
 
@@ -152,7 +152,7 @@ SocketGetHostName clears a 258-byte static buffer at 0x100554f8 and calls gethos
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026cd0
 
@@ -160,7 +160,7 @@ SocketGetHostAddr gets the local host name into a stack buffer through SocketGet
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026df0
 
@@ -168,7 +168,7 @@ SocketAddrStr passes its first argument to inet_ntoa (0x10026e24), shown in the 
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10026ed0
 
@@ -176,7 +176,7 @@ RouterInit sets the router's global defaults. It stores one word at 0x10026f08 b
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10027110
 
@@ -184,7 +184,7 @@ RouterClientsConnected walks the ClientList global from its head (loaded at 0x10
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x100271b0
 
@@ -192,7 +192,7 @@ RouterConnectionCount walks the same ClientList global with the same bit-0x2 tes
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12
 
 ### 6.5.12/usr/sbin/flashsc 0x10027230
 
@@ -200,4 +200,4 @@ RouterHostConnected walks the ClientList linked list. The next-node load is at o
 
 Grade: inferred.
 
-Reviewed: 2026-11-12 (sonnet)
+Reviewed: 2026-11-12

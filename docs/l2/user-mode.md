@@ -1,6 +1,6 @@
 # Running the L2 user space under a PowerPC user-mode emulator
 
-Run against L2 1.44.0 (IRIX 6.5.30 `l2.bin`) with a user-mode PowerPC emulator (version 11.1.2 of the open-source Linux user-mode emulator packaged for Debian testing, unpacked with `dpkg -x` and run without installing). The L2 programs are 32-bit big-endian PowerPC Linux executables; the emulator runs one at a time and forwards system calls to the host kernel. Results below are observations of one run; where a statement rests on reading the code it says so. Grades as in [../../AGENTS.md](../../AGENTS.md).
+Run against L2 1.44.0 (IRIX 6.5.30 `l2.bin`) with a user-mode PowerPC emulator (version 11.1.2 of the open-source Linux user-mode emulator packaged for Debian testing, unpacked with `dpkg -x` and run without installing). The L2 programs are 32-bit big-endian PowerPC Linux executables; the emulator runs one at a time and forwards system calls to the host kernel. Results below are observations of one run; where a statement rests on reading the code it says so. The run shows how the shipped program behaves under a host emulator, not how SGI hardware behaves, so nothing here is evidence of hardware behaviour. Grades as in [../../AGENTS.md](../../AGENTS.md).
 
 ## Recipe
 

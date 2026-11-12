@@ -7,7 +7,7 @@ This repository reverse-engineers the SGI L1 and L2 system-controller firmware (
 - **L1 first.** The Origin 300 L1 (ColdFire MCF5206e, the `Fuel/PE/O300 1MB` package, version 1.44.0) is the reference image. Then the other ColdFire packages in the same container (the C-brick, I-brick and R-brick personalities and the 2 MB families), then the two embedded-Linux ARM S3C2410 images and the userland in their cramfs.
 - **L2 second.** The PowerPC MPC860 image: boot loader, Linux 2.4.7 kernel and the big-endian cramfs with the L2 daemon and its libraries.
 - **Every version.** Findings name the version and package they were read from. A fact read in 1.44.0 is not assumed for 1.24.8, 1.32.15 or 1.48.1 until the same bytes are read there; [docs/firmware-versions.md](docs/firmware-versions.md) lists the sets.
-- **The goal** is a description complete enough to run the real firmware on an emulated machine: every memory-mapped peripheral and external device the code touches, with address, width and expected reply; the packet, USB, RS-422 and node-UART protocols; the boot path and bank selection; the request catalogue.
+- **The goal** is a description of the firmware's hardware interface complete enough that nothing it touches is left to guesswork: every memory-mapped peripheral and external device the code touches, with address, width and expected reply; the packet, USB, RS-422 and node-UART protocols; the boot path and bank selection; the request catalogue.
 - Host tools (`flashsc`, `l1cmd`, `l2cmd`, `flashpbay`, `flashsvf`) are in scope as evidence of how the controllers are driven. SVF JTAG vector files (`.svf`) are inventoried; only their IDCODE reads are used.
 
 ## 2. Evidence: software only, any source as a hint

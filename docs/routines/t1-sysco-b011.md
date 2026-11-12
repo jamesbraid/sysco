@@ -15,7 +15,7 @@ entry says so.
   skips the 0xfe004f44 to 0xfe004f74 block (a call to 0xfe004f98 and four of the helper calls), so those
   calls depend on the status check. Every path then stores 0xffffff80 as a word at 0xfa200004 (0xfe004f84),
   calls the helper once more at 0xfe004f8c and 0xfe0046c8, and ends in a branch to itself at 0xfe004f94.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe0051a0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe0051a0
   **Inferred.** A leaf routine with no calls. It stores halfwords to 0xfa200950, 0xfa200952, 0xfa200954,
@@ -23,7 +23,7 @@ entry says so.
   with a halfword at 0xfa200ac2. It looks like a block of fixed values written into the 0xfa2009xx to
   0xfa200axx region, and sub_fe048ba0 reads back the 0xfa200abc, 0xfa200ab8 and 0xfa200ac2 fields. What
   those fields configure is a question for the device's datasheet, not something the code shows.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048ba0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048ba0
   **Inferred.** A routine that reads and then rewrites the fields at 0xfa200abc, 0xfa200ab8 and
@@ -34,7 +34,7 @@ entry says so.
   0xfe048c14 was not modelled, so that bit test is read from the opcode, with the exit test at
   0xfe048c18). After the loop it stores bytes to 0xfa200860, 0xfa200864, 0xfa200868, 0xfa200870 and 0xfa200874, a word
   at 0x705cd8 and a word at 0xfa200030.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048c54` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048c54
   **Inferred.** A 0x20-byte-frame flash routine that loads the word at 0x705cd8 (0xfe048c74) and
@@ -45,7 +45,7 @@ entry says so.
   0xfa200860, 0xfa20086c and 0xfa200870. A timeout in either loop reaches the call to 0xfe044770 at
   0xfe048e08 with r3 set to a constant pointer (0x705720 or 0x705740), followed by a return of -1; the other
   exit returns the halfword at [r7+2]. Most of the other stores resolve only to a register value.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c000a5e0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc000a5e0
   **Inferred.** A kernel routine with a 0x20-byte frame that calls 0xc0004710 at 0xc000a5ec, then
@@ -54,7 +54,7 @@ entry says so.
   0xc000a61c, which looks like the print helper that several routines below also call, and then branches to
   itself at 0xc000a620. The opcodes at 0xc000a5f8 (mfmsr) and 0xc000a608 (mtmsr) show it reads and then
   writes the machine state register; the renderer did not model those two instructions.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a2374` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a2374
   **Inferred.** A kernel setup routine that stores to 0xfa200030 (0xc00a2388) and to the words at
@@ -64,7 +64,7 @@ entry says so.
   sets bit 2 in the word the call returned a pointer to (0xc00a23bc to 0xc00a23cc), executes tlbia at
   0xc00a23d0 (not modelled; it invalidates the TLB) and stores 0xfa2009c0 to 0xc01604e8 at 0xc00a23d8
   before returning.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a23ec` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a23ec
   **Inferred.** A kernel routine that calls 0xc0003300 at 0xc00a2430 with r3=5 and r4=0xc00a247c, which
@@ -74,7 +74,7 @@ entry says so.
   calls sub_c00a250c at 0xc00a2458 with r3=0, r4=0xc00a2508 and r5=0. It stores to 0xfa200940 and
   0xfa200948 (0xc00a2414, 0xc00a2418), and reads 0xfa200940 back at 0xc00a245c and stores it again with bit
   0x80 set.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a247c` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a247c
   **Inferred.** A handler-shaped routine whose address sub_c00a23ec passes as r4 to 0xc0003300
@@ -85,7 +85,7 @@ entry says so.
   the target is table data, so the callee is an open point. When it is zero it clears the matching bit in
   0xfa200948 instead (0xc00a24d0 to 0xc00a24e0). It then stores a one-bit mask to 0xfa20094c at 0xc00a24f0
   on both paths.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a250c` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a250c
   **Inferred.** A kernel routine with a 0x20-byte frame that saves registers with stmw at 0xc00a2514
@@ -94,7 +94,7 @@ entry says so.
   non-zero it prints a constant string through 0xc0010640 at 0xc00a2558 with r3=0xc010a1d4 and r4 set to its
   own r4. It then stores its r5 and r4 into the entry (0xc00a2560, 0xc00a2564), and reads the word at
   0xfa200948 that sub_c00a23ec writes (0xc00a256c), sets bit r3 in it and stores it back (0xc00a257c).
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a2594` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a2594
   **Inferred.** A leaf routine with no calls. It loads the word at 0xfa200948 (0xc00a25b4), stores two
@@ -102,7 +102,7 @@ entry says so.
   operations (slwi at 0xc00a25a4, rotlw at 0xc00a25bc, and at 0xc00a25c0) that look like a bit-mask step.
   The renderer did not model those operations, so the mask is read from the opcodes only. It is the
   callee of sub_c00a250c, which reads the same 0xfa200948 word.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a4e98` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a4e98
   **Inferred.** A kernel routine with a 0x30-byte frame and a stmw save at 0xc00a4ea0. It tests bit
@@ -113,7 +113,7 @@ entry says so.
   with r3 loaded from the stack slot that the call at 0xc00a4f40 filled. When bit 0x8000 of a later halfword
   is set, it does an atomic word update with lwarx at 0xc00a4fac and stwcx. at 0xc00a4fb4 that or-s 1 into
   the word at r4+0x2c, a reservation-based flag update.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a515c` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a515c
   **Inferred.** A large kernel routine that reads the flag word at 0xfa200e44 (0xc00a5174) and branches on
@@ -122,7 +122,7 @@ entry says so.
   0xc00a5354, and 0xc00a5368 and 0xc00a5370. It calls 0xc0013dec with r3=0 and r4=1 (0xc00a52e0, 0xc00a53a0),
   0xc0013764 (0xc00a53b0), 0xc00a540c (0xc00a51c4), and sub_c00a563c at 0xc00a53e8. The loop bodies store to
   addresses the renderer shows only as register values, so the table semantics are given by the branches.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a563c` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a563c
   **Inferred.** A kernel routine that works on a list headed at 0xc0160508: it loads the head pointer
@@ -133,7 +133,7 @@ entry says so.
   when the new head is non-null, loads the word at its offset 0 and stores it to 0xfa200e80 with 0x14 to
   0xfa200e84 (0xc00a56c4, 0xc00a56c8). It also stores 0 to 0xfa200e84 at 0xc00a5664. That shape looks like a
   queue of handlers with a free list, but the call target is data in the node and is not resolved here.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a56e0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a56e0
   **Inferred.** A kernel routine that takes a node from the list at 0xc0160504 and appends it to the
@@ -145,7 +145,7 @@ entry says so.
   the node the head and tail and writes 0x14 to 0xfa200e84 and its r3 to 0xfa200e80 (0xc00a5768,
   0xc00a576c), the pair sub_c00a563c also uses. It ends with a call to 0xc00046e0 at 0xc00a577c with r3
   loaded from the stack slot filled by the call at 0xc00a56fc.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a5eb0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a5eb0
   **Inferred.** A large kernel routine with a 0x20-byte frame. It reads the word at 0xc0131278
@@ -157,7 +157,7 @@ entry says so.
   decrement with lwarx and stwcx. at 0xc00a5fd4 to 0xc00a5fdc and calls 0xc00aa0a0 at 0xc00a5fec when the
   result is zero or the count is 1. It also calls 0xc0004c2c at 0xc00a6094 and sub_c00a56e0 at 0xc00a60c0
   with r3=0x600a0000 and r4=0xc00a5a60.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c01344f0` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc01344f0
   **Inferred.** A kernel routine with a 0x20-byte frame and a stmw save at 0xc01344f8. It prints through
@@ -167,7 +167,7 @@ entry says so.
   0xc01345e0 with r3=0xf and r4=0xc000a584 and branches on the result at 0xc01345e8: only when the return
   is non-zero it prints through 0xc0010094 at 0xc01345f4. The call to 0xc0003300 with a code address in r4
   matches the registration pattern in sub_c00a23ec.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c013d7e4` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc013d7e4
   **Inferred.** A large kernel setup routine with a 0x60-byte frame and a stmw save at 0xc013d7ec. It
@@ -178,7 +178,7 @@ entry says so.
   and 0xc000c8d4 at 0xc013d888 (r5=0x2c, r4=0xc017e40c) and 0xc013d9b4, which look like a clear and a copy
   helper (inferred from the arguments). It calls 0xc00a25cc with r3=0x20 (0xc013dc40) and 0xc00a2600 with
   r3=0x80 (0xc013dc4c), calls sub_c00a250c at 0xc013df04 and 0xc00a2630 at 0xc013df1c.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe004efc` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe004efc
   **Inferred.** A flash routine with the same instruction facts as the 6.5.26 build at this address:
@@ -187,14 +187,14 @@ entry says so.
   the helper calls when the return is non-zero. Every path stores 0xffffff80 at 0xfa200004 (0xfe004f84) and
   ends in a branch to itself at 0xfe004f94. The call pattern looks like printing constant messages after a
   status check.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe0051a0` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe0051a0
   **Inferred.** A leaf routine with the same stores as the 6.5.26 build at this address: halfwords to 0xfa200950,
   0xfa200952, 0xfa200954, 0xfa200960, 0xfa200962, 0xfa200964 and 0xfa200966, and words to 0xfa200ab8, 0xfa200abc
   and 0xfa200ac4. It looks like a block of fixed values written into the 0xfa2009xx to 0xfa200axx region that
   sub_fe048ba0 reads back.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048ba0` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048ba0
   **Inferred.** A leaf routine with the same instruction facts as the 6.5.26 build at this address. It
@@ -203,7 +203,7 @@ entry says so.
   halfword at 0xfa2009c0 and repeats while bit 0 of it is set (the `andi.` at 0xfe048c14 was not modelled, so
   the bit test is read from the opcode). After it the routine stores bytes to 0xfa200860, 0xfa200864,
   0xfa200868, 0xfa200870 and 0xfa200874, a word at 0x705cd8 and a word at 0xfa200030.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048c54` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048c54
   **Inferred.** A flash routine with the same instruction facts as the 6.5.26 build at this address. It
@@ -211,7 +211,7 @@ entry says so.
   is an address base, not an argument). It reads 0xfa203c80 and 0xfa203c82, runs two bdnz wait loops that
   re-read a halfword at a computed address, stores bytes to 0xfa200860, 0xfa20086c and 0xfa200870, and
   reaches the call to 0xfe044770 at 0xfe048e08 on a timeout in either loop.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c000a5e0` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc000a5e0
   **Inferred.** A kernel routine with the same instruction facts as the 6.5.26 build at this address. It
@@ -219,7 +219,7 @@ entry says so.
   0xfa20028c into a stack slot, calls 0xc0010640 with r3=0xc00f0164 (the print-style helper), branches to
   itself afterwards, and contains mfmsr and mtmsr at 0xc000a5f8 and 0xc000a608, which the renderer did not
   model.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a2374` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a2374
   **Inferred.** A kernel setup routine with the same instruction facts as the 6.5.26 build at this address.
@@ -227,7 +227,7 @@ entry says so.
   0xc000b454 at 0xc00a23b8 with r4=r3+4096 and r5=0xfa200000. It suggests a helper that maps a 4 KiB region
   at 0xfa200000. It executes tlbia at 0xc00a23d0 (not modelled) and then stores 0xfa2009c0 to 0xc01604e8
   before returning.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a23ec` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a23ec
   **Inferred.** A kernel routine with the same instruction facts as the 6.5.26 build at this address. It
@@ -235,7 +235,7 @@ entry says so.
   code 5. When the return is non-zero it prints through 0xc0010094 at 0xc00a2444 (a print-style call,
   inferred from the call pattern). It then calls sub_c00a250c at 0xc00a2458, stores to 0xfa200940 and
   0xfa200948 and reads 0xfa200940 back at 0xc00a245c.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a247c` in `6.5.27/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a247c
   **Inferred.** A handler-shaped routine with the same instruction facts as the 6.5.26 build at this
@@ -244,4 +244,4 @@ entry says so.
   index into an 8-byte-entry table (lwzx), makes an indirect call at 0xc00a24c8 through the entry's first
   word when it is non-zero (the target is table data and is not resolved), and otherwise clears a bit in
   0xfa200948. It stores a one-bit mask to 0xfa20094c on both paths.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12

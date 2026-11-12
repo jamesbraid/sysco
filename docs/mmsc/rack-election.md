@@ -11,7 +11,7 @@ All of it is read from `mmscfw.bin` in IRIX 6.5.30 (MMSC 2.3), sha256 `6c3db7ffd
 - Code was disassembled with capstone in 32-bit x86 mode and every routine read through its last `ret`; string literals sit between routines, and sizes below count code only.
 - Strings, the tune table and the oob response records were read from the same file. Timings are given as the code states them (microseconds, or clock ticks from `sysClkRateGet`; a tick is 1/60 second, see [the clock tick](#the-clock-tick)).
 
-## The model in one page
+## Rack election in one page
 
 Each MMSC runs one task, `tAddrD` (priority 25, 20,000-byte stack, started by `addrdInit`), that owns an in-memory table of every MMSC it has heard from (the identity table, [identity-table.md](identity-table.md)). Peers talk to it with raw Ethernet broadcast frames, and the MMSC's own code talks to it through the same task queue, a VxWorks pipe, so there is one writer to the table.
 

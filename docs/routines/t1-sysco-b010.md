@@ -4,100 +4,100 @@ Role statements for targets 250 to 274 of the tier-1 list, written from the rend
 
 - `sub_c00a563c` in `6.5.24/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a563c
   **Inferred.** Sets up a frame and loads the pointer at 0xc0160508, then branches on it (bne at 0xc00a5670). When the pointer is zero it calls 0xc0010640 at 0xc00a567c with r3=0xc010a910 and skips the rest. When it is nonzero it tests the word at +0x4 of the record (beq at 0xc00a568c) and, if that word is nonzero, makes an indirect call through it (blrl at 0xc00a5698) with r3 set to the word read from 0xfa200e80 at 0xc00a5668. It then moves the record from the head of the list at 0xc0160508 to the head of the list at 0xc0160504: the word at +0x8 of the record becomes the new value at 0xc0160508, and the old value at 0xc0160504 goes into +0x8 of the record. It stores zero to 0xfa200e84 at 0xc00a5664 on every path; when the new value at 0xc0160508 is nonzero (beq at 0xc00a56b8) it also stores the first word of that record to 0xfa200e80 and 0x14 to 0xfa200e84. The facts do not settle what the record holds, and the return value is not derived.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a56e0` in `6.5.24/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a56e0
   **Inferred.** Calls 0xc00046d4 with r3=sp+8 at 0xc00a56fc and then 0xc0004710 at 0xc00a5700. It loads the pointer at 0xc0160504. When that pointer is zero (beq at 0xc00a5714) it skips to 0xc00a5774 and sets its return value to 1; otherwise the return value is 0. When the pointer is nonzero it removes that record from the list at 0xc0160504 (the word at +0x8 of the record becomes the new value at 0xc0160504) and stores its two arguments and zero into the record, r3 at +0x0, r4 at +0x4 and zero at +0x8 (stores at 0xc00a5728 to 0xc00a5734). It then branches on the word at 0xc0160508 (beq at 0xc00a5738). When it is nonzero the record is stored into +0x8 of the record at 0xc016050c and into 0xc016050c. When it is zero the record is stored into both 0xc0160508 and 0xc016050c, and r3 goes to 0xfa200e80 with 0x14 to 0xfa200e84 (0xc00a5768 and 0xc00a576c). On every path it calls 0xc00046e0 at 0xc00a577c with r3 reloaded from the stack slot at sp+8 that the first call filled. Its role is inferred from those stores and calls.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a5eb0` in `6.5.24/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a5eb0
   **Inferred.** A 568-byte routine with an stmw frame. It stores words to 0xfa200e40, 0xfa200e44, 0xfa200e48 and 0xfa200e4c, calls 0xc00046a0 at 0xc00a5ef0 with r3 computed by a multiply, and stores more words and halfwords in the 0xfa200e00 window. It reads the three halfwords at 0xc012eac8, 0xc012eaca and 0xc012eacc: the first two are combined into the word stored at 0xfa200e00 and the third is stored as a halfword at 0xfa200e04. A six-count loop (bdnz at 0xc00a5f58) copies six bytes from 0xc012eac8 into the structure behind its first argument at +0x71. Two eight-count loops (bdnz at 0xc00a6018 and 0xc00a6048) store halfwords, and for the second one words, at a stride of 8 into the tables behind the words at +0x24 and +0x28 of the structure at +0x60 of its argument. It calls 0xc00aa0a0 at 0xc00a5fec only on the path where a counter at +0x70 of a referenced structure reaches one or an atomic decrement of it reaches zero, inside a loop over a pointer list (the loop ends with ble at 0xc00a5ffc). It tests the word at 0xc0160518 (lwz at 0xc00a605c, beq at 0xc00a6064) to choose between two stored values, calls 0xc0004c2c at 0xc00a6094, and calls sub_c00a56e0 at 0xc00a60c0 with r3=0x600a0000 and r4=0xc00a5a60. The contents of the table at 0xc012eac8 and the purpose of the routine are not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c01344f0` in `6.5.24/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc01344f0
   **Inferred.** Stores 0x55cc and 0xaa33 patterns to 0xfa200380 at 0xc0134518 and 0xc0134520, sets a bit in the word at 0xfa200280 (read at 0xc0134524, written at 0xc013453c), and reads the word at 0xc0160c7c. It calls 0xc0010640 at 0xc0134548 with r3=0xc00f011c and r5=0x3c, and 0xc0004630 at 0xc0134580. It calls 0xc0003300 at 0xc01345e0 with r3=0xf, r4=0xc000a584, r5=0 and r6=0xc00f013c; r4 points at the start of a routine in the image, not at data. The beq at 0xc01345e8 skips the call to 0xc0010094 at 0xc01345f4 when the result is zero, so that call happens only when the result is nonzero. The purpose of the 0xfa2002xx and 0xfa2003xx words and of the call at 0xc0003300 is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c013d7e4` in `6.5.24/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc013d7e4
   **Inferred.** A 1892-byte routine with an stmw frame. It makes 36 direct stores of words and halfwords at addresses from 0xc0198ab0 to 0xc0198c28, several of them code addresses in the 0xc00a2xxx to 0xc00a4xxx range. It calls 0xc000c8d4 four times: at 0xc013d888 with r3=0xc0198acc, r4=0xc017e40c and r5=0x2c; at 0xc013d9b4 with r3=0xc0198b74, r4=0xc0198ab0 and r5=0xc4; and at 0xc013db10 and 0xc013db28 with r5=0x2c. The facts do not say what 0xc000c8d4 does. It calls 0xc006b73c at 0xc013d9e4 and 0xc013da04; the beq at 0xc013d9f0 skips the call to 0xc0010094 at 0xc013d9fc when the first result is zero. It calls 0xc002778c at 0xc013dbb8 with r3=0x90 and r4=0xf0, and calls the pair 0xc00a25cc and 0xc00a2600 with r3=0x20 and r3=0x80 twice (0xc013dc40 and 0xc013dc4c, 0xc013dcf4 and 0xc013dd00). Two three-count loops (bdnz at 0xc013dc88 and 0xc013dd38) store a halfword and a word at a stride of 8 through computed pointers. The overall purpose is not established by the facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe5fe58` in `6.5.25/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffe5fe58
   **Inferred.** A ColdFire routine that compares the words at offsets +0x0, +0x4, +0x8, +0xc, +0x10 and +0x14 of the structure at [sp+4] against constants (0x258, 0x0, 0x1e, 0xc, 0x1f, 0x18, 0x3c and 0x3d; branches at 0xffe5fe72 to 0xffe5fea6). When any check fails it returns d0=0xfffff7cc through the branch at 0xffe5fea8. If the checks pass it calls 0xffe5f8ac at 0xffe5feb4 and calls 0xffe5fa9c at 0xffe5fec4, and again at 0xffe5fee2 unless the word at +0x20 of the first result is zero (beq at 0xffe5fed2). It adds a constant to the field at +0x14 and increments the fields at +0x10 and +0x18 of the last 0xffe5fa9c result, then reads and writes back the bytes at 0x200007f8 through 0x200007ff with move.b pairs. The bclr.b at 0xffe60068 clears bit 7 of the byte at 0x200007f8 (a0 was set at 0xffe5ff00), and d0=0 is returned on the success path (moveq at 0xffe6006c). The limits and the record layout are not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffe5fc6c` in `6.5.25/usr/cpu/firmware/sysco/l1.bin(l1#1)` at 0xffe5fc6c
   **Inferred.** The same shape as the l1#0 routine at 0xffe5fe58 in this build. It applies the same limit checks to the structure at [sp+4] (branches at 0xffe5fc86 to 0xffe5fcba), then calls 0xffe5f6c0 at 0xffe5fcc8 and 0xffe5f8b0 at 0xffe5fcd8, and again at 0xffe5fcf6 unless the word at +0x20 of the first 0xffe5f8b0 result is zero (beq at 0xffe5fce6). In that case it first reads the word at 0x30000510 at 0xffe5fce8 and subtracts it from a local, where the l1#0 copy reads 0x300004dc. The callees and the record layout are not named by the facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_ffecfc6c` in `6.5.25/usr/cpu/firmware/sysco/l1.bin(l1#1)` at 0xffecfc6c
   **Inferred.** A copy of the l1#1 routine at 0xffe5fc6c, 0x70000 higher, with the same instructions apart from the relocated addresses (544 bytes each). It has the same frame and limit checks, and its calls go to 0xffecf6c0 at 0xffecfcc8 and to 0xffecf8b0 at 0xffecfcd8 and 0xffecfcf6. It returns at 0xffecfe8a. The facts do not say what the structure at [sp+4] is.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe004efc` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe004efc
   **Inferred.** Sets up a frame and calls 0xfe0051f0 at 0xfe004f24 with r3=0xe01868. It calls 0xfe004610 at 0xfe004f30 with r3=0xe013ec and calls 0xfe004ff4 at 0xfe004f38 with r3=0xfe040000, then branches on the result (bne at 0xfe004f40). Only when that result is zero does it call 0xfe004610 with 0xe01418, then 0xfe004f98 with 0xfe040000, then 0xfe004610 with 0xe01428, 0xe01454 and 0xe01428 again. On both paths it stores 0xffffff80 to 0xfa200004 at 0xfe004f84, calls 0xfe004610 with 0xe01474 at 0xfe004f8c and 0xfe0046c8 with the result at 0xfe004f90, and then branches to itself at 0xfe004f94, so it does not return. This reads as a start-up sequence of checks and messages, but the callee names are not known.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe0051a0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe0051a0
   **Inferred.** A leaf routine with no calls that makes eleven halfword and word stores into the window at 0xfa200950 to 0xfa200ac4 (sth at 0xfe0051a8, 0xfe0051b0 and 0xfe0051b4; stw at 0xfe0051bc, 0xfe0051c4 and 0xfe0051d0, and the rest of the sth stores). It returns r3 unchanged at 0xfe0051ec. It looks like a register setup step, but the facts do not say which device these addresses belong to.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048ba0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048ba0
   **Inferred.** Sets bits 0x30 in the words at 0xfa200abc and 0xfa200ab8 and in the halfword at 0xfa200ac2, each read and written back (lwz at 0xfe048ba8 and 0xfe048bb8, lhz at 0xfe048bc8). It stores halfwords and bytes to 0xfa203c80 to 0xfa203cac, then writes 0x11 to the halfword at 0xfa2009c0 at 0xfe048c08. The loop at 0xfe048c10 to 0xfe048c18 reads that halfword and repeats while bit 0 is set. It makes no stores. After it, byte stores go to 0xfa200860 at offsets 0x0, 0x4, 0x8, 0x10 and 0x14, and the value 1 is written to the word at 0x705cd8 (0xfe048c44) and to the word at 0xfa200030 (0xfe048c4c). The routine makes no calls and does not set r3. The purpose of the device window stores is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_fe048c54` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe048c54
   **Inferred.** Calls sub_fe048ba0 at 0xfe048c90 only when the word at 0x705cd8 is zero; the bne at 0xfe048c8c skips the call when it is nonzero. It reads the halfwords at 0xfa203c82 and 0xfa203c80, writes bytes to 0xfa200860, 0xfa200870 and 0xfa20086c, and stores halfwords and words through computed pointers derived from the stored arguments r3 to r6. Two poll loops (bdnz at 0xfe048d44 and 0xfe048de4) re-read a halfword through a computed pointer and test bit 0x8000, with a count of 0x989680 in the counter register; a loop ends early when the bit is clear. When the count runs out (r9 reaches zero at 0xfe048d48 or 0xfe048de8) it calls 0xfe044770 at 0xfe048e08 with an address in the 0x7057xx range and returns -1. It looks like a per-device setup pass, but the facts do not identify the device or the table.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c000a5e0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc000a5e0
   **Inferred.** A 68-byte routine that calls 0xc0004710 at 0xc000a5ec, then reads the word at 0xfa200284 (lwz at 0xc000a5f4), sets 0x80 in it and writes it back to 0xfa200284 (stw at 0xc000a600). It also clears one bit in the machine state register (mfmsr at 0xc000a5f8, mtmsr at 0xc000a608), reads the byte at 0xfa20028c (lbz at 0xc000a60c) and stores it to the stack at sp+8 (0xc000a614). It calls 0xc0010640 at 0xc000a61c with r3=0xc00f0164 and then branches to itself at 0xc000a620, so it does not return. The facts do not say what is checked.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a2374` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a2374
   **Inferred.** Stores 1 to the word at 0xfa200030 at 0xc00a2388, and stores the words 0x800, 0xf00, r3 and r3+0x1000 to 0xc01604ec, 0xc01604f0, 0xc01604f4 and 0xc01604f8 (0xc00a23a8 to 0xc00a23b4). It calls 0xc000b454 at 0xc00a23b8 with r3 unchanged, r4=r3+4096 and r5=0xfa200000; r7 is 1 and the other registers from r6 are 0xc0160000. It then sets 0x2 in the word at the address in r3 after the call (lwz and stw at 0xc00a23bc and 0xc00a23cc), executes tlbia, and stores 0xfa2009c0 to 0xc01604e8 (0xc00a23d8). The shape looks like one-time setup of a mapped region at 0xfa200000, but the callee's name is unknown and the return value is not derived.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a23ec` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a23ec
   **Inferred.** Stores 0xe45f00 to the word at 0xfa200940 and 0 to the word at 0xfa200948 (0xc00a2414 and 0xc00a2418). It calls 0xc0003300 at 0xc00a2430 with r3=5, r4=0xc00a247c, which is the next routine, r5=0 and r6=0xc010a1b4, and branches on the result (beq at 0xc00a2438). The call to 0xc0010094 at 0xc00a2444 happens only when that result is nonzero. It then calls sub_c00a250c at 0xc00a2458 with r3=0, r4=0xc00a2508 and r5=0, reads the word at 0xfa200940 back, sets 0x80 in it and writes it again (lwz at 0xc00a245c, stw at 0xc00a2464), and returns without changing r3, so the result of sub_c00a250c is returned. Passing the address of 0xc00a247c as a callback to a numbered registration call would fit, but the facts do not confirm it.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a247c` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a247c
   **Inferred.** Stores 1 to the halfword at 0xfa200930 and reads it back (sth at 0xc00a2494, lhz at 0xc00a2498), then shifts it right by 11 to get an index. It loads a word and the word after it from the table at 0xc01989b0, eight bytes per index (lwzx at 0xc00a24ac and 0xc00a24c0). When the first word is nonzero it makes an indirect call through it (blrl at 0xc00a24c8) with r3 set to the second word and r4 set to its own r5. When the first word is zero (beq at 0xc00a24b8) it instead clears the bit for the index in the word at 0xfa200948 (0xc00a24d0 to 0xc00a24e0). On both paths it stores 1 shifted left by the index to the word at 0xfa20094c (0xc00a24f0). It reads like a dispatch step, but its purpose is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a250c` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a250c
   **Inferred.** Saves registers and keeps r3 as an index, r4 and r5 as two values. When r4 is zero (bne at 0xc00a2528 not taken) it calls sub_c00a2594 at 0xc00a252c, with r3 still the index, and returns. When r4 is nonzero it reads the first word of the entry at index r3 in the table at 0xc01989b0, eight bytes per index (lwzx at 0xc00a2540), and calls 0xc0010640 at 0xc00a2558 with r3=0xc010a1d4 and r4 set to its own r4 only when that word is nonzero (beq at 0xc00a2548). It then stores r4 into the first word and r5 into the second word of the entry (stwx at 0xc00a2564 and 0xc00a2560) and sets the bit for the index in the word at 0xfa200948 (read at 0xc00a256c, written at 0xc00a257c). The return value is not derived, and the meaning of the branch conditions is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a2594` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a2594
   **Inferred.** A leaf routine with no calls. It reads the word at 0xfa200948 (lwz at 0xc00a25b4), stores through two computed indices (stwx at 0xc00a25a8 and 0xc00a25ac), and stores to one more address at 0xc00a25c4. It is the callee of the bl at 0xc00a252c in sub_c00a250c, and it looks like a helper that updates the same record that sub_c00a250c reads. The facts do not name that record.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a4e98` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a4e98
   **Inferred.** A 328-byte routine with an stmw frame that works through pointers loaded from r3 and from the structure at +0x60 of r4, and stores halfwords and words through them. It tests bit 0x8000 of a halfword (beq at 0xc00a4ec0). When the bit is set it calls 0xc0010640 at 0xc00a4ecc with r3=0xc010a7dc, stores zero at +0x9c of the structure at +0x60 of r4 and returns 1. Otherwise it calls 0xc0004868 at 0xc00a4f38, calls 0xc00046d4 with r3=sp+8 at 0xc00a4f40, calls 0xc0004710 at 0xc00a4f44, reads 0xc0160178 at 0xc00a4f58 and stores it to +0x4c of r4. It stores 0x1000000 to 0xfa200e54 at 0xc00a4f6c and calls 0xc00046e0 at 0xc00a4fc0 with r3 reloaded from sp+8. The branches at 0xc00a4f78 and 0xc00a4f98 pick a pointer and decide whether to set a flag with an atomic or, and do not gate the calls. The facts do not give its purpose.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a515c` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a515c
   **Inferred.** A 688-byte routine with an stmw frame that reads the word at 0xfa200e44 (lwz at 0xc00a5174) and returns through 0xc00a53f8 when it is zero (beq at 0xc00a5188). Otherwise it loops: it stores the word back to 0xfa200e44, tests it against the masks 0xe0400000, 0x03000000, 0x0c000000 and 0x00800000 (andis. at 0xc00a519c, 0xc00a51b8, 0xc00a51c8 and 0xc00a53dc), calls 0xc0010640 with r3=0xc010a894 when the first mask hits, calls 0xc00a540c at 0xc00a51c4 when the second hits, and calls 0xc00a563c at 0xc00a53e8 when the last hits. It also calls 0xc00046d4, 0xc0004710 and 0xc00046e0 around the calls to 0xc0013dec with r3=0 and r4=1 (0xc00a52e0 and 0xc00a53a0), calls 0xc0013764 at 0xc00a53b0, and calls 0xc0010640 with r3=0xc010a8a4 at 0xc00a527c when bit 0x8000 of the halfword at [r29] is set. After the call at 0xc00a53e8 it reloads 0xfa200e44 and repeats from 0xc00a519c while the word is nonzero (bne at 0xc00a53f4). The role of the routine is not established by the facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a563c` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a563c
   **Inferred.** Same 164-byte range and instructions as the 6.5.24 copy of this routine at the same address. Sets up a frame and loads the pointer at 0xc0160508, then branches on it (bne at 0xc00a5670). When the pointer is zero it calls 0xc0010640 at 0xc00a567c with r3=0xc010a910 and skips the rest. When it is nonzero it tests the word at +0x4 of the record (beq at 0xc00a568c) and, if that word is nonzero, makes an indirect call through it (blrl at 0xc00a5698) with r3 set to the word read from 0xfa200e80 at 0xc00a5668. It then moves the record from the head of the list at 0xc0160508 to the head of the list at 0xc0160504: the word at +0x8 of the record becomes the new value at 0xc0160508, and the old value at 0xc0160504 goes into +0x8 of the record. It stores zero to 0xfa200e84 at 0xc00a5664 on every path; when the new value at 0xc0160508 is nonzero (beq at 0xc00a56b8) it also stores the first word of that record to 0xfa200e80 and 0x14 to 0xfa200e84. The facts do not settle what the record holds, and the return value is not derived.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a56e0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a56e0
   **Inferred.** Same 184-byte range and instructions as the 6.5.24 copy at this address. It calls 0xc00046d4 and 0xc0004710 at 0xc00a56fc and 0xc00a5700, and 0xc00046e0 at 0xc00a577c with r3 reloaded from the stack slot at sp+8. It loads the pointer at 0xc0160504 and, when it is nonzero, removes that record from that list, stores r3, r4 and zero into it, and stores it into 0xc016050c and either +0x8 of the record at 0xc016050c or 0xc0160508, depending on the word at 0xc0160508; the stores to 0xfa200e80 and 0xfa200e84 happen only when that word is zero. When the pointer at 0xc0160504 is zero it returns 1, otherwise 0. The purpose is inferred from those stores and calls.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c00a5eb0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a5eb0
   **Inferred.** Same 568-byte range and instructions as the 6.5.24 copy at this address. It stores to 0xfa200e40 to 0xfa200e4c, reads the three halfwords at 0xc012eac8, 0xc012eaca and 0xc012eacc, and copies six bytes from 0xc012eac8 into the structure behind its first argument at +0x71 with a six-count loop (bdnz at 0xc00a5f58). Two eight-count loops (bdnz at 0xc00a6018 and 0xc00a6048) store into tables at a stride of 8. It calls sub_c00a56e0 at 0xc00a60c0 with r3=0x600a0000, and also calls 0xc00046a0, 0xc00aa0a0 (only on a conditional path inside a loop) and 0xc0004c2c. The table contents are not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c01344f0` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc01344f0
   **Inferred.** Same 284-byte range and instructions as the 6.5.24 copy at this address. It calls 0xc0010640 at 0xc0134548 with r3=0xc00f011c and r5=0x3c and 0xc0003300 at 0xc01345e0 with r3=0xf; the call to 0xc0010094 at 0xc01345f4 happens only when the 0xc0003300 result is nonzero. It stores to 0xfa200380 and reads 0xc0160c7c. The purpose of the 0xfa2003xx words is not established.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12
 
 - `sub_c013d7e4` in `6.5.25/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc013d7e4
   **Inferred.** Same 1892-byte range and instructions as the 6.5.24 copy at this address. It makes 36 direct stores at addresses from 0xc0198ab0 to 0xc0198c28 and calls 0xc000c8d4 four times (the facts do not say what it does). It calls 0xc006b73c twice (beq at 0xc013d9f0 tests the first result) and calls the pair 0xc00a25cc and 0xc00a2600 with r3=0x20 and r3=0x80 twice. The overall purpose is not established by the facts.
-  Reviewed: 2026-11-12 (sonnet)
+  Reviewed: 2026-11-12

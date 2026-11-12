@@ -205,7 +205,7 @@ Codes added at each step (inferred from the chain run; no code is removed in the
 | 1.14.1 to 1.16.0 | none | 13 | 1 |
 | 1.16.0 to 1.18.3 | none | 11 | 2 |
 
-"Handler text changed" compares the normalised text of each handler (addresses masked) with the same code in the previous set. It is a text comparison, not a reading of what the handler does, so it is inferred. The codes a set accepts are the codes whose chain run ends at a handler other than its unknown-code target; the run is a model of the chain, and its limits are those of the interpreter described above.
+"Handler text changed" compares the normalised text of each handler (addresses masked) with the same code in the previous set. It is a text comparison, not a reading of what the handler does, so it is inferred. The codes a set accepts are the codes whose chain run ends at a handler other than its unknown-code target; the run is a simulation of the chain, and its limits are those of the interpreter described above.
 
 The 1.44.0 table above has codes `0010`, `0011`, `100b`, `100c`, `2007`, `2008`, `3001`, `4000` and `4002` that none of these sets accept.
 
