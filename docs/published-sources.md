@@ -14,6 +14,8 @@ Public documents the notes cite. A hint from here is not a finding until the sam
 | Public forum posts on Origin 300 L1 firmware updates and two-brick setups | firmware version strings, L2 console logs of USB enumeration |
 | Public community pages on the Origin 3400 L2 hardware | L2 CPU (MPC860T), memory and flash sizes |
 | SGI, *SGIconsole Hardware Connectivity Guide*, 007-4340-003 | which systems carry an MSC, MMSC, L1 or L2 |
+| SGI, *Origin 3000 Series Owner's Guide*, 007-4240-002 | L2 board, its ports, and the USB and RS-422 topology of an Origin 3000 rack ([L2 board contract, section 8a](l2-board-contract.md)) |
+| SGI, *Origin 3000 Series Technical Configuration Owner's Guide*, 007-4311-002 | L2 board size and power, and which systems need an L2 ([L2 board contract, section 8a](l2-board-contract.md)) |
 | SGI, *Origin2000 Rackmount Owner's Guide*, 007-3456-003; *Origin2000 Deskside Owner's Guide*, 007-3453-002; *Onyx2 Deskside Workstation Owner's Guide*, 007-3454-005; *Onyx2 Rackmount Owner's Guide*, 007-3457-005 | MSC, ELSC and MMSC naming, cabling and displays |
 | SGI, *Origin 200 and Origin 200 GIGAchannel Owner's Guide*, 007-3708-002 | MSC placement, DIP switch, MSC firmware-version note |
 | SGI, *Deskside POWER CHALLENGE and CHALLENGE L Owner's Guide*, 007-1732-060; *POWER CHALLENGE and CHALLENGE XL Rackmount Owner's Guide*, 007-1735-050; *POWER Onyx and Onyx Deskside Owner's Guide*, 007-1733-070; *POWER Onyx and Onyx Rackmount Owner's Guide*, 007-1736-060 | the Challenge and Onyx system controller |

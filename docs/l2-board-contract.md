@@ -168,6 +168,45 @@ PCMCIA bridge class strings, IDE strings, parallel and multiport serial strings 
 
 Evidence for 2 and 3 is the routines and strings cited above; the exact order of PCI bring-up against EEPROM read in the wrapper is established from the call order at `0x704c20` to `0x704cbc` (bridge init at `0x704c98`, EEPROM at `0x704c24`, device setup at `0x704ca8`/`0x704cb8`).
 
+## 8a. Ports, power and placement (from the published manuals)
+
+Everything above is read from the firmware image. This section is read from the
+published SGI manuals listed in [published-sources.md](published-sources.md) and
+checked against the image's own strings and help text where a row says so.
+It fixes the physical interface the firmware's ports serve. Where two manuals
+disagree, both statements are given and the row is not resolved.
+
+| Fact | Grade | Source |
+|---|---|---|
+| The L2 is a single board at the top of the rack, running its embedded operating system from flash. It uses no configurable rack space. | established | 007-4240-002 p. 75; 007-4311-002 p. 42 |
+| The board is 5.5 in by 11.1 in. It takes 48 Vdc from the power bay, about 30 W. | established | 007-4311-002 p. 42 |
+| Four downstream USB ports, labelled L1 port 1 to 4. The L2 is the USB host, so every L1 hangs off it. | established | 007-4240-002 pp. 80–81 and Figure 3-6; 007-4311-002 p. 42 |
+| One 10/100BASE-T Ethernet port, autonegotiating. The PHY part is not named in either manual or in the image (U19). | established | 007-4240-002 p. 81 |
+| Two RS-232 DB-9 ports, labelled Console and Modem. | established | 007-4240-002 pp. 80–81 |
+| One RS-485 port, labelled ICMB. Its use is in dispute (two rows below). | established | 007-4240-002 p. 80; 007-4311-002 p. 42 |
+| A rack-display connector and a power connector. The rack display is a 320 by 240 touch LCD on the front door. | established | 007-4240-002 pp. 78–81 |
+| Serial rates disagree by manual. The owner's guide gives 38.4 Kbaud for the Console and Modem ports. The configuration guide gives 115 Kbaud for the RS-232 ports and 19.2 Kbaud for RS-485. The image's session table prints the console at 38400 and offers 9600, 19200 and 38400 for the modem. The real ceiling is unknown (U24). | established (each printed statement); unknown (the ceiling) | 007-4240-002 p. 81; 007-4311-002 p. 42; L2 1.44.0 session strings |
+| The RS-485 label disagrees by manual. The configuration guide calls the port "RS-485 Port to D Brick". The owner's guide says the D-brick is not monitored by the L2 and has its own operator-panel microcontroller. | established (both printed statements) | 007-4311-002 p. 42 and Figure 3-22; 007-4240-002 p. 70 |
+| The image's power-bay command reaches each power bay through one L1 attached to that bay, not through the L2's own RS-485 port. No daemon, library or GUI string in 1.44.0 names the RS-485 line. What is on the connector is unknown (U23). | established (help text; strings-level absence); unknown (the target) | L2 1.44.0 `pbay` help text; image strings |
+| Several L2s talk to one another, and to an L3 or SGIconsole, only over Ethernet. All L2s are peers and propagate configuration. | established | 007-4240-002 pp. 70, 76; 007-3938-005 p. 4 |
+| The L2 is standard in the Origin 3400 and 3800 and optional in the Origin 3200. A rack needs one when it holds an R-brick, when a rack display is wanted, and, on the Origin 3200, when remote maintenance is wanted. | established | 007-4311-002 p. 42; 007-4240-002 p. 75 |
+| An Origin 3200 without an L2 is a supported product. Its two C-brick L1s work as peers, and its console is a terminal on a C-brick's Console port. | established | 007-4240-002 pp. 70, 82–83 |
+| The L2 reaches L1s only over USB, as host. Each of its four L1 ports goes either to the upstream port of an R-brick's USB hub or, with no R-brick, directly to a C-brick's USB L1 port. | established | 007-4240-002 pp. 70, 80 |
+| Behind an R-brick, the L1s of the R-brick and of up to four C-bricks appear as separate USB devices under the hub. The C-bricks' USB runs inside the NUMAlink 3 cable. I/O-brick L1s are not on USB. They hang off a C-brick L1 over RS-422 in the Crosstown2 cable, and the L2 reaches them through that C-brick's L1. | established (topology); inferred (one USB device per L1, from the image opening one device node per L1) | 007-4240-002 pp. 70–73 and Figure 3-1; 007-3938-005 pp. 9–10 |
+| The L2 runs its controller application whenever it has power. A console on its Console port shows the `L2>` prompt. | established | 007-3938-005 p. 8 |
+| The L2, not the L1s, interprets `power`, because bricks must come up in a set order. The L2 also resets and NMIs selected bricks and shows voltage-margin data. Environmental monitoring runs in each L1, which reports to the L2. The L2 adds its own rack items, such as the power bay. | established | 007-3938-005 pp. 13, 58–59 |
+| The software guide says the L2 image holds a boot image and a kernel image with no backup copy, and that an invalid kernel image is refused. Recovery is a download through the Console port. The image's loader, on a failed header check, names the Console port cabled to an L3 serial port. | established (guide and loader text); inferred (that the same layout holds on Origin 3000, from the shared L2 image) | 007-3938-005 p. 46; L2 1.44.0 loader strings |
+| The operator names an L1 as `IP:USB-port:L1-index`. Index 0 is the brick the USB cable reaches. A brick with no rack and slot set shows as `---c--`. | established | 007-3938-005 pp. 9–10, 48; 007-4240-002 pp. 97, 268–269 |
+| Other L1 index values name a brick relative to the one asked, and the manuals disagree. The owner's guide's prose gives 1 for an I/O brick on the local brick, 3 for an attached C-brick and 4 for an I/O brick on that C-brick. Its L2 `config` table gives 1, "2 or 3" and "3 or 4", so the ranges overlap at 3. Which index values the L1 firmware assigns is unknown (U25). | established (each statement); unknown (the assignment) | 007-4240-002 pp. 97, 234, 268–269; 007-3938-005 p. 10 |
+
+Unknowns this section adds:
+
+| ID | Unknown | Test that would settle it |
+|---|---|---|
+| U23 | The target of the RS-485 ICMB port, and whether anything is attached to it in a standard rack | A rack cabling diagram that shows the ICMB cable, or the serial-port assignment the kernel gives the RS-485 line (the kernel's four ports are the on-chip SCCs, U11). |
+| U24 | The real line-rate limit of the Console, Modem and RS-485 ports | Decode the UART clock divisors the serial driver accepts and check them against the two manual rates. |
+| U25 | Which L1 index values the L1 firmware assigns to bricks relative to the one asked, and how the overlap at 3 resolves | The L1 index assignment in the L1 image, or an L2 `config` listing from a system with attached I/O bricks. |
+
 ## 9. Unknowns and the software test for each
 
 | ID | Unknown | Test that would settle it |
