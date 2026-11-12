@@ -1,0 +1,217 @@
+unit = "mcf5206e"
+prefix = "SIM"
+title = "on-chip registers of the ColdFire MCF5206e as the L1 firmware uses them"
+doc = """
+On-chip registers of the ColdFire MCF5206e that the L1 firmware uses. Offsets are from the
+module base register and are given as constants; the registers are not modelled as a register
+block. Only registers the L1 firmware touches are listed. Widths marked inferred follow the chip
+manual's layout because the firmware access size was not separately read. The reset values are
+not stated by any image, so they are unknown. Established means the firmware writes or tests the
+register as stated; inferred means the layout is the public manual's and was not re-read in an
+image.
+"""
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0) start-up code; MCF5206e manual layouts where graded inferred"
+
+[c]
+legacy_header = "MCF5206E_DECODE.h"
+legacy_guard = "MCF5206E_DECODE_H"
+
+[words.CSMR0]
+width = 32
+doc = """
+The firmware sizes the CS0 flash by writing the mask for 2 MB, then rewrites it
+for 1 MB when the two halves of the window read back the same."""
+grade = "established"
+
+[words.CSMR0.fields.bam]
+bits = [31, 16]
+grade = "established"
+
+[words.CSMR0.fields.bam.enums]
+size_1mb = { value = 15, grade = "established" }
+size_2mb = { value = 31, grade = "established" }
+
+[[words.CSMR0.tests]]
+value = 0xf0000
+expect = { bam = 15 }
+
+[[words.CSMR0.tests]]
+value = 0x1f0000
+expect = { bam = 31 }
+
+[words.CSMR2]
+width = 32
+doc = """
+Chip-select 1 (battery-backed RAM and clock, 8-bit) and chip-select 2 (external RAM,
+16-bit) values the board set-up writes. The RAM mask is cut from 512 KB to 128 KB when
+the firmware's alias probe fails. The port-size decode of each control value is the
+manual's and was not re-read in an image."""
+grade = "established"
+
+[words.CSMR2.fields.bam]
+bits = [31, 16]
+grade = "established"
+
+[words.CSMR2.fields.bam.enums]
+size_128kb = { value = 1, grade = "established" }
+size_512kb = { value = 7, grade = "established" }
+
+[[words.CSMR2.tests]]
+value = 0x10000
+expect = { bam = 1 }
+
+[[words.CSMR2.tests]]
+value = 0x70000
+expect = { bam = 7 }
+
+[words.MBSR]
+width = 32
+doc = """
+M-Bus module. The offsets are the manual's, as the firmware adds them to the module base."""
+grade = "established"
+
+[words.MBSR.fields]
+bus_busy = { bits = [5, 5], grade = "established" }
+
+[words.PADAT]
+width = 32
+doc = """
+Parallel port: direction and data, used as the scan-chain interface."""
+grade = "established"
+
+[words.PADAT.fields]
+tdi = { bits = [7, 7], grade = "established" }
+tck = { bits = [6, 6], grade = "established" }
+tms = { bits = [5, 5], grade = "established" }
+trst = { bits = [4, 4], grade = "established" }
+psi = { bits = [3, 3], grade = "established" }
+tdo = { bits = [0, 0], grade = "established" }
+
+[words.PAR]
+width = 32
+doc = """
+Pin assignment: bit 7 is pulsed by the timer set-up, bits 5:4 are cleared by the scan set-up."""
+grade = "established"
+
+[words.PAR.fields]
+timer_pulse = { bits = [7, 7], grade = "established" }
+scan_sel = { bits = [5, 4], grade = "established" }
+
+[words.RSR]
+width = 32
+doc = """
+Reset status: one bit is tested at start-up to record the reset cause."""
+grade = "established"
+
+[words.RSR.fields]
+cause5 = { bits = [5, 5], grade = "established" }
+
+[words.SYPCR]
+width = 32
+doc = """
+Software watchdog control: write-once, armed once by the firmware."""
+grade = "established"
+
+[words.SYPCR.fields]
+swe = { bits = [7, 7], grade = "established" }
+
+[[words.SYPCR.tests]]
+value = 0xfe
+expect = { swe = 1 }
+
+[constants]
+CS0_START_CSAR = { value = 0xffe0, grade = "established" }
+CS0_START_CSCR = { value = 0x1183, grade = "established" }
+CS1_START_CSAR = { value = 0x2000, grade = "established" }
+CS1_START_CSCR = { value = 0x1143, grade = "established" }
+CS1_START_CSMR = { value = 0x0, grade = "established" }
+CS2_START_CSAR = { value = 0x3000, grade = "established" }
+CS2_START_CSCR = { value = 0x983, grade = "established" }
+CS3_START_CSAR = { value = 0x4000, grade = "established" }
+CS3_START_CSCR = { value = 0x953, grade = "established" }
+CS3_START_CSMR = { value = 0x0, grade = "established" }
+CS4_START_CSAR = { value = 0x5000, grade = "established" }
+CS4_START_CSCR = { value = 0x95f, grade = "established" }
+CS4_START_CSMR = { value = 0x0, grade = "established" }
+DMCR_START_VALUE = { value = 0x0, grade = "established" }
+ICR10_START_VALUE = { value = 0x80, grade = "established" }
+ICR11_START_VALUE = { value = 0x99, grade = "established" }
+ICR12_START_VALUE = { value = 0x1a, grade = "established" }
+ICR13_START_VALUE = { value = 0x0, grade = "established", doc = "cleared, UART 2 unused" }
+ICR14_START_VALUE = { value = 0x9, grade = "established" }
+ICR15_START_VALUE = { value = 0xa, grade = "established" }
+ICR1_START_VALUE = { value = 0x84, grade = "established" }
+ICR2_START_VALUE = { value = 0x88, grade = "established" }
+ICR3_START_VALUE = { value = 0x80, grade = "established" }
+ICR4_START_VALUE = { value = 0x90, grade = "established" }
+ICR5_START_VALUE = { value = 0x80, grade = "established" }
+ICR6_START_VALUE = { value = 0x98, grade = "established" }
+ICR7_START_VALUE = { value = 0x9c, grade = "established" }
+ICR8_START_VALUE = { value = 0x1d, grade = "established" }
+ICR9_START_VALUE = { value = 0x94, grade = "established" }
+IMR_START_VALUE = { value = 0xfffe, grade = "established" }
+MFDR_INIT = { value = 0x13, grade = "established", doc = "written at bring-up, 100 kHz at the inferred 48 MHz clock" }
+OFFSET_CSAR0 = { value = 0x64, grade = "established", doc = "rw16" }
+OFFSET_CSAR1 = { value = 0x70, grade = "established", doc = "rw16" }
+OFFSET_CSAR2 = { value = 0x7c, grade = "established", doc = "rw16" }
+OFFSET_CSAR3 = { value = 0x88, grade = "established", doc = "rw16" }
+OFFSET_CSAR4 = { value = 0x94, grade = "established", doc = "rw16" }
+OFFSET_CSAR5 = { value = 0xa0, grade = "established", doc = "rw16" }
+OFFSET_CSCR0 = { value = 0x6e, grade = "established", doc = "rw16" }
+OFFSET_CSCR1 = { value = 0x7a, grade = "established", doc = "rw16" }
+OFFSET_CSCR2 = { value = 0x86, grade = "established", doc = "rw16" }
+OFFSET_CSCR3 = { value = 0x92, grade = "established", doc = "rw16" }
+OFFSET_CSCR4 = { value = 0x9e, grade = "established", doc = "rw16" }
+OFFSET_CSCR5 = { value = 0xaa, grade = "established", doc = "rw16" }
+OFFSET_CSMR0 = { value = 0x68, grade = "established", doc = "rw32" }
+OFFSET_CSMR1 = { value = 0x74, grade = "established", doc = "rw32" }
+OFFSET_CSMR2 = { value = 0x80, grade = "established", doc = "rw32" }
+OFFSET_CSMR3 = { value = 0x8c, grade = "established", doc = "rw32" }
+OFFSET_CSMR4 = { value = 0x98, grade = "established", doc = "rw32" }
+OFFSET_CSMR5 = { value = 0xa4, grade = "established", doc = "rw32" }
+OFFSET_DMCR = { value = 0xc6, grade = "established", doc = "rw16" }
+OFFSET_ICR1 = { value = 0x14, grade = "established", doc = "rw8" }
+OFFSET_ICR10 = { value = 0x1d, grade = "established", doc = "rw8" }
+OFFSET_ICR11 = { value = 0x1e, grade = "established", doc = "rw8" }
+OFFSET_ICR12 = { value = 0x1f, grade = "established", doc = "rw8" }
+OFFSET_ICR13 = { value = 0x20, grade = "established", doc = "rw8" }
+OFFSET_ICR14 = { value = 0x21, grade = "established", doc = "rw8" }
+OFFSET_ICR15 = { value = 0x22, grade = "established", doc = "rw8" }
+OFFSET_ICR2 = { value = 0x15, grade = "established", doc = "rw8" }
+OFFSET_ICR3 = { value = 0x16, grade = "established", doc = "rw8" }
+OFFSET_ICR4 = { value = 0x17, grade = "established", doc = "rw8" }
+OFFSET_ICR5 = { value = 0x18, grade = "established", doc = "rw8" }
+OFFSET_ICR6 = { value = 0x19, grade = "established", doc = "rw8" }
+OFFSET_ICR7 = { value = 0x1a, grade = "established", doc = "rw8" }
+OFFSET_ICR8 = { value = 0x1b, grade = "established", doc = "rw8" }
+OFFSET_ICR9 = { value = 0x1c, grade = "established", doc = "rw8" }
+OFFSET_IMR = { value = 0x36, grade = "established", doc = "rw16" }
+OFFSET_MADR = { value = 0x1e0, grade = "inferred", doc = "rw8" }
+OFFSET_MBCR = { value = 0x1e8, grade = "inferred", doc = "rw8" }
+OFFSET_MBDR = { value = 0x1f0, grade = "inferred", doc = "rw8" }
+OFFSET_MBSR = { value = 0x1ec, grade = "inferred", doc = "rw8" }
+OFFSET_MFDR = { value = 0x1e4, grade = "inferred", doc = "rw8" }
+OFFSET_PADAT = { value = 0x1c9, grade = "established", doc = "rw8" }
+OFFSET_PADDR = { value = 0x1c5, grade = "established", doc = "rw8" }
+OFFSET_PAR = { value = 0xca, grade = "established", doc = "rw16" }
+OFFSET_RSR = { value = 0x40, grade = "established", doc = "rw8" }
+OFFSET_SIMR = { value = 0x3, grade = "established", doc = "rw8" }
+OFFSET_SWIVR = { value = 0x42, grade = "established", doc = "rw8" }
+OFFSET_SWSR = { value = 0x43, grade = "established", doc = "w8" }
+OFFSET_SYPCR = { value = 0x41, grade = "established", doc = "rw8" }
+OFFSET_TMR1 = { value = 0x100, grade = "inferred", doc = "rw16" }
+OFFSET_TMR2 = { value = 0x120, grade = "inferred", doc = "rw16" }
+OFFSET_TMR_AUX_A = { value = 0x1b8, grade = "inferred", doc = "w8" }
+OFFSET_TMR_AUX_B = { value = 0x1bc, grade = "inferred", doc = "w8" }
+OFFSET_TRR1 = { value = 0x104, grade = "inferred", doc = "rw16" }
+OFFSET_TRR2 = { value = 0x124, grade = "inferred", doc = "rw16" }
+OFFSET_UART1 = { value = 0x140, grade = "established" }
+PADDR_SCAN_SETUP = { value = 0xfe, grade = "established" }
+SIMR_START_VALUE = { value = 0xc0, grade = "established" }
+SWSR_SERVICE_FIRST = { value = 0x55, grade = "established" }
+SWSR_SERVICE_SECOND = { value = 0xaa, grade = "established" }
+TMR1_INIT = { value = 0x1d, grade = "established", doc = "value written; field meaning inferred from the manual" }
+TMR2_INIT = { value = 0x2b, grade = "established", doc = "value written; field meaning inferred" }
+TRR1_TICK_REFERENCE = { value = 0x752f, grade = "established", doc = "written to the timer 1 reference" }
+TRR2_REFERENCE = { value = 0x1, grade = "established" }
+UART1_VECTOR = { value = 0x42, grade = "established", doc = "argument to the UART 1 open, not a register offset" }

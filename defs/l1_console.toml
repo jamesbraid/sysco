@@ -1,0 +1,88 @@
+unit = "l1_console"
+prefix = "L1C"
+block = "ENTRY"
+title = "entry layout and argument kinds of the L1 console command tables"
+doc = """
+The console command line of the ColdFire L1 controller firmware is table driven. Each package
+registers up to ten tables, and each table is an array of 68-byte entries made of seventeen
+big-endian 32-bit words. The parser tries the registered tables in registration order and
+each table from its first entry, and runs the handler of the first entry whose typed pattern
+matches the line.
+
+The pattern is up to ten words and ends at the first zero word. A word above 11 points at a
+literal; its alternatives are separated by a vertical bar and a typed word matches when it
+equals one alternative byte for byte. A word of 1 to 11 stands for an argument of the kind
+TOKEN.kind names. The values 7, 9 and 10 are not argument kinds; no table uses them.
+
+Four words follow the handler and are passed to it as one block. Handlers that restrict a
+command to some brick types read the first word as a pointer to the string of allowed
+brick-type characters (zero allows every brick; a leading '~' lists the excluded types).
+The other handlers read the first word, and the three after it, as small selectors.
+
+The last word of an entry is 1 when the entry is left out of the command listing.
+
+Which entry sits at which position in each package is in the per-package console units.
+"""
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0) console command parser"
+
+[c]
+legacy_header = "L1_CONSOLE_DECODE.h"
+legacy_guard = "L1_CONSOLE_DECODE_H"
+
+[registers.pattern]
+offset = 0x0
+access = "r"
+width = 32
+grade = "established"
+count = 10
+doc = "Up to ten pattern words, the handler, four selector words, the help text and the hidden flag; 68 bytes in all."
+
+[registers.handler]
+offset = 0x28
+access = "r"
+width = 32
+grade = "established"
+
+[registers.arg]
+offset = 0x2c
+access = "r"
+width = 32
+grade = "established"
+count = 4
+
+[registers.help]
+offset = 0x3c
+access = "r"
+width = 32
+grade = "established"
+
+[registers.hidden]
+offset = 0x40
+access = "r"
+width = 32
+grade = "established"
+
+[words.TOKEN]
+width = 32
+grade = "established"
+
+[words.TOKEN.fields.kind]
+bits = [3, 0]
+grade = "established"
+
+[words.TOKEN.fields.kind.enums]
+end = { value = 0, grade = "established", doc = "end of the pattern" }
+number = { value = 1, grade = "established", doc = "number, base taken from its prefix (decimal, 0 for octal, 0x for hexadecimal)" }
+decimal = { value = 2, grade = "established", doc = "number, always decimal" }
+hex = { value = 3, grade = "established", doc = "number, always hexadecimal" }
+octal = { value = 4, grade = "established", doc = "number, always octal" }
+word = { value = 5, grade = "established", doc = "one word, handed to the command as a string" }
+rest_of_line = { value = 6, grade = "established", doc = "the rest of the line, handed to the command as a string" }
+port_l1 = { value = 8, grade = "established", doc = "a colon, a port number, a colon and a controller number" }
+rack_slot = { value = 11, grade = "established", doc = "a rack number, one separator character and a slot number" }
+
+[constants]
+ENTRY_SIZE = { value = 0x44, grade = "established" }
+ENTRY_WORDS = { value = 0x11, grade = "established" }
+PATTERN_WORDS = { value = 0xa, grade = "established" }
+TABLES_MAX = { value = 0xa, grade = "established" }

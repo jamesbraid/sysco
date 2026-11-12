@@ -1,0 +1,253 @@
+unit = "l1_board"
+prefix = "L1B"
+title = "board-level bit layouts and constants of the ColdFire L1 firmware"
+doc = """
+Board-level bit layouts and constants of the ColdFire L1 firmware: bit positions of the I/O
+expander bytes the L1 drives, the flash command stream, the quad UART, the battery-backed clock
+window and the hardware monitor start-up values. Window offsets are relative to the base of the
+device's chip select. Expander addresses come in the 8-bit wire form and the 7-bit form. Each
+field carries the grade of the reading; polarity grades are given separately where the firmware
+only shows that a bit is written.
+"""
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0) board set-up code"
+
+[c]
+legacy_header = "L1_BOARD_DECODE.h"
+legacy_guard = "L1_BOARD_DECODE_H"
+
+[words.CACR]
+width = 32
+doc = """
+Control-register codes of the MOVEC extension word and the values the firmware writes
+at start-up. The register names are the manual's. Instruction cache control is written
+twice: invalidate, then enable."""
+grade = "inferred"
+
+[words.CACR.fields]
+cenb = { bits = [31, 31], grade = "inferred" }
+cinv = { bits = [24, 24], grade = "inferred" }
+
+[words.CLOCK]
+width = 32
+doc = """
+Battery-backed clock: control byte at the top of the window; BCD time bytes follow it."""
+grade = "established"
+
+[words.CLOCK.fields]
+write_enable = { bits = [7, 7], grade = "established" }
+read_latch = { bits = [6, 6], grade = "established" }
+century_tens = { bits = [5, 4], grade = "established" }
+century_hundreds = { bits = [3, 0], grade = "established" }
+
+[words.CNTL1]
+width = 32
+doc = """
+Processor-module control expanders, wire addresses 0x42 and 0x44 (7-bit 0x21 and 0x22)."""
+grade = "established"
+
+[words.CNTL1.fields]
+soft_reset = { bits = [7, 7], grade = "established", doc = "Soft-reset line: idle low, set then cleared by the soft-reset command (polarity inferred)." }
+nmi = { bits = [6, 6], grade = "established", doc = "Non-maskable-interrupt line: idle high, driven low then high by the nmi command (polarity inferred)." }
+reset_b = { bits = [1, 1], grade = "established" }
+reset_a = { bits = [0, 0], grade = "established" }
+
+[words.CNTL2]
+width = 32
+grade = "established"
+
+[words.CNTL2.fields]
+strap = { bits = [7, 3], grade = "unknown", doc = "Strap or configuration bits written once per release; what they select is unknown." }
+reset_c = { bits = [0, 0], grade = "established" }
+
+[words.DISPLAY]
+width = 32
+doc = """
+Front-panel expander: 7-bit address 0x20, low nibble input."""
+grade = "established"
+
+[words.DISPLAY.fields]
+led_6 = { bits = [6, 6], grade = "established" }
+led_5 = { bits = [5, 5], grade = "established" }
+led_4 = { bits = [4, 4], grade = "established" }
+
+[words.FLASH_STATUS]
+width = 32
+grade = "established"
+
+[words.FLASH_STATUS.fields]
+toggle = { bits = [6, 6], grade = "established" }
+timeout = { bits = [5, 5], grade = "established", doc = "Completion is read by comparing two successive halfword reads." }
+
+[words.PIMM_VCC]
+width = 32
+doc = """
+Processor-module supply-good expanders: one per module, at the wire address of the first
+control expander but on its own bus segment (segment 4 for module 0, segment 5 for module 1).
+Reset hold sets both bits of the field; release clears both. The mask is not applied to
+the written byte as an input mask."""
+grade = "established"
+
+[words.PIMM_VCC.fields]
+ok = { bits = [7, 6], grade = "established" }
+
+[words.ROUTER]
+width = 32
+doc = """
+R-brick router expanders."""
+grade = "established"
+
+[words.ROUTER.fields]
+router_type = { bits = [7, 4], grade = "established" }
+
+[words.ROUTER_DEST]
+width = 32
+doc = """
+Router packet destination word, as the L2 router and the L1 target list both build and
+read it for brick-directed packets (any destination form other than the L2 form and the
+node form): the rack takes 10 bits and the slot 6."""
+grade = "established"
+
+[words.ROUTER_DEST.fields]
+rack = { bits = [27, 18], grade = "established" }
+slot = { bits = [17, 12], grade = "established" }
+
+[words.RPOWER]
+width = 32
+grade = "established"
+
+[words.RPOWER.fields]
+router_power = { bits = [3, 3], grade = "established" }
+
+[words.XBRIDGE]
+width = 32
+doc = """
+I-brick bridge control expander: expander index 5, 7-bit address 0x24."""
+grade = "established"
+
+[words.XBRIDGE.fields]
+clock_select = { bits = [5, 5], grade = "established" }
+host_enable_b = { bits = [4, 4], grade = "established" }
+reset_3 = { bits = [3, 3], grade = "established" }
+host_enable_a = { bits = [2, 2], grade = "established" }
+reset_1 = { bits = [1, 1], grade = "established" }
+reset_0 = { bits = [0, 0], grade = "established" }
+
+[constants]
+BUS_SELECT_ADDR7 = { value = 0x27, grade = "established" }
+BUS_SELECT_SEG1 = { value = 0xff, grade = "established" }
+BUS_SELECT_SEG13_LAST = { value = 0xf7, grade = "established" }
+BUS_SELECT_SEG2 = { value = 0x78, grade = "established" }
+BUS_SELECT_SEG3 = { value = 0xb8, grade = "established" }
+BUS_SELECT_SEG4 = { value = 0xd8, grade = "established" }
+BUS_SELECT_SEG5 = { value = 0xe8, grade = "established" }
+BUS_SELECT_SEG6_FIRST = { value = 0xf0, grade = "established", doc = "segments 6 to 13 are 0xf0 to 0xf7" }
+CACR_FIRST_WRITE = { value = 0x1000000, grade = "established", doc = "invalidate" }
+CACR_SECOND_WRITE = { value = 0x80000000, grade = "established", doc = "enable" }
+CLOCK_CONTROL_INDEX = { value = 0x7f8, grade = "established" }
+CNTL1_INPUT_MASK_CBRICK = { value = 0x0, grade = "established" }
+CNTL1_INPUT_MASK_O300 = { value = 0x20, grade = "established" }
+CNTL1_START_VALUE = { value = 0x72, grade = "established", doc = "applied at cold start" }
+CNTL1_WIRE = { value = 0x42, grade = "established" }
+CNTL2_INPUT_MASK_CBRICK = { value = 0x0, grade = "established" }
+CNTL2_INPUT_MASK_O300 = { value = 0x2, grade = "established" }
+CNTL2_START_VALUE = { value = 0x8a, grade = "established", doc = "applied at cold start" }
+CNTL2_WIRE = { value = 0x44, grade = "established" }
+DISPLAY_CHANGE_MASK = { value = 0x7, grade = "established", doc = "bits whose changes are reported" }
+DISPLAY_CONTROL_ADDR7 = { value = 0x20, grade = "established" }
+DISPLAY_INPUT_MASK = { value = 0xf, grade = "established" }
+EEPROM_DIMM_ADDR7 = { value = 0x50, grade = "established", doc = "DIMM 0 to 7 on segments 6 to 13" }
+EEPROM_DIMM_CAPACITY = { value = 0x100, grade = "established" }
+EEPROM_KIND_BOARD = { value = 0x1, grade = "established" }
+EEPROM_KIND_MEMORY = { value = 0x2, grade = "established" }
+EEPROM_LOGIC_ADDR7 = { value = 0x54, grade = "established", doc = "I-brick and R-brick logic board" }
+EEPROM_LOGIC_CAPACITY = { value = 0x200, grade = "established" }
+EEPROM_NODE_ADDR7 = { value = 0x52, grade = "established", doc = "C-brick node board, segment 0" }
+EEPROM_NODE_CAPACITY = { value = 0x200, grade = "established" }
+EEPROM_PIMM_ADDR7 = { value = 0x54, grade = "established", doc = "PIMM 0 on segment 4, PIMM 1 on segment 5" }
+EEPROM_PIMM_CAPACITY = { value = 0x200, grade = "established" }
+EEPROM_POWER_ADDR7 = { value = 0x52, grade = "established", doc = "I-brick and R-brick power board" }
+EEPROM_POWER_CAPACITY = { value = 0x200, grade = "established" }
+FLASH_CMD_AUTOSELECT = { value = 0x90, grade = "established" }
+FLASH_CMD_ERASE_RESUME = { value = 0x30, grade = "established" }
+FLASH_CMD_ERASE_SETUP = { value = 0x80, grade = "established", doc = "followed by the unlock pair and sector erase" }
+FLASH_CMD_ERASE_SUSPEND = { value = 0xb0, grade = "established" }
+FLASH_CMD_PROGRAM = { value = 0xa0, grade = "established" }
+FLASH_CMD_RESET = { value = 0xf0, grade = "established" }
+FLASH_CMD_SECTOR_ERASE = { value = 0x30, grade = "established" }
+FLASH_UNLOCK_ADDR_1 = { value = 0xaaa, grade = "established" }
+FLASH_UNLOCK_ADDR_2 = { value = 0x554, grade = "established" }
+FLASH_UNLOCK_DATA_1 = { value = 0xaa, grade = "established" }
+FLASH_UNLOCK_DATA_2 = { value = 0x55, grade = "established" }
+IBRICK_FAN_SPEED_ADDR7 = { value = 0x39, grade = "established" }
+IBRICK_PCI_BUS1_SLOT1_ADDR7 = { value = 0x25, grade = "established" }
+IBRICK_PCI_BUS1_SLOT2_ADDR7 = { value = 0x26, grade = "established" }
+IBRICK_PCI_BUS1_SLOT3_ADDR7 = { value = 0x27, grade = "established" }
+IBRICK_PCI_BUS1_SLOT4_ADDR7 = { value = 0x21, grade = "established" }
+IBRICK_PCI_BUS2_SLOT1_ADDR7 = { value = 0x3e, grade = "established" }
+IBRICK_PCI_BUS2_SLOT2_ADDR7 = { value = 0x3f, grade = "established" }
+IBRICK_PORT_CONTROL_ADDR7 = { value = 0x23, grade = "established" }
+IBRICK_POWER_ENABLE_ADDR7 = { value = 0x38, grade = "established" }
+IBRICK_POWER_STATUS1_ADDR7 = { value = 0x3a, grade = "established" }
+IBRICK_POWER_STATUS2_ADDR7 = { value = 0x3b, grade = "established" }
+IBRICK_SUPPLY_12V_BIAS_ENABLE = { value = 0x4, grade = "established" }
+IBRICK_SUPPLY_12V_ENABLE = { value = 0x40, grade = "established" }
+IBRICK_SUPPLY_2V5_ENABLE = { value = 0x8, grade = "established" }
+IBRICK_SUPPLY_3V3_ENABLE = { value = 0x10, grade = "established" }
+IBRICK_SUPPLY_48V_ENABLE = { value = 0x1, grade = "established" }
+IBRICK_SUPPLY_5V_ENABLE = { value = 0x20, grade = "established" }
+IBRICK_SUPPLY_M12V_ENABLE = { value = 0x80, grade = "established" }
+MBAR_START_VALUE = { value = 0x10000001, grade = "established", doc = "peripheral block base with the valid bit" }
+MONITOR_ADDR7_0 = { value = 0x2c, grade = "established" }
+MONITOR_ADDR7_1 = { value = 0x2d, grade = "established" }
+MONITOR_ADDR7_2 = { value = 0x2e, grade = "established" }
+MONITOR_ADDR7_3 = { value = 0x2f, grade = "established" }
+MONITOR_FLAG_NO_START = { value = 0x1, grade = "established" }
+MONITOR_INIT_REG_40 = { value = 0x80, grade = "established", doc = "register 0x40" }
+MONITOR_INIT_REG_43 = { value = 0xdf, grade = "established", doc = "register 0x43" }
+MONITOR_INIT_REG_44 = { value = 0x13, grade = "established", doc = "register 0x44" }
+MONITOR_INIT_REG_47_ADDR7_0 = { value = 0xa0, grade = "established" }
+MONITOR_INIT_REG_47_ADDR7_1 = { value = 0x20, grade = "established" }
+MONITOR_INIT_REG_47_OTHER = { value = 0x0, grade = "established" }
+MOVEC_CODE_CACR = { value = 0x2, grade = "established" }
+MOVEC_CODE_MBAR = { value = 0xc0f, grade = "established" }
+MOVEC_CODE_RAMBAR = { value = 0xc04, grade = "established" }
+MOVEC_CODE_VBR = { value = 0x801, grade = "established" }
+MOVEC_RN_RC_OPCODE = { value = 0x4e7b, grade = "established" }
+PIMM_VCC_OK_WIRE = { value = 0x42, grade = "established" }
+QUART_CHANNEL0 = { value = 0x0, grade = "established", doc = "byte offset in the chip-select window" }
+QUART_CHANNEL1 = { value = 0x8, grade = "established" }
+QUART_CHANNEL2 = { value = 0x10, grade = "established" }
+QUART_CHANNEL3 = { value = 0x18, grade = "established" }
+QUART_FIFO_CONTROL_TRIGGER_A = { value = 0xf, grade = "established" }
+QUART_FIFO_CONTROL_TRIGGER_B = { value = 0x8f, grade = "established" }
+QUART_LINE_CONTROL_8E1 = { value = 0x1b, grade = "established" }
+QUART_LINE_CONTROL_8N1 = { value = 0x3, grade = "established" }
+QUART_LINE_CONTROL_8O1 = { value = 0xb, grade = "established" }
+QUART_MODEM_CONTROL_DTR_RTS = { value = 0x3, grade = "established", doc = "normal use" }
+QUART_MODEM_CONTROL_LOOPBACK = { value = 0x10, grade = "established", doc = "only when the channel loop-back flag is set" }
+QUART_REG_FIFO_CONTROL = { value = 0x2, grade = "established", doc = "write; interrupt identification on read" }
+QUART_REG_LINE_CONTROL = { value = 0x3, grade = "established" }
+QUART_REG_MODEM_CONTROL = { value = 0x4, grade = "established" }
+RACK_MAX = { value = 0x3ff, grade = "established" }
+RACK_WIDTH_BITS = { value = 0xa, grade = "established" }
+RAMBAR_START_VALUE = { value = 0x30100001, grade = "established", doc = "on-chip SRAM base with the valid bit" }
+RBRICK_PORT_BC_CONTROL_ADDR7 = { value = 0x25, grade = "established" }
+RBRICK_PORT_DE_CONTROL_ADDR7 = { value = 0x26, grade = "established" }
+RBRICK_PORT_FG_CONTROL_ADDR7 = { value = 0x27, grade = "established" }
+RBRICK_PORT_HA_CONTROL_ADDR7 = { value = 0x24, grade = "established" }
+RBRICK_POWER_CONTROL_ADDR7 = { value = 0x39, grade = "established" }
+RBRICK_SUPPLY_2V5_ENABLE = { value = 0x4, grade = "established" }
+RBRICK_SUPPLY_48V_ENABLE = { value = 0x1, grade = "established" }
+RBRICK_WIDGET_PRESENT_ADDR7 = { value = 0x22, grade = "established" }
+ROUTER_CONTROL_ADDR7 = { value = 0x23, grade = "established", doc = "expander index 2" }
+ROUTER_HOLD_VALUE = { value = 0x1, grade = "established", doc = "written under that mask by hold" }
+ROUTER_RESET_BITS_MASK = { value = 0xd, grade = "established", doc = "bits stepped through hold and release" }
+ROUTER_START_VALUE = { value = 0xf1, grade = "established" }
+TIMER1_LEVEL = { value = 0x5, grade = "established" }
+TIMER1_VECTOR = { value = 0x1d, grade = "established", doc = "external level 5" }
+UART_BAUD = { value = 0x4b00, grade = "established" }
+UART_LEVEL = { value = 0x6, grade = "established" }
+UART_VECTOR = { value = 0x42, grade = "established", doc = "on-chip UART" }
+VBR_START_VALUE = { value = 0x30100000, grade = "established", doc = "vector table at the SRAM base" }
+XBRIDGE_ADDR7 = { value = 0x24, grade = "established" }
+XBRIDGE_START_VALUE = { value = 0xd4, grade = "established" }

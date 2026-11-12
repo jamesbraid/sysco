@@ -1,0 +1,57 @@
+unit = "l1_pkg3_requests"
+prefix = "L1P3"
+title = "console request codes of ColdFire L1 package 3"
+doc = "Console request codes of one ColdFire L1 firmware package. Codes are unique within the package."
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0), ColdFire package 3 image"
+
+[c]
+legacy_header = "L1P3_DECODE.h"
+legacy_guard = "L1P3_DECODE_H"
+
+[words.CMD]
+width = 32
+grade = "established"
+
+[words.CMD.fields.code]
+bits = [15, 0]
+grade = "established"
+
+[words.CMD.fields.code.enums]
+general_req_rack_bay = { value = 2, grade = "established", doc = "argument shape: reply 0 then rack<<6|bay; type 0x3d reports 0x23 when the slot low byte is zero; no type 0x38 case" }
+general_req_rack_bay_type = { value = 3, grade = "established", doc = "argument shape: same entry as 0x0002; adds the reported type character" }
+general_req_brick_serial = { value = 4, grade = "established", doc = "argument shape: reply 0 then text; type 0x40 uses the per-node serial routine, others the brick serial; minus 104 when null" }
+general_req_eeprom_read = { value = 6, grade = "established", doc = "argument shape: five or more words; record number from a local type map instead of a hook word; status 0, bytes left, then a binary field" }
+general_req_eeprom_format = { value = 7, grade = "established", doc = "argument shape: two or more words; record number from a local type map instead of a hook word; record kind, then eight more ints for kind 1 and two for kind 2" }
+general_req_system_serial = { value = 8, grade = "established", doc = "argument shape: descriptor word at a fixed location else setting 0xd; reply 0 then text; minus 104 when empty" }
+general_req_port_speeds = { value = 10, grade = "established", doc = "argument shape: type table sends types 03456789@ABCFLMOQ| to the port-record path, others read setting 0x2a; reply 0 then two ints" }
+general_req_attached_ports_1_to_4 = { value = 12, grade = "established", doc = "argument shape: reply 0 then four (rack<<6|bay, type) pairs; same stream as the Origin 300 handler" }
+general_req_attached_ports_5_and_10 = { value = 13, grade = "established", doc = "argument shape: reply 0 then two pairs; same stream as the Origin 300 handler" }
+general_req_requesting_port = { value = 14, grade = "established", doc = "argument shape: reply 0 then the requesting link index; same stream as the Origin 300 handler" }
+general_req_last_event_reasons = { value = 15, grade = "established", doc = "argument shape: reply 0 then two lifecycle words; same stream as the Origin 300 handler" }
+general_req_processor_masks = { value = 16, grade = "established", doc = "argument shape: mask words from descriptor a fixed offset and shift a fixed offset; reply 0, word count, processor count, mask pairs" }
+general_req_scan_record = { value = 17, grade = "established", doc = "argument shape: reply 0 then a 64-byte binary field or minus 106; relocation of the Origin 300 body" }
+general_req_type_char = { value = 19, grade = "established", doc = "argument shape: reply 0, int 0, then the brick-type character as an int" }
+general_req_write_debug_switches = { value = 4097, grade = "established", doc = "argument shape: one int; writes setting 3 through a different setting writer; reply 0" }
+general_req_console_subchannel = { value = 4098, grade = "established", doc = "argument shape: one int; sets the console subchannel; same stream as the Origin 300 handler" }
+general_req_console_volunteer = { value = 4099, grade = "established", doc = "argument shape: records the local module as console owner; same stream as the Origin 300 handler" }
+general_req_display_line_1 = { value = 4100, grade = "established", doc = "argument shape: one text; display write; minus 102 if not text; same stream as the Origin 300 handler" }
+general_req_display_line_2 = { value = 4101, grade = "established", doc = "argument shape: same entry as 0x1004" }
+general_req_partition_set = { value = 4102, grade = "established", doc = "argument shape: one int; writes setting 0xe then updates the module record; reply 0" }
+general_req_event_subchannel_set = { value = 4103, grade = "established", doc = "argument shape: one int; builds a tag, stores it at a fixed location of the state block and writes setting 0x13; reply 0" }
+general_req_two_bit_setting_set = { value = 4104, grade = "established", doc = "argument shape: one int; writes setting 0x12; reply 0" }
+general_req_panel_control = { value = 4105, grade = "established", doc = "argument shape: two ints; selector 0 to 2 else minus 105; reply 0; same stream as the Origin 300 handler" }
+general_req_event_subchannel_clear = { value = 4106, grade = "established", doc = "argument shape: no reply; clears and unpersists the event subchannel" }
+general_req_prom_version_report = { value = 4107, grade = "established", doc = "argument shape: exactly three ints; stores the packed PROM version in the runtime slot and prints it; no reply on success" }
+general_req_per_processor_setting = { value = 4108, grade = "established", doc = "argument shape: exactly two ints; per-processor setter; no reply on success" }
+general_req_system_reset = { value = 8193, grade = "established", doc = "argument shape: no reply on success; reset with reason 3" }
+general_req_pci_operation_a = { value = 8194, grade = "established", doc = "argument shape: three or more words; hook at offset 8 of block a fixed address with a third zero argument; reply is the hook result" }
+general_req_pci_operation_b = { value = 8195, grade = "established", doc = "argument shape: three or more words; hook at offset 0xc of block a fixed address; minus 106 on failure" }
+general_req_pci_operation_c = { value = 8196, grade = "established", doc = "argument shape: three or more words; hook at offset 0x10 of block a fixed address; minus 106 on failure" }
+general_req_power_down = { value = 8197, grade = "established", doc = "argument shape: no reply on success; power down with reason 3; minus 106 on failure" }
+general_req_lifecycle_third_action = { value = 8198, grade = "established", doc = "argument shape: no reply on success; minus 106 on failure and no integer reply" }
+general_req_set_clock = { value = 8205, grade = "established", doc = "argument shape: seven or more words; builds and runs a date -u line from arguments 1 to 6 (year, month, day, hour, minute, second)" }
+general_req_get_clock = { value = 8206, grade = "established", doc = "argument shape: reply 0 then year, month, day, hour, minute, second as ints" }
+general_req_hook_3001 = { value = 12289, grade = "established", doc = "argument shape: three or more words; listed brick types only; calls the hook word at a fixed location with (0, arg1, arg2, 0); minus 106 when the result is not positive" }
+general_req_inventory = { value = 16384, grade = "established", doc = "argument shape: reply 0 then one text field per record; same formats as the Origin 300 handler" }
+general_req_war_flag = { value = 16385, grade = "established", doc = "argument shape: reply 0 then the SHUB workaround flag byte as an int" }
+general_req_controller_reboot = { value = 16386, grade = "established", doc = "argument shape: no reply; logs and restarts the controller" }

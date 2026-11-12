@@ -1,0 +1,25 @@
+unit = "elsc_host"
+prefix = "ELSC"
+title = "two-wire addresses the host driver of the Origin 2000 module controller uses"
+doc = """
+Two-wire device addresses the host driver of the Origin 2000 module controller uses: what the
+host-side driver for the module system controller (the MSC, also called ELSC) passes as the
+device argument of its two-wire transfers, and how it builds the one that varies. Everything here
+is read from the host driver object; the controller's own firmware is not held, so what sits
+behind each address is a reading, not a finding. The device argument is a 7-bit address when the
+transfer routine takes it as one; the routine is in the kernel, not in the object, so that form
+is inferred.
+"""
+from = "IRIX 6.5.30 elsc.o host driver object"
+
+[c]
+legacy_header = "ELSC_DECODE.h"
+legacy_guard = "ELSC_DECODE_H"
+
+[constants]
+MAILBOX_SLAVE = { value = 0x8, grade = "established", doc = "established: the argument in the call; 7-bit form inferred" }
+NVRAM_PAGES = { value = 0x8, grade = "established", doc = "established: addresses 0 to 0x7ff" }
+NVRAM_PAGE_BITS = { value = 0x7, grade = "established", doc = "established" }
+NVRAM_PAGE_LOW_BIT = { value = 0x8, grade = "established", doc = "established: address bits 10:8 select the page" }
+NVRAM_SLAVE_BASE = { value = 0x50, grade = "established", doc = "established" }
+UST_SLAVE = { value = 0x20, grade = "established", doc = "established for the call; meaning unknown" }

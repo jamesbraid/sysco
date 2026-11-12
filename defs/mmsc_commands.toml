@@ -1,0 +1,113 @@
+unit = "mmsc_commands"
+prefix = "MMSC"
+title = "typed command table of the multi-module system"
+doc = """
+Typed command table of the multi-module system controller firmware, and the user authority
+levels it checks. The command table is text-keyed: an operator types a command word, and the
+dispatcher compares it with each table entry in table order and runs the first match. Each
+CMD.index value is the position of that entry in the table, counted from zero with aliases
+included. The dispatcher compares the typed word, so the position is not a code sent on any link.
+The one-character help alias (table position 57) is not an identifier and has no enum value.
+Some commands compare the session's user level with 499 or 999 before they act. The user levels
+are fixed values in the firmware (AUTH.level); which command checks which level is in the command
+notes, not here.
+"""
+from = "IRIX 6.5.30 mmscfw.bin (MMSC 2.3), command table"
+
+[c]
+legacy_header = "MMSC_CMD_DECODE.h"
+legacy_guard = "MMSC_CMD_DECODE_H"
+
+[words.AUTH]
+width = 32
+grade = "established"
+
+[words.AUTH.fields.level]
+bits = [15, 0]
+grade = "established"
+
+[words.AUTH.fields.level.enums]
+basic = { value = 100, grade = "established" }
+supervisor = { value = 500, grade = "established" }
+service = { value = 1000, grade = "established" }
+
+[words.CMD]
+width = 32
+grade = "established"
+
+[words.CMD.fields.index]
+bits = [7, 0]
+grade = "established"
+
+[words.CMD.fields.index.enums]
+auth = { value = 0, grade = "established" }
+authority = { value = 1, grade = "established" }
+bs = { value = 2, grade = "established" }
+cecho = { value = 3, grade = "established" }
+com = { value = 4, grade = "established" }
+cons = { value = 5, grade = "established" }
+console = { value = 6, grade = "established" }
+debug = { value = 7, grade = "established" }
+numracks = { value = 8, grade = "established" }
+dest = { value = 9, grade = "established" }
+direct = { value = 10, grade = "established" }
+downloader = { value = 11, grade = "established" }
+elsc = { value = 12, grade = "established" }
+emsg = { value = 13, grade = "established" }
+end = { value = 14, grade = "established" }
+esc = { value = 15, grade = "established" }
+exit = { value = 16, grade = "established" }
+ffsc = { value = 17, grade = "established" }
+flash = { value = 18, grade = "established" }
+graphics_command = { value = 19, grade = "established" }
+help = { value = 20, grade = "established" }
+ipaddr = { value = 21, grade = "established" }
+kill = { value = 22, grade = "established" }
+log = { value = 23, grade = "established" }
+mem = { value = 24, grade = "established" }
+mmsc = { value = 25, grade = "established" }
+mmsg = { value = 26, grade = "established" }
+msc = { value = 27, grade = "established" }
+nap_time = { value = 28, grade = "established" }
+nop = { value = 29, grade = "established" }
+options = { value = 30, grade = "established" }
+pager = { value = 31, grade = "established" }
+pas = { value = 32, grade = "established" }
+password = { value = 33, grade = "established" }
+printenv = { value = 34, grade = "established" }
+pwr = { value = 35, grade = "established" }
+rackid = { value = 36, grade = "established" }
+rat = { value = 37, grade = "established" }
+reboot_ffsc = { value = 38, grade = "established" }
+reset_ffsc = { value = 39, grade = "established" }
+reset_mmsc = { value = 40, grade = "established" }
+reset_nvram = { value = 41, grade = "established" }
+rmsg = { value = 42, grade = "established" }
+scan = { value = 43, grade = "established" }
+setenv = { value = 44, grade = "established" }
+steal = { value = 45, grade = "established" }
+partlst = { value = 46, grade = "established" }
+partscan = { value = 47, grade = "established" }
+partget = { value = 48, grade = "established" }
+partnam = { value = 49, grade = "established" }
+partclr = { value = 50, grade = "established" }
+partset = { value = 51, grade = "established" }
+swapcons = { value = 52, grade = "established" }
+tty_reinit = { value = 53, grade = "established" }
+unsetenv = { value = 54, grade = "established" }
+unsteal = { value = 55, grade = "established" }
+ver = { value = 56, grade = "established" }
+arbiter = { value = 58, grade = "established" }
+macaddr = { value = 59, grade = "established" }
+
+[words.GATE]
+width = 32
+grade = "established"
+
+[words.GATE.fields.level]
+bits = [15, 0]
+grade = "established"
+
+[words.GATE.fields.level.enums]
+above_499 = { value = 499, grade = "established" }
+above_999 = { value = 999, grade = "established" }

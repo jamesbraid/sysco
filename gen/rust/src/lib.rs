@@ -1,0 +1,19 @@
+// generated from defs/ by defs-gen - do not edit, change the source
+pub mod elsc_host;
+pub mod l1_board;
+pub mod l1_console;
+pub mod l1_pkg0_console;
+pub mod l1_pkg0_requests;
+pub mod l1_pkg1_console;
+pub mod l1_pkg1_requests;
+pub mod l1_pkg2_console;
+pub mod l1_pkg2_requests;
+pub mod l1_pkg3_console;
+pub mod l1_pkg3_requests;
+pub mod l1_pkg5_console;
+pub mod l1_pkg5_requests;
+pub mod l2_partition_requests;
+pub mod l2_router_requests;
+pub mod mcf5206e;
+pub mod mmsc_commands;
+pub mod mpc8xx;

@@ -1,0 +1,22 @@
+unit = "l2_router_requests"
+prefix = "L2R"
+title = "request codes of the L2 router library"
+doc = "Request codes of the L2 controller router library. Codes are unique within the library."
+from = "L2 1.44.0 router library"
+
+[c]
+legacy_header = "L2R_DECODE.h"
+legacy_guard = "L2R_DECODE_H"
+
+[words.CMD]
+width = 32
+grade = "established"
+
+[words.CMD.fields.code]
+bits = [15, 0]
+grade = "established"
+
+[words.CMD.fields.code.enums]
+chunk_first_flagged = { value = 12289, grade = "established", doc = "argument shape: first frame of a chunked message when bit 7 of packet byte 5 is set; header 9 bytes, payload up to 118" }
+chunk_first = { value = 12290, grade = "established", doc = "argument shape: first frame otherwise" }
+chunk_next = { value = 12291, grade = "established", doc = "argument shape: every later frame; length bytes zero" }

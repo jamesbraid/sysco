@@ -1,0 +1,65 @@
+unit = "l1_pkg1_requests"
+prefix = "L1P1"
+title = "console request codes of ColdFire L1 package 1"
+doc = "Console request codes of one ColdFire L1 firmware package. Codes are unique within the package."
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0), ColdFire package 1 image"
+
+[c]
+legacy_header = "L1P1_DECODE.h"
+legacy_guard = "L1P1_DECODE_H"
+
+[words.CMD]
+width = 32
+grade = "established"
+
+[words.CMD.fields.code]
+bits = [15, 0]
+grade = "established"
+
+[words.CMD.fields.code.enums]
+command_task_loop = { value = 0, grade = "established", doc = "argument shape: any code with one text argument; reply is the status and the output lines as text" }
+general_req_read_debug_switches = { value = 1, grade = "established", doc = "argument shape: reply 0 then one int, the 16-bit non-volatile switches" }
+general_req_rack_bay = { value = 2, grade = "established", doc = "argument shape: reply 0 then int rack<<6|bay from non-volatile settings" }
+general_req_rack_bay_type = { value = 3, grade = "established", doc = "argument shape: same entry as 0x0002; adds the stored brick-type character (0x34 for ip45)" }
+general_req_brick_serial = { value = 4, grade = "established", doc = "argument shape: reply 0 then text; minus 104 when absent" }
+general_req_firmware_revision = { value = 5, grade = "established", doc = "argument shape: reply 0 then three ints parsed from the version string" }
+general_req_eeprom_read = { value = 6, grade = "established", doc = "argument shape: status 0, bytes left after the window, then a binary field; areas 0 to 4; minus 104, 105, 107 conditions" }
+general_req_eeprom_format = { value = 7, grade = "established", doc = "argument shape: record kind, then eight more ints for kind 1 and two for kind 2" }
+general_req_system_serial = { value = 8, grade = "established", doc = "argument shape: reply 0 then text; minus 104 when empty" }
+general_req_partition_get = { value = 9, grade = "established", doc = "argument shape: reply 0 then int" }
+general_req_port_speeds = { value = 10, grade = "established", doc = "argument shape: reply 0 then two ints from per-port speed settings" }
+general_req_two_bit_setting = { value = 11, grade = "established", doc = "argument shape: reply 0 then int; meaning of the field unknown" }
+general_req_attached_ports_1_to_4 = { value = 12, grade = "established", doc = "argument shape: reply 0 then four (rack<<6|bay, type) pairs" }
+general_req_attached_ports_5_and_10 = { value = 13, grade = "established", doc = "argument shape: reply 0 then two (rack<<6|bay, type) pairs" }
+general_req_requesting_port = { value = 14, grade = "established", doc = "argument shape: reply 0 then int: the link index the request arrived on" }
+general_req_last_event_reasons = { value = 15, grade = "established", doc = "argument shape: reply 0 then two ints from the lifecycle module" }
+general_req_processor_masks = { value = 16, grade = "established", doc = "argument shape: reply 0, word count, processor count, mask pairs; minus 108 when none" }
+general_req_scan_record = { value = 17, grade = "established", doc = "argument shape: reply 0 then a 64-byte binary field, or minus 106 and a status" }
+flash_req_status = { value = 114, grade = "inferred", doc = "argument shape: first int at most 4; reply lists the flash images" }
+flash_req_0x73 = { value = 115, grade = "inferred", doc = "argument shape: flash operation, not read" }
+flash_req_0x74 = { value = 116, grade = "inferred", doc = "argument shape: flash operation, not read" }
+power_bay_flash_req_0x92 = { value = 146, grade = "inferred", doc = "argument shape: exactly one argument" }
+power_bay_flash_req_0x93 = { value = 147, grade = "inferred", doc = "argument shape: exactly one argument" }
+power_bay_flash_req_0x94 = { value = 148, grade = "inferred", doc = "argument shape: exactly one argument" }
+general_req_write_debug_switches = { value = 4097, grade = "established", doc = "argument shape: one int; writes the non-volatile switches; reply 0" }
+general_req_console_subchannel = { value = 4098, grade = "established", doc = "argument shape: one int; sets the active console subchannel; reply 0" }
+general_req_console_volunteer = { value = 4099, grade = "established", doc = "argument shape: records the local module as console owner; reply 0" }
+general_req_display_line_1 = { value = 4100, grade = "established", doc = "argument shape: one text; writes display line 2; minus 102 if not text" }
+general_req_display_line_2 = { value = 4101, grade = "established", doc = "argument shape: same entry as 0x1004" }
+general_req_partition_set = { value = 4102, grade = "established", doc = "argument shape: one int; non-volatile write; reply 0" }
+general_req_event_subchannel_set = { value = 4103, grade = "established", doc = "argument shape: one int; persisted in non-volatile memory; reply 0" }
+general_req_two_bit_setting_set = { value = 4104, grade = "established", doc = "argument shape: one int; writes the field read by 0x000b; reply 0" }
+general_req_panel_control = { value = 4105, grade = "established", doc = "argument shape: two ints; selector 0 to 2 else minus 105; reply 0" }
+general_req_event_subchannel_clear = { value = 4106, grade = "established", doc = "argument shape: no reply; clears and unpersists the event subchannel" }
+general_req_prom_version_report = { value = 4107, grade = "established", doc = "argument shape: exactly three ints; no reply on success" }
+general_req_per_processor_setting = { value = 4108, grade = "established", doc = "argument shape: exactly two ints; no reply on success" }
+general_req_system_reset = { value = 8193, grade = "established", doc = "argument shape: no reply on success; minus 106 and status on failure" }
+general_req_pci_operation_a = { value = 8194, grade = "established", doc = "argument shape: two ints bus and slot; board hook; no reply on success" }
+general_req_pci_operation_b = { value = 8195, grade = "established", doc = "argument shape: two ints bus and slot; board hook; no reply on success" }
+general_req_pci_operation_c = { value = 8196, grade = "established", doc = "argument shape: two ints bus and slot; board hook; no reply on success" }
+general_req_power_down = { value = 8197, grade = "established", doc = "argument shape: no reply on success" }
+general_req_lifecycle_third_action = { value = 8198, grade = "established", doc = "argument shape: no reply on success; which action is not established" }
+general_req_expander_read = { value = 8199, grade = "established", doc = "argument shape: no arguments; minus 108 on an Origin 300" }
+general_req_expander_write = { value = 8200, grade = "established", doc = "argument shape: exactly two ints; minus 108 on an Origin 300" }
+general_req_inventory = { value = 16384, grade = "established", doc = "argument shape: reply 0 then one text field per inventory record; minus 104 when empty" }
+general_req_controller_reboot = { value = 16386, grade = "established", doc = "argument shape: no reply; logs and restarts the controller" }

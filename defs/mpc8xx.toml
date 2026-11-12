@@ -1,0 +1,557 @@
+unit = "mpc8xx"
+prefix = "M8X"
+title = "start-up values of the PowerPC communications controller on the L2 board"
+doc = """
+Start-up values of the PowerPC communications controller on the L2 board: the values the L2
+reset code and its second stage write to the machine state register, the clock and reset
+registers, the serial-management channel parameter page and the PCI bridge. Register offsets are
+from the internal memory map base. The register and field names are the public Linux headers';
+the firmware's own reading of each field was not decoded, so the layouts of the clock registers
+and the bridge are not given. A value is established when the image writes it as stated.
+"""
+from = "IRIX 6.5.30 l2.bin (L2 1.44.0) reset code; register names from the public Linux 8xx_immap.h"
+
+[c]
+legacy_header = "MPC8XX_DECODE.h"
+legacy_guard = "MPC8XX_DECODE_H"
+
+[spaces.bytedev]
+
+[spaces.mpc8xx_brg]
+
+[spaces.mpc8xx_clk]
+
+[spaces.mpc8xx_cs]
+
+[spaces.mpc8xx_pcib]
+
+[spaces.mpc8xx_siu]
+
+[spaces.mpc8xx_upm]
+
+[registers.reg0]
+offset = 0x0
+access = "w"
+width = 8
+grade = "established"
+space = "bytedev"
+doc = """
+Byte-wide peripheral on the fourth chip select. Established: the window decode above, the
+8-bit port, and that the boot code only writes it, in the order given. What the device is
+stays unknown, so the three registers are named by offset. Whether the kernel or any
+program uses the part after mapping the first 4 KiB is not settled."""
+
+[registers.reg1]
+offset = 0x1
+access = "w"
+width = 8
+grade = "established"
+space = "bytedev"
+
+[registers.reg3]
+offset = 0x3
+access = "w"
+width = 8
+grade = "established"
+space = "bytedev"
+
+[registers.brgc1]
+offset = 0x9f0
+access = "rw"
+width = 32
+grade = "inferred"
+doc = """
+First baud-rate generator, loaded by stage A of the console loader. Its place in the register
+map is the public map's: the store goes through a base that sits 0x30 below the register, and
+the same routine uses that base for the communications-processor command register and for
+port B (read in l2.bin 1.44.0), so the position is inferred. Stage A computes the divisor
+field as (clock word >> 4) / baud, doubled, with the enable bit or-ed in; with its clock word
+of 0x32 and baud word 0x9600 the quotient is zero, so it stores only the enable bit. The
+wrapper's clock word is 50,000,000, which gives the quotient 81 and the value 0x100a2."""
+space = "mpc8xx_brg"
+
+[registers.sccr]
+offset = 0x280
+access = "rw"
+width = 32
+grade = "established"
+doc = """
+Clock and reset registers written by the reset code; the multiplication factor and
+division fields were not decoded."""
+space = "mpc8xx_clk"
+
+[registers.plprcr]
+offset = 0x284
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_clk"
+
+[registers.br0]
+offset = 0x100
+access = "rw"
+width = 32
+grade = "established"
+doc = """
+Memory controller banks: the base and option register of each of the eight banks, written
+from a 14-word table (banks 1 to 7) and, for bank 0, built and stored by the reset code. The
+width, base, mask and timing fields of the two registers were not decoded here."""
+space = "mpc8xx_cs"
+
+[registers.or0]
+offset = 0x104
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br1]
+offset = 0x108
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or1]
+offset = 0x10c
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br2]
+offset = 0x110
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or2]
+offset = 0x114
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br3]
+offset = 0x118
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or3]
+offset = 0x11c
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br4]
+offset = 0x120
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or4]
+offset = 0x124
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br5]
+offset = 0x128
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or5]
+offset = 0x12c
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br6]
+offset = 0x130
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or6]
+offset = 0x134
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.br7]
+offset = 0x138
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.or7]
+offset = 0x13c
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_cs"
+
+[registers.reg_004]
+offset = 0x4
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_00c]
+offset = 0xc
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_010]
+offset = 0x10
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_030]
+offset = 0x30
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_03c]
+offset = 0x3c
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_100]
+offset = 0x100
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_104]
+offset = 0x104
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_110]
+offset = 0x110
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_114]
+offset = 0x114
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_13c]
+offset = 0x13c
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_140]
+offset = 0x140
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_400]
+offset = 0x400
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_404]
+offset = 0x404
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_408]
+offset = 0x408
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.cfg_addr]
+offset = 0x500
+access = "rw"
+width = 32
+grade = "established"
+doc = """
+The bridge's configuration-access pair, used by the second stage to reach the devices behind
+it. The address register is loaded first, then the data register is read or written at the
+data offset plus the byte lane (byte, halfword and word accesses). The address word is built
+from the bus number, the device and function byte and the register number with its low two
+bits cleared, and bit 0 is set only when the bus number is not 0. The widths of the bus and
+device-and-function arguments were not read, so those two field extents are inferred from
+the usual layout; the register number mask and the type bit follow from the code."""
+space = "mpc8xx_pcib"
+
+[registers.cfg_data]
+offset = 0x504
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_pcib"
+
+[registers.reg_600]
+offset = 0x600
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_604]
+offset = 0x604
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_608]
+offset = 0x608
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_800]
+offset = 0x800
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_f00]
+offset = 0xf00
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_f04]
+offset = 0xf04
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_f10]
+offset = 0xf10
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_f14]
+offset = 0xf14
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.reg_f80]
+offset = 0xf80
+access = "rw"
+width = 32
+grade = "inferred"
+space = "mpc8xx_pcib"
+
+[registers.sypcr]
+offset = 0x4
+access = "rw"
+width = 32
+grade = "established"
+doc = """
+System protection control and software service registers. The boot code stores one 32-bit
+word to the control register only on its failure path (image check failed, or the second
+stage returned); a normal boot never writes it. The value keeps the high bits set and
+clears the low seven. Both widths are those of the stores."""
+space = "mpc8xx_siu"
+
+[registers.swsr]
+offset = 0xe
+access = "rw"
+width = 16
+grade = "established"
+space = "mpc8xx_siu"
+
+[registers.mar]
+offset = 0x164
+access = "rw"
+width = 32
+grade = "established"
+doc = """
+Memory controller timing and the user-programmable machine A. The second stage writes the
+periodic timer prescaler and the machine mode register, loads 64 array words through the
+data register (each followed by a store of its index to the command register), then issues
+run commands: one at array address 0x2d, eight at 0x30, then the address register is set
+and one run at 0x13 is issued. The meaning of the machine mode fields was not decoded."""
+space = "mpc8xx_upm"
+
+[registers.mcr]
+offset = 0x168
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_upm"
+
+[registers.mamr]
+offset = 0x170
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_upm"
+
+[registers.mptpr]
+offset = 0x17a
+access = "rw"
+width = 16
+grade = "established"
+space = "mpc8xx_upm"
+
+[registers.mdr]
+offset = 0x17c
+access = "rw"
+width = 32
+grade = "established"
+space = "mpc8xx_upm"
+
+[words.MSR]
+width = 32
+doc = """
+Machine state register written once by the reset code: machine-check enable and
+recoverable-interrupt set, translation off, supervisor mode. The bit positions are
+the PowerPC architecture's."""
+grade = "inferred"
+
+[words.MSR.fields]
+me = { bits = [12, 12], grade = "inferred" }
+ri = { bits = [1, 1], grade = "inferred" }
+
+[[words.MSR.tests]]
+value = 0x1002
+expect = { ri = 1, me = 1 }
+
+[words.PCI_CFG_ADDR]
+width = 32
+grade = "established"
+
+[words.PCI_CFG_ADDR.fields]
+bus = { bits = [23, 16], grade = "inferred" }
+devfn = { bits = [15, 8], grade = "inferred" }
+register = { bits = [7, 2], grade = "established" }
+type1 = { bits = [0, 0], grade = "established" }
+
+[constants]
+BR0_START_VALUE = { value = 0xfe000001, grade = "established", doc = "flash window, 32-bit" }
+BR1_START_VALUE = { value = 0x81, grade = "established", doc = "DRAM bank" }
+BR2_START_VALUE = { value = 0x10000801, grade = "established", doc = "LCD window, 16-bit" }
+BR3_START_VALUE = { value = 0x0, grade = "established", doc = "bank unused" }
+BR4_START_VALUE = { value = 0xfa100401, grade = "established", doc = "byte-wide peripheral window, 8-bit" }
+BR5_START_VALUE = { value = 0x80000001, grade = "established", doc = "PCI memory window, 32-bit" }
+BR6_START_VALUE = { value = 0xfa210001, grade = "established", doc = "PCI bridge register window, 32-bit" }
+BR7_START_VALUE = { value = 0xfc000401, grade = "established", doc = "8 MiB window, 8-bit" }
+BRGC1_STAGE_A_VALUE = { value = 0x10000, grade = "established" }
+BRGC1_WRAPPER_VALUE = { value = 0x100a2, grade = "established" }
+BYTEDEV_MAPPED_SIZE = { value = 0x1000, grade = "established", doc = "size the kernel maps; the chip select decodes 128 KiB" }
+BYTEDEV_REG0_FIRST = { value = 0x0, grade = "established" }
+BYTEDEV_REG0_SECOND = { value = 0x80, grade = "established", doc = "after a 500 ms wait" }
+BYTEDEV_REG1_FIRST = { value = 0xe, grade = "established" }
+BYTEDEV_REG1_LAST = { value = 0xe, grade = "established", doc = "after a second 500 ms wait" }
+BYTEDEV_REG1_SECOND = { value = 0xf, grade = "established" }
+BYTEDEV_REG3_VALUE = { value = 0x18, grade = "established" }
+FLASH_CMD_AUTOSELECT = { value = 0x900090, grade = "established" }
+FLASH_CMD_ERASE_SETUP = { value = 0x800080, grade = "established", doc = "followed by the unlock pair" }
+FLASH_CMD_PROGRAM = { value = 0xa000a0, grade = "established" }
+FLASH_CMD_RESET = { value = 0xf000f0, grade = "established" }
+FLASH_CMD_SECTOR_ERASE = { value = 0x300030, grade = "established", doc = "written at the sector address" }
+FLASH_STATUS_ERROR = { value = 0x200020, grade = "established", doc = "one bit per device" }
+FLASH_STATUS_TOGGLE = { value = 0x400040, grade = "established", doc = "one bit per device" }
+FLASH_UNLOCK_DATA_1 = { value = 0xaa00aa, grade = "established" }
+FLASH_UNLOCK_DATA_2 = { value = 0x550055, grade = "established" }
+FLASH_UNLOCK_OFFSET_1 = { value = 0x1554, grade = "established" }
+FLASH_UNLOCK_OFFSET_2 = { value = 0xaa8, grade = "established" }
+HC0_WINDOW_BASE = { value = 0xc0000000, grade = "established", doc = "argument for device 4" }
+HC1_WINDOW_BASE = { value = 0xc0001000, grade = "established", doc = "argument for device 5" }
+IMMR_VALUE = { value = 0xfa200000, grade = "established" }
+MAMR_START_VALUE = { value = 0x18804000, grade = "established" }
+MAR_START_VALUE = { value = 0x88, grade = "established" }
+MCR_RUN_FIRST = { value = 0x8000202d, grade = "established", doc = "one store" }
+MCR_RUN_LAST = { value = 0x80002013, grade = "established", doc = "one store, after the address register" }
+MCR_RUN_SECOND = { value = 0x80002030, grade = "established", doc = "eight stores" }
+MPTPR_START_VALUE = { value = 0x200, grade = "established" }
+MSR_RESET_VALUE = { value = 0x1002, grade = "established" }
+OR0_START_VALUE = { value = 0xff800940, grade = "established" }
+OR1_START_VALUE = { value = 0xff000400, grade = "established" }
+OR2_START_VALUE = { value = 0xfffe0938, grade = "established" }
+OR3_START_VALUE = { value = 0x0, grade = "established" }
+OR4_START_VALUE = { value = 0xfffe0930, grade = "established" }
+OR5_START_VALUE = { value = 0xa0000008, grade = "established" }
+OR6_START_VALUE = { value = 0xffff0108, grade = "established" }
+OR7_START_VALUE = { value = 0xff800930, grade = "established" }
+PCIB_INIT_004 = { value = 0xf9000147, grade = "established" }
+PCIB_INIT_00C = { value = 0x0, grade = "established" }
+PCIB_INIT_010 = { value = 0x1000000, grade = "established" }
+PCIB_INIT_030 = { value = 0x0, grade = "established" }
+PCIB_INIT_03C = { value = 0x100, grade = "established" }
+PCIB_INIT_100 = { value = 0x88800080, grade = "established" }
+PCIB_INIT_104 = { value = 0x80000000, grade = "established" }
+PCIB_INIT_110 = { value = 0x0, grade = "established" }
+PCIB_INIT_114 = { value = 0x0, grade = "established" }
+PCIB_INIT_13C = { value = 0x0, grade = "established" }
+PCIB_INIT_140 = { value = 0x81000000, grade = "established" }
+PCIB_INIT_400 = { value = 0x780008, grade = "established" }
+PCIB_INIT_404 = { value = 0x0, grade = "established" }
+PCIB_INIT_408 = { value = 0x0, grade = "established" }
+PCIB_INIT_600 = { value = 0xeff0000f, grade = "established" }
+PCIB_INIT_604 = { value = 0x0, grade = "established" }
+PCIB_INIT_608 = { value = 0x0, grade = "established" }
+PCIB_INIT_800 = { value = 0xc1013, grade = "established" }
+PCIB_INIT_F00 = { value = 0x1000000, grade = "established" }
+PCIB_INIT_F04 = { value = 0x800000d1, grade = "established" }
+PCIB_INIT_F10 = { value = 0x0, grade = "established" }
+PCIB_INIT_F14 = { value = 0xc00000d1, grade = "established" }
+PCIB_INIT_F80 = { value = 0x81000000, grade = "established" }
+PLPRCR_START_VALUE = { value = 0x5040, grade = "established" }
+SCCR_START_VALUE = { value = 0x62000000, grade = "established" }
+SMC1_PARAM_PAGE = { value = 0x3e80, grade = "established" }
+SWSR_KEY_FIRST = { value = 0x556c, grade = "established" }
+SWSR_KEY_SECOND = { value = 0xaa39, grade = "established" }
+SYPCR_FAILURE_PATH_VALUE = { value = 0xffffff80, grade = "established", doc = "failure path only" }
+UPM_PROGRAM_WORDS = { value = 0x40, grade = "established" }
+VPD_BLOCK_SIZE = { value = 0x100, grade = "established" }
+VPD_CHAIN_START = { value = 0xa, grade = "established" }
+VPD_EEPROM_ADDR7 = { value = 0x52, grade = "established" }
+VPD_EEPROM_ADDR8 = { value = 0xa4, grade = "established" }
+VPD_TAG_END = { value = 0xff, grade = "established" }
+VPD_TAG_ETHERNET = { value = 0x8, grade = "established" }

@@ -1,0 +1,27 @@
+unit = "l2_partition_requests"
+prefix = "L2P"
+title = "request codes of the L2 partition task image"
+doc = "Request codes of the L2 controller partition task image. Codes are unique within the image."
+from = "L2 1.44.0 partition task image (l2part)"
+
+[c]
+legacy_header = "L2P_DECODE.h"
+legacy_guard = "L2P_DECODE_H"
+
+[words.CMD]
+width = 32
+grade = "established"
+
+[words.CMD.fields.code]
+bits = [15, 0]
+grade = "established"
+
+[words.CMD.fields.code.enums]
+partition_for_brick = { value = 1, grade = "established", doc = "argument shape: brick number in; partition number out (0 if unassigned); reply result 0 and one integer" }
+partition_environment = { value = 2, grade = "established", doc = "argument shape: partition number in; integer and environment block out; sent by partmgr as the variables request" }
+database_get = { value = 3, grade = "established", doc = "argument shape: no argument; whole mode database out in one binary argument; builds the default first if none is loaded" }
+database_time = { value = 4, grade = "established", doc = "argument shape: no argument; the header timestamp out as one integer" }
+database_set = { value = 5, grade = "established", doc = "argument shape: complete database image in; header checks give results -1 to -6, older timestamp 7; installs, unpacks and writes flash; broadcasts the new image to task 5" }
+mode_set = { value = 6, grade = "established", doc = "argument shape: integer equal to the current timestamp plus a 24-byte header equal to the current one except the word at a fixed location; installs that word; the meaning of the word is inferred as the current mode" }
+park_request = { value = 7, grade = "inferred", doc = "argument shape: slot 0 to 63 and the request itself kept in a table, no immediate reply; used for deferred replies" }
+release_parked = { value = 8, grade = "inferred", doc = "argument shape: slot and string; replies to the parked request in that slot with the string and clears the slot" }
