@@ -14,8 +14,8 @@ arguments and constants, and none of them is confirmed.
   time, but nothing in the facts names the fields.
 
 - `sub_fe004efc` in `6.5.19/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe004efc
-  **Inferred.** It calls the helper at 0xfe004610 five times with constant addresses in the 0xe01xxx
-  range (0xe013ec, 0xe01418, 0xe01428, 0xe01454, 0xe01474), which look like message strings, so 0xfe004610
+  **Inferred.** It calls the helper at 0xfe004610 six times with constant addresses in the 0xe01xxx
+  range (0xe013ec, 0xe01418, 0xe01428, 0xe01454, 0xe01428 again, 0xe01474), which look like message strings, so 0xfe004610
   is probably a printer. It calls 0xfe004ff4 with base 0xfe040000 at 0xfe004f38 and skips the block at
   0xfe004f78 when that call returns non-zero. The 0xfa200000 constant passed at 0xfe004f8c hints at a
   board register block.
@@ -131,7 +131,7 @@ arguments and constants, and none of them is confirmed.
 
 - `sub_fe004efc` in `6.5.20/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe004efc
   **Inferred.** The rendered facts match the 6.5.19 build at the same address exactly, so the reading is
-  the same. It calls 0xfe004610 five times with the 0xe01xxx constants, calls 0xfe004ff4 with 0xfe040000,
+  the same. It calls 0xfe004610 six times with the 0xe01xxx constants, calls 0xfe004ff4 with 0xfe040000,
   and skips the block at 0xfe004f78 when that call returns non-zero. The helper roles are inferred, as
   in the 6.5.19 entry.
 

@@ -77,10 +77,9 @@ effects were not modeled, so data flow through them is unknown.
   restore is read from the opcodes, not from the values.
 
 - `sub_c00f661c` in `6.5.10/usr/cpu/firmware/l2.bin(kernel)` at 0xc00f661c
-  **Inferred.** A large PowerPC routine with a 0x30-byte frame, 15 stw stores to the frame and a stmw save. It
+  **Inferred.** A large PowerPC routine with a 0x30-byte frame, 15 stw stores to addresses the facts do not resolve and a stmw save. It
   calls 0xc0020400 and 0xc000ac80, then 0xc00b2084, then 0xc0022228 (twice) with 0x15, and 0xc0009acc and 0xc000a5c0
-  in pairs after each. It makes a series of calls to 0xc0010f08 with pointers 0xc00dbb20, 0xc00dbb44 and 0xc00dbb00,
-  and calls 0xc0003db8 and 0xc00c53fc. Its shape suggests an initialization that prints or logs messages, but the
+  in pairs after each. It makes a series of calls to 0xc0010f08 with pointers 0xc00dbb20 and 0xc00dbb44 (and one call with no constant argument), and calls 0xc0003db8 with r6=0xc00dbb00, 0xc0010870 with r3=0xc00dbb04 and 0xc00c53fc. Its shape suggests an initialization that prints or logs messages, but the
   callees are not read in this entry and the purpose is not settled.
 
 - `sub_ffe5a210` in `6.5.12/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffe5a210

@@ -61,7 +61,7 @@ get the same role text under each build's full path.
   **Inferred.** Same code as the 6.5.14 build at this address, which renders identically. It tests the word at 0xfa200e44 at 0xc00a5188 and makes a long run of helper calls, including 0xc0013dec with r3=0, r4=1, 0xc0013764, and the routine at 0xc00a563c at 0xc00a53e8, then returns an unknown r3. The flag's meaning is not derivable from these facts.
 
 - `sub_c00a563c` in `6.5.15/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a563c
-  **Inferred.** Same code as the 6.5.14 build at this address, which renders identically. It follows the pointer chain rooted at 0xc0162508, stores to 0xfa200e80 and 0xfa200e84, calls 0xc0010640 with r3=0xc010bab8, and makes a `blrl` through the pointer read from 0xfa200e80. The callee is not resolved.
+  **Inferred.** Same code as the 6.5.14 build at this address, which renders identically. It follows the pointer chain rooted at 0xc0162508, stores to 0xfa200e80 and 0xfa200e84, calls 0xc0010640 with r3=0xc010bab8, and makes a `blrl` at 0xc00a5698 to the word at offset +4 of the record at 0xc0162508 (lwz at 0xc00a5684, mtlr at 0xc00a5694), only when the pointer at 0xc0162508 and that word are both nonzero (bne at 0xc00a5670, beq at 0xc00a568c), passing the word read from 0xfa200e80 in r3. The callee is not resolved.
 
 - `sub_c00a56e0` in `6.5.15/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a56e0
   **Inferred.** Same code as the 6.5.14 build at this address, which renders identically. It relinks the cell chain at 0xc0162504, 0xc0162508 and 0xc016250c, stores to 0xfa200e80 and 0xfa200e84, and calls 0xc00046d4 with 0xc0004710 and 0xc00046e0. The list it manipulates is not identified.

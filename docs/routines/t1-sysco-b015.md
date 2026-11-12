@@ -106,8 +106,8 @@ grader accepted every rendered entry, so none were rejected.
   **Inferred.** An m68k routine with `link.w` and six `movem.l` saves. It compares six longwords of its
   argument block at offsets +0x0 to +0x14 (for example `cmp.l` at 0xffe56a14). It updates counters at
   offsets +0x10, +0x14 and +0x18 of the value returned by the call at 0xffe586d0, and it reads and writes
-  bytes at abs 0x200007f8, 0x200007fb, 0x200007fd, 0x200007fe and 0x200007ff. These byte addresses also
-  appear in sub_ffec7534. The role is not settled.
+  bytes at abs 0x200007f8, 0x200007fb, 0x200007fd, 0x200007fe and 0x200007ff. Of these, 0x200007f8 and 0x200007ff
+  also appear in sub_ffec7534. The role is not settled.
 
 - `sub_ffec7534` in `cd-ist-3.24/usr/cpu/firmware/sysco/l1.bin(l1#0)` at 0xffec7534
   **Inferred.** A small m68k routine. It sets bit 0x200007f8 with `bset.b` at 0xffec7546 and clears a bit

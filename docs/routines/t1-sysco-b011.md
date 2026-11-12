@@ -7,7 +7,7 @@ inferred. None of the 25 was rejected by the grader. The L2 firmware images have
 entry says so.
 
 - `sub_fe004efc` in `6.5.26/usr/cpu/firmware/sysco/l2.bin(flash)` at 0xfe004efc
-  **Inferred.** A flash routine with a 0x20-byte frame that calls the helper at 0xfe004610 five times,
+  **Inferred.** A flash routine with a 0x20-byte frame that calls the helper at 0xfe004610 six times,
   each time with a constant pointer in the 0xe013ec to 0xe01474 range as its first argument. That call
   pattern looks like printing constant messages. It also calls 0xfe0051f0 with r9=0xfe040000 and
   0xfe004ff4 with r3=0xfe040000, and branches at 0xfe004f40 on the return of 0xfe004ff4, so the printing

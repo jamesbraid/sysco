@@ -111,7 +111,7 @@ but the facts do not show the text. All 25 entries are inferred; none reach esta
   0xc00a2508 is not reached on any path in the facts, though sub_c00a23ec passes it as an argument.
 
 - `sub_c00a250c` in `patches/SG0007149/usr/cpu/firmware/sysco/l2.bin(kernel)` at 0xc00a250c
-  **Inferred.** Saves r19 to r31 with stmw and calls sub_c00a2594 at 0xc00a252c. It then reads the device
+  **Inferred.** Saves r27 to r31 with stmw and calls sub_c00a2594 at 0xc00a252c. It then reads the device
   word at 0xfa200948 that sub_c00a23ec wrote and walks a table with lwzx and stwx at 0xc00a2540 to
   0xc00a2564. On one path (beq at 0xc00a2548) it calls 0xc0010640 with a constant pointer at 0xc010a1d4, and
   it ends with an lmw restore.
