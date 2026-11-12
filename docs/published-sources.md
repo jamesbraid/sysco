@@ -14,6 +14,8 @@ Public documents the notes cite. A hint from here is not a finding until the sam
 | Public forum posts on Origin 300 L1 firmware updates and two-brick setups | firmware version strings, L2 console logs of USB enumeration |
 | Public community pages on the Origin 3400 L2 hardware | L2 CPU (MPC860T), memory and flash sizes |
 | SGI, *SGIconsole Hardware Connectivity Guide*, 007-4340-003 | which systems carry an MSC, MMSC, L1 or L2 |
+| SGI, *Origin2000 and Onyx2 Diagnostic Roadmap*, 108-0164-002, printed B-1 (PDF page 55), Figure B-1 | one MSC and one management I2C bus per four-node module, shared NVRAM on that bus ([module management](origin2000-module-management.md), hint) |
+| SGI, *Origin200/2000 IP27 PROM Technical Reference Manual*, 108-0170-001, printed pages 1-4 and 1-5 | module number range, unassigned value and automatic assignment ([module management](origin2000-module-management.md), hint) |
 | SGI, *Origin 3000 Series Owner's Guide*, 007-4240-002 | L2 board, its ports, and the USB and RS-422 topology of an Origin 3000 rack ([L2 board contract, section 8a](l2-board-contract.md)) |
 | SGI, *Origin 3000 Series Technical Configuration Owner's Guide*, 007-4311-002 | L2 board size and power, and which systems need an L2 ([L2 board contract, section 8a](l2-board-contract.md)) |
 | SGI, *Origin2000 Rackmount Owner's Guide*, 007-3456-003; *Origin2000 Deskside Owner's Guide*, 007-3453-002; *Onyx2 Deskside Workstation Owner's Guide*, 007-3454-005; *Onyx2 Rackmount Owner's Guide*, 007-3457-005 | MSC, ELSC and MMSC naming, cabling and displays |
