@@ -650,6 +650,7 @@ Each doc below is listed once. The one-line descriptions are the doc's own first
 - [docs/elsc-host-requests.md](docs/elsc-host-requests.md): ELSC host request set, as the IRIX host side drives it
 - [docs/msc-multinode-console.md](docs/msc-multinode-console.md): console ownership, master election and the kernel broadcast across the module controllers of a multi-node machine, and the module serial route
 - [docs/origin2000-module-management.md](docs/origin2000-module-management.md): how a four-node Origin 2000 module wires its MSC, shared I2C bus, management NVRAM, module number and serial parts; hints from published manuals and public inventories
+- [docs/pcf8584.md](docs/pcf8584.md): the PCF8584 I2C controller each Hub uses to reach the module controller: register selection, own address, clock control and the boot liveness probe
 - [docs/host-tool-functions.md](docs/host-tool-functions.md): Host controller-client routines read from the l1cmd bodies
 - [docs/l1-bedrock-handoffs.md](docs/l1-bedrock-handoffs.md): L1 to Bedrock hand-offs: the ordered events the firmware drives
 - [docs/l1-image-layout.md](docs/l1-image-layout.md): L1 firmware image layout: the 1.44.0 container and its ColdFire packages

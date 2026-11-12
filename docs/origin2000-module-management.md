@@ -38,6 +38,35 @@ rest only on non-public source were left out.
 - The controller-reserved words in that space are already in the [ELSC host request set](elsc-host-requests.md#non-volatile-store),
   with the magic byte at 0x700 and the module number at 0x708. This page adds no new addresses.
 
+## Controller configuration block
+
+The bytes at 0x700 to 0x7ff are reserved for the controller. The marker at 0x700 and the module
+number at 0x708 are already in the host request set. The rest of the block is as published in the
+public Linux SN controller driver and the IP27 PROM Technical Reference (inferred, not checked
+against an image). Constants are in [defs/elsc_nvram.toml](../defs/elsc_nvram.toml).
+
+| Byte | Meaning |
+|---|---|
+| 0x701 to 0x704 | four-character controller password; the default text is `none` |
+| 0x705 | virtual debug-switch XOR override |
+| 0x706 | physical debug-switch XOR override |
+| 0x707 | controller configuration: bit 0 holds the fans high, bit 1 enables automatic power-up |
+| 0x709 | self-test flags, two bits per node board |
+| 0x70a | partition |
+| 0x70b | domain |
+| 0x70c | cluster |
+| 0x70d | cell |
+| 0x70e to 0x7ff | controller-reserved, no published use |
+
+The domain byte is used as a domain number on the Origin 2000 boot path. Whether the controller's
+own initialization writes a clock-select default there, and how that default and the domain use
+fit together, is unknown.
+
+**Conflict.** The Origin 2000 Deskside Owner's Guide (007-3453-002, PDF page 83) gives the
+controller's NVRAM as 1024 by 8 bits. The firmware addresses 2048 bytes, including block 7. The
+manual's figure is not explained by any read so far, so the page keeps both and treats the size as
+unknown.
+
 ## Module number
 
 - **Hint.** The module number is an integer from 1 to 255. Zero means the module is unassigned.

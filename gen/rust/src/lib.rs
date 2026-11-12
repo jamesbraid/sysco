@@ -1,5 +1,6 @@
 // generated from defs/ by defs-gen - do not edit, change the source
 pub mod elsc_host;
+pub mod elsc_nvram;
 pub mod l1_board;
 pub mod l1_console;
 pub mod l1_link_framing;
@@ -19,3 +20,4 @@ pub mod mcf5206e;
 pub mod mmsc_commands;
 pub mod mpc8xx;
 pub mod msc_multinode;
+pub mod pcf8584;
