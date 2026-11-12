@@ -133,6 +133,7 @@ reset_1 = { bits = [1, 1], grade = "established" }
 reset_0 = { bits = [0, 0], grade = "established" }
 
 [constants]
+BANK_RECORD_WORD0 = { value = 0x00040030, grade = "established", doc = "first word of each bank's 48-byte record: record type 4, length 0x30; the same in all ten records" }
 BUS_SELECT_ADDR7 = { value = 0x27, grade = "established" }
 BUS_SELECT_SEG1 = { value = 0xff, grade = "established" }
 BUS_SELECT_SEG13_LAST = { value = 0xf7, grade = "established" }
@@ -174,6 +175,9 @@ FLASH_CMD_ERASE_SUSPEND = { value = 0xb0, grade = "established" }
 FLASH_CMD_PROGRAM = { value = 0xa0, grade = "established" }
 FLASH_CMD_RESET = { value = 0xf0, grade = "established" }
 FLASH_CMD_SECTOR_ERASE = { value = 0x30, grade = "established" }
+FLASH_HELPER_ERR_PROGRAM = { value = 0xfffffaeb, grade = "established", doc = "returned by the write helper on a program failure; package 1" }
+FLASH_HELPER_ERR_RANGE = { value = 0xfffffaec, grade = "established", doc = "returned by the erase helper when the span is outside the limits, and by the boot-block path below the flash base; package 1" }
+FLASH_HELPER_ERR_VERIFY = { value = 0xfffffaea, grade = "established", doc = "returned by the write helper on a verify mismatch; package 1" }
 FLASH_UNLOCK_ADDR_1 = { value = 0xaaa, grade = "established" }
 FLASH_UNLOCK_ADDR_2 = { value = 0x554, grade = "established" }
 FLASH_UNLOCK_DATA_1 = { value = 0xaa, grade = "established" }
@@ -240,7 +244,10 @@ RBRICK_POWER_CONTROL_ADDR7 = { value = 0x39, grade = "established" }
 RBRICK_SUPPLY_2V5_ENABLE = { value = 0x4, grade = "established" }
 RBRICK_SUPPLY_48V_ENABLE = { value = 0x1, grade = "established" }
 RBRICK_WIDGET_PRESENT_ADDR7 = { value = 0x22, grade = "established" }
-ROUTER_CONTROL_ADDR7 = { value = 0x23, grade = "established", doc = "expander index 2" }
+RETAINED_RECORD_BASE = { value = 0x30101990, grade = "established", doc = "retained record in the on-chip SRAM; the loader is shared by the same shape in all five packages" }
+RETAINED_RECORD_MARKER = { value = 0xa1b2c3d4, grade = "established", doc = "first word of the retained record" }
+RETAINED_RECORD_SIZE = { value = 0x4d8, grade = "established" }
+ROUTER_CONTROL_ADDR7 ={ value = 0x23, grade = "established", doc = "expander index 2" }
 ROUTER_HOLD_VALUE = { value = 0x1, grade = "established", doc = "written under that mask by hold" }
 ROUTER_RESET_BITS_MASK = { value = 0xd, grade = "established", doc = "bits stepped through hold and release" }
 ROUTER_START_VALUE = { value = 0xf1, grade = "established" }

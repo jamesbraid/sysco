@@ -139,6 +139,7 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 
 | Constant | Value | Grade | Source | Description |
 |---|---|---|---|---|
+| `BANK_RECORD_WORD0` | 0x40030 | established |  | first word of each bank's 48-byte record: record type 4, length 0x30; the same in all ten records |
 | `BUS_SELECT_ADDR7` | 0x27 | established |  |  |
 | `BUS_SELECT_SEG1` | 0xff | established |  |  |
 | `BUS_SELECT_SEG13_LAST` | 0xf7 | established |  |  |
@@ -180,6 +181,9 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `FLASH_CMD_PROGRAM` | 0xa0 | established |  |  |
 | `FLASH_CMD_RESET` | 0xf0 | established |  |  |
 | `FLASH_CMD_SECTOR_ERASE` | 0x30 | established |  |  |
+| `FLASH_HELPER_ERR_PROGRAM` | 0xfffffaeb | established |  | returned by the write helper on a program failure; package 1 |
+| `FLASH_HELPER_ERR_RANGE` | 0xfffffaec | established |  | returned by the erase helper when the span is outside the limits, and by the boot-block path below the flash base; package 1 |
+| `FLASH_HELPER_ERR_VERIFY` | 0xfffffaea | established |  | returned by the write helper on a verify mismatch; package 1 |
 | `FLASH_UNLOCK_ADDR_1` | 0xaaa | established |  |  |
 | `FLASH_UNLOCK_ADDR_2` | 0x554 | established |  |  |
 | `FLASH_UNLOCK_DATA_1` | 0xaa | established |  |  |
@@ -246,6 +250,9 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `RBRICK_SUPPLY_2V5_ENABLE` | 0x4 | established |  |  |
 | `RBRICK_SUPPLY_48V_ENABLE` | 0x1 | established |  |  |
 | `RBRICK_WIDGET_PRESENT_ADDR7` | 0x22 | established |  |  |
+| `RETAINED_RECORD_BASE` | 0x30101990 | established |  | retained record in the on-chip SRAM; the loader is shared by the same shape in all five packages |
+| `RETAINED_RECORD_MARKER` | 0xa1b2c3d4 | established |  | first word of the retained record |
+| `RETAINED_RECORD_SIZE` | 0x4d8 | established |  |  |
 | `ROUTER_CONTROL_ADDR7` | 0x23 | established |  | expander index 2 |
 | `ROUTER_HOLD_VALUE` | 0x1 | established |  | written under that mask by hold |
 | `ROUTER_RESET_BITS_MASK` | 0xd | established |  | bits stepped through hold and release |

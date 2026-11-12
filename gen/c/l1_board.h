@@ -154,6 +154,7 @@
 #define L1B_XBRIDGE_RESET_0_MASK                     0x1u
 #define L1B_XBRIDGE_RESET_0_INPLACE                  (L1B_XBRIDGE_RESET_0_MASK << L1B_XBRIDGE_RESET_0_SHIFT)
 
+#define L1B_BANK_RECORD_WORD0                        0x40030u /* established */
 #define L1B_BUS_SELECT_ADDR7                         0x27u /* established */
 #define L1B_BUS_SELECT_SEG1                          0xffu /* established */
 #define L1B_BUS_SELECT_SEG13_LAST                    0xf7u /* established */
@@ -195,6 +196,9 @@
 #define L1B_FLASH_CMD_PROGRAM                        0xa0u /* established */
 #define L1B_FLASH_CMD_RESET                          0xf0u /* established */
 #define L1B_FLASH_CMD_SECTOR_ERASE                   0x30u /* established */
+#define L1B_FLASH_HELPER_ERR_PROGRAM                 0xfffffaebu /* established */
+#define L1B_FLASH_HELPER_ERR_RANGE                   0xfffffaecu /* established */
+#define L1B_FLASH_HELPER_ERR_VERIFY                  0xfffffaeau /* established */
 #define L1B_FLASH_UNLOCK_ADDR_1                      0xaaau /* established */
 #define L1B_FLASH_UNLOCK_ADDR_2                      0x554u /* established */
 #define L1B_FLASH_UNLOCK_DATA_1                      0xaau /* established */
@@ -261,6 +265,9 @@
 #define L1B_RBRICK_SUPPLY_2V5_ENABLE                 0x4u /* established */
 #define L1B_RBRICK_SUPPLY_48V_ENABLE                 0x1u /* established */
 #define L1B_RBRICK_WIDGET_PRESENT_ADDR7              0x22u /* established */
+#define L1B_RETAINED_RECORD_BASE                     0x30101990u /* established */
+#define L1B_RETAINED_RECORD_MARKER                   0xa1b2c3d4u /* established */
+#define L1B_RETAINED_RECORD_SIZE                     0x4d8u /* established */
 #define L1B_ROUTER_CONTROL_ADDR7                     0x23u /* established */
 #define L1B_ROUTER_HOLD_VALUE                        0x1u /* established */
 #define L1B_ROUTER_RESET_BITS_MASK                   0xdu /* established */

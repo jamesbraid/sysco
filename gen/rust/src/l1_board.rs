@@ -326,6 +326,7 @@ pub mod xbridge {
         }
     }
 }
+pub const BANK_RECORD_WORD0: u32 = 0x40030; // established
 pub const BUS_SELECT_ADDR7: u32 = 0x27; // established
 pub const BUS_SELECT_SEG1: u32 = 0xff; // established
 pub const BUS_SELECT_SEG13_LAST: u32 = 0xf7; // established
@@ -367,6 +368,9 @@ pub const FLASH_CMD_ERASE_SUSPEND: u32 = 0xb0; // established
 pub const FLASH_CMD_PROGRAM: u32 = 0xa0; // established
 pub const FLASH_CMD_RESET: u32 = 0xf0; // established
 pub const FLASH_CMD_SECTOR_ERASE: u32 = 0x30; // established
+pub const FLASH_HELPER_ERR_PROGRAM: u32 = 0xfffffaeb; // established
+pub const FLASH_HELPER_ERR_RANGE: u32 = 0xfffffaec; // established
+pub const FLASH_HELPER_ERR_VERIFY: u32 = 0xfffffaea; // established
 pub const FLASH_UNLOCK_ADDR_1: u32 = 0xaaa; // established
 pub const FLASH_UNLOCK_ADDR_2: u32 = 0x554; // established
 pub const FLASH_UNLOCK_DATA_1: u32 = 0xaa; // established
@@ -433,6 +437,9 @@ pub const RBRICK_POWER_CONTROL_ADDR7: u32 = 0x39; // established
 pub const RBRICK_SUPPLY_2V5_ENABLE: u32 = 0x4; // established
 pub const RBRICK_SUPPLY_48V_ENABLE: u32 = 0x1; // established
 pub const RBRICK_WIDGET_PRESENT_ADDR7: u32 = 0x22; // established
+pub const RETAINED_RECORD_BASE: u32 = 0x30101990; // established
+pub const RETAINED_RECORD_MARKER: u32 = 0xa1b2c3d4; // established
+pub const RETAINED_RECORD_SIZE: u32 = 0x4d8; // established
 pub const ROUTER_CONTROL_ADDR7: u32 = 0x23; // established
 pub const ROUTER_HOLD_VALUE: u32 = 0x1; // established
 pub const ROUTER_RESET_BITS_MASK: u32 = 0xd; // established

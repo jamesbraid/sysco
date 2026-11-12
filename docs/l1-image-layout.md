@@ -124,11 +124,11 @@ Established for packages 0 and 1 from the listing and for 2, 3 and 5 from the by
 
 Upper bound constants (established, the nine differing bytes of section 2): `0xfff00000` in packages 0 and 1 (`0xffe008c2`, `0xffe009ae`, `0xffe00ae2`), `0xfffffff8` in packages 2, 3 and 5. This is the only loader difference between the 1 MB and 2 MB packages. Hence bank B at `0xfff00000` of a 2 MB package is acceptable to the 2 MB loader and would be rejected by the 1 MB one.
 
-Consequence for a clean flash image of any of these five packages: both banks carry equal stamps, so a start with no valid retained record (power-on with the SRAM contents lost, which makes the marker test fail) runs **bank B** (the later table entry), not bank A, and records it at `+0x10`. Because the bit-5 arm that clears `+0x10` is never taken (step 2), any later start that finds the record intact, whatever caused the reset, skips bank B and runs bank A, and keeps skipping bank B until the record is lost. Established from the algorithm and the recomputed stamps; it was not run. That the SRAM survives a watchdog or external reset is inferred from the program's use of it: the manual calls the SRAM contents undefined after a hardware reset (page 5-3) and says a watchdog reset resets the internal registers as a normal reset does (page 6-84, section 6.11.3), but names no retention guarantee (U10).
+Consequence for a clean flash image of any of these five packages: both banks carry equal stamps, so a start with no valid retained record (power-on with the SRAM contents lost, which makes the marker test fail) runs **bank B** (the later table entry), not bank A, and records it at `+0x10`. The main task clears `+0x10` later in the same start (section 3.4), so the skip does not last: a later start with the record intact runs bank B again unless the reset reaches the loader before that clear. Established from the algorithm and the recomputed stamps; it was not run. That the SRAM survives a watchdog or external reset is inferred from the program's use of it: the manual calls the SRAM contents undefined after a hardware reset (page 5-3) and says a watchdog reset resets the internal registers as a normal reset does (page 6-84, section 6.11.3), but names no retention guarantee (U10).
 
 ### 3.2 What the retained record tells the next boot
 
-Established: the loader writes the previous (`+0xc`), current (`+0x14`) and first-since-record-creation (`+0x10`) image addresses, and the marker check zeroes the whole record when the marker is missing. The `+0x10` word is cleared only by the loader's bit-5-clear arm, which the flash bytes keep from being taken (step 2), so in practice it is cleared only when the record is lost. (Earlier text said a cold reset clears it; that rested on reading the byte as the reset-status register and is withdrawn.)
+Established: the loader writes the previous (`+0xc`), current (`+0x14`) and first-since-record-creation (`+0x10`) image addresses, and the marker check zeroes the whole record when the marker is missing. The `+0x10` word is also cleared by the main task once it runs (section 3.4). The loader's bit-5 clear arm is never taken with the shipped flash (step 2), so it does not clear the word. (Earlier text said a cold reset clears it; that rested on reading the byte as the reset-status register and is withdrawn.)
 
 **The writer of `+0x18` (established, package 1).** The restart routine at `0xffe56654` (reached from the `reboot_l1` request `0x4002` at `0xffe13d76`, reason 1) loads `a5` with `0x30101990` (`0xffe56674`) and stores its image argument at `$18(a5)` (`move.l d7,$18(a5)` at `0xffe566e0`); it also writes the argument and its complement over the first two words of the vector copies at `0x30100400` and `0x30100000`. A search for the literal `0x301019a8` cannot find this store, because the address is formed as base plus displacement. The caller passes the RAM word at `0x30000928` (`0xffe13d84`), which is word `+0x10` of the flash-state block of section 5.4, the **running bank** word. So a controller restart asks the loader to start the bank the program is running from. Established from the code and the block layout. The other four packages pass the word at their own block base plus `0x10` (package 0 `0x300008fc`, package 2 `0x30000f24`, package 3 `0x30001094`, package 5 `0x300010c0`, from [brick-request-handlers.md](l1/brick-request-handlers.md)), which agrees with the per-package block addresses of section 5.4. That nothing else writes the running-bank word was not searched. The routine then masks interrupts and spins until the watchdog fires; it halts instead if the watchdog is not enabled (`0xffe566bc`).
 
@@ -139,6 +139,29 @@ Inferred: the record sits in the on-chip SRAM, which is why it can survive a res
 ### 3.3 After the loader: how a package reaches its board personality
 
 Established ([personalities.md](l1/personalities.md) and [personality-board-init.md](l1/personality-board-init.md), read again for the call sites above). The program starts the same kernel in all five, reads the board identification records and sets a one-byte type (`0x3f` until set), then calls a dispatcher with that type. A type the package does not list takes a fallback that logs a defaulting message, stores `?`, and runs a blank initialiser. The supported-brick string is tested by the host updater (5.1). No controller routine that reads record word 9 was found, but the whole program was not searched (U7). If the controller does not test it, a package running on a brick it does not list still boots, with the blank personality.
+
+### 3.4 Who clears `+0x10`, and which bank each start runs
+
+Writers of `+0x10` (the table is read from the listings; the main-task clear is the one [l1-board-contract.md](l1-board-contract.md) reads in full):
+
+| Writer | When | Grade |
+|---|---|---|
+| The loader's clear arm | only if the bit-5 read returns clear, which the shipped flash prevents (step 2) | established that it is not taken |
+| The main task, in the image the loader started | once per start: the call pair that clears the word (through the helper that clears `0x301019a0`) is found by byte search in all five packages, immediately before the watchdog arm in packages 0 and 1 | established for the clear and the arm in packages 0 and 1; inferred that the arm follows in packages 2, 3 and 5 (U11) |
+| Two other callers of the same clear helper, and one inline clear, in package 1 | each is followed directly by a restart request with reason 1 and image argument 0; one of the callers sits in the routine that handles a missing MAC-address EEPROM | inferred (package 1 listing only); the other callers in the other four packages were found by byte search and not read (U13) |
+
+The bank each start runs, worked from the algorithm, the equal stamps and the clear above. None of these was run.
+
+| Start | Retained record | Bank run |
+|---|---|---|
+| Power-on with the SRAM contents lost | marker missing, record zeroed | **B**, recorded at `+0x10` |
+| Reset after the main task's clear, record intact, `+0x18` empty | `+0x10` empty | **B**: both banks pass, stamps tie, the later table entry wins |
+| Reset after the clear, record lost | marker missing | **B** |
+| Reset between hand-over and the clear, record intact | `+0x10` names B | **A**, because the record check rejects B |
+| Reset after a controller restart through `0x4002` after the clear | `+0x18` names the running bank | that bank again (3.2) |
+| Reset after a reason 1 restart with image argument 0 (the other callers above), record intact | `+0x10` empty, `+0x18` zero | **B**, whichever bank was running |
+
+A clean flash therefore runs bank B on each ordinary start, and bank A only after a reset that reaches the loader between hand-over and the clear. Nothing shown here makes such a reset happen (U12). This replaces the reading in 3.1 that a record left intact keeps the first bank, and the statement in 3.2 that `+0x10` is cleared only when the record is lost.
 
 ## 4. Reset-time hardware the five packages share
 
@@ -217,6 +240,9 @@ What was not established about booting a C-brick: what the actual hardware prese
 | U8 | What the word at `0xffe00ffc` (value 1) is for | Find readers of the flash-state word at block base plus `0x28` (package 0 `0x30000914`, package 1 `0x30000940`, package 2 `0x30000f3c`, package 3 `0x300010ac`, package 5 `0x300010d8`) and of the address `0xffe00ffc` itself. |
 | U9 | Whether the status-reply producer (request `0x0072`) in packages 0, 2, 3 and 5 fills arguments 6 to 10 from the flash-state block exactly as package 1 does | Read the `0x0072` handler of each package (the dispatch shape is the same as package 1's `0xffe3c166`) and check which RAM words it copies; the initial data of all five blocks is read (5.4). |
 | U10 | Whether the on-chip SRAM, hence the retained record, keeps its contents across a watchdog reset and across an external reset (section 3.1) | The manual calls the contents undefined after a hardware reset (page 5-3) and gives no retention rule; the program relies on retention. Read the errata revision 3 and the later ColdFire reference manuals for any retention statement. The images can show only that the program depends on it. |
+| U11 | Whether the call after the main task's clear of `+0x10` is the watchdog arm in packages 2, 3 and 5, as it is in packages 0 and 1 (section 3.4). | Read that call in each of the three packages and confirm it arms the watchdog. |
+| U12 | Which reset sources can reach the loader between the hand-over and the main task's clear, and what the bit-5 byte reads then (the flash byte, which is set). This is the same question as U20 in [l1-board-contract.md](l1-board-contract.md). | Read the reset sections of the manual for the sources. Search the code ahead of the clear for any timeout, fault restart or deliberate reset. If none, a reset cannot reach the window from the program, and bank A runs only after a board reset source fires there. |
+| U13 | Every writer of the retained record's `+0x10` and `+0x18` words in all five packages, and whether each restart that empties `+0x10` and passes image argument 0 leaves bank B to the next start. | Enumerate every caller of the clear helper and every store through the record base plus `0x10` or `0x18` in all five packages. For each, read the restart that follows and its image argument. |
 
 ## 8. Sources
 
