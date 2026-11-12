@@ -129,10 +129,45 @@ processor count and slice population are the same postings' reading; the PROM's 
 | `IP53_4CPU` | `030-1868-001` | `C` | 4 | A, B, C, D | 700 MHz, 4 MB |
 | `IP53_2CPU` | `030-1869-001` | `C` | 2 | A and C | 700 MHz, 4 MB |
 
-The same postings also show 800 MHz boards with other parts: `030-1956-002` and `030-1956-003` (`IP53_4CPU`, 4 MB),
-`030-1959-002` and `030-1959-003` (`IP53_4CPU`, 8 MB), `030-2013-001` (`IP53_4CPU`, 8 MB, CPU revision 3.0) and
-`030-2029-001` (`IP53_2CPU`, 4 MB, CPU revision 3.0). The revisions seen for each are in the postings, not checked
-against an image. No retained capture prints a part for an `IP53_1CPU` board, though the name is in the firmware, so its
+The 700 MHz boards carry R16000 processors at CPU revision 2.1 in the postings. The two-processor part also
+prints revision `D` (two posted boards), so `C` is one of two revisions seen, not the only one.
+
+The same postings show other parts. Revisions and the `Tap` value as printed are below (inferred, from the postings,
+not checked against an image). Each row is one part with the revisions seen:
+
+| Part | Board name | Revisions seen | Clock, cache | `Tap` and CPU revision | Note |
+|---|---|---|---|---|---|
+| `030-1868-002` | `IP53_4CPU` | `A` | 700 MHz, 4 MB | `0xc`, 2.2 | |
+| `030-1812-002` | `IP53_4CPU` | `C` | 700 MHz, 8 MB | `0xa`, 2.1 | one Onyx 350 inventory |
+| `030-1863-001` | `IP53_2CPU` | `D` | 600 MHz, 4 MB | `0xc`, 2.1 | slices A and C |
+| `030-1956-002` | `IP53_4CPU` | `B`, `C` | 800 MHz, 4 MB | `0xa`, 2.2 | |
+| `030-1956-003` | `IP53_4CPU` | `A` | 800 MHz, 4 MB | `0xa`, 2.2 | |
+| `030-1959-002` | `IP53_4CPU` | `A`, `B` | 800 MHz, 8 MB | `0xa`, 2.2 | |
+| `030-1959-003` | `IP53_4CPU` | `C` | 800 MHz, 8 MB | `0xa`, 2.2 | |
+| `030-2013-001` | `IP53_4CPU` | `D` | 800 MHz, 8 MB | `0xa`, 3.0 | |
+| `030-2029-001` | `IP53_2CPU` | `D` | 800 MHz, 4 MB | `0xa`, 3.0 | slices A and C |
+
+The Tezro prints the 800 MHz parts too.
+
+Origin 350 inventories (the `2U_INT_53` enclosure) print `030-1868-001` and `030-1869-001`, revision `C`, at 700 MHz
+and 4 MB. Posts from 2008 to 2010 show five `030-1868-001` boards (two posts, one board in both) and two
+`030-1869-001` boards. So the same node boards serve the Origin 350 and the Tezro (inferred from the postings).
+
+One owner's 2013 post describes a two-processor board replaced by a four-processor board in the same tower, with the
+same interface and I/O boards. The owner says the four-processor board came from an Origin 350. The memory total
+changed because the owner disabled two memory banks, not because of the board. So the workstation interface board
+(`WS_INT_53`) takes either node board (inferred from one owner's statement).
+
+A 2014 post from the same owner's thread lists a 700 MHz four-processor board with 8 MB of cache and no board line.
+Its part is unknown. The only printed 700 MHz 8 MB part is `030-1812-002` above, and whether it is the same board
+is unknown.
+
+No retained record shows an IP53 node board in a rack Tezro. The one retained rack Tezro L1 record, posted 2008, names
+an `IP59` board with 1.0 GHz processors. The rack enclosure uses the 2U interface family, which the Origin 350 also
+uses and which carries these node boards, so an IP53 board in a rack is plausible (inferred). Whether a rack Tezro
+takes IP53 boards is unknown. What would settle it: an inventory of a rack Tezro with an IP53 node board.
+
+No retained capture prints a part for an `IP53_1CPU` board, though the name is in the firmware, so its
 part number is unknown.
 
 ## What the PROM does with them
