@@ -52,6 +52,8 @@ captures: in every capture where the line is not redacted (7 of 7) the `Local Br
 serial of the `INTERFACE` row; three posts show a one-digit difference between the two lines that is consistent with
 the poster masking digits (e.g. `MYE999` against `MYE900`).
 
+Width of the brick serial (established for the decoder's code, L1 1.44.0, package 2). The board-area decoder `0xffe8d18c` skips the manufacturer field (its length byte is at area offset 6), then copies each following text field into a heap block of (type and length byte & `0x3f`) + 1 bytes and terminates it: the second field is stored at record `+0x4c` (`0xffe8d1f8` to `0xffe8d224`) and the third, the serial that the brick-serial routine returns, at `+0x50` (`0xffe8d23e` to `0xffe8d246`, copied by the same steps). The width is the field's own six-bit length, 0 to 63 characters, with no fixed buffer and no truncation in the decoder; the instructions read do not test the two type bits. Whether the type bits are tested before the decoder runs was not read here.
+
 ## Formats
 
 ### System serial number (SSN)
@@ -82,11 +84,15 @@ bad format `-2103`, no assignment (equal reference and suffix `0000000`) `-2104`
 the hardware is touched. The reference-value rules ("learn" from attached C-brick or L2) were read in package 1 in an
 earlier pass and are not repeated here.
 
+Package 2 forms (established, L1 1.44.0, package 2, read in full). The `serial set` validator `0xffe35140` returns 1 at once when the required-letter byte is zero (`0xffe35152`). Otherwise it needs length exactly 8 (`0xffe3515c` to `0xffe35164`), then a first character found by a string search (`0xffea7210`) in a local string that starts with the required letter, characters 2 to 8 not equal to `9999999` or `3999999` (strings at `0xffe3574d`, `0xffe35755`, compared at `0xffe3521a` to `0xffe35242`), character 2 from `0` to `3` (`0xffe3524c` to `0xffe35264`) and characters 3 to 8 digits by the character table (`0xffe35268` to `0xffe352cc`). That is the package 1 shape. Two differences: for brick type `7` the local string is extended with `P` when the byte at `0x300008ce` is 3 (`0xffe3518e` to `0xffe351b0`), so a type 7 module in that state also accepts `P` as first letter; and for type `8` an input that starts with `P` and whose other seven characters are not `0000000` runs an extra pair of calls (`0xffe795e8` with 0x7a, `0xffe76e68`) whose roles were not read. The routine stores only the first byte of the local string, so the search also scans whatever the stack holds after it (observed from the instruction sequence, not run).
+
+The pre-power check `0xffe7352c` has the package 1 form: it is skipped for brick type `A` (`0xffe73560`) and when setting `0x50` is nonzero (`0xffe73568` to `0xffe73576`); compares six characters of the brick serial with the first board record's serial (`-2100`, `0xffe735e2`); rejects the `9999999` and `3999999` suffixes (`-2102`, `0xffe73628`); with the required byte nonzero demands first character equal to it, otherwise first character from `L` to `R` (`0xffe7364e` to `0xffe73662`); character 2 from `0` to `3` and characters 3 to 8 digits (`0xffe73664` to `0xffe736f6`); any of these failing returns `-2103` (`0xffe73772`); a differing reference serial returns `-2101` (`0xffe7381c`). The `-2104` case was not read.
+
 Required first letter by brick family. The profile set-up functions store the letter into the shared structure.
 Package 2: the dispatch at `0xffea38f6` to `0xffea3970` sends type `7` to `0xffe5f858`, which stores `M` at
-`0xffe5f890`, and type `9` to `0xffe61bc0`, which stores `P` at `0xffe61bd8` (E for the stores and the dispatch). That
-the validator and pre-power check in package 2 read the same structure field as in package 1 is inferred (the
-structure address and the identical help text agree). Package 1 stores `M` for the Origin 300 node board (`IP45`).
+`0xffe5f890`, and type `9` to `0xffe61bc0`, which stores `P` at `0xffe61bd8` (E for the stores and the dispatch). The
+validator and the pre-power check in package 2 read that same structure field. Established (L1 1.44.0, package 2): the structure is at `0x3000281c` (the type dispatch is called with that address, `0xffe75fae`) and its required-letter byte at `+0xc` is `0x30002828`; the validator `0xffe35140` tests it at `0xffe35152` and the pre-power check `0xffe7352c` at `0xffe73632`. The profile stores above (`0xffe5f890`, `0xffe61bd8`) write `+0xc` of the structure passed in.
+Package 1 stores `M` for the Origin 300 node board (`IP45`).
 Earlier reading, not repeated: `L` for the original `IP35` C-brick profile.
 
 Real values. Origin 350 and Onyx 350 2U modules print `M` plus seven digits (`M2100629`, `M2008888`, `M2100887`,
@@ -145,9 +151,4 @@ Established (IRIX 6.5.30 IP35 boot kernel; symbol names and `.text` offsets).
 
 ## Not settled
 
-- The BSN field width limit. The type/length byte allows 63 characters; every real value is six. Unknown how many
-  the record buffer at record `+0x50` holds. Route: the board-record builder in package 2.
-- Whether a tower Tezro's SSN starts with `P`. Route: a `serial all` or `hinv` capture from one, or the package 2
-  `serial set` validator read to its end.
-- The package 2 pre-power check and `serial set` code, which were not re-read; the package 1 forms above are the
-  reference.
+- Whether a tower Tezro's SSN starts with `P`. Route: a `serial all` or `hinv` capture from one, or a package 2 profile that stores a different letter. The package 2 validator and pre-power check were read (above); for brick type `9` they require `P`.
