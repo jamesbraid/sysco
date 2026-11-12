@@ -115,6 +115,26 @@ same listings are longer (`XPD0323001887`). `R`-prefixed serials appear on `IP59
 `2U_INT_53` revision -D, `M` and `N` on the earlier revisions. What the letters mean in the factory is not in any
 shipped image (unknown).
 
+### IP53 node board part numbers
+
+Each IP53 node board prints a part number and revision in two places: the `NODE` row of the L1 board record (`serial all`,
+with the part written as `030_1868_001` and the revision as `C`) and the `hinv` board line (`030-1868-001`, revision
+printed as `-C`). The two forms differ only in punctuation. The rows below come from public `hinv` and `serial all`
+postings from 2004 to 2024. They are printed in captures, not in a shipped image, so each is inferred. The
+processor count and slice population are the same postings' reading; the PROM's own board names (`IP53_4CPU`,
+`IP53_2CPU`) are in the firmware.
+
+| Board name | Part | Revision | Processors | Slices populated | Clock, secondary cache |
+|---|---|---|---|---|---|
+| `IP53_4CPU` | `030-1868-001` | `C` | 4 | A, B, C, D | 700 MHz, 4 MB |
+| `IP53_2CPU` | `030-1869-001` | `C` | 2 | A and C | 700 MHz, 4 MB |
+
+The same postings also show 800 MHz boards with other parts: `030-1956-002` and `030-1956-003` (`IP53_4CPU`, 4 MB),
+`030-1959-002` and `030-1959-003` (`IP53_4CPU`, 8 MB), `030-2013-001` (`IP53_4CPU`, 8 MB, CPU revision 3.0) and
+`030-2029-001` (`IP53_2CPU`, 4 MB, CPU revision 3.0). The revisions seen for each are in the postings, not checked
+against an image. No retained capture prints a part for an `IP53_1CPU` board, though the name is in the firmware, so its
+part number is unknown.
+
 ## What the PROM does with them
 
 Established (PROM 6.210).
