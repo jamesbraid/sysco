@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!-- generated from defs/l1_link_framing.toml by defs-gen - do not edit, change the source -->
+<genxml unit="l1_link_framing" prefix="L1LF" title="frame bytes and link context constants of the ColdFire L1 node and peer links">
+  <doc>Constants of the PPP-style frame that the ColdFire L1 uses on its node link (the Bedrock UART) and on
+its RS-422 peer links, and the Bedrock-side register block the node link reaches. The frame bytes and
+the receive check value are shared by both links. The context values (body offset, growth limit, escape
+list) belong to the peer link and the node port's setup. Offsets of the node-side register block are
+from the node base in the Hub special space.
+
+Grades: the byte values and context numbers are read from the L1 image's frame and link set-up code.
+The meaning given to each one is an inference unless the item says otherwise.
+</doc>
+  <constant name="FRAME_CHECK_RECEIVE" value="0xf0b8" grade="established"/>
+  <constant name="FRAME_CHECK_SEED" value="0xffff" grade="established"/>
+  <constant name="FRAME_ESCAPE" value="0x7d" grade="established"/>
+  <constant name="FRAME_ESCAPE_XOR" value="0x20" grade="established"/>
+  <constant name="FRAME_FLAG" value="0x7e" grade="established"/>
+  <constant name="NODE_BODY_CAP" value="0x100" grade="inferred"/>
+  <constant name="NODE_PAYLOAD_MAX" value="0x80" grade="inferred"/>
+  <constant name="NODE_UART_BLOCK_OFFSET" value="0x30000080" grade="inferred"/>
+  <constant name="PEER_BODY_OFFSET" value="0x10" grade="established"/>
+  <constant name="PEER_ESCAPE_TX_A" value="0x11" grade="inferred"/>
+  <constant name="PEER_ESCAPE_TX_B" value="0x13" grade="inferred"/>
+  <constant name="PEER_GROWTH_LIMIT" value="0x410" grade="established"/>
+</genxml>

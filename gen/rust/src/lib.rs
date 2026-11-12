@@ -2,6 +2,7 @@
 pub mod elsc_host;
 pub mod l1_board;
 pub mod l1_console;
+pub mod l1_link_framing;
 pub mod l1_pkg0_console;
 pub mod l1_pkg0_requests;
 pub mod l1_pkg1_console;
