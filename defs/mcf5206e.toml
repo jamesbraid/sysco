@@ -116,7 +116,9 @@ data = { bits = [7, 0], grade = "inferred" }
 [words.MBSR]
 width = 32
 doc = """
-M-Bus module. The offsets are the manual's, as the firmware adds them to the module base."""
+M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.
+Reset value 0x81 (MCF and RXAK set). Software writes clear only MAL and MIF, by writing zero;
+the other bits report hardware state."""
 grade = "established"
 
 [words.MBSR.fields]
@@ -136,14 +138,24 @@ expect = { mcf = 1, rxak = 1 }
 width = 8
 doc = """
 M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
-from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gives 2048). The table value is
-a divider, not a bit rate, until the controller clock is known. Bits 7 and 6 are reserved; their
-readback is unknown."""
+from the manual's table 13-2. The table value is a divider, not a bit rate. The errata says the
+SCL frequency is the CPU frequency divided by the selected divider, and that the selection must
+keep the M-Bus below 100 kHz. The rate in hertz is unknown until the controller clock is known.
+Bits 7 and 6 are reserved; their readback is unknown."""
 grade = "inferred"
 from = "MCF5206e User's Manual MCF5206EUM rev. 1 (1998), table 13-2; errata MCF5206EUMAD rev. 3, section 13.5.2"
 
-[words.MFDR.fields]
-mbc = { bits = [5, 0], grade = "inferred", doc = "selector into the manual's divider table, not the divider itself" }
+[words.MFDR.fields.mbc]
+bits = [5, 0]
+grade = "inferred"
+doc = "selector into the manual's divider table, not the divider itself"
+
+[words.MFDR.fields.mbc.enums]
+divide_20 = { value = 0x20, grade = "inferred" }
+divide_28 = { value = 0x00, grade = "inferred" }
+divide_68 = { value = 0x07, grade = "inferred" }
+divide_480 = { value = 0x13, grade = "inferred" }
+divide_2048 = { value = 0x3f, grade = "inferred" }
 
 [[words.MFDR.tests]]
 value = 0x13
@@ -211,6 +223,7 @@ CS4_START_CSCR = { value = 0x95f, grade = "established" }
 CS4_START_CSMR = { value = 0x0, grade = "established" }
 DMCR_START_VALUE = { value = 0x0, grade = "established" }
 ICR10_START_VALUE = { value = 0x80, grade = "established" }
+ICR11_RESET_VALUE = { value = 0x80, grade = "inferred", doc = "hardware reset from the manual's chapter 8; autovector bit forced to one" }
 ICR11_START_VALUE = { value = 0x99, grade = "established" }
 ICR12_START_VALUE = { value = 0x1a, grade = "established" }
 ICR13_START_VALUE = { value = 0x0, grade = "established", doc = "cleared, UART 2 unused" }
@@ -226,6 +239,7 @@ ICR7_START_VALUE = { value = 0x9c, grade = "established" }
 ICR8_START_VALUE = { value = 0x1d, grade = "established" }
 ICR9_START_VALUE = { value = 0x94, grade = "established" }
 IMR_START_VALUE = { value = 0xfffe, grade = "established" }
+MBSR_RESET_VALUE = { value = 0x81, grade = "inferred", doc = "hardware reset from the manual's register diagram" }
 MFDR_INIT = { value = 0x13, grade = "established", doc = "written at bring-up, 100 kHz at the inferred 48 MHz clock" }
 OFFSET_CSAR0 = { value = 0x64, grade = "established", doc = "rw16" }
 OFFSET_CSAR1 = { value = 0x70, grade = "established", doc = "rw16" }

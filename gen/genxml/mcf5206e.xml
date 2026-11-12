@@ -17,6 +17,13 @@ image.
     <value name="size_128kb" value="1" grade="established"/>
     <value name="size_512kb" value="7" grade="established"/>
   </enum>
+  <enum name="mfdr_mbc">
+    <value name="divide_28" value="0" grade="inferred"/>
+    <value name="divide_68" value="7" grade="inferred"/>
+    <value name="divide_480" value="19" grade="inferred"/>
+    <value name="divide_20" value="32" grade="inferred"/>
+    <value name="divide_2048" value="63" grade="inferred"/>
+  </enum>
   <struct name="CSMR0" size="4" grade="established">
     <doc>The firmware sizes the CS0 flash by writing the mask for 2 MB, then rewrites it
 for 1 MB when the two halves of the window read back the same.</doc>
@@ -76,7 +83,9 @@ next one.</doc>
     <field name="data" start="0" size="8" type="uint" grade="inferred"/>
   </struct>
   <struct name="MBSR" size="4" grade="established">
-    <doc>M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.</doc>
+    <doc>M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.
+Reset value 0x81 (MCF and RXAK set). Software writes clear only MAL and MIF, by writing zero;
+the other bits report hardware state.</doc>
     <field name="mcf" start="7" size="1" type="uint" grade="inferred"/>
     <field name="maas" start="6" size="1" type="uint" grade="inferred"/>
     <field name="bus_busy" start="5" size="1" type="uint" grade="established"/>
@@ -91,10 +100,11 @@ next one.</doc>
   </struct>
   <struct name="MFDR" size="1" grade="inferred">
     <doc>M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
-from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gives 2048). The table value is
-a divider, not a bit rate, until the controller clock is known. Bits 7 and 6 are reserved; their
-readback is unknown.</doc>
-    <field name="mbc" start="0" size="6" type="uint" grade="inferred"/>
+from the manual's table 13-2. The table value is a divider, not a bit rate. The errata says the
+SCL frequency is the CPU frequency divided by the selected divider, and that the selection must
+keep the M-Bus below 100 kHz. The rate in hertz is unknown until the controller clock is known.
+Bits 7 and 6 are reserved; their readback is unknown.</doc>
+    <field name="mbc" start="0" size="6" type="mfdr_mbc" grade="inferred"/>
     <test value="0x13" kind="vector">
       <expect field="mbc" value="19"/>
     </test>
@@ -139,6 +149,7 @@ readback is unknown.</doc>
   <constant name="CS4_START_CSMR" value="0x0" grade="established"/>
   <constant name="DMCR_START_VALUE" value="0x0" grade="established"/>
   <constant name="ICR10_START_VALUE" value="0x80" grade="established"/>
+  <constant name="ICR11_RESET_VALUE" value="0x80" grade="inferred"/>
   <constant name="ICR11_START_VALUE" value="0x99" grade="established"/>
   <constant name="ICR12_START_VALUE" value="0x1a" grade="established"/>
   <constant name="ICR13_START_VALUE" value="0x0" grade="established"/>
@@ -154,6 +165,7 @@ readback is unknown.</doc>
   <constant name="ICR8_START_VALUE" value="0x1d" grade="established"/>
   <constant name="ICR9_START_VALUE" value="0x94" grade="established"/>
   <constant name="IMR_START_VALUE" value="0xfffe" grade="established"/>
+  <constant name="MBSR_RESET_VALUE" value="0x81" grade="inferred"/>
   <constant name="MFDR_INIT" value="0x13" grade="established"/>
   <constant name="OFFSET_CSAR0" value="0x64" grade="established"/>
   <constant name="OFFSET_CSAR1" value="0x70" grade="established"/>

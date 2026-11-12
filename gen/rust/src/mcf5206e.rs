@@ -170,7 +170,7 @@ pub mod mbdr {
         }
     }
 }
-/// M-Bus module. The offsets are the manual's, as the firmware adds them to the module base. (established)
+/// M-Bus module. The offsets are the manual's, as the firmware adds them to the module base. Reset value 0x81 (MCF and RXAK set). Software writes clear o (established)
 pub mod mbsr {
     pub const WIDTH: u32 = 32;
     pub mod mcf { // bits 7:7, inferred
@@ -244,7 +244,7 @@ pub mod mbsr {
         }
     }
 }
-/// M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gi (inferred)
+/// M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider from the manual's table 13-2. The table value is a divider, not a bi (inferred)
 pub mod mfdr {
     pub const WIDTH: u32 = 8;
     pub mod mbc { // bits 5:0, inferred
@@ -255,6 +255,42 @@ pub mod mfdr {
         }
         pub const fn set(v: u32, x: u32) -> u32 {
             (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+        pub const DIVIDE_28: u32 = 0; // inferred
+        pub const DIVIDE_68: u32 = 7; // inferred
+        pub const DIVIDE_480: u32 = 19; // inferred
+        pub const DIVIDE_20: u32 = 32; // inferred
+        pub const DIVIDE_2048: u32 = 63; // inferred
+        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+        pub enum Value {
+            Divide28,
+            Divide68,
+            Divide480,
+            Divide20,
+            Divide2048,
+            Other(u32),
+        }
+        impl Value {
+            pub const fn from_raw(v: u32) -> Self {
+                match v {
+                    0 => Self::Divide28,
+                    7 => Self::Divide68,
+                    19 => Self::Divide480,
+                    32 => Self::Divide20,
+                    63 => Self::Divide2048,
+                    _ => Self::Other(v),
+                }
+            }
+            pub const fn raw(self) -> u32 {
+                match self {
+                    Self::Divide28 => 0,
+                    Self::Divide68 => 7,
+                    Self::Divide480 => 19,
+                    Self::Divide20 => 32,
+                    Self::Divide2048 => 63,
+                    Self::Other(v) => v,
+                }
+            }
         }
     }
 }
@@ -389,6 +425,7 @@ pub const CS4_START_CSCR: u32 = 0x95f; // established
 pub const CS4_START_CSMR: u32 = 0x0; // established
 pub const DMCR_START_VALUE: u32 = 0x0; // established
 pub const ICR10_START_VALUE: u32 = 0x80; // established
+pub const ICR11_RESET_VALUE: u32 = 0x80; // inferred
 pub const ICR11_START_VALUE: u32 = 0x99; // established
 pub const ICR12_START_VALUE: u32 = 0x1a; // established
 pub const ICR13_START_VALUE: u32 = 0x0; // established
@@ -404,6 +441,7 @@ pub const ICR7_START_VALUE: u32 = 0x9c; // established
 pub const ICR8_START_VALUE: u32 = 0x1d; // established
 pub const ICR9_START_VALUE: u32 = 0x94; // established
 pub const IMR_START_VALUE: u32 = 0xfffe; // established
+pub const MBSR_RESET_VALUE: u32 = 0x81; // inferred
 pub const MFDR_INIT: u32 = 0x13; // established
 pub const OFFSET_CSAR0: u32 = 0x64; // established
 pub const OFFSET_CSAR1: u32 = 0x70; // established

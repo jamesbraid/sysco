@@ -82,6 +82,8 @@
 
 /*
  * M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.
+ * Reset value 0x81 (MCF and RXAK set). Software writes clear only MAL and MIF, by writing zero;
+ * the other bits report hardware state.
  */
 /* word MBSR: 32 bits */
 #define SIM_MBSR_WIDTH                               32 /* established */
@@ -109,15 +111,21 @@
 
 /*
  * M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
- * from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gives 2048). The table value is
- * a divider, not a bit rate, until the controller clock is known. Bits 7 and 6 are reserved; their
- * readback is unknown.
+ * from the manual's table 13-2. The table value is a divider, not a bit rate. The errata says the
+ * SCL frequency is the CPU frequency divided by the selected divider, and that the selection must
+ * keep the M-Bus below 100 kHz. The rate in hertz is unknown until the controller clock is known.
+ * Bits 7 and 6 are reserved; their readback is unknown.
  */
 /* word MFDR: 8 bits */
 #define SIM_MFDR_WIDTH                               8 /* inferred */
 #define SIM_MFDR_MBC_SHIFT                           0 /* inferred */
 #define SIM_MFDR_MBC_MASK                            0x3fu
 #define SIM_MFDR_MBC_INPLACE                         (SIM_MFDR_MBC_MASK << SIM_MFDR_MBC_SHIFT)
+#define SIM_MFDR_MBC_DIVIDE_28                       0 /* inferred */
+#define SIM_MFDR_MBC_DIVIDE_68                       7 /* inferred */
+#define SIM_MFDR_MBC_DIVIDE_480                      19 /* inferred */
+#define SIM_MFDR_MBC_DIVIDE_20                       32 /* inferred */
+#define SIM_MFDR_MBC_DIVIDE_2048                     63 /* inferred */
 
 /*
  * Parallel port: direction and data, used as the scan-chain interface.
@@ -188,6 +196,7 @@
 #define SIM_CS4_START_CSMR                           0x0u /* established */
 #define SIM_DMCR_START_VALUE                         0x0u /* established */
 #define SIM_ICR10_START_VALUE                        0x80u /* established */
+#define SIM_ICR11_RESET_VALUE                        0x80u /* inferred */
 #define SIM_ICR11_START_VALUE                        0x99u /* established */
 #define SIM_ICR12_START_VALUE                        0x1au /* established */
 #define SIM_ICR13_START_VALUE                        0x0u /* established */
@@ -203,6 +212,7 @@
 #define SIM_ICR8_START_VALUE                         0x1du /* established */
 #define SIM_ICR9_START_VALUE                         0x94u /* established */
 #define SIM_IMR_START_VALUE                          0xfffeu /* established */
+#define SIM_MBSR_RESET_VALUE                         0x81u /* inferred */
 #define SIM_MFDR_INIT                                0x13u /* established */
 #define SIM_OFFSET_CSAR0                             0x64u /* established */
 #define SIM_OFFSET_CSAR1                             0x70u /* established */
