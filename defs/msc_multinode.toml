@@ -1,0 +1,18 @@
+unit = "msc_multinode"
+prefix = "MSCMN"
+title = "constants of the multi-node console and master election"
+doc = """
+Constants that the multi-node module system controller arrangement uses: the hub network-interface
+scratch registers the master election reads, the CPU-letter base of the console line prefix, and
+the two-wire device family codes of the module and node records on the hub bus. Each is read from
+the PROM and kernel reading described in the console note; none has been checked against the
+images in this repository.
+"""
+from = "IRIX 6.5.7 IP27 PROM master election and console code and kernel system-controller driver; no image address recorded"
+
+[constants]
+NI_SCRATCH_IDENTITY = { value = 0x0, grade = "inferred", doc = "hub network-interface scratch register 0: board identity (NIC) and partition id, written first thing at power-on" }
+NI_SCRATCH_STATUS = { value = 0x1, grade = "inferred", doc = "hub network-interface scratch register 1: node identity and status fields; the node number is added after arbitration" }
+SLICE_LETTER_BASE = { value = 0x41, grade = "inferred", doc = "console line letter for CPU slice 0 within a node; slice n prints this value plus n; the letter does not identify the node or module" }
+MODULE_RECORD_FAMILY = { value = 0x09, grade = "inferred", doc = "two-wire device family of the hub-side module manufacturing record, enumerated on the node-local hub bus" }
+NODE_RECORD_FAMILY = { value = 0x0b, grade = "inferred", doc = "two-wire device family of the node and PIMM record, enumerated on the same node-local hub bus as the module record" }

@@ -18,3 +18,4 @@ pub mod l2_router_requests;
 pub mod mcf5206e;
 pub mod mmsc_commands;
 pub mod mpc8xx;
+pub mod msc_multinode;
