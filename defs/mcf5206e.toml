@@ -64,6 +64,55 @@ expect = { bam = 1 }
 value = 0x70000
 expect = { bam = 7 }
 
+[words.MADR]
+width = 8
+doc = """
+M-Bus address register: the module's own seven-bit slave address, in bits 7 to 1. Bit 0 is
+reserved. Reset value 0x00. Not the calling byte a master sends. Layout from the manual; the
+firmware's own use is not re-read here."""
+grade = "inferred"
+from = "MCF5206e User's Manual MCF5206EUM rev. 1 (1998), chapter 13, register diagrams"
+
+[words.MADR.fields]
+adr = { bits = [7, 1], grade = "inferred" }
+
+[[words.MADR.tests]]
+value = 0x58
+expect = { adr = 0x2c }
+
+[words.MBCR]
+width = 8
+doc = """
+M-Bus control register, reset value 0x00. MEN holds the module in reset while clear.
+RSTA is write-one and always reads zero. Bits 1 and 0 are reserved. Other control bits have no
+effect while MEN is clear."""
+grade = "inferred"
+from = "MCF5206e User's Manual MCF5206EUM rev. 1 (1998), chapter 13, sections 13.3 to 13.5"
+
+[words.MBCR.fields]
+men = { bits = [7, 7], grade = "inferred" }
+mien = { bits = [6, 6], grade = "inferred" }
+msta = { bits = [5, 5], grade = "inferred" }
+mtx = { bits = [4, 4], grade = "inferred" }
+txak = { bits = [3, 3], grade = "inferred" }
+rsta = { bits = [2, 2], grade = "inferred", doc = "write one for repeated START; reads zero" }
+
+[[words.MBCR.tests]]
+value = 0xf0
+expect = { men = 1, mien = 1, msta = 1, mtx = 1, txak = 0, rsta = 0 }
+
+[words.MBDR]
+width = 8
+doc = """
+M-Bus data register, reset value 0x00. A write starts the next transmit byte, most
+significant bit first. A read in receive mode returns the received byte and starts receipt of the
+next one."""
+grade = "inferred"
+from = "MCF5206e User's Manual MCF5206EUM rev. 1 (1998), chapter 13, section 13.5.5"
+
+[words.MBDR.fields]
+data = { bits = [7, 0], grade = "inferred" }
+
 [words.MBSR]
 width = 32
 doc = """
@@ -72,6 +121,33 @@ grade = "established"
 
 [words.MBSR.fields]
 bus_busy = { bits = [5, 5], grade = "established" }
+mcf = { bits = [7, 7], grade = "inferred", doc = "byte transfer complete; clears during a transfer, sets on the ninth clock" }
+maas = { bits = [6, 6], grade = "inferred", doc = "addressed as slave; an MBCR write clears it" }
+mal = { bits = [4, 4], grade = "inferred", doc = "arbitration lost; software clears it by writing zero" }
+srw = { bits = [2, 2], grade = "inferred", doc = "slave-mode direction of the completed address match" }
+mif = { bits = [1, 1], grade = "inferred", doc = "interrupt flag; software clears it by writing zero" }
+rxak = { bits = [0, 0], grade = "inferred", doc = "received acknowledge; one means NACK" }
+
+[[words.MBSR.tests]]
+value = 0x81
+expect = { mcf = 1, rxak = 1 }
+
+[words.MFDR]
+width = 8
+doc = """
+M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
+from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gives 2048). The table value is
+a divider, not a bit rate, until the controller clock is known. Bits 7 and 6 are reserved; their
+readback is unknown."""
+grade = "inferred"
+from = "MCF5206e User's Manual MCF5206EUM rev. 1 (1998), table 13-2; errata MCF5206EUMAD rev. 3, section 13.5.2"
+
+[words.MFDR.fields]
+mbc = { bits = [5, 0], grade = "inferred", doc = "selector into the manual's divider table, not the divider itself" }
+
+[[words.MFDR.tests]]
+value = 0x13
+expect = { mbc = 0x13 }
 
 [words.PADAT]
 width = 32

@@ -41,9 +41,63 @@ manual's and was not re-read in an image.</doc>
       <expect field="bam" value="7"/>
     </test>
   </struct>
+  <struct name="MADR" size="1" grade="inferred">
+    <doc>M-Bus address register: the module's own seven-bit slave address, in bits 7 to 1. Bit 0 is
+reserved. Reset value 0x00. Not the calling byte a master sends. Layout from the manual; the
+firmware's own use is not re-read here.</doc>
+    <field name="adr" start="1" size="7" type="uint" grade="inferred"/>
+    <test value="0x58" kind="vector">
+      <expect field="adr" value="44"/>
+    </test>
+  </struct>
+  <struct name="MBCR" size="1" grade="inferred">
+    <doc>M-Bus control register, reset value 0x00. MEN holds the module in reset while clear.
+RSTA is write-one and always reads zero. Bits 1 and 0 are reserved. Other control bits have no
+effect while MEN is clear.</doc>
+    <field name="men" start="7" size="1" type="uint" grade="inferred"/>
+    <field name="mien" start="6" size="1" type="uint" grade="inferred"/>
+    <field name="msta" start="5" size="1" type="uint" grade="inferred"/>
+    <field name="mtx" start="4" size="1" type="uint" grade="inferred"/>
+    <field name="txak" start="3" size="1" type="uint" grade="inferred"/>
+    <field name="rsta" start="2" size="1" type="uint" grade="inferred"/>
+    <test value="0xf0" kind="vector">
+      <expect field="men" value="1"/>
+      <expect field="mien" value="1"/>
+      <expect field="msta" value="1"/>
+      <expect field="mtx" value="1"/>
+      <expect field="txak" value="0"/>
+      <expect field="rsta" value="0"/>
+    </test>
+  </struct>
+  <struct name="MBDR" size="1" grade="inferred">
+    <doc>M-Bus data register, reset value 0x00. A write starts the next transmit byte, most
+significant bit first. A read in receive mode returns the received byte and starts receipt of the
+next one.</doc>
+    <field name="data" start="0" size="8" type="uint" grade="inferred"/>
+  </struct>
   <struct name="MBSR" size="4" grade="established">
     <doc>M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.</doc>
+    <field name="mcf" start="7" size="1" type="uint" grade="inferred"/>
+    <field name="maas" start="6" size="1" type="uint" grade="inferred"/>
     <field name="bus_busy" start="5" size="1" type="uint" grade="established"/>
+    <field name="mal" start="4" size="1" type="uint" grade="inferred"/>
+    <field name="srw" start="2" size="1" type="uint" grade="inferred"/>
+    <field name="mif" start="1" size="1" type="uint" grade="inferred"/>
+    <field name="rxak" start="0" size="1" type="uint" grade="inferred"/>
+    <test value="0x81" kind="vector">
+      <expect field="mcf" value="1"/>
+      <expect field="rxak" value="1"/>
+    </test>
+  </struct>
+  <struct name="MFDR" size="1" grade="inferred">
+    <doc>M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
+from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gives 2048). The table value is
+a divider, not a bit rate, until the controller clock is known. Bits 7 and 6 are reserved; their
+readback is unknown.</doc>
+    <field name="mbc" start="0" size="6" type="uint" grade="inferred"/>
+    <test value="0x13" kind="vector">
+      <expect field="mbc" value="19"/>
+    </test>
   </struct>
   <struct name="PADAT" size="4" grade="established">
     <doc>Parallel port: direction and data, used as the scan-chain interface.</doc>

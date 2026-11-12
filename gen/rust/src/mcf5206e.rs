@@ -78,12 +78,178 @@ pub mod csmr2 {
         }
     }
 }
+/// M-Bus address register: the module's own seven-bit slave address, in bits 7 to 1. Bit 0 is reserved. Reset value 0x00. Not the calling byte a master s (inferred)
+pub mod madr {
+    pub const WIDTH: u32 = 8;
+    pub mod adr { // bits 7:1, inferred
+        pub const SHIFT: u32 = 1;
+        pub const MASK: u32 = 0x7f;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+}
+/// M-Bus control register, reset value 0x00. MEN holds the module in reset while clear. RSTA is write-one and always reads zero. Bits 1 and 0 are reserve (inferred)
+pub mod mbcr {
+    pub const WIDTH: u32 = 8;
+    pub mod men { // bits 7:7, inferred
+        pub const SHIFT: u32 = 7;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod mien { // bits 6:6, inferred
+        pub const SHIFT: u32 = 6;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod msta { // bits 5:5, inferred
+        pub const SHIFT: u32 = 5;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod mtx { // bits 4:4, inferred
+        pub const SHIFT: u32 = 4;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod txak { // bits 3:3, inferred
+        pub const SHIFT: u32 = 3;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod rsta { // bits 2:2, inferred
+        pub const SHIFT: u32 = 2;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+}
+/// M-Bus data register, reset value 0x00. A write starts the next transmit byte, most significant bit first. A read in receive mode returns the received  (inferred)
+pub mod mbdr {
+    pub const WIDTH: u32 = 8;
+    pub mod data { // bits 7:0, inferred
+        pub const SHIFT: u32 = 0;
+        pub const MASK: u32 = 0xff;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+}
 /// M-Bus module. The offsets are the manual's, as the firmware adds them to the module base. (established)
 pub mod mbsr {
     pub const WIDTH: u32 = 32;
+    pub mod mcf { // bits 7:7, inferred
+        pub const SHIFT: u32 = 7;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod maas { // bits 6:6, inferred
+        pub const SHIFT: u32 = 6;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
     pub mod bus_busy { // bits 5:5, established
         pub const SHIFT: u32 = 5;
         pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod mal { // bits 4:4, inferred
+        pub const SHIFT: u32 = 4;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod srw { // bits 2:2, inferred
+        pub const SHIFT: u32 = 2;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod mif { // bits 1:1, inferred
+        pub const SHIFT: u32 = 1;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+    pub mod rxak { // bits 0:0, inferred
+        pub const SHIFT: u32 = 0;
+        pub const MASK: u32 = 0x1;
+        pub const fn get(v: u32) -> u32 {
+            (v >> SHIFT) & MASK
+        }
+        pub const fn set(v: u32, x: u32) -> u32 {
+            (v & !(MASK << SHIFT)) | ((x & MASK) << SHIFT)
+        }
+    }
+}
+/// M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider from the manual's table 13-2 (0x00 gives 28, 0x13 gives 480, 0x3f gi (inferred)
+pub mod mfdr {
+    pub const WIDTH: u32 = 8;
+    pub mod mbc { // bits 5:0, inferred
+        pub const SHIFT: u32 = 0;
+        pub const MASK: u32 = 0x3f;
         pub const fn get(v: u32) -> u32 {
             (v >> SHIFT) & MASK
         }
@@ -326,6 +492,32 @@ mod tests {
     #[test]
     fn csmr2_70000() {
         assert_eq!(csmr2::bam::get(0x70000), 7);
+    }
+
+    #[test]
+    fn madr_58() {
+        assert_eq!(madr::adr::get(0x58), 44);
+    }
+
+    #[test]
+    fn mbcr_f0() {
+        assert_eq!(mbcr::men::get(0xf0), 1);
+        assert_eq!(mbcr::mien::get(0xf0), 1);
+        assert_eq!(mbcr::msta::get(0xf0), 1);
+        assert_eq!(mbcr::mtx::get(0xf0), 1);
+        assert_eq!(mbcr::txak::get(0xf0), 0);
+        assert_eq!(mbcr::rsta::get(0xf0), 0);
+    }
+
+    #[test]
+    fn mbsr_81() {
+        assert_eq!(mbsr::mcf::get(0x81), 1);
+        assert_eq!(mbsr::rxak::get(0x81), 1);
+    }
+
+    #[test]
+    fn mfdr_13() {
+        assert_eq!(mfdr::mbc::get(0x13), 19);
     }
 
     #[test]
