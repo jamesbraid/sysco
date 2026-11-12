@@ -26,5 +26,6 @@ Public documents the notes cite. A hint from here is not a finding until the sam
 | Linux 2.5.0 SN controller driver, `arch/ia64/sn/io/l1_command.c` | controller configuration block bytes 0x701 to 0x70d ([module management](origin2000-module-management.md), inferred) |
 | IRIX 6.5.30 IP27 PROM 6.156 payload, SHA-256 `c2c69bf33c375b43ec7ac511fab41ddf595be1b6838ae717e58a9a1273437fdd` | the early PCF liveness probe: its reads, deadline and address form ([PCF8584 page](pcf8584.md), established from disassembly) |
 | Linux kernel source, `arch/mips/sgi-ip27/ip27-nmi.c` | MMSC NMI delivery limits (hint) |
+| Linux mailing-list patch 35 of the IP35 machine-identification series, Message-ID `d4ea8cf57059fa4544c7be577c6a8033d65ced9a.1790857966.git.kaloz@kernel.org` | which L1 brick-type characters the driver names as Tezro deskside (`9`), Tezro rackmount (`Q`) and Origin 350 or Onyx 350 (`7`) ([Tezro L1 brick identity](tezro-l1-brick-identity.md), inferred; unverified, the patch was not retrieved) |
 | Intel, *28F008SA* 8-Mbit flash memory data sheet | identifier bytes `0x89`/`0xa2`, block size and command set the MMSC flash code uses (hint) |
 | Chuck Forsberg, *XMODEM/YMODEM Protocol Reference* (1988) | XMODEM-CRC and 1K packet framing, control bytes (hint) |

@@ -260,6 +260,8 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `ROUTER_HOLD_VALUE` | 0x1 | established |  | written under that mask by hold |
 | `ROUTER_RESET_BITS_MASK` | 0xd | established |  | bits stepped through hold and release |
 | `ROUTER_START_VALUE` | 0xf1 | established |  |  |
+| `TEZRO_DESKSIDE_TYPE` | 0x39 | inferred |  | brick-type character '9', which the Linux driver names a Tezro deskside system; the character is an established firmware brick type |
+| `TEZRO_RACKMOUNT_TYPE` | 0x51 | inferred |  | brick-type character 'Q', which the Linux driver names a Tezro rackmount system; the character is an established firmware brick type |
 | `TIMER1_LEVEL` | 0x5 | established |  |  |
 | `TIMER1_VECTOR` | 0x1d | established |  | external level 5 |
 | `UART_BAUD` | 0x4b00 | established |  |  |
