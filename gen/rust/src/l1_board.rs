@@ -406,6 +406,7 @@ pub const MOVEC_CODE_MBAR: u32 = 0xc0f; // established
 pub const MOVEC_CODE_RAMBAR: u32 = 0xc04; // established
 pub const MOVEC_CODE_VBR: u32 = 0x801; // established
 pub const MOVEC_RN_RC_OPCODE: u32 = 0x4e7b; // established
+pub const PCI_EXPANSION_TYPE: u32 = 0x25; // established
 pub const PIMM_VCC_OK_WIRE: u32 = 0x42; // established
 pub const QUART_CHANNEL0: u32 = 0x0; // established
 pub const QUART_CHANNEL1: u32 = 0x8; // established

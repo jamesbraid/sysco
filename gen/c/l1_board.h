@@ -234,6 +234,7 @@
 #define L1B_MOVEC_CODE_RAMBAR                        0xc04u /* established */
 #define L1B_MOVEC_CODE_VBR                           0x801u /* established */
 #define L1B_MOVEC_RN_RC_OPCODE                       0x4e7bu /* established */
+#define L1B_PCI_EXPANSION_TYPE                       0x25u /* established */
 #define L1B_PIMM_VCC_OK_WIRE                         0x42u /* established */
 #define L1B_QUART_CHANNEL0                           0x0u /* established */
 #define L1B_QUART_CHANNEL1                           0x8u /* established */

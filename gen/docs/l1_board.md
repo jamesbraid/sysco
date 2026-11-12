@@ -219,6 +219,7 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `MOVEC_CODE_RAMBAR` | 0xc04 | established |  |  |
 | `MOVEC_CODE_VBR` | 0x801 | established |  |  |
 | `MOVEC_RN_RC_OPCODE` | 0x4e7b | established |  |  |
+| `PCI_EXPANSION_TYPE` | 0x25 | established |  | type character the Origin 300 PCI expansion chassis returns in general request 0x0003; the compute chassis returns 0x34 |
 | `PIMM_VCC_OK_WIRE` | 0x42 | established |  |  |
 | `QUART_CHANNEL0` | 0x0 | established |  | byte offset in the chip-select window |
 | `QUART_CHANNEL1` | 0x8 | established |  |  |
