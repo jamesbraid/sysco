@@ -40,6 +40,24 @@ The one retained rack Tezro L1 record does not show an IP53 node board. See
 [serial-number-requests.md](l1/serial-number-requests.md). The `Q` mapping above
 says nothing about which node boards a rack Tezro carries.
 
+## Firmware revision
+
+- Established, from the image: patch SG0007149 carries an L1 whose version is
+  1.48.1 ([firmware-versions.md](firmware-versions.md)). Its release note covers
+  IRIX 6.5.24 to 6.5.30 and does not assign that image to a product, Tezro
+  included. Unverified: the note's text was not reread in this repository.
+- Inferred, from the Tezro captures this repository cites: none of them, in
+  [serial-number-requests.md](l1/serial-number-requests.md), records an L1
+  revision. No public Tezro record here supports 1.48.1 or any other value.
+- Unknown: which L1 image a Tezro was shipped or fitted with. The 1.48.1 image
+  is the newest L1 in the patch, not a measured Tezro value. The public forum
+  thread that names L1 1.48.1 for Tezro flashing does so from a post, not an
+  image ([controllers.md](controllers.md)). Routes tried: the patch release
+  note, that thread, and the serial and part captures. What would settle it: an
+  L1 version reply (general request `0x0005`, the firmware-revision request)
+  from a Tezro with its board and firmware identity recorded, or a flash image
+  from a release aimed at Tezro.
+
 ## Unknown
 
 - The reply a Tezro L1 gives to general request `0x0003`, the brick-type request.
