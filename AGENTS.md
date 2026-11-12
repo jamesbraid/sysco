@@ -57,3 +57,11 @@ ColdFire work in Ghidra uses the `68000:BE:32:Coldfire` language; PowerPC uses `
 ## 8. Commits
 
 Small and often, straight to `main`. Subjects are lowercase, component-prefixed imperatives (`docs/l1: read the M-Bus start sequence`); bodies say why.
+
+## 9. Hardware definitions
+
+`defs/` is the source of the hardware facts this repository publishes: register and word layouts, enum values, command positions and constants, one TOML file per unit, each item graded and carrying the source it was read from (`from`). `gen/` is generated from it by `retools/tools/defs/defs-gen` and is never edited by hand: the C headers (`gen/c/`), the Rust crate (`gen/rust/`), the Python and JSON forms, the genxml export and a reference page per unit (`gen/docs/`, the published reference). To change a fact, change the TOML and regenerate.
+
+The `*_DECODE.h` files at the repository root are forwarding headers that include `gen/c/` and keep the old macro names; do not edit them either. The five `defs/l1_pkg<n>_console.toml` files are written by `scripts/l1_console_defs.py` from `docs/l1/command-table.tsv`, so change the table and rerun the script. Hand-written helper macros go in `defs/<unit>_helpers.h`.
+
+Run `retools/tools/defs/defs-check --build` before committing a change under `defs/` or `gen/`; CI runs the same check through `retools/tools/defs/ci-check`. The plugin `scripts/mmsc_commands_defs.py` ties the command units to the command tables in `docs/`.

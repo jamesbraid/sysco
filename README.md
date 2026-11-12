@@ -19,6 +19,7 @@ What is here:
 - [docs/l1-cpu-features.md](docs/l1-cpu-features.md): which MCF5206e instructions and control features the five ColdFire L1 packages use beyond the base set (`MOVEC` targets, vector base, cache setup, `HALT`, MAC), with the address of each use.
 - [docs/host-tool-options.md](docs/host-tool-options.md): the command lines of `l1cmd`, `l2cmd` and `flashsc`, and what the first two send.
 - [docs/l2-l1-conversation.md](docs/l2-l1-conversation.md): the L2's side of the conversation with an L1, in order: attach, configuration request and route, the routed `p <id> pwr d` shutdown, and the partition-record reply.
+- [defs/](defs/): the hardware facts as TOML sources (layouts, command positions, constants, each graded and sourced), and [gen/](gen/), everything generated from them: C headers, a Rust crate, Python and JSON forms and a reference page per unit in [gen/docs/](gen/docs/). `gen/` is never edited by hand; change `defs/` and run `retools/tools/defs/defs-gen`. The `*_DECODE.h` files at the root forward to `gen/c/`.
 - [docs/inventory/](docs/inventory/README.md): tables measured from the images (images, packages, functions, request codes, I/O registers, protocols) plus the host tools' ELF tables.
 - [docs/coverage.md](docs/coverage.md) is the map of what is covered; [docs/open-questions.md](docs/open-questions.md) lists what the images have not yet answered.
 
