@@ -162,6 +162,9 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `DISPLAY_CHANGE_MASK` | 0x7 | established |  | bits whose changes are reported |
 | `DISPLAY_CONTROL_ADDR7` | 0x20 | established |  |  |
 | `DISPLAY_INPUT_MASK` | 0xf | established |  |  |
+| `EEPROM_CX_NODE_ADDR7` | 0x56 | established |  | Cx-brick node board records, one per node on bus selectors 2 to 5 (wire 0xac) |
+| `EEPROM_CX_RECORD_COUNT` | 0x26 | established |  | records the Cx-brick personality registers |
+| `EEPROM_CX_SPD_CAPACITY` | 0xa0 | established |  | length of each SPD record the Cx-brick personality serves, in bytes |
 | `EEPROM_DIMM_ADDR7` | 0x50 | established |  | DIMM 0 to 7 on segments 6 to 13 |
 | `EEPROM_DIMM_CAPACITY` | 0x100 | established |  |  |
 | `EEPROM_KIND_BOARD` | 0x1 | established |  |  |
