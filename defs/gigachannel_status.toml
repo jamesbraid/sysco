@@ -1,0 +1,39 @@
+unit = "gigachannel_status"
+prefix = "GCSTATUS"
+title = "GIGAchannel cabinet system-controller status word, as IRIX and the BASEIO PROM read it"
+doc = """
+The 16-bit status word that the GIGAchannel expansion cabinet presents to the node it hangs off, read
+by the IRIX kernel and by the BASEIO PROM. The word sits in the widget-8 window of
+the Crossbow in that cabinet. Nothing in the held images writes it, so the bit meanings below are
+the software's reading only. Every item is inferred. The reset value is unknown.
+"""
+from = "shipped IRIX kernel and BASEIO PROM images, read by disassembly: software expectation"
+public_from = ["shipped IRIX kernel and BASEIO PROM images, read by disassembly: software expectation"]
+
+[words.STATUS]
+width = 16
+grade = "inferred"
+doc = "Cabinet status word, read at STATUS_OFFSET within the widget-8 window of the node's Hub. Software only reads it. No software writes it in the images read, and what a write would do is unknown. Bits 7 to 15 have no meaning that software reads. After start-up the IRIX kernel examines only bits 0 to 5, and bit 6 only once, at start-up."
+
+[words.STATUS.fields]
+event_1 = { bits = [1, 1], grade = "inferred", doc = "The kernel prints a level-4 notice on every poll while set. Its text was not recorded." }
+event_2 = { bits = [2, 2], grade = "inferred", doc = "The kernel prints a level-4 notice on every poll while set. Its text was not recorded." }
+blower_failure = { bits = [0, 0], grade = "inferred", doc = "Cabinet blower failure. The kernel prints the blower message on every poll while set and starts the orderly shutdown once per boot." }
+event_3 = { bits = [3, 3], grade = "inferred", doc = "The kernel prints a level-4 notice on every poll while set and starts the orderly shutdown once per boot, the same as bit 0. Its text was not recorded." }
+redundancy_lost = { bits = [4, 4], grade = "inferred", doc = "Backup power supply has taken over and redundancy is lost. The kernel prints the notice when it sees the bit newly set and never sees it clear again, so once per boot. The BASEIO PROM prints a lost-redundancy line while it is set." }
+manufacturing_mode = { bits = [5, 5], grade = "inferred", doc = "Cabinet in manufacturing mode. The kernel prints its notice once per boot." }
+redundant_supply = { bits = [6, 6], grade = "inferred", doc = "A redundant supply is fitted in the cabinet unit. The BASEIO PROM prints its redundant-supply line while it is set. The kernel records the unit's inventory only while it is set at start-up." }
+
+[words.XBOW_ID]
+width = 32
+grade = "inferred"
+doc = "Identification word of the Crossbow, read through each node's Hub at the widget-0 offset below. The kernel reads it at start-up to decide whether the node has a cabinet."
+
+[words.XBOW_ID.fields]
+part = { bits = [27, 12], grade = "inferred", doc = "Part field. The kernel accepts only zero; the BASEIO PROM also accepts the value in the constant below. How the PROM extracts the value from the word was not traced." }
+
+[constants]
+STATUS_OFFSET = { value = 0xe00000, grade = "inferred", doc = "Offset of the status word within the widget-8 window of the node's Hub I/O window." }
+WIDGET0_ID_OFFSET = { value = 0xe0000004, grade = "inferred", doc = "Offset of the Crossbow identification word within the node's Hub I/O window." }
+XBOW_PART_KERNEL = { value = 0x0, grade = "inferred", doc = "Part field the IRIX kernel accepts as a Crossbow." }
+XBOW_PART_PROM = { value = 0xd000, grade = "inferred", doc = "Second part field the BASEIO PROM accepts as a Crossbow." }
