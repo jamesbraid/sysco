@@ -99,7 +99,7 @@ grader accepted every rendered entry, so none were rejected.
   **Inferred.** A large routine of about 570 bytes. It loads the flag word at 0xfa200e44 at 0xc00c2500 and
   loops while it is nonzero (the branch at 0xc00c2508 leaves when it is zero; the loop closes at 0xc00c26d4),
   writing the value back to 0xfa200e44 each time. Depending on bits of the flag it calls 0xc0010f08 with
-  r3=0xc00d9424 (bits in 0xe0400000, the call at 0xc00c2528) and with r3=0xc00d93fc (when the word at r4+0x20 was already
+  r3=0xc00d9424 (bits in 0xe0400000, the call at 0xc00c2528) and with r3=0xc00d93fc at 0xc00c24f4 (made when the word at r4+0x20 was already
   set at entry), calls 0xc00c26f4 (bits 0x03000000), walks 8-byte records counting status bits and calling
   0xc0010f08 with 0xc00d9434 when a descriptor has bit 0x8000 set (bits 0x0c000000), and calls sub_c00c2900 at
   0xc00c26c8 (bit 0x00800000). A call to 0xc0006fe8 with r3=9 and r4=0xc00eae88 at 0xc00c2690 is made only when
