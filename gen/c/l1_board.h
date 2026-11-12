@@ -57,7 +57,7 @@
 #define L1B_CNTL1_RESET_A_INPLACE                    (L1B_CNTL1_RESET_A_MASK << L1B_CNTL1_RESET_A_SHIFT)
 
 /* word CNTL2: 32 bits */
-#define L1B_CNTL2_WIDTH                              32 /* established */
+#define L1B_CNTL2_WIDTH                              32 /* unknown */
 #define L1B_CNTL2_STRAP_SHIFT                        3 /* unknown */
 #define L1B_CNTL2_STRAP_MASK                         0x1fu
 #define L1B_CNTL2_STRAP_INPLACE                      (L1B_CNTL2_STRAP_MASK << L1B_CNTL2_STRAP_SHIFT)

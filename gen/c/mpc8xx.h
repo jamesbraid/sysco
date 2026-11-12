@@ -229,7 +229,7 @@
 #define M8X_MSR_RI_INPLACE                           (M8X_MSR_RI_MASK << M8X_MSR_RI_SHIFT)
 
 /* word PCI_CFG_ADDR: 32 bits */
-#define M8X_PCI_CFG_ADDR_WIDTH                       32 /* established */
+#define M8X_PCI_CFG_ADDR_WIDTH                       32 /* inferred */
 #define M8X_PCI_CFG_ADDR_BUS_SHIFT                   16 /* inferred */
 #define M8X_PCI_CFG_ADDR_BUS_MASK                    0xffu
 #define M8X_PCI_CFG_ADDR_BUS_INPLACE                 (M8X_PCI_CFG_ADDR_BUS_MASK << M8X_PCI_CFG_ADDR_BUS_SHIFT)

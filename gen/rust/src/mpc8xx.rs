@@ -296,7 +296,7 @@ pub mod msr {
         }
     }
 }
-/// (established)
+/// (inferred)
 pub mod pci_cfg_addr {
     pub const WIDTH: u32 = 32;
     pub mod bus { // bits 23:16, inferred

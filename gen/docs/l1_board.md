@@ -20,7 +20,7 @@ Every item has a grade: established, inferred or unknown. A grade says how the i
 | `CACR` | 32 | inferred |  |
 | `CLOCK` | 32 | established |  |
 | `CNTL1` | 32 | established |  |
-| `CNTL2` | 32 | established |  |
+| `CNTL2` | 32 | unknown |  |
 | `DISPLAY` | 32 | established |  |
 | `FLASH_STATUS` | 32 | established |  |
 | `PIMM_VCC` | 32 | established |  |

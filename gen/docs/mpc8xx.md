@@ -236,7 +236,7 @@ and one run at 0x13 is issued. The meaning of the machine mode fields was not de
 | Word | Width | Grade | Source |
 |---|---|---|---|
 | `MSR` | 32 | inferred |  |
-| `PCI_CFG_ADDR` | 32 | established |  |
+| `PCI_CFG_ADDR` | 32 | inferred |  |
 
 ### Word `MSR`
 

@@ -114,7 +114,7 @@ pub mod cntl1 {
         }
     }
 }
-/// (established)
+/// (unknown)
 pub mod cntl2 {
     pub const WIDTH: u32 = 32;
     pub mod strap { // bits 7:3, unknown
