@@ -1,0 +1,56 @@
+# Tier-2 routine readings, sysco batch 2
+
+Role statements for targets 50 to 74 of the tier-2 list, written from the rendered instruction
+facts only (registers, calls, constants and branch targets). All 25 are inferred. The grader
+accepted every rendered entry, so none were rejected.
+
+- `EventRemoveTimeOut` in `6.5.12/usr/sbin/flashsc` at 0x100242a0
+  **Inferred.** Appears to remove a node from the timer list whose head word is at 0x10047568. It compares the key in a0 against list words in a loop and writes 0x10047568 and 0x1004756c on the unlink path (sw at 0x10024338 and 0x10024364). The node layout and the return value (the head word or a loaded value, per the return at 0x10024370) are not settled by the facts.
+- `event_process` in `6.5.12/usr/sbin/flashsc` at 0x100246e0
+  **Inferred.** The core event loop. It calls gettimeofday (0x10024768 and 0x100249f8) and normalizes microseconds against 0xf4240 (1,000,000) to find the time left on the timer list at 0x10047568, then fires timer callbacks through an indirect call at 0x10024b28. It calls select at 0x10024d0c with nfds from 0x10047560 and the read and write sets at 0x100553a8 and 0x10055428, and on errno 4 (EINTR) it retries while on errno 9 (EBADF) it removes the input or output callback through EventRemoveInput (0x10024f10) or EventRemoveOutput (0x10025034). Callback tables at 0x1004f2a8 through 0x1004f2b4 hold the registered entries, and it leaves the loop when the flag at 0x10047564 is set (read at 0x10024b64 and 0x10024df8). The return at 0x100250a0 is unknown.
+- `EventStart` in `6.5.12/usr/sbin/flashsc` at 0x100250b0
+  **Inferred.** Calls event_process at 0x100250e0 with five zero arguments and returns its result. The zeros suggest an open-ended run until stopped, but nothing in this routine states it.
+- `EventDispatch` in `6.5.12/usr/sbin/flashsc` at 0x10025100
+  **Inferred.** Calls event_process at 0x10025130 with a0 set to 1 and zeros in the other slots, then returns its result. The leading 1 probably selects a single pass rather than the open-ended loop, but the rendered facts do not show how event_process uses it.
+- `EventStartSubset` in `6.5.12/usr/sbin/flashsc` at 0x10025150
+  **Inferred.** Passes its incoming argument registers into event_process at 0x10025190, with zero in the first slot and its own arguments shifted up one position. It returns the result of event_process. What the shifted arguments select is not shown.
+- `EventStop` in `6.5.12/usr/sbin/flashsc` at 0x10025210
+  **Inferred.** Stores 1 to the word at 0x10047564 (sw at 0x10025220) and returns 1. event_process reads that word at 0x10024b64 and 0x10024df8 and leaves its loop when it is set, so this is the stop request.
+- `SocketExportInetConnection` in `6.5.12/usr/sbin/flashsc` at 0x100257c0
+  **Inferred.** Opens a listening IPv4 stream socket. It calls socket with domain 2 (0x100257f4), setsockopt at level 0xffff with option 4 and a 4-byte value (0x10025860), bind on a 16-byte address built at sp-56 (0x10025900), and listen with backlog 5 (0x10025970). Failures log through LogError or LogErrorHost with code -0xc8 and return -1 (0x10025840, 0x100258bc, 0x1002595c, 0x100259c4). The success path returns a value the facts do not identify, and the name's "export" meaning is not shown.
+- `SocketGetSockAddr` in `6.5.12/usr/sbin/flashsc` at 0x10026a00
+  **Inferred.** Calls getsockname on the descriptor in a0 (0x10026a38). On success it stores one word through the caller's pointer in a1 (sw at 0x10026a8c), and on failure it logs with code -0xd0 (0x10026a64) and returns -1 (0x10026a7c). Success returns 0 (0x10026aa0). Which address field the stored word comes from is unknown.
+- `SocketGetName` in `6.5.12/usr/sbin/flashsc` at 0x10026ab0
+  **Inferred.** Reverse-resolves an IPv4 address to a host name. It zeros the caller's buffer at arg1 with memset (0x10026aec), calls gethostbyaddr with the address at sp-64, family 2 and length 4 (0x10026b04), and copies the official name into the buffer with strncpy, bounded by arg2 minus one (0x10026b4c). The return is -1 when the lookup fails (0x10026b2c) and 0 otherwise (0x10026b64). The stack slot at sp-64 is not written by this routine, so the source of the address is unknown.
+- `RouterInit` in `6.5.12/usr/sbin/flashsc` at 0x10026ed0
+  **Inferred.** Sets up the router's process-wide state. It stores MaxInArgs (0x10026f08, 0x10026f20), UseUnix, ProcessID, FatalCB and ProcessName, and takes the program basename through strrchr on '/' (0x2f) at 0x10026f84. It zeroes InputStats and OutputStats with 28-byte memset calls (0x10026f58, 0x10026f70) and calls signal 13 (SIGPIPE on common Unix ABIs) with handler 1 (0x10026fdc). It fills UserName and FullName from getpwuid of getuid (0x1002702c, with copies at 0x10027090 and 0x100270ac), then gets the host name and IP address through SocketGetHostName (0x100270bc) and SocketGetAddr (0x100270ec). It returns -1 when the password lookup fails (0x10027074) and 0 otherwise (0x10027104). The branch on argument a0 against 0xa at 0x10026f10 is not explained by the facts.
+- `RouterClientsConnected` in `6.5.12/usr/sbin/flashsc` at 0x10027110
+  **Inferred.** Walks the ClientList head at sym(ClientList). Each record's flags are tested with a1 masked by 0x2 (0x1002714c) and a2 compared with 0x80 (0x10027164), and the loop continues through the link at 0x10027188. The routine returns 0 or a value from inside the loop (0x1002719c), so whether it reports a count or a yes-or-no is not settled by the facts.
+- `RouterHostConnected` in `6.5.12/usr/sbin/flashsc` at 0x10027230
+  **Inferred.** Scans ClientList for a record that matches a host. Each record's name at +44 is checked with strcmp (0x1002728c), and the words at +8 and +12 are compared with arguments a1 and a2 (0x100272b0, 0x100272c8). Mode and flag tests against 1, 4 and 0x40 (0x100272e8, 0x100272f8, 0x1002731c) pick the return of 1 (0x10027334), 4 (0x10027354) or 0 (0x10027398). What the mode codes mean to the caller is not shown.
+- `RouterAddrConnected` in `6.5.12/usr/sbin/flashsc` at 0x100273a0
+  **Inferred.** Scans ClientList the same way as RouterHostConnected but matches on address words. The record words at +4, +8 and +12 are compared with arguments a0, a1 and a2 (0x100273f4, 0x1002740c, 0x10027424). The same mode and flag tests (0x10027444, 0x10027454, 0x10027478) choose a return of 1 (0x1002748c), 4 (0x100274a8) or 0 (0x100274e8). The meaning of the three words is not shown by the facts.
+- `RouterInitClient` in `6.5.12/usr/sbin/flashsc` at 0x100274f0
+  **Inferred.** Fills in fixed fields of the client record at a0: a word at +0x20, a half-word at +0x13a, and words at +0xb0, +0xb4, +0xb8 and +0xbc (stores at 0x10027518 through 0x10027554). It returns the record pointer (0x1002755c). The constants written are not named in the facts, so the role of each field is unknown.
+- `RouterRequestOut` in `6.5.12/usr/sbin/flashsc` at 0x10027570
+  **Inferred.** Forwards its four arguments to RouterPriRequestOut at 0x100275c8 with a7 set to 0, and returns that routine's result. It looks like the normal-priority form of the request path, since the priority argument is the only thing it changes.
+- `RouterPriRequestOut` in `6.5.12/usr/sbin/flashsc` at 0x100275f0
+  **Inferred.** Queues one request on the router output path. It validates the output state with RouterCheckOutput (0x10027644), compares a 32-bit count at +292 with a 16-bit limit at +314 (0x10027690), and returns -2 when the count has reached the limit (0x100276a8). The request goes to RouterDoOutput at 0x100276e0 with message type 0x10, and the success return is 0 (0x100276f8). The return of -1 at 0x10027664 is reached on a flag test whose operand is not fully identified, and the type 0x10 is inferred from the constant.
+- `RouterRelRequestOut` in `6.5.12/usr/sbin/flashsc` at 0x10027700
+  **Inferred.** Forwards its four arguments to RouterPriRelRequestOut at 0x10027768 and returns that routine's result. It is the second request variant. The facts do not say what "release" means for this path.
+- `RouterPriRelRequestOut` in `6.5.12/usr/sbin/flashsc` at 0x10027790
+  **Inferred.** Queues a request like RouterPriRequestOut, with the same check of the word at +0x124 and the half-word at +0x13a, and the same count-against-limit test at 0x1002782c. Its message type is 0x20 at the RouterDoOutput call (0x10027880), where RouterPriRequestOut uses 0x10. The returns are -1 (0x10027800), -2 (0x10027844) and 0 (0x10027898).
+- `RouterPriEventOut` in `6.5.12/usr/sbin/flashsc` at 0x100279f0
+  **Inferred.** Sends an event message of type 0x80 through RouterDoOutput at 0x10027a7c. It starts from the first record of ClientList (0x10027a20) and walks the list (loop back at 0x10027aa0), with a flag test masked by 0x4 at 0x10027a44 gating the send. It returns 0 or the last value from the loop. Which client receives the event and why the mask gates it are not shown.
+- `RouterDisconnect` in `6.5.12/usr/sbin/flashsc` at 0x100282c0
+  **Inferred.** Rewrites the words at +0x18 and +0x20 of its argument record (stores at 0x100282f8 and 0x10028318) and sends message type 0x11 through RouterDoOutput (0x1002834c), returning that result. A positive a1 selects the path that sends the message (0x10028300). The values written into +0x18 and +0x20 are not shown.
+- `RouterPing` in `6.5.12/usr/sbin/flashsc` at 0x100284f0
+  **Inferred.** Sends a message of type 0x24 through RouterDoOutput (0x1002853c), then flushes the output with RouterFlushOutput (0x10028550) and returns the flush result. The type 0x24 is not named in the facts, so a ping role rests only on the shape of the routine.
+- `RouterClientSetBufferSize` in `6.5.12/usr/sbin/flashsc` at 0x10028660
+  **Inferred.** Reads the descriptor word at +0 of the client record (0x10028688) and the globals SocketSendBufsize and SocketReceiveBufsize (0x10028690, 0x10028698). It calls SocketSetBufferSize at 0x100286a0 with those two sizes and the constant 0x268b0 as a fourth argument, and returns its result. Which option the callee sets is shown only by its name.
+- `RouterFindClient` in `6.5.12/usr/sbin/flashsc` at 0x10028d80
+  **Inferred.** Walks ClientList from its head (0x10028d9c) and compares a word in each record with argument a0 (0x10028db8), following the link at 0x10028de4. It returns a0 when a record matches (0x10028dcc) and 0 when the list is exhausted (0x10028df8).
+- `RouterListClients` in `6.5.12/usr/sbin/flashsc` at 0x10028e00
+  **Inferred.** Walks ClientList and makes one indirect call per record (jalr at 0x10028e40), passing a word from the record as an argument. The callee is not identified in the facts, so what the walk does with each record is unknown. The return is either the list head or a value from the callback (0x10028e6c).
+- `RouterStartInput` in `6.5.12/usr/sbin/flashsc` at 0x10028e80
+  **Inferred.** Allocates an 8-byte block with malloc (0x10028eb8) only when the word at +0xe4 of its argument record is below 8 (0x10028ea8). A failed allocation calls RouterMemError at 0x10028ed8. The new pointer is stored at +0xd8, the words at +0xdc and +0xe0 and a half-word at +0xea are written (0x10028ec8 through 0x10028f0c), and the routine returns the result of the call at 0x10028f1c. The meaning of the stored values is not shown.
