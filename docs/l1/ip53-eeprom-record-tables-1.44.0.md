@@ -55,18 +55,17 @@ daughter board (`IO DGHTR`) at the riser's wire address and bus selector. (The `
 PS 1, PS 2) is the order of the rows a published `serial all` of a 2U module with graphics prints (one capture; the
 DIMM rows are listed separately there).
 
-### 3. What is not settled: the component number a request uses
+### 3. The component number a request uses
 
-**Unknown.** The record numbering the host sees (the component index of `0x0006` and `0x0007`) is the registration
-order on an Origin 300 (node 0, I/O board 1, then memory modules). For package 2 the handler that maps a request's index to
-a table entry was not read: it is a compare chain with no table to point at, the `EEPROM not present` string is referenced
-from the `0x0007` handler at `0xffe14736`, and the request-hook installer was not found. If the index were the table
-position, component 0 would be the interface board and the node would be component 4. Two facts argue otherwise or at least
-split the question, so neither answer is taken: the IP35 PROM and kernel are shared with the C-brick, where component 0 is
-the node board, and a real tower's `hinv` prints the node board as `IP53_4CPU` at `/node`; yet the same real `hinv` prints
-the interface board at two crosstalk widgets and the I/O board under the IOC4, which a node-only component 0 would not
-produce. Route that settles it: read the package 2 handler for `0x0006` from the compare chain at `0xffe145f8` on (the
-`0x0004` handler is at `0xffe145f8`; `0x0008` at `0xffe14b98`) and the code that installs the request hook.
+**Established (L1 1.44.0, package 2, read from the body).** Both handlers resolve the host's component number through one hook, not through the table position. The 0x0007 handler starts at `0xffe146ba` and the 0x0006 handler at `0xffe14876` (five words required, `-100` otherwise). Each reads the request's source word at `+0x1c` of the request block (the sender tag is bits 11 to 5 of it, or `0xff` when the word is negative: `0xffe146ca` to `0xffe146de`, `0xffe14886` to `0xffe1489a`), takes word 1 of the request, and calls the function pointer stored at `0x30000fe4` with the tag first and word 1 second (`0xffe14704` to `0xffe14710`, `0xffe148c0` to `0xffe148cc`). The result is the record number. The 0x0007 handler then compares it with the registered count (`0xffe8cd54` returns the count read from the table block at `0x30000c64`), answers `-104` after logging `EEPROM not present` when the presence byte is 0 (`0xffe8cd6c`) and `-105` when the number is not below the count, and otherwise indexes the record array at 0x78 bytes per record (`0xffe14766` to `0xffe1476e`).
+
+The hook is installed by `0xffe14004` (stores `0xffe13be4` at `0x30000fe4`, called from the type dispatch routine at `0xffea39a0`) and is the routine at `0xffe13be4`. It switches on the brick type byte at `0x300008cc` (`0xffe75fc8`) through a table of 39 words at `0xffe13c1a` (types `0x30` to `0x56`). For types `0`, `7`, `8`, `9`, `E`, `Q` and `V` it returns word 1 unchanged except that 0 gives 4 and 4 gives 0 (`0xffe13e0a` to `0xffe13e18`); the tag is not used. Types `5`, `6` and `O` use the tag and other rules (`0xffe13c68`, `0xffe13dd8`, `0xffe13c8a`) and were not read further; every other type returns word 1 unchanged.
+
+So for the type 7 and type 9 profiles component 0 is table entry 4, the node, and component 4 is table entry 0, the interface board; components 1 to 3 and 5 and up are the table entries of the same number. The number does not depend on which link or sender the request came from. This matches the C-brick convention that component 0 is the node board.
+
+**Inferred.** That record slot *i* holds the data of table entry *i*. The table registration (`0xffe8cb14`, called with the type 7 table at `0xffe5fd50` and count `0x10` at `0xffe5efa0`) stores the table pointer, the count, a presence array of count bytes and an array of count records of 0x78 bytes; the per-entry load that fills the slots was read in package 1 ([mbus.md](mbus.md)), not re-read in package 2. The type 9 count was not read.
+
+Still unread: the hook's branches for types `5`, `6` and `O`, and the part of the 0x0006 handler after the hook call.
 
 ### 4. Power code
 

@@ -10,13 +10,14 @@ Question. What does the host ask the tower L1 for the graphics board's EEPROM, a
   bus selector 4) with INTERFACE 0, IO9 1, SNOWBALL 3, NODE 4 around it
   (sysco `docs/l1/ip53-eeprom-record-tables-1.44.0.md`). So the firmware has a graphics-board record
   slot, and the kernel's component 2 equals that table position. (E)
-- The same table puts NODE at 4 and INTERFACE at 0, yet the kernel reads the node board as component 0 on
-  a chimera host. So component numbers are not simply table positions, or the host remaps. Which
-  numbers the 0x0006 handler accepts, and how it maps them: **U** (sysco open question; the handler
-  was not read). Because of this the claim "component 1 and 4 answer on a real tower" cannot be made.
+- The same table puts NODE at 4 and INTERFACE at 0, and the kernel reads the node board as component 0 on
+  a chimera host. Both agree: the package 2 request hook (`0xffe13be4`) swaps components 0 and 4 for brick
+  types 7 and 9 and passes every other number through, so component 0 is the node, 4 the interface board,
+  and component 2 is table entry 2 (E; see `docs/l1/ip53-eeprom-record-tables-1.44.0.md` section 3). That
+  record slot *i* holds table entry *i*'s data after registration is **I**. Components 1 and 4 answer when
+  their records are present, by the same rule.
 - Answer: component 2 is expected to answer when the board is fitted and its EEPROM probe succeeded
   (**I**, from the table slot and the kernel's component 2); -104 is the not-present reply, so a
   real tower with a V12 answers it, otherwise the real kernel would also print the alert on every
-  V12 Tezro, which the hinv captures with `ODY128VERSIONB` contradict (I). Components 1 and 4: **U**.
-  Settles it: `l1cmd serial all` or a component read from a V12 tower; or reading the 0x0006 handler
-  from the compare chain at 0xffe145f8 in the package-2 image.
+  V12 Tezro, which the hinv captures with `ODY128VERSIONB` contradict (I). Components 1 and 4: see the mapping above.
+  Settles it: `l1cmd serial all` or a component read from a V12 tower.
