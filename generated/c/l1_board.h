@@ -179,7 +179,7 @@
 #define L1B_DISPLAY_INPUT_MASK                       0xfu /* established */
 #define L1B_EEPROM_CX_NODE_ADDR7                     0x56u /* established */
 #define L1B_EEPROM_CX_RECORD_COUNT                   0x26u /* established */
-#define L1B_EEPROM_CX_SPD_CAPACITY                   0xa0u /* established */
+#define L1B_EEPROM_CX_SPD_CAPACITY                   0xa0u /* inferred */
 #define L1B_EEPROM_DIMM_ADDR7                        0x50u /* established */
 #define L1B_EEPROM_DIMM_CAPACITY                     0x100u /* established */
 #define L1B_EEPROM_KIND_BOARD                        0x1u /* established */

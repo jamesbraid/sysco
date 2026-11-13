@@ -75,7 +75,7 @@ module L1, reading its `type` and `source` fields, would settle it.
 
 ## Personality `6` (Cx-brick): the record table
 
-Established (L1 1.44.0 package 2). Unverified. The identity routine maps one
+Established (L1 1.44.0 package 2; table at `0xffe5596c`, 38 entries, registered by `0xffe50d18`; re-read). The identity routine maps one
 product name, read at wire `0xa4`, to letter `6`. The installer for `6` registers
 38 EEPROM records. Their names are plain words (`PWR INLET`, `ROUTER`,
 `NODE 0` to `NODE 3`, `N0 DIMM0` and so on). This is the only table in the image
@@ -203,8 +203,11 @@ board record. Its contents would be an approximation.
 
 ## DIMM SPD records (Cx-brick)
 
-**Record length.** Package 2 sizes each SPD record at 160 bytes (established). The
-host reads all 160.
+**Record length.** The registration table at `0xffe5596c` gives each SPD entry a capacity of
+`0x0100` (256 bytes; established, entries 3 to 10 and the like). An earlier version of this note said
+package 2 sizes each SPD record at 160 bytes and the host reads all 160. No instruction that serves
+160 bytes of SPD was found (the `0xa0` immediates near the request handlers are array element
+sizes), so the 160-byte figure is unconfirmed and the 256-byte table capacity is the established one.
 
 **Which component the host asks for.** During memory set-up the boot firmware reads
 the eight SPDs of each node, one area 4 read per DIMM in 64-byte chunks, until the

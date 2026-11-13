@@ -152,9 +152,9 @@ CNTL2_WIRE = { value = 0x44, grade = "established" }
 DISPLAY_CHANGE_MASK = { value = 0x7, grade = "established", doc = "bits whose changes are reported" }
 DISPLAY_CONTROL_ADDR7 = { value = 0x20, grade = "established" }
 DISPLAY_INPUT_MASK = { value = 0xf, grade = "established" }
-EEPROM_CX_NODE_ADDR7 = { value = 0x56, grade = "established", from = "L1 1.44.0 package 2, personality 6 record table (Unverified)", doc = "Cx-brick node board records, one per node on bus selectors 2 to 5 (wire 0xac)" }
-EEPROM_CX_RECORD_COUNT = { value = 38, grade = "established", from = "L1 1.44.0 package 2, personality 6 record table (Unverified)", doc = "records the Cx-brick personality registers" }
-EEPROM_CX_SPD_CAPACITY = { value = 0xa0, grade = "established", from = "L1 1.44.0 package 2, personality 6 record table (Unverified)", doc = "length of each SPD record the Cx-brick personality serves, in bytes" }
+EEPROM_CX_NODE_ADDR7 = { value = 0x56, grade = "established", from = "L1 1.44.0 package 2, personality 6 registration table at 0xffe5596c (38 twelve-byte entries, registered by the routine at 0xffe50d18): entries 2, 11, 20 and 29, selectors 2 to 5, wire byte 0xac", doc = "Cx-brick node board records, one per node on bus selectors 2 to 5 (wire 0xac)" }
+EEPROM_CX_RECORD_COUNT = { value = 38, grade = "established", from = "L1 1.44.0 package 2, personality 6 registration table at 0xffe5596c (38 twelve-byte entries, registered by the routine at 0xffe50d18): count 0x26 pushed at 0xffe50d52", doc = "records the Cx-brick personality registers" }
+EEPROM_CX_SPD_CAPACITY = { value = 0xa0, grade = "inferred", from = "router board records note, record length section; the registration table at 0xffe5596c gives each SPD entry a capacity halfword of 0x0100, not 0xa0", doc = "length the importing note gives for each SPD record the Cx-brick personality serves; the registration table shows a capacity of 0x100 for these entries and no instruction showing 0xa0 as a served length was found, so this is unconfirmed" }
 EEPROM_DIMM_ADDR7 = { value = 0x50, grade = "established", doc = "DIMM 0 to 7 on segments 6 to 13" }
 EEPROM_DIMM_CAPACITY = { value = 0x100, grade = "established" }
 EEPROM_KIND_BOARD = { value = 0x1, grade = "established" }
