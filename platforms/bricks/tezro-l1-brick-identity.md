@@ -16,23 +16,20 @@ Grades follow [l1-board-contract.md](../../devices/l1_board/README.md) section 1
   See [l1/ip53-eeprom-record-tables-1.44.0.md](../../software/firmware/l1/ip53-eeprom-record-tables-1.44.0.md).
 - Established, from the firmware. The character `Q` has the display name
   `Rackmount WS`. See [l1/personalities.md](../../software/firmware/l1/personalities.md).
-- Inferred, from a software expectation. The public Linux IP35
-  machine-identification patch 35 names `9` as a Tezro deskside system and `Q`
-  as a Tezro rackmount system. The patch's own wording is the source for both
-  names. The firmware does not use the word Tezro. Unverified: the patch text has
-  not been read in this repository, and the public copy could not be fetched.
-- Inferred, from the same patch. It names `7` as Origin 350 or Onyx 350, and says
-  which one depends on the graphics inventory. The firmware calls `7` the 2U
-  server profile, which
-  [l1/ip53-eeprom-record-tables-1.44.0.md](../../software/firmware/l1/ip53-eeprom-record-tables-1.44.0.md)
-  reads as Origin 350 and Onyx 350 without a graphics test. The graphics rule is
-  the patch's, not the firmware's.
+- Unknown. A public Linux IP35 machine-identification patch (series patch 35,
+  Message-ID `d4ea8cf57059fa4544c7be577c6a8033d65ced9a.1790857966.git.kaloz@kernel.org`)
+  is reported to name `9` as a Tezro deskside system, `Q` as a Tezro rackmount
+  system, and `7` as Origin 350 or Onyx 350 by graphics inventory. The patch
+  text could not be retrieved (the list archive refused the request), so none of
+  these names is taken from it. The firmware does not use the word Tezro.
+  What would settle it: the patch text from the list archive or a kernel tree
+  that carries the series.
 
 The character decides the board code. The firmware chooses it from the board's
 identification records and a stored setting, as
 [l1/personalities.md](../../software/firmware/l1/personalities.md) describes, and that reading does not
-include a graphics inventory. The graphics-dependent name for `7` therefore has
-no firmware reading behind it here.
+include a graphics inventory. A graphics-dependent name for `7`, if the patch
+has one, therefore has no firmware reading behind it here.
 
 ## Rack Tezro boards
 
@@ -43,9 +40,9 @@ says nothing about which node boards a rack Tezro carries.
 ## Firmware revision
 
 - Established, from the image: patch SG0007149 carries an L1 whose version is
-  1.48.1 ([firmware-versions.md](../../evidence/firmware-versions.md)). Its release note covers
-  IRIX 6.5.24 to 6.5.30 and does not assign that image to a product, Tezro
-  included. Unverified: the note's text was not reread in this repository.
+  1.48.1 ([firmware-versions.md](../../evidence/firmware-versions.md)). Its release note
+  (`README.patch.7149`) covers IRIX 6.5.24 to 6.5.30 and does not mention Tezro or assign
+  that image to a product (re-read).
 - Inferred, from the Tezro captures this repository cites: none of them, in
   [serial-number-requests.md](../../software/firmware/l1/serial-number-requests.md), records an L1
   revision. No public Tezro record here supports 1.48.1 or any other value.
@@ -64,5 +61,5 @@ says nothing about which node boards a rack Tezro carries.
   No reply from a Tezro L1 with a recorded board revision is in the sources this
   repository cites. What would settle it: a retained reply from a Tezro whose
   board revision is recorded, showing the character returned.
-- Whether the Linux names match a Tezro's firmware character. Settling this needs
-  the same retained reply.
+- Whether any Linux names match a Tezro's firmware character. Settling this needs
+  the same retained reply and the patch text.

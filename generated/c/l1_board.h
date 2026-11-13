@@ -275,8 +275,6 @@
 #define L1B_ROUTER_HOLD_VALUE                        0x1u /* established */
 #define L1B_ROUTER_RESET_BITS_MASK                   0xdu /* established */
 #define L1B_ROUTER_START_VALUE                       0xf1u /* established */
-#define L1B_TEZRO_DESKSIDE_TYPE                      0x39u /* inferred */
-#define L1B_TEZRO_RACKMOUNT_TYPE                     0x51u /* inferred */
 #define L1B_TIMER1_LEVEL                             0x5u /* established */
 #define L1B_TIMER1_VECTOR                            0x1du /* established */
 #define L1B_UART_BAUD                                0x4b00u /* established */
