@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<!-- generated from devices/l1_board/registers.toml by defs-gen - do not edit, change the source -->
+<genxml unit="l1_board" prefix="L1B" title="board-level bit layouts and constants of the ColdFire L1 firmware">
+  <doc>Board-level bit layouts and constants of the ColdFire L1 firmware: bit positions of the I/O
+expander bytes the L1 drives, the flash command stream, the quad UART, the battery-backed clock
+window and the hardware monitor start-up values. Window offsets are relative to the base of the
+device's chip select. Expander addresses come in the 8-bit wire form and the 7-bit form. Each
+field carries the grade of the reading; polarity grades are given separately where the firmware
+only shows that a bit is written.
+</doc>
+  <struct name="CACR" size="4" grade="inferred">
+    <doc>Control-register codes of the MOVEC extension word and the values the firmware writes
+at start-up. The register names are the manual's. Instruction cache control is written
+twice: invalidate, then enable.</doc>
+    <field name="cenb" start="31" size="1" type="uint" grade="inferred"/>
+    <field name="cinv" start="24" size="1" type="uint" grade="inferred"/>
+  </struct>
+  <struct name="CLOCK" size="4" grade="established">
+    <doc>Battery-backed clock: control byte at the top of the window; BCD time bytes follow it.</doc>
+    <field name="write_enable" start="7" size="1" type="uint" grade="established"/>
+    <field name="read_latch" start="6" size="1" type="uint" grade="established"/>
+    <field name="century_tens" start="4" size="2" type="uint" grade="established"/>
+    <field name="century_hundreds" start="0" size="4" type="uint" grade="established"/>
+  </struct>
+  <struct name="CNTL1" size="4" grade="established">
+    <doc>Processor-module control expanders, wire addresses 0x42 and 0x44 (7-bit 0x21 and 0x22).</doc>
+    <field name="soft_reset" start="7" size="1" type="uint" grade="established"/>
+    <field name="nmi" start="6" size="1" type="uint" grade="established"/>
+    <field name="reset_b" start="1" size="1" type="uint" grade="established"/>
+    <field name="reset_a" start="0" size="1" type="uint" grade="established"/>
+  </struct>
+  <struct name="CNTL2" size="4" grade="unknown">
+    <field name="strap" start="3" size="5" type="uint" grade="unknown"/>
+    <field name="reset_c" start="0" size="1" type="uint" grade="established"/>
+  </struct>
+  <struct name="DISPLAY" size="4" grade="established">
+    <doc>Front-panel expander: 7-bit address 0x20, low nibble input.</doc>
+    <field name="led_6" start="6" size="1" type="uint" grade="established"/>
+    <field name="led_5" start="5" size="1" type="uint" grade="established"/>
+    <field name="led_4" start="4" size="1" type="uint" grade="established"/>
+  </struct>
+  <struct name="FLASH_STATUS" size="4" grade="established">
+    <field name="toggle" start="6" size="1" type="uint" grade="established"/>
+    <field name="timeout" start="5" size="1" type="uint" grade="established"/>
+  </struct>
+  <struct name="PIMM_VCC" size="4" grade="established">
+    <doc>Processor-module supply-good expanders: one per module, at the wire address of the first
+control expander but on its own bus segment (segment 4 for module 0, segment 5 for module 1).
+Reset hold sets both bits of the field; release clears both. The mask is not applied to
+the written byte as an input mask.</doc>
+    <field name="ok" start="6" size="2" type="uint" grade="established"/>
+  </struct>
+  <struct name="ROUTER" size="4" grade="established">
+    <doc>R-brick router expanders.</doc>
+    <field name="router_type" start="4" size="4" type="uint" grade="established"/>
+  </struct>
+  <struct name="ROUTER_DEST" size="4" grade="established">
+    <doc>Router packet destination word, as the L2 router and the L1 target list both build and
+read it for brick-directed packets (any destination form other than the L2 form and the
+node form): the rack takes 10 bits and the slot 6.</doc>
+    <field name="rack" start="18" size="10" type="uint" grade="established"/>
+    <field name="slot" start="12" size="6" type="uint" grade="established"/>
+  </struct>
+  <struct name="RPOWER" size="4" grade="established">
+    <field name="router_power" start="3" size="1" type="uint" grade="established"/>
+  </struct>
+  <struct name="XBRIDGE" size="4" grade="established">
+    <doc>I-brick bridge control expander: expander index 5, 7-bit address 0x24.</doc>
+    <field name="clock_select" start="5" size="1" type="uint" grade="established"/>
+    <field name="host_enable_b" start="4" size="1" type="uint" grade="established"/>
+    <field name="reset_3" start="3" size="1" type="uint" grade="established"/>
+    <field name="host_enable_a" start="2" size="1" type="uint" grade="established"/>
+    <field name="reset_1" start="1" size="1" type="uint" grade="established"/>
+    <field name="reset_0" start="0" size="1" type="uint" grade="established"/>
+  </struct>
+  <constant name="BANK_RECORD_WORD0" value="0x40030" grade="established"/>
+  <constant name="BUS_SELECT_ADDR7" value="0x27" grade="established"/>
+  <constant name="BUS_SELECT_SEG1" value="0xff" grade="established"/>
+  <constant name="BUS_SELECT_SEG13_LAST" value="0xf7" grade="established"/>
+  <constant name="BUS_SELECT_SEG2" value="0x78" grade="established"/>
+  <constant name="BUS_SELECT_SEG3" value="0xb8" grade="established"/>
+  <constant name="BUS_SELECT_SEG4" value="0xd8" grade="established"/>
+  <constant name="BUS_SELECT_SEG5" value="0xe8" grade="established"/>
+  <constant name="BUS_SELECT_SEG6_FIRST" value="0xf0" grade="established"/>
+  <constant name="CACR_FIRST_WRITE" value="0x1000000" grade="established"/>
+  <constant name="CACR_SECOND_WRITE" value="0x80000000" grade="established"/>
+  <constant name="CLOCK_CONTROL_INDEX" value="0x7f8" grade="established"/>
+  <constant name="CNTL1_INPUT_MASK_CBRICK" value="0x0" grade="established"/>
+  <constant name="CNTL1_INPUT_MASK_O300" value="0x20" grade="established"/>
+  <constant name="CNTL1_START_VALUE" value="0x72" grade="established"/>
+  <constant name="CNTL1_WIRE" value="0x42" grade="established"/>
+  <constant name="CNTL2_INPUT_MASK_CBRICK" value="0x0" grade="established"/>
+  <constant name="CNTL2_INPUT_MASK_O300" value="0x2" grade="established"/>
+  <constant name="CNTL2_START_VALUE" value="0x8a" grade="established"/>
+  <constant name="CNTL2_WIRE" value="0x44" grade="established"/>
+  <constant name="DISPLAY_CHANGE_MASK" value="0x7" grade="established"/>
+  <constant name="DISPLAY_CONTROL_ADDR7" value="0x20" grade="established"/>
+  <constant name="DISPLAY_INPUT_MASK" value="0xf" grade="established"/>
+  <constant name="EEPROM_CX_NODE_ADDR7" value="0x56" grade="established"/>
+  <constant name="EEPROM_CX_RECORD_COUNT" value="0x26" grade="established"/>
+  <constant name="EEPROM_CX_SPD_CAPACITY" value="0xa0" grade="established"/>
+  <constant name="EEPROM_DIMM_ADDR7" value="0x50" grade="established"/>
+  <constant name="EEPROM_DIMM_CAPACITY" value="0x100" grade="established"/>
+  <constant name="EEPROM_KIND_BOARD" value="0x1" grade="established"/>
+  <constant name="EEPROM_KIND_MEMORY" value="0x2" grade="established"/>
+  <constant name="EEPROM_LOGIC_ADDR7" value="0x54" grade="established"/>
+  <constant name="EEPROM_LOGIC_CAPACITY" value="0x200" grade="established"/>
+  <constant name="EEPROM_NODE_ADDR7" value="0x52" grade="established"/>
+  <constant name="EEPROM_NODE_CAPACITY" value="0x200" grade="established"/>
+  <constant name="EEPROM_PIMM_ADDR7" value="0x54" grade="established"/>
+  <constant name="EEPROM_PIMM_CAPACITY" value="0x200" grade="established"/>
+  <constant name="EEPROM_POWER_ADDR7" value="0x52" grade="established"/>
+  <constant name="EEPROM_POWER_CAPACITY" value="0x200" grade="established"/>
+  <constant name="FLASH_CMD_AUTOSELECT" value="0x90" grade="established"/>
+  <constant name="FLASH_CMD_ERASE_RESUME" value="0x30" grade="established"/>
+  <constant name="FLASH_CMD_ERASE_SETUP" value="0x80" grade="established"/>
+  <constant name="FLASH_CMD_ERASE_SUSPEND" value="0xb0" grade="established"/>
+  <constant name="FLASH_CMD_PROGRAM" value="0xa0" grade="established"/>
+  <constant name="FLASH_CMD_RESET" value="0xf0" grade="established"/>
+  <constant name="FLASH_CMD_SECTOR_ERASE" value="0x30" grade="established"/>
+  <constant name="FLASH_HELPER_ERR_PROGRAM" value="0xfffffaeb" grade="established"/>
+  <constant name="FLASH_HELPER_ERR_RANGE" value="0xfffffaec" grade="established"/>
+  <constant name="FLASH_HELPER_ERR_VERIFY" value="0xfffffaea" grade="established"/>
+  <constant name="FLASH_UNLOCK_ADDR_1" value="0xaaa" grade="established"/>
+  <constant name="FLASH_UNLOCK_ADDR_2" value="0x554" grade="established"/>
+  <constant name="FLASH_UNLOCK_DATA_1" value="0xaa" grade="established"/>
+  <constant name="FLASH_UNLOCK_DATA_2" value="0x55" grade="established"/>
+  <constant name="IBRICK_FAN_SPEED_ADDR7" value="0x39" grade="established"/>
+  <constant name="IBRICK_PCI_BUS1_SLOT1_ADDR7" value="0x25" grade="established"/>
+  <constant name="IBRICK_PCI_BUS1_SLOT2_ADDR7" value="0x26" grade="established"/>
+  <constant name="IBRICK_PCI_BUS1_SLOT3_ADDR7" value="0x27" grade="established"/>
+  <constant name="IBRICK_PCI_BUS1_SLOT4_ADDR7" value="0x21" grade="established"/>
+  <constant name="IBRICK_PCI_BUS2_SLOT1_ADDR7" value="0x3e" grade="established"/>
+  <constant name="IBRICK_PCI_BUS2_SLOT2_ADDR7" value="0x3f" grade="established"/>
+  <constant name="IBRICK_PORT_CONTROL_ADDR7" value="0x23" grade="established"/>
+  <constant name="IBRICK_POWER_ENABLE_ADDR7" value="0x38" grade="established"/>
+  <constant name="IBRICK_POWER_STATUS1_ADDR7" value="0x3a" grade="established"/>
+  <constant name="IBRICK_POWER_STATUS2_ADDR7" value="0x3b" grade="established"/>
+  <constant name="IBRICK_SUPPLY_12V_BIAS_ENABLE" value="0x4" grade="established"/>
+  <constant name="IBRICK_SUPPLY_12V_ENABLE" value="0x40" grade="established"/>
+  <constant name="IBRICK_SUPPLY_2V5_ENABLE" value="0x8" grade="established"/>
+  <constant name="IBRICK_SUPPLY_3V3_ENABLE" value="0x10" grade="established"/>
+  <constant name="IBRICK_SUPPLY_48V_ENABLE" value="0x1" grade="established"/>
+  <constant name="IBRICK_SUPPLY_5V_ENABLE" value="0x20" grade="established"/>
+  <constant name="IBRICK_SUPPLY_M12V_ENABLE" value="0x80" grade="established"/>
+  <constant name="MBAR_START_VALUE" value="0x10000001" grade="established"/>
+  <constant name="MONITOR_ADDR7_0" value="0x2c" grade="established"/>
+  <constant name="MONITOR_ADDR7_1" value="0x2d" grade="established"/>
+  <constant name="MONITOR_ADDR7_2" value="0x2e" grade="established"/>
+  <constant name="MONITOR_ADDR7_3" value="0x2f" grade="established"/>
+  <constant name="MONITOR_FLAG_NO_START" value="0x1" grade="established"/>
+  <constant name="MONITOR_INIT_REG_40" value="0x80" grade="established"/>
+  <constant name="MONITOR_INIT_REG_43" value="0xdf" grade="established"/>
+  <constant name="MONITOR_INIT_REG_44" value="0x13" grade="established"/>
+  <constant name="MONITOR_INIT_REG_47_ADDR7_0" value="0xa0" grade="established"/>
+  <constant name="MONITOR_INIT_REG_47_ADDR7_1" value="0x20" grade="established"/>
+  <constant name="MONITOR_INIT_REG_47_OTHER" value="0x0" grade="established"/>
+  <constant name="MOVEC_CODE_CACR" value="0x2" grade="established"/>
+  <constant name="MOVEC_CODE_MBAR" value="0xc0f" grade="established"/>
+  <constant name="MOVEC_CODE_RAMBAR" value="0xc04" grade="established"/>
+  <constant name="MOVEC_CODE_VBR" value="0x801" grade="established"/>
+  <constant name="MOVEC_RN_RC_OPCODE" value="0x4e7b" grade="established"/>
+  <constant name="PCI_EXPANSION_TYPE" value="0x25" grade="established"/>
+  <constant name="PIMM_VCC_OK_WIRE" value="0x42" grade="established"/>
+  <constant name="QUART_CHANNEL0" value="0x0" grade="established"/>
+  <constant name="QUART_CHANNEL1" value="0x8" grade="established"/>
+  <constant name="QUART_CHANNEL2" value="0x10" grade="established"/>
+  <constant name="QUART_CHANNEL3" value="0x18" grade="established"/>
+  <constant name="QUART_FIFO_CONTROL_TRIGGER_A" value="0xf" grade="established"/>
+  <constant name="QUART_FIFO_CONTROL_TRIGGER_B" value="0x8f" grade="established"/>
+  <constant name="QUART_LINE_CONTROL_8E1" value="0x1b" grade="established"/>
+  <constant name="QUART_LINE_CONTROL_8N1" value="0x3" grade="established"/>
+  <constant name="QUART_LINE_CONTROL_8O1" value="0xb" grade="established"/>
+  <constant name="QUART_MODEM_CONTROL_DTR_RTS" value="0x3" grade="established"/>
+  <constant name="QUART_MODEM_CONTROL_LOOPBACK" value="0x10" grade="established"/>
+  <constant name="QUART_REG_FIFO_CONTROL" value="0x2" grade="established"/>
+  <constant name="QUART_REG_LINE_CONTROL" value="0x3" grade="established"/>
+  <constant name="QUART_REG_MODEM_CONTROL" value="0x4" grade="established"/>
+  <constant name="RACK_MAX" value="0x3ff" grade="established"/>
+  <constant name="RACK_WIDTH_BITS" value="0xa" grade="established"/>
+  <constant name="RAMBAR_START_VALUE" value="0x30100001" grade="established"/>
+  <constant name="RBRICK_PORT_BC_CONTROL_ADDR7" value="0x25" grade="established"/>
+  <constant name="RBRICK_PORT_DE_CONTROL_ADDR7" value="0x26" grade="established"/>
+  <constant name="RBRICK_PORT_FG_CONTROL_ADDR7" value="0x27" grade="established"/>
+  <constant name="RBRICK_PORT_HA_CONTROL_ADDR7" value="0x24" grade="established"/>
+  <constant name="RBRICK_POWER_CONTROL_ADDR7" value="0x39" grade="established"/>
+  <constant name="RBRICK_SUPPLY_2V5_ENABLE" value="0x4" grade="established"/>
+  <constant name="RBRICK_SUPPLY_48V_ENABLE" value="0x1" grade="established"/>
+  <constant name="RBRICK_WIDGET_PRESENT_ADDR7" value="0x22" grade="established"/>
+  <constant name="RETAINED_RECORD_BASE" value="0x30101990" grade="established"/>
+  <constant name="RETAINED_RECORD_MARKER" value="0xa1b2c3d4" grade="established"/>
+  <constant name="RETAINED_RECORD_SIZE" value="0x4d8" grade="established"/>
+  <constant name="ROUTER_CONTROL_ADDR7" value="0x23" grade="established"/>
+  <constant name="ROUTER_HOLD_VALUE" value="0x1" grade="established"/>
+  <constant name="ROUTER_RESET_BITS_MASK" value="0xd" grade="established"/>
+  <constant name="ROUTER_START_VALUE" value="0xf1" grade="established"/>
+  <constant name="TEZRO_DESKSIDE_TYPE" value="0x39" grade="inferred"/>
+  <constant name="TEZRO_RACKMOUNT_TYPE" value="0x51" grade="inferred"/>
+  <constant name="TIMER1_LEVEL" value="0x5" grade="established"/>
+  <constant name="TIMER1_VECTOR" value="0x1d" grade="established"/>
+  <constant name="UART_BAUD" value="0x4b00" grade="established"/>
+  <constant name="UART_LEVEL" value="0x6" grade="established"/>
+  <constant name="UART_VECTOR" value="0x42" grade="established"/>
+  <constant name="VBR_START_VALUE" value="0x30100000" grade="established"/>
+  <constant name="XBRIDGE_ADDR7" value="0x24" grade="established"/>
+  <constant name="XBRIDGE_START_VALUE" value="0xd4" grade="established"/>
+</genxml>

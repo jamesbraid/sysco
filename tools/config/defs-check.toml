@@ -1,0 +1,102 @@
+[project]
+name = "sysco"
+plugin = "tools/mmsc_commands_defs.py"
+
+[units.l1_pkg0_requests]
+group = "L1P0_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg1_requests]
+group = "L1P1_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg2_requests]
+group = "L1P2_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg3_requests]
+group = "L1P3_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg5_requests]
+group = "L1P5_DECODE.h"
+prose_offsets = false
+
+[units.l2_partition_requests]
+group = "L2P_DECODE.h"
+prose_offsets = false
+
+[units.l2_router_requests]
+group = "L2R_DECODE.h"
+prose_offsets = false
+
+[units.mmsc_commands]
+group = "MMSC_CMD_DECODE.h"
+prose_offsets = false
+
+[units.l1_console]
+group = "L1_CONSOLE_DECODE.h"
+
+[units.l1_pkg0_console]
+group = "L1P0_CONSOLE_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg1_console]
+group = "L1P1_CONSOLE_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg2_console]
+group = "L1P2_CONSOLE_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg3_console]
+group = "L1P3_CONSOLE_DECODE.h"
+prose_offsets = false
+
+[units.l1_pkg5_console]
+group = "L1P5_CONSOLE_DECODE.h"
+prose_offsets = false
+
+[units.mcf5206e]
+group = "MCF5206E_DECODE.h"
+prose_offsets = false
+
+[units.l1_board]
+group = "L1_BOARD_DECODE.h"
+prose_offsets = false
+
+[units.mpc8xx]
+group = "MPC8XX_DECODE.h"
+
+[units.elsc_host]
+group = "ELSC_DECODE.h"
+prose_offsets = false
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "user authority levels"
+doc = "docs/mmsc/commands.md"
+regex = '`BASIC` (\d+), `SUPERVISOR` (\d+),\s+`SERVICE` (\d+)'
+binds = [
+  ["EN", "AUTH.level", "basic", 1],
+  ["EN", "AUTH.level", "supervisor", 2],
+  ["EN", "AUTH.level", "service", 3],
+]
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "level above 999 required"
+doc = "docs/mmsc/commands.md"
+regex = "level above (999) required"
+binds = [
+  ["EN", "GATE.level", "above_999", 1],
+]
+
+[[claims]]
+group = "MMSC_CMD_DECODE.h"
+label = "level above 499 required"
+doc = "docs/mmsc/commands.md"
+regex = "level above (499) required"
+binds = [
+  ["EN", "GATE.level", "above_499", 1],
+]

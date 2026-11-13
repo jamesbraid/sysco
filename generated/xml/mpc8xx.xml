@@ -1,0 +1,257 @@
+<?xml version="1.0" ?>
+<!-- generated from devices/mpc8xx/registers.toml by defs-gen - do not edit, change the source -->
+<genxml unit="mpc8xx" prefix="M8X" title="start-up values of the PowerPC communications controller on the L2 board">
+  <doc>Start-up values of the PowerPC communications controller on the L2 board: the values the L2
+reset code and its second stage write to the machine state register, the clock and reset
+registers, the serial-management channel parameter page and the PCI bridge. Register offsets are
+from the internal memory map base. The register and field names are the public Linux headers';
+the firmware's own reading of each field was not decoded, so the layouts of the clock registers
+and the bridge are not given. A value is established when the image writes it as stated.
+</doc>
+  <space name="bytedev" unit="byte"/>
+  <space name="mpc8xx_brg" unit="byte"/>
+  <space name="mpc8xx_clk" unit="byte"/>
+  <space name="mpc8xx_cs" unit="byte"/>
+  <space name="mpc8xx_pcib" unit="byte"/>
+  <space name="mpc8xx_siu" unit="byte"/>
+  <space name="mpc8xx_upm" unit="byte"/>
+  <struct name="REG0" size="1" grade="established" register="yes" offset="0x0" access="w" space="bytedev" reset="unknown">
+    <doc>Byte-wide peripheral on the fourth chip select. Established: the window decode above, the
+8-bit port, and that the boot code only writes it, in the order given. What the device is
+stays unknown, so the three registers are named by offset. Whether the kernel or any
+program uses the part after mapping the first 4 KiB is not settled.</doc>
+  </struct>
+  <struct name="REG1" size="1" grade="established" register="yes" offset="0x1" access="w" space="bytedev" reset="unknown">
+  </struct>
+  <struct name="REG3" size="1" grade="established" register="yes" offset="0x3" access="w" space="bytedev" reset="unknown">
+  </struct>
+  <struct name="BRGC1" size="4" grade="inferred" register="yes" offset="0x9f0" access="rw" space="mpc8xx_brg" reset="unknown">
+    <doc>First baud-rate generator, loaded by stage A of the console loader. Its place in the register
+map is the public map's: the store goes through a base that sits 0x30 below the register, and
+the same routine uses that base for the communications-processor command register and for
+port B (read in l2.bin 1.44.0), so the position is inferred. Stage A computes the divisor
+field as (clock word &gt;&gt; 4) / baud, doubled, with the enable bit or-ed in; with its clock word
+of 0x32 and baud word 0x9600 the quotient is zero, so it stores only the enable bit. The
+wrapper's clock word is 50,000,000, which gives the quotient 81 and the value 0x100a2.</doc>
+  </struct>
+  <struct name="SCCR" size="4" grade="established" register="yes" offset="0x280" access="rw" space="mpc8xx_clk" reset="unknown">
+    <doc>Clock and reset registers written by the reset code; the multiplication factor and
+division fields were not decoded.</doc>
+  </struct>
+  <struct name="PLPRCR" size="4" grade="established" register="yes" offset="0x284" access="rw" space="mpc8xx_clk" reset="unknown">
+  </struct>
+  <struct name="BR0" size="4" grade="established" register="yes" offset="0x100" access="rw" space="mpc8xx_cs" reset="unknown">
+    <doc>Memory controller banks: the base and option register of each of the eight banks, written
+from a 14-word table (banks 1 to 7) and, for bank 0, built and stored by the reset code. The
+width, base, mask and timing fields of the two registers were not decoded here.</doc>
+  </struct>
+  <struct name="OR0" size="4" grade="established" register="yes" offset="0x104" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR1" size="4" grade="established" register="yes" offset="0x108" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR1" size="4" grade="established" register="yes" offset="0x10c" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR2" size="4" grade="established" register="yes" offset="0x110" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR2" size="4" grade="established" register="yes" offset="0x114" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR3" size="4" grade="established" register="yes" offset="0x118" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR3" size="4" grade="established" register="yes" offset="0x11c" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR4" size="4" grade="established" register="yes" offset="0x120" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR4" size="4" grade="established" register="yes" offset="0x124" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR5" size="4" grade="established" register="yes" offset="0x128" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR5" size="4" grade="established" register="yes" offset="0x12c" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR6" size="4" grade="established" register="yes" offset="0x130" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR6" size="4" grade="established" register="yes" offset="0x134" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="BR7" size="4" grade="established" register="yes" offset="0x138" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="OR7" size="4" grade="established" register="yes" offset="0x13c" access="rw" space="mpc8xx_cs" reset="unknown">
+  </struct>
+  <struct name="REG_004" size="4" grade="inferred" register="yes" offset="0x4" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_00C" size="4" grade="inferred" register="yes" offset="0xc" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_010" size="4" grade="inferred" register="yes" offset="0x10" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_030" size="4" grade="inferred" register="yes" offset="0x30" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_03C" size="4" grade="inferred" register="yes" offset="0x3c" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_100" size="4" grade="inferred" register="yes" offset="0x100" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_104" size="4" grade="inferred" register="yes" offset="0x104" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_110" size="4" grade="inferred" register="yes" offset="0x110" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_114" size="4" grade="inferred" register="yes" offset="0x114" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_13C" size="4" grade="inferred" register="yes" offset="0x13c" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_140" size="4" grade="inferred" register="yes" offset="0x140" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_400" size="4" grade="inferred" register="yes" offset="0x400" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_404" size="4" grade="inferred" register="yes" offset="0x404" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_408" size="4" grade="inferred" register="yes" offset="0x408" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="CFG_ADDR" size="4" grade="established" register="yes" offset="0x500" access="rw" space="mpc8xx_pcib" reset="unknown">
+    <doc>The bridge's configuration-access pair, used by the second stage to reach the devices behind
+it. The address register is loaded first, then the data register is read or written at the
+data offset plus the byte lane (byte, halfword and word accesses). The address word is built
+from the bus number, the device and function byte and the register number with its low two
+bits cleared, and bit 0 is set only when the bus number is not 0. The widths of the bus and
+device-and-function arguments were not read, so those two field extents are inferred from
+the usual layout; the register number mask and the type bit follow from the code.</doc>
+  </struct>
+  <struct name="CFG_DATA" size="4" grade="established" register="yes" offset="0x504" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_600" size="4" grade="inferred" register="yes" offset="0x600" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_604" size="4" grade="inferred" register="yes" offset="0x604" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_608" size="4" grade="inferred" register="yes" offset="0x608" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_800" size="4" grade="inferred" register="yes" offset="0x800" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_F00" size="4" grade="inferred" register="yes" offset="0xf00" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_F04" size="4" grade="inferred" register="yes" offset="0xf04" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_F10" size="4" grade="inferred" register="yes" offset="0xf10" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_F14" size="4" grade="inferred" register="yes" offset="0xf14" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="REG_F80" size="4" grade="inferred" register="yes" offset="0xf80" access="rw" space="mpc8xx_pcib" reset="unknown">
+  </struct>
+  <struct name="SYPCR" size="4" grade="established" register="yes" offset="0x4" access="rw" space="mpc8xx_siu" reset="unknown">
+    <doc>System protection control and software service registers. The boot code stores one 32-bit
+word to the control register only on its failure path (image check failed, or the second
+stage returned); a normal boot never writes it. The value keeps the high bits set and
+clears the low seven. Both widths are those of the stores.</doc>
+  </struct>
+  <struct name="SWSR" size="2" grade="established" register="yes" offset="0xe" access="rw" space="mpc8xx_siu" reset="unknown">
+  </struct>
+  <struct name="MAR" size="4" grade="established" register="yes" offset="0x164" access="rw" space="mpc8xx_upm" reset="unknown">
+    <doc>Memory controller timing and the user-programmable machine A. The second stage writes the
+periodic timer prescaler and the machine mode register, loads 64 array words through the
+data register (each followed by a store of its index to the command register), then issues
+run commands: one at array address 0x2d, eight at 0x30, then the address register is set
+and one run at 0x13 is issued. The meaning of the machine mode fields was not decoded.</doc>
+  </struct>
+  <struct name="MCR" size="4" grade="established" register="yes" offset="0x168" access="rw" space="mpc8xx_upm" reset="unknown">
+  </struct>
+  <struct name="MAMR" size="4" grade="established" register="yes" offset="0x170" access="rw" space="mpc8xx_upm" reset="unknown">
+  </struct>
+  <struct name="MPTPR" size="2" grade="established" register="yes" offset="0x17a" access="rw" space="mpc8xx_upm" reset="unknown">
+  </struct>
+  <struct name="MDR" size="4" grade="established" register="yes" offset="0x17c" access="rw" space="mpc8xx_upm" reset="unknown">
+  </struct>
+  <struct name="MSR" size="4" grade="inferred">
+    <doc>Machine state register written once by the reset code: machine-check enable and
+recoverable-interrupt set, translation off, supervisor mode. The bit positions are
+the PowerPC architecture's.</doc>
+    <field name="me" start="12" size="1" type="uint" grade="inferred"/>
+    <field name="ri" start="1" size="1" type="uint" grade="inferred"/>
+    <test value="0x1002" kind="vector">
+      <expect field="ri" value="1"/>
+      <expect field="me" value="1"/>
+    </test>
+  </struct>
+  <struct name="PCI_CFG_ADDR" size="4" grade="inferred">
+    <field name="bus" start="16" size="8" type="uint" grade="inferred"/>
+    <field name="devfn" start="8" size="8" type="uint" grade="inferred"/>
+    <field name="register_" start="2" size="6" type="uint" grade="established"/>
+    <field name="type1" start="0" size="1" type="uint" grade="established"/>
+  </struct>
+  <constant name="BR0_START_VALUE" value="0xfe000001" grade="established"/>
+  <constant name="BR1_START_VALUE" value="0x81" grade="established"/>
+  <constant name="BR2_START_VALUE" value="0x10000801" grade="established"/>
+  <constant name="BR3_START_VALUE" value="0x0" grade="established"/>
+  <constant name="BR4_START_VALUE" value="0xfa100401" grade="established"/>
+  <constant name="BR5_START_VALUE" value="0x80000001" grade="established"/>
+  <constant name="BR6_START_VALUE" value="0xfa210001" grade="established"/>
+  <constant name="BR7_START_VALUE" value="0xfc000401" grade="established"/>
+  <constant name="BRGC1_STAGE_A_VALUE" value="0x10000" grade="established"/>
+  <constant name="BRGC1_WRAPPER_VALUE" value="0x100a2" grade="established"/>
+  <constant name="BYTEDEV_MAPPED_SIZE" value="0x1000" grade="established"/>
+  <constant name="BYTEDEV_REG0_FIRST" value="0x0" grade="established"/>
+  <constant name="BYTEDEV_REG0_SECOND" value="0x80" grade="established"/>
+  <constant name="BYTEDEV_REG1_FIRST" value="0xe" grade="established"/>
+  <constant name="BYTEDEV_REG1_LAST" value="0xe" grade="established"/>
+  <constant name="BYTEDEV_REG1_SECOND" value="0xf" grade="established"/>
+  <constant name="BYTEDEV_REG3_VALUE" value="0x18" grade="established"/>
+  <constant name="FLASH_CMD_AUTOSELECT" value="0x900090" grade="established"/>
+  <constant name="FLASH_CMD_ERASE_SETUP" value="0x800080" grade="established"/>
+  <constant name="FLASH_CMD_PROGRAM" value="0xa000a0" grade="established"/>
+  <constant name="FLASH_CMD_RESET" value="0xf000f0" grade="established"/>
+  <constant name="FLASH_CMD_SECTOR_ERASE" value="0x300030" grade="established"/>
+  <constant name="FLASH_STATUS_ERROR" value="0x200020" grade="established"/>
+  <constant name="FLASH_STATUS_TOGGLE" value="0x400040" grade="established"/>
+  <constant name="FLASH_UNLOCK_DATA_1" value="0xaa00aa" grade="established"/>
+  <constant name="FLASH_UNLOCK_DATA_2" value="0x550055" grade="established"/>
+  <constant name="FLASH_UNLOCK_OFFSET_1" value="0x1554" grade="established"/>
+  <constant name="FLASH_UNLOCK_OFFSET_2" value="0xaa8" grade="established"/>
+  <constant name="HC0_WINDOW_BASE" value="0xc0000000" grade="established"/>
+  <constant name="HC1_WINDOW_BASE" value="0xc0001000" grade="established"/>
+  <constant name="IMMR_VALUE" value="0xfa200000" grade="established"/>
+  <constant name="MAMR_START_VALUE" value="0x18804000" grade="established"/>
+  <constant name="MAR_START_VALUE" value="0x88" grade="established"/>
+  <constant name="MCR_RUN_FIRST" value="0x8000202d" grade="established"/>
+  <constant name="MCR_RUN_LAST" value="0x80002013" grade="established"/>
+  <constant name="MCR_RUN_SECOND" value="0x80002030" grade="established"/>
+  <constant name="MPTPR_START_VALUE" value="0x200" grade="established"/>
+  <constant name="MSR_RESET_VALUE" value="0x1002" grade="established"/>
+  <constant name="OR0_START_VALUE" value="0xff800940" grade="established"/>
+  <constant name="OR1_START_VALUE" value="0xff000400" grade="established"/>
+  <constant name="OR2_START_VALUE" value="0xfffe0938" grade="established"/>
+  <constant name="OR3_START_VALUE" value="0x0" grade="established"/>
+  <constant name="OR4_START_VALUE" value="0xfffe0930" grade="established"/>
+  <constant name="OR5_START_VALUE" value="0xa0000008" grade="established"/>
+  <constant name="OR6_START_VALUE" value="0xffff0108" grade="established"/>
+  <constant name="OR7_START_VALUE" value="0xff800930" grade="established"/>
+  <constant name="PCIB_INIT_004" value="0xf9000147" grade="established"/>
+  <constant name="PCIB_INIT_00C" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_010" value="0x1000000" grade="established"/>
+  <constant name="PCIB_INIT_030" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_03C" value="0x100" grade="established"/>
+  <constant name="PCIB_INIT_100" value="0x88800080" grade="established"/>
+  <constant name="PCIB_INIT_104" value="0x80000000" grade="established"/>
+  <constant name="PCIB_INIT_110" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_114" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_13C" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_140" value="0x81000000" grade="established"/>
+  <constant name="PCIB_INIT_400" value="0x780008" grade="established"/>
+  <constant name="PCIB_INIT_404" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_408" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_600" value="0xeff0000f" grade="established"/>
+  <constant name="PCIB_INIT_604" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_608" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_800" value="0xc1013" grade="established"/>
+  <constant name="PCIB_INIT_F00" value="0x1000000" grade="established"/>
+  <constant name="PCIB_INIT_F04" value="0x800000d1" grade="established"/>
+  <constant name="PCIB_INIT_F10" value="0x0" grade="established"/>
+  <constant name="PCIB_INIT_F14" value="0xc00000d1" grade="established"/>
+  <constant name="PCIB_INIT_F80" value="0x81000000" grade="established"/>
+  <constant name="PLPRCR_START_VALUE" value="0x5040" grade="established"/>
+  <constant name="SCCR_START_VALUE" value="0x62000000" grade="established"/>
+  <constant name="SMC1_PARAM_PAGE" value="0x3e80" grade="established"/>
+  <constant name="SWSR_KEY_FIRST" value="0x556c" grade="established"/>
+  <constant name="SWSR_KEY_SECOND" value="0xaa39" grade="established"/>
+  <constant name="SYPCR_FAILURE_PATH_VALUE" value="0xffffff80" grade="established"/>
+  <constant name="UPM_PROGRAM_WORDS" value="0x40" grade="established"/>
+  <constant name="VPD_BLOCK_SIZE" value="0x100" grade="established"/>
+  <constant name="VPD_CHAIN_START" value="0xa" grade="established"/>
+  <constant name="VPD_EEPROM_ADDR7" value="0x52" grade="established"/>
+  <constant name="VPD_EEPROM_ADDR8" value="0xa4" grade="established"/>
+  <constant name="VPD_TAG_END" value="0xff" grade="established"/>
+  <constant name="VPD_TAG_ETHERNET" value="0x8" grade="established"/>
+</genxml>

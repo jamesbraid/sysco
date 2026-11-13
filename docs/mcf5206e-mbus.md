@@ -4,8 +4,8 @@ This page is the chip's own contract for the on-chip M-Bus module of the Motorol
 ColdFire processor. It says what the manual specifies, independent of any board. The Origin 300
 L1 uses the module, and the board facts are in [l1/mbus.md](l1/mbus.md) and
 [l1/ip45-mbus-public-fitment.md](l1/ip45-mbus-public-fitment.md). The register layout and
-field names are in [defs/mcf5206e.toml](../defs/mcf5206e.toml), and the generated reference is
-[gen/docs/mcf5206e.md](../gen/docs/mcf5206e.md).
+field names are in [devices/mcf5206e/registers.toml](../devices/mcf5206e/registers.toml), and the generated reference is
+[devices/mcf5206e/registers.md](../devices/mcf5206e/registers.md).
 
 Sources:
 

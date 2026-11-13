@@ -43,7 +43,7 @@ rest only on non-public source were left out.
 The bytes at 0x700 to 0x7ff are reserved for the controller. The marker at 0x700 and the module
 number at 0x708 are already in the host request set. The rest of the block is as published in the
 public Linux SN controller driver and the IP27 PROM Technical Reference (inferred, not checked
-against an image). Constants are in [defs/elsc_nvram.toml](../defs/elsc_nvram.toml).
+against an image). Constants are in [devices/elsc_nvram/registers.toml](../devices/elsc_nvram/registers.toml).
 
 | Byte | Meaning |
 |---|---|
@@ -86,7 +86,7 @@ unknown.
 ## Module serial and midplane records
 
 Each module's serial comes from two one-wire parts: a `MODULEID` record (family 0x09 in
-[defs/msc_multinode.toml](../defs/msc_multinode.toml)) and a midplane record whose name ends
+[formats/msc_multinode/format.toml](../formats/msc_multinode/format.toml)) and a midplane record whose name ends
 in `_MPLN` (family 0x0b).
 
 - **Inferred.** In the public captures that show locations, both parts appear under the `n1`

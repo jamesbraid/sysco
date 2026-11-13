@@ -1,0 +1,192 @@
+{
+  "family": "SGI L1 and L2 system-controller firmware and its host tools",
+  "review_required": [
+    "docs/routines/t1-*.md",
+    "docs/routines/t2-*.md"
+  ],
+  "siblings": {},
+  "docs": {
+    "prose": [
+      "docs/*.md",
+      "docs/*/*.md",
+      "README.md"
+    ],
+    "headers": [
+      "generated/c/*.h",
+      "*/include/*.h"
+    ],
+    "tables": [
+      "docs/*/*.tsv",
+      "*/*.tsv",
+      "*/*/*.tsv",
+      "*/*/*/*.tsv"
+    ],
+    "index": [
+      "AGENTS.md",
+      "README.md",
+      "IRIX_FILES.md",
+      "docs/coverage.md",
+      "docs/open-questions.md"
+    ],
+    "dumps": [],
+    "skip": [
+      "docs/inventory/*"
+    ]
+  },
+  "prepare": [],
+  "exclude": [],
+  "windows": [
+    {
+      "name": "MBAR",
+      "size": "0x200",
+      "physical": "0x10000000",
+      "docs": [
+        "generated/c/mcf5206e.h",
+        "generated/c/l1_board.h",
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "NVRAM",
+      "size": "0x800",
+      "physical": "0x20000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "RAM",
+      "memory": true,
+      "size": "0x80000",
+      "physical": "0x30000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "SRAM",
+      "memory": true,
+      "size": "0x2000",
+      "physical": "0x30100000",
+      "docs": [
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "USB",
+      "size": "0x20",
+      "physical": "0x40000000",
+      "docs": [
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "QUART",
+      "size": "0x20",
+      "physical": "0x50000000",
+      "docs": [
+        "generated/c/l1_board.h",
+        "docs/l1-board-contract.md"
+      ]
+    },
+    {
+      "name": "FLASH",
+      "memory": true,
+      "size": "0x100000",
+      "physical": "0xffe00000",
+      "docs": [
+        "generated/c/l1_board.h",
+        "docs/l1-board-contract.md",
+        "docs/l1-image-layout.md"
+      ]
+    },
+    {
+      "name": "IMMR",
+      "size": "0x4000",
+      "physical": "0xfa200000",
+      "docs": [
+        "generated/c/mpc8xx.h",
+        "docs/l2-board-contract.md"
+      ]
+    }
+  ],
+  "bases": [],
+  "accessors": [],
+  "tokens": {
+    "value_width": 4,
+    "name_prefixes": [],
+    "sources": [
+      {
+        "type": "header",
+        "label": "L1 request codes",
+        "kind": "request code",
+        "file": "generated/c/l1_pkg?_requests.h",
+        "pattern": "^#define (L1P\\d_CMD_CODE_(?!(?:SHIFT|MASK|INPLACE)\\b)\\w+)\\s+(0x[0-9a-fA-F]+|\\d+)u?\\s*(?:/\\*.*\\*/)?\\s*$"
+      }
+    ]
+  },
+  "ioctls": {
+    "send_functions": [],
+    "ranges": [],
+    "min_decimal": 1000,
+    "dispatchers": [],
+    "classes": [],
+    "docs": [
+      "docs/*.md"
+    ]
+  },
+  "ucode": [],
+  "spec_registers": [],
+  "binaries": [
+    {
+      "group": "host-tools",
+      "role": "sysco-host-tool",
+      "paths": [
+        "*/usr/sbin/flashsc",
+        "*/usr/sbin/sysco/flashsc",
+        "*/usr/sbin/l1cmd",
+        "*/usr/sbin/flashpbay",
+        "patches/*/usr/sbin/flashsc",
+        "patches/*/usr/sbin/flashpbay"
+      ]
+    },
+    {
+      "group": "l1-firmware",
+      "role": "sysco-l1-firmware",
+      "arch": "coldfire",
+      "layout": "sysco-l1",
+      "paths": [
+        "*/usr/cpu/firmware/l1.bin",
+        "*/usr/cpu/firmware/sysco/l1.bin",
+        "patches/*/usr/cpu/firmware/sysco/l1.bin"
+      ]
+    },
+    {
+      "group": "l2-firmware",
+      "role": "sysco-l2-firmware",
+      "arch": "ppc32",
+      "layout": "sysco-l2",
+      "kernel_load": "0xc0000000",
+      "paths": [
+        "*/usr/cpu/firmware/l2.bin",
+        "*/usr/cpu/firmware/sysco/l2.bin",
+        "patches/*/usr/cpu/firmware/sysco/l2.bin"
+      ]
+    }
+  ],
+  "scope": [],
+  "root_files": [
+    "root/**/usr/cpu/firmware/sysco/*",
+    "root/**/usr/sbin/*",
+    "root/**/usr/sbin/sysco/*",
+    "root/**/usr/cpu/firmware/*.bin",
+    "root/**/usr/etc/*",
+    "root/**/usr/cpu/sysgen/*/*.o",
+    "root/**/sbin/scmsg",
+    "root/**/usr/include/sys/EVEREST/sysctlr.h",
+    "root/**/usr/share/catman/a_man/*/*.z",
+    "root/patches/*/README.patch.*"
+  ]
+}

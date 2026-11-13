@@ -1,6 +1,6 @@
 # L1 console and log messages
 
-Every text the Origin 300 L1 prints to its console or writes to its log is passed to one of two routines in the ColdFire body. This note covers those call sites in L1 1.44.0, package 1 (`Fuel/PE/O300 1MB`), first flash bank, loaded at `0xffe00000`. The table is [inventory/console-messages.tsv](../inventory/console-messages.tsv), made by [scripts/console_messages.py](../../scripts/console_messages.py) from the listing in [disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/README.md). Re-run the script after any change to the listing or the curated roles.
+Every text the Origin 300 L1 prints to its console or writes to its log is passed to one of two routines in the ColdFire body. This note covers those call sites in L1 1.44.0, package 1 (`Fuel/PE/O300 1MB`), first flash bank, loaded at `0xffe00000`. The table is [inventory/console-messages.tsv](../inventory/console-messages.tsv), made by [tools/console_messages.py](../../tools/console_messages.py) from the listing in [disasm/mcf5206e-1.44.0-fuel-pe-o300/](disasm/mcf5206e-1.44.0-fuel-pe-o300/README.md). Re-run the script after any change to the listing or the curated roles.
 
 ## The two sinks
 

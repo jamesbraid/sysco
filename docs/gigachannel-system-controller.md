@@ -3,8 +3,8 @@
 The GIGAchannel expansion cabinet reports its power and fan state as one 16-bit status word. The
 word sits in the widget-8 window of the Crossbow in that cabinet, and the node's IRIX kernel and
 BASEIO PROM read it there. The register, field and constant layout is in
-[defs/gigachannel_status.toml](../defs/gigachannel_status.toml), with the generated reference at
-[gen/docs/gigachannel_status.md](../gen/docs/gigachannel_status.md).
+[devices/gigachannel_status/registers.toml](../devices/gigachannel_status/registers.toml), with the generated reference at
+[devices/gigachannel_status/registers.md](../devices/gigachannel_status/registers.md).
 
 **Unverified.** This page holds one author's readings of the IRIX 6.5.30 kernel and the BASEIO PROM
 6.156, made by disassembly. Nobody has re-read them against the images. The images are not committed,

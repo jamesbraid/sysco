@@ -16,7 +16,7 @@ address in the image. Unverified.
 ## Identity
 
 - General request `0x0003` returns type `0x25` on the expansion chassis
-  (established; `PCI_EXPANSION_TYPE` in `defs/l1_board.toml`). The compute
+  (established; `PCI_EXPANSION_TYPE` in `devices/l1_board/registers.toml`). The compute
   chassis returns `0x34` for the same request, the character `4` that
   [l1-board-contract.md](l1-board-contract.md) uses for the IP45 brick.
 - `0x25` is the character `%`. The board-name table in the same contract

@@ -1,0 +1,483 @@
+# Written by tools/l1_console_defs.py from docs/l1/command-table.tsv. Do not edit by hand.
+unit = "l1_pkg3_console"
+prefix = "L1P3C"
+title = "console command tables of ColdFire L1 firmware package 3"
+doc = """
+Position of each console command in the registered command tables of one ColdFire L1 firmware
+package. The package registers 3 command tables. Each CMD<t>.index is the position of an
+entry in table t, counted from zero, and table t is the t-th table in the order of the
+registration calls in the image. That is not necessarily the order the parser tries them in;
+the order of the calls at run time is not read here. Entry layout and argument kinds are in
+the shared console unit. The typed pattern is the doc of each enum value; hidden entries are
+marked. Labels are the first alternative of each word joined by underscores, with the
+system-link word spelled sys_link; positions of entries that share a pattern are told apart by
+a numeric suffix.
+"""
+from = "IRIX 6.5.30 l1.bin (L1 1.44.0), ColdFire package 3 image"
+
+[c]
+legacy_header = "L1P3_CONSOLE_DECODE.h"
+legacy_guard = "L1P3_CONSOLE_DECODE_H"
+
+[words.CMD0]
+width = 32
+grade = "established"
+
+[words.CMD0.fields.index]
+bits = [8, 0]
+grade = "established"
+
+[words.CMD0.fields.index.enums]
+all_command = { value = 0, grade = "established", doc = "* <command>" }
+rack_slot_command = { value = 1, grade = "established", doc = "<rack_slot> <command>" }
+autopower = { value = 2, grade = "established", doc = "autopower|apwr" }
+autopower_on = { value = 3, grade = "established", doc = "autopower|apwr on" }
+autopower_off = { value = 4, grade = "established", doc = "autopower|apwr off" }
+autopower_abort = { value = 5, grade = "established", doc = "autopower|apwr abort" }
+sys_link = { value = 6, grade = "established", doc = "syscom|junkbus|jb|bedrock" }
+sys_link_none = { value = 7, grade = "established", doc = "syscom|junkbus|jb|bedrock none (hidden)" }
+sys_link_ppp = { value = 8, grade = "established", doc = "syscom|junkbus|jb|bedrock ppp (hidden)" }
+sys_link_enable = { value = 9, grade = "established", doc = "syscom|junkbus|jb|bedrock enable (hidden)" }
+sys_link_reset = { value = 10, grade = "established", doc = "syscom reset (hidden)" }
+sys_link_packets = { value = 11, grade = "established", doc = "syscom packets (hidden)" }
+brick = { value = 12, grade = "established", doc = "brick" }
+brick_type_word = { value = 13, grade = "established", doc = "brick type <word>" }
+brick_rack_decimal = { value = 14, grade = "established", doc = "brick rack <decimal>" }
+brick_slot_decimal = { value = 15, grade = "established", doc = "brick slot|bay|upos <decimal>" }
+brick_rackslot_decimal_decimal = { value = 16, grade = "established", doc = "brick rackslot|rs <decimal> <decimal>" }
+brick_rackslot_reset_number_number = { value = 17, grade = "established", doc = "brick rackslot|rs reset <number> <number> (hidden)" }
+brick_partition_none = { value = 18, grade = "established", doc = "brick partition|part|p none" }
+brick_partition_number = { value = 19, grade = "established", doc = "brick partition|part <number>" }
+partdb = { value = 20, grade = "established", doc = "partdb" }
+partdb_enable = { value = 21, grade = "established", doc = "partdb enable|e|on" }
+partdb_disable = { value = 22, grade = "established", doc = "partdb disable|d|off" }
+cpu = { value = 23, grade = "established", doc = "cpu" }
+cpu_e = { value = 24, grade = "established", doc = "cpu e" }
+cpu_d = { value = 25, grade = "established", doc = "cpu d" }
+cpu_word_e = { value = 26, grade = "established", doc = "cpu <word> e" }
+cpu_word_d = { value = 27, grade = "established", doc = "cpu <word> d" }
+nia_command = { value = 28, grade = "established", doc = "nia|ni|ctc <command>" }
+nib_command = { value = 29, grade = "established", doc = "nib <command>" }
+iia_command = { value = 30, grade = "established", doc = "iia|ii|cti <command>" }
+iib_command = { value = 31, grade = "established", doc = "iib <command>" }
+iic_command = { value = 32, grade = "established", doc = "iic <command>" }
+iid_command = { value = 33, grade = "established", doc = "iid <command>" }
+config = { value = 34, grade = "established", doc = "config|cfg" }
+config_v = { value = 35, grade = "established", doc = "config|cfg v|verbose" }
+config_reset = { value = 36, grade = "established", doc = "config|cfg reset" }
+config_ring = { value = 37, grade = "established", doc = "config|cfg ring" }
+debug = { value = 38, grade = "established", doc = "debug" }
+debug_number = { value = 39, grade = "established", doc = "debug <number>" }
+display = { value = 40, grade = "established", doc = "display|dsp" }
+display_number_command = { value = 41, grade = "established", doc = "display|dsp <number> <command>" }
+display_power_on = { value = 42, grade = "established", doc = "display|dsp power|pwr on" }
+display_attention_on = { value = 43, grade = "established", doc = "display|dsp attention|attn on" }
+display_failure_on = { value = 44, grade = "established", doc = "display|dsp failure|fail on" }
+display_power_off = { value = 45, grade = "established", doc = "display|dsp power|pwr off" }
+display_attention_off = { value = 46, grade = "established", doc = "display|dsp attention|attn off" }
+display_failure_off = { value = 47, grade = "established", doc = "display|dsp failure|fail off" }
+button = { value = 48, grade = "established", doc = "button|btn" }
+button_all_enable = { value = 49, grade = "established", doc = "button|btn all enable|en|e" }
+button_all_disable = { value = 50, grade = "established", doc = "button|btn all disable|dis|d" }
+button_pwr_enable = { value = 51, grade = "established", doc = "button|btn pwr|power enable|en|e" }
+button_pwr_disable = { value = 52, grade = "established", doc = "button|btn pwr|power disable|dis|d" }
+button_rst_enable = { value = 53, grade = "established", doc = "button|btn rst|reset enable|en|e" }
+button_rst_disable = { value = 54, grade = "established", doc = "button|btn rst|reset disable|dis|d" }
+button_nmi_enable = { value = 55, grade = "established", doc = "button|btn nmi enable|en|e" }
+button_nmi_disable = { value = 56, grade = "established", doc = "button|btn nmi disable|dis|d" }
+let_the_carnage_begin = { value = 57, grade = "established", doc = "let the carnage begin (hidden)" }
+slipped_my_mind = { value = 58, grade = "established", doc = "slipped my mind (hidden)" }
+super_sized_please = { value = 59, grade = "established", doc = "super sized please (hidden)" }
+env = { value = 60, grade = "established", doc = "env" }
+env_check = { value = 61, grade = "established", doc = "env check" }
+env_on = { value = 62, grade = "established", doc = "env on" }
+env_off = { value = 63, grade = "established", doc = "env off" }
+env_power_on = { value = 64, grade = "established", doc = "env power|pwr on (hidden)" }
+env_power_off = { value = 65, grade = "established", doc = "env power|pwr off (hidden)" }
+env_power_monitor = { value = 66, grade = "established", doc = "env power|pwr monitor (hidden)" }
+env_temp_on = { value = 67, grade = "established", doc = "env temp on" }
+env_temp_off = { value = 68, grade = "established", doc = "env temp off" }
+env_altitude_high = { value = 69, grade = "established", doc = "env altitude high" }
+env_altitude_low = { value = 70, grade = "established", doc = "env altitude low" }
+env_reset = { value = 71, grade = "established", doc = "env reset|rst" }
+env_test_warning = { value = 72, grade = "established", doc = "env test warning" }
+env_test_fault = { value = 73, grade = "established", doc = "env test fault" }
+env_test_tmpadv = { value = 74, grade = "established", doc = "env test tmpadv" }
+env_test_tmpcrit = { value = 75, grade = "established", doc = "env test tmpcrit" }
+env_test_number_number_number_number_number = { value = 76, grade = "established", doc = "env test <number> <number> <number> <number> <number> (hidden)" }
+env_test_pwrdn = { value = 77, grade = "established", doc = "env test pwrdn (hidden)" }
+env_messages = { value = 78, grade = "established", doc = "env messages (hidden)" }
+env_messages_faultsonly = { value = 79, grade = "established", doc = "env messages faultsonly (hidden)" }
+env_messages_all = { value = 80, grade = "established", doc = "env messages all (hidden)" }
+fan = { value = 81, grade = "established", doc = "fan" }
+fan_on_number = { value = 82, grade = "established", doc = "fan on|off <number> (hidden)" }
+fan_on = { value = 83, grade = "established", doc = "fan on|off (hidden)" }
+fan_speed = { value = 84, grade = "established", doc = "fan speed (hidden)" }
+fan_speed_number_number = { value = 85, grade = "established", doc = "fan speed <number> <number> (hidden)" }
+fan_speed_number = { value = 86, grade = "established", doc = "fan speed <number> (hidden)" }
+fan_speed_low_number = { value = 87, grade = "established", doc = "fan speed low|l|med|m|high|h <number> (hidden)" }
+fan_speed_low = { value = 88, grade = "established", doc = "fan speed low|l|med|m|high|h (hidden)" }
+fan_auto_on = { value = 89, grade = "established", doc = "fan auto on|off (hidden)" }
+help = { value = 90, grade = "established", doc = "help|hlp" }
+help_word = { value = 91, grade = "established", doc = "help|hlp <word>" }
+help_list_hidden = { value = 92, grade = "established", doc = "help list hidden (hidden)" }
+help_word_hidden = { value = 93, grade = "established", doc = "help <word> hidden (hidden)" }
+history = { value = 94, grade = "established", doc = "history|hist" }
+l1dbg = { value = 95, grade = "established", doc = "l1dbg" }
+l1dbg_sys_link_number = { value = 96, grade = "established", doc = "l1dbg syscom <number>" }
+l1dbg_sys_link_number_number = { value = 97, grade = "established", doc = "l1dbg syscom <number> <number>" }
+l1dbg_irtr_number = { value = 98, grade = "established", doc = "l1dbg irtr <number>" }
+l1dbg_env_number = { value = 99, grade = "established", doc = "l1dbg env <number>" }
+l1dbg_env_off = { value = 100, grade = "established", doc = "l1dbg env off" }
+l1dbg_port_on = { value = 101, grade = "established", doc = "l1dbg port on|off" }
+l1dbg_i2c_on = { value = 102, grade = "established", doc = "l1dbg i2c on|off" }
+l1dbg_margin_on = { value = 103, grade = "established", doc = "l1dbg margin|mgn on|off" }
+l1dbg_console_on = { value = 104, grade = "established", doc = "l1dbg console on|off" }
+l1dbg_mempanic_on = { value = 105, grade = "established", doc = "l1dbg mempanic on|off" }
+l1dbg_pppdump_on = { value = 106, grade = "established", doc = "l1dbg pppdump on|off" }
+l1dbg_pppdelay_number = { value = 107, grade = "established", doc = "l1dbg pppdelay <number>" }
+l1dbg_promreq_on = { value = 108, grade = "established", doc = "l1dbg promreq|req on|off" }
+l1dbg_qsusp_number_number = { value = 109, grade = "established", doc = "l1dbg qsusp <number> <number>" }
+l1dbg_printf_on = { value = 110, grade = "established", doc = "l1dbg printf on|off" }
+l1dbg_flashignore_number_number = { value = 111, grade = "established", doc = "l1dbg flashignore <number> <number>" }
+l1dbg_misc_number = { value = 112, grade = "established", doc = "l1dbg misc <number> (hidden)" }
+l1dbg_gal_number = { value = 113, grade = "established", doc = "l1dbg gal <number> (hidden)" }
+link = { value = 114, grade = "established", doc = "link" }
+link_verbose = { value = 115, grade = "established", doc = "link verbose|v" }
+log = { value = 116, grade = "established", doc = "log" }
+log_clear = { value = 117, grade = "established", doc = "log clear|reset" }
+log_insert_command = { value = 118, grade = "established", doc = "log insert <command>" }
+ioport = { value = 119, grade = "established", doc = "ioport|ioprt" }
+ioport_400 = { value = 120, grade = "established", doc = "ioport|ioprt 400|600" }
+ioport_a_400 = { value = 121, grade = "established", doc = "ioport|ioprt a 400|600" }
+ioport_b_400 = { value = 122, grade = "established", doc = "ioport|ioprt b 400|600" }
+ioport_force_400 = { value = 123, grade = "established", doc = "ioport|ioprt force 400|600 (hidden)" }
+ioport_force_alt1 = { value = 124, grade = "established", doc = "ioport|ioprt force alt1 (hidden)" }
+ioport_force_alt2 = { value = 125, grade = "established", doc = "ioport|ioprt force alt2 (hidden)" }
+ioport_clksrc_a = { value = 126, grade = "established", doc = "ioport|ioprt clksrc a" }
+ioport_clksrc_b = { value = 127, grade = "established", doc = "ioport|ioprt clksrc b" }
+istat_memory = { value = 128, grade = "established", doc = "istat memory|m" }
+istat_queues = { value = 129, grade = "established", doc = "istat queues|q" }
+istat_tasks = { value = 130, grade = "established", doc = "istat tasks|t" }
+istat_pmalloc = { value = 131, grade = "established", doc = "istat pmalloc|p" }
+istat_dump_word = { value = 132, grade = "established", doc = "istat dump|d <word>" }
+b2b = { value = 133, grade = "established", doc = "b2b (hidden)" }
+l1 = { value = 134, grade = "established", doc = "l1" }
+leds = { value = 135, grade = "established", doc = "leds" }
+margin = { value = 136, grade = "established", doc = "margin|mgn" }
+margin_default = { value = 137, grade = "established", doc = "margin|mgn default|d|low|l|norm|n|high|h" }
+margin_gbrick_default = { value = 138, grade = "established", doc = "margin|mgn gbrick default|d|low|l|norm|n|high|h" }
+margin_number_default = { value = 139, grade = "established", doc = "margin|mgn <number> default|d|low|l|norm|n|high|h" }
+margin_number_number = { value = 140, grade = "established", doc = "margin|mgn <number> <number>" }
+margin_dimm_v_word = { value = 141, grade = "established", doc = "margin|mgn dimm v|voltage <word>" }
+network = { value = 142, grade = "established", doc = "network" }
+network_usb = { value = 143, grade = "established", doc = "network usb|422|serial" }
+network_autodetect_on = { value = 144, grade = "established", doc = "network autodetect|auto on|off" }
+pimm = { value = 145, grade = "established", doc = "pimm" }
+pimm_auto = { value = 146, grade = "established", doc = "pimm auto (hidden)" }
+pimm_clksrc_ext = { value = 147, grade = "established", doc = "pimm clksrc ext|external (hidden)" }
+pimm_clksrc_int = { value = 148, grade = "established", doc = "pimm clksrc int|internal (hidden)" }
+pimm_clkmode_async = { value = 149, grade = "established", doc = "pimm clkmode async (hidden)" }
+pimm_clkmode_sync = { value = 150, grade = "established", doc = "pimm clkmode sync (hidden)" }
+port = { value = 151, grade = "established", doc = "port|prt" }
+power = { value = 152, grade = "established", doc = "power|pwr" }
+power_check = { value = 153, grade = "established", doc = "power|pwr check" }
+power_vrm = { value = 154, grade = "established", doc = "power|pwr vrm" }
+power_up = { value = 155, grade = "established", doc = "power|pwr up|u" }
+power_up_hold = { value = 156, grade = "established", doc = "power|pwr up|u hold" }
+power_down = { value = 157, grade = "established", doc = "power|pwr down|d" }
+reset = { value = 158, grade = "established", doc = "reset|rst" }
+reset_hold = { value = 159, grade = "established", doc = "reset|rst hold" }
+nmi = { value = 160, grade = "established", doc = "nmi" }
+nmi_number = { value = 161, grade = "established", doc = "nmi <number>" }
+nmi_rack_slot_word = { value = 162, grade = "established", doc = "nmi <rack_slot> <word>" }
+softreset = { value = 163, grade = "established", doc = "softreset|softrst" }
+softreset_number = { value = 164, grade = "established", doc = "softreset|softrst <number>" }
+select = { value = 165, grade = "established", doc = "select|sel" }
+select_number_number = { value = 166, grade = "established", doc = "select|sel <number> <number>" }
+select_subchannel_console = { value = 167, grade = "established", doc = "select|sel subchannel|sub|s console|con" }
+select_subchannel_number = { value = 168, grade = "established", doc = "select|sel subchannel|sub|s <number>" }
+select_subchannel_a = { value = 169, grade = "established", doc = "select|sel subchannel|sub|s a|b|c|d" }
+select_subchannel_word = { value = 170, grade = "established", doc = "select|sel subchannel|sub|s <word>" }
+select_enable = { value = 171, grade = "established", doc = "select|sel enable" }
+select_disable = { value = 172, grade = "established", doc = "select|sel disable" }
+select_filter_on = { value = 173, grade = "established", doc = "select|sel filter on" }
+select_filter_off = { value = 174, grade = "established", doc = "select|sel filter off" }
+serial = { value = 175, grade = "established", doc = "serial" }
+serial_verify = { value = 176, grade = "established", doc = "serial verify" }
+serial_all = { value = 177, grade = "established", doc = "serial all" }
+serial_all_v = { value = 178, grade = "established", doc = "serial all v|verbose" }
+serial_dimm = { value = 179, grade = "established", doc = "serial dimm" }
+serial_dimm_v = { value = 180, grade = "established", doc = "serial dimm v|verbose" }
+serial_dimm_cfg = { value = 181, grade = "established", doc = "serial dimm cfg|config" }
+serial_clear = { value = 182, grade = "established", doc = "serial clear" }
+serial_set_word = { value = 183, grade = "established", doc = "serial set <word> (hidden)" }
+serial_word_word_word_word = { value = 184, grade = "established", doc = "serial <word> <word> <word> <word>" }
+serial_security_off_word_word_word_word = { value = 185, grade = "established", doc = "serial security off <word> <word> <word> <word> (hidden)" }
+serial_security_on = { value = 186, grade = "established", doc = "serial security on" }
+serial_brick_disable = { value = 187, grade = "established", doc = "serial brick disable (hidden)" }
+serial_brick_disable_confirm = { value = 188, grade = "established", doc = "serial brick disable confirm (hidden)" }
+sysstate = { value = 189, grade = "established", doc = "sysstate" }
+eeprom = { value = 190, grade = "established", doc = "eeprom" }
+eeprom_number_number_number = { value = 191, grade = "established", doc = "eeprom <number> <number> <number>" }
+eeprom_dimm_unsign = { value = 192, grade = "established", doc = "eeprom dimm unsign (hidden)" }
+uart = { value = 193, grade = "established", doc = "uart" }
+uart_sys_link_reset = { value = 194, grade = "established", doc = "uart syscom|junkbus|jb|bedrock reset|r" }
+usb = { value = 195, grade = "established", doc = "usb" }
+router = { value = 196, grade = "established", doc = "router|rtr" }
+router_meta = { value = 197, grade = "established", doc = "router|rtr meta" }
+router_repeater = { value = 198, grade = "established", doc = "router|rtr repeater|rep" }
+router_ordinary = { value = 199, grade = "established", doc = "router|rtr ordinary|ord" }
+router_6_port = { value = 200, grade = "established", doc = "router|rtr 6 port" }
+router_6_port_confirm = { value = 201, grade = "established", doc = "router|rtr 6 port confirm (hidden)" }
+router_8_port = { value = 202, grade = "established", doc = "router|rtr 8 port" }
+router_8_port_word_word_word_word = { value = 203, grade = "established", doc = "router|rtr 8 port <word> <word> <word> <word>" }
+router_service_word_word_word_word = { value = 204, grade = "established", doc = "router|rtr service <word> <word> <word> <word>" }
+router_service_off = { value = 205, grade = "established", doc = "router|rtr service off" }
+router_spare = { value = 206, grade = "established", doc = "router|rtr spare" }
+service_word_word_word_word = { value = 207, grade = "established", doc = "service <word> <word> <word> <word>" }
+service_off = { value = 208, grade = "established", doc = "service off" }
+date_tz = { value = 209, grade = "established", doc = "date tz" }
+date_tz_word = { value = 210, grade = "established", doc = "date tz <word>" }
+date = { value = 211, grade = "established", doc = "date" }
+date_raw = { value = 212, grade = "established", doc = "date raw" }
+date_word = { value = 213, grade = "established", doc = "date <word>" }
+date_word_word = { value = 214, grade = "established", doc = "date <word> <word>" }
+nvram_reset = { value = 215, grade = "established", doc = "nvram reset" }
+nvram_read_number_number = { value = 216, grade = "established", doc = "nvram read <number> <number> (hidden)" }
+nvram_write_number_number = { value = 217, grade = "established", doc = "nvram write <number> <number> (hidden)" }
+nvram_scratch = { value = 218, grade = "established", doc = "nvram scratch (hidden)" }
+nvram_scratch_number = { value = 219, grade = "established", doc = "nvram scratch <number> (hidden)" }
+l2_command = { value = 220, grade = "established", doc = "l2 <command> (hidden)" }
+security_verify_3400 = { value = 221, grade = "established", doc = "security verify 3400" }
+security_verify_3800 = { value = 222, grade = "established", doc = "security verify 3800" }
+sleep_number_number_command = { value = 223, grade = "established", doc = "sleep <number> <number> <command> (hidden)" }
+flash_default_reset = { value = 224, grade = "established", doc = "flash default reset" }
+flash_default_a = { value = 225, grade = "established", doc = "flash default a" }
+flash_default_b = { value = 226, grade = "established", doc = "flash default b" }
+flash_default_current = { value = 227, grade = "established", doc = "flash default current" }
+flash_default_old = { value = 228, grade = "established", doc = "flash default old" }
+flash_default_new = { value = 229, grade = "established", doc = "flash default new" }
+flash_status = { value = 230, grade = "established", doc = "flash status" }
+flash_status_v = { value = 231, grade = "established", doc = "flash status v|verbose" }
+reboot_l1 = { value = 232, grade = "established", doc = "reboot_l1" }
+reboot_l1_a = { value = 233, grade = "established", doc = "reboot_l1 a" }
+reboot_l1_b = { value = 234, grade = "established", doc = "reboot_l1 b" }
+reboot_l1_current = { value = 235, grade = "established", doc = "reboot_l1 current" }
+reboot_l1_old = { value = 236, grade = "established", doc = "reboot_l1 old" }
+reboot_l1_new = { value = 237, grade = "established", doc = "reboot_l1 new" }
+reboot_l1_other = { value = 238, grade = "established", doc = "reboot_l1 other" }
+reboot_l1_addr_number = { value = 239, grade = "established", doc = "reboot_l1 addr <number>" }
+reboot_l1_raw_number = { value = 240, grade = "established", doc = "reboot_l1 raw <number>" }
+version = { value = 241, grade = "established", doc = "version|ver" }
+pbay = { value = 242, grade = "established", doc = "pbay" }
+pbay_version = { value = 243, grade = "established", doc = "pbay version|ver" }
+pbay_dps = { value = 244, grade = "established", doc = "pbay dps" }
+pbay_dps_word = { value = 245, grade = "established", doc = "pbay dps <word>" }
+pbay_dcport = { value = 246, grade = "established", doc = "pbay dcport|dcprt" }
+pbay_dcport_word = { value = 247, grade = "established", doc = "pbay dcport|dcprt <word>" }
+pbay_fru = { value = 248, grade = "established", doc = "pbay fru|f" }
+pbay_fru_word = { value = 249, grade = "established", doc = "pbay fru|f <word>" }
+pbay_reset = { value = 250, grade = "established", doc = "pbay reset|rst" }
+pbay_env = { value = 251, grade = "established", doc = "pbay env" }
+pbay_env_on = { value = 252, grade = "established", doc = "pbay env on" }
+pbay_env_off = { value = 253, grade = "established", doc = "pbay env off" }
+pbay_init = { value = 254, grade = "established", doc = "pbay init" }
+pbay_serial = { value = 255, grade = "established", doc = "pbay serial" }
+test_i2c = { value = 256, grade = "established", doc = "test|tst i2c" }
+test_i2c_number = { value = 257, grade = "established", doc = "test|tst i2c <number>" }
+test_ioexp_set_number_word = { value = 258, grade = "established", doc = "test|tst ioexp set <number> <word>" }
+test_ioexp_get_number = { value = 259, grade = "established", doc = "test|tst ioexp get <number>" }
+test_ioexp_get_all = { value = 260, grade = "established", doc = "test|tst ioexp get all" }
+test_intr = { value = 261, grade = "established", doc = "test|tst intr" }
+test_display = { value = 262, grade = "established", doc = "test|tst display" }
+test_exception_mem = { value = 263, grade = "established", doc = "test|tst exception|exc mem" }
+test_exception_stack = { value = 264, grade = "established", doc = "test|tst exception|exc stack" }
+test_exception_wdog = { value = 265, grade = "established", doc = "test|tst exception|exc wdog" }
+test_exception_fatal = { value = 266, grade = "established", doc = "test|tst exception|exc fatal" }
+scan_reset = { value = 267, grade = "established", doc = "scan reset" }
+scan_reset_hard = { value = 268, grade = "established", doc = "scan reset hard" }
+scan_reset_soft = { value = 269, grade = "established", doc = "scan reset soft" }
+scan_reset_both = { value = 270, grade = "established", doc = "scan reset both" }
+scan_sel_number_number = { value = 271, grade = "established", doc = "scan sel <number> <number>" }
+scan_sel_number_number_number = { value = 272, grade = "established", doc = "scan sel <number> <number> <number>" }
+scan_sel_number_number_number_number = { value = 273, grade = "established", doc = "scan sel <number> <number> <number> <number>" }
+scan_ids_number = { value = 274, grade = "established", doc = "scan ids <number>" }
+scan_set_trst_0 = { value = 275, grade = "established", doc = "scan set trst 0" }
+scan_set_trst_1 = { value = 276, grade = "established", doc = "scan set trst 1" }
+scan_set_tck_0 = { value = 277, grade = "established", doc = "scan set tck 0" }
+scan_set_tck_1 = { value = 278, grade = "established", doc = "scan set tck 1" }
+scan_set_tms_0 = { value = 279, grade = "established", doc = "scan set tms 0" }
+scan_set_tms_1 = { value = 280, grade = "established", doc = "scan set tms 1" }
+scan_set_tdi_0 = { value = 281, grade = "established", doc = "scan set tdi 0" }
+scan_set_tdi_1 = { value = 282, grade = "established", doc = "scan set tdi 1" }
+scan_set_psi_0 = { value = 283, grade = "established", doc = "scan set psi 0" }
+scan_set_psi_1 = { value = 284, grade = "established", doc = "scan set psi 1" }
+scan_get = { value = 285, grade = "established", doc = "scan get" }
+scan_debug_number = { value = 286, grade = "established", doc = "scan debug <number>" }
+scan_debug = { value = 287, grade = "established", doc = "scan debug" }
+scan_imp_set_dllbyp_number = { value = 288, grade = "established", doc = "scan imp set dllbyp <number>" }
+scan_imp_set_number = { value = 289, grade = "established", doc = "scan imp set <number>" }
+scan_imp_unlock = { value = 290, grade = "established", doc = "scan imp unlock" }
+scan_test_number = { value = 291, grade = "established", doc = "scan test <number>" }
+fru = { value = 292, grade = "established", doc = "fru|pci|node" }
+fru_command = { value = 293, grade = "established", doc = "fru|pci|node <command>" }
+
+[words.CMD1]
+width = 32
+grade = "established"
+
+[words.CMD1.fields.index]
+bits = [7, 0]
+grade = "established"
+
+[words.CMD1.fields.index.enums]
+pci = { value = 0, grade = "established", doc = "pci" }
+pci_u = { value = 1, grade = "established", doc = "pci u" }
+pci_d = { value = 2, grade = "established", doc = "pci d" }
+pci_rst = { value = 3, grade = "established", doc = "pci rst|reset" }
+pci_rst_hold = { value = 4, grade = "established", doc = "pci rst|reset hold" }
+pci_rst_hold_number = { value = 5, grade = "established", doc = "pci rst|reset hold <number>" }
+pci_rst_hold_number_number = { value = 6, grade = "established", doc = "pci rst|reset hold <number> <number>" }
+pci_rst_release = { value = 7, grade = "established", doc = "pci rst|reset release|rel" }
+pci_rst_release_number = { value = 8, grade = "established", doc = "pci rst|reset release|rel <number>" }
+pci_rst_release_number_number = { value = 9, grade = "established", doc = "pci rst|reset release|rel <number> <number>" }
+pci_number_u = { value = 10, grade = "established", doc = "pci <number> u" }
+pci_number_d = { value = 11, grade = "established", doc = "pci <number> d" }
+pci_number_rst = { value = 12, grade = "established", doc = "pci <number> rst|reset" }
+pci_number_number_u = { value = 13, grade = "established", doc = "pci <number> <number> u" }
+pci_number_number_d = { value = 14, grade = "established", doc = "pci <number> <number> d" }
+pci_number_number_rst = { value = 15, grade = "established", doc = "pci <number> <number> rst|reset" }
+pci_force_all_on = { value = 16, grade = "established", doc = "pci force all on" }
+pci_mode_limit_number_pci33 = { value = 17, grade = "established", doc = "pci mode limit|l <number> pci33|pci66|pcix66|pcix100|pcix133 (hidden)" }
+pci_mode_limit_pci33 = { value = 18, grade = "established", doc = "pci mode limit|l pci33|pci66|pcix66|pcix100|pcix133 (hidden)" }
+pci_mode_force_number_pci33 = { value = 19, grade = "established", doc = "pci mode force|f <number> pci33|pci66|pcix66|pcix100|pcix133 (hidden)" }
+pci_mode_force_pci33 = { value = 20, grade = "established", doc = "pci mode force|f pci33|pci66|pcix66|pcix100|pcix133 (hidden)" }
+pci_mode_default_number = { value = 21, grade = "established", doc = "pci mode default|d <number> (hidden)" }
+pci_mode_default = { value = 22, grade = "established", doc = "pci mode default|d (hidden)" }
+pci_mode_warning_disable = { value = 23, grade = "established", doc = "pci mode warning disable|d (hidden)" }
+pci_mode_warning_enable = { value = 24, grade = "established", doc = "pci mode warning enable|e (hidden)" }
+
+[words.CMD2]
+width = 32
+grade = "established"
+
+[words.CMD2.fields.index]
+bits = [7, 0]
+grade = "established"
+
+[words.CMD2.fields.index.enums]
+check_power_on = { value = 0, grade = "established", doc = "check power|pwr on|up|u|off|down|d" }
+check_margin_high = { value = 1, grade = "established", doc = "check margin|mgn high|h|normal|norm|n|low|l|other|o" }
+check_scramble_enabled = { value = 2, grade = "established", doc = "check scramble|scram enabled|e|disabled|d" }
+check_links = { value = 3, grade = "established", doc = "check links" }
+check_debug_number = { value = 4, grade = "established", doc = "check debug|dbg <number>" }
+check_security_on = { value = 5, grade = "established", doc = "check security on|off" }
+check_serial_word = { value = 6, grade = "established", doc = "check serial <word>" }
+fru_capture = { value = 7, grade = "established", doc = "fru capture" }
+fru_capture_verbose = { value = 8, grade = "established", doc = "fru capture verbose|v" }
+fru_examine = { value = 9, grade = "established", doc = "fru examine|analyze" }
+fru_dump = { value = 10, grade = "established", doc = "fru dump" }
+fru_reset = { value = 11, grade = "established", doc = "fru reset" }
+fru_deadlock = { value = 12, grade = "established", doc = "fru deadlock" }
+fru_deadlock_verbose = { value = 13, grade = "established", doc = "fru deadlock verbose|v" }
+fru_deadlock_quiet = { value = 14, grade = "established", doc = "fru deadlock quiet|q" }
+fru_events = { value = 15, grade = "established", doc = "fru events (hidden)" }
+memcfg = { value = 16, grade = "established", doc = "memcfg (hidden)" }
+memcfg_1bank166_e = { value = 17, grade = "established", doc = "memcfg 1bank166 e|enable|d|disable (hidden)" }
+shcfg = { value = 18, grade = "established", doc = "shcfg" }
+shcfg_fsb_reset = { value = 19, grade = "established", doc = "shcfg fsb reset|rst" }
+shcfg_fsb = { value = 20, grade = "established", doc = "shcfg fsb" }
+shcfg_fsb_number_number_number_number_number_number_number = { value = 21, grade = "established", doc = "shcfg fsb <number> <number> <number> <number> <number> <number> <number>" }
+shcfg_wrt90_reset = { value = 22, grade = "established", doc = "shcfg wrt90 reset|rst" }
+shcfg_wrt90 = { value = 23, grade = "established", doc = "shcfg wrt90" }
+shcfg_wrt90_number_number_number = { value = 24, grade = "established", doc = "shcfg wrt90 <number> <number> <number>" }
+shcfg_mci_reset = { value = 25, grade = "established", doc = "shcfg mci reset|rst" }
+shcfg_mci = { value = 26, grade = "established", doc = "shcfg mci" }
+shcfg_mci_number_number_number = { value = 27, grade = "established", doc = "shcfg mci <number> <number> <number>" }
+shcfg_mdclk = { value = 28, grade = "established", doc = "shcfg mdclk" }
+shcfg_mdclk_number = { value = 29, grade = "established", doc = "shcfg mdclk <number>" }
+shcfg_niclk = { value = 30, grade = "established", doc = "shcfg niclk" }
+shcfg_niclk_number = { value = 31, grade = "established", doc = "shcfg niclk <number>" }
+shcfg_osc = { value = 32, grade = "established", doc = "shcfg osc" }
+shcfg_osc_number = { value = 33, grade = "established", doc = "shcfg osc <number>" }
+shcfg_gtl_re = { value = 34, grade = "established", doc = "shcfg gtl_re" }
+shcfg_gtl_re_number = { value = 35, grade = "established", doc = "shcfg gtl_re <number>" }
+shcfg_jclkstop = { value = 36, grade = "established", doc = "shcfg jclkstop" }
+shcfg_jclkstop_number = { value = 37, grade = "established", doc = "shcfg jclkstop <number>" }
+shcfg_tp = { value = 38, grade = "established", doc = "shcfg tp" }
+shcfg_tp_number = { value = 39, grade = "established", doc = "shcfg tp <number>" }
+nicfg_ni0 = { value = 40, grade = "established", doc = "nicfg ni0|ni1" }
+nicfg_number_ni0 = { value = 41, grade = "established", doc = "nicfg <number> ni0|ni1" }
+nicfg_ni0_number = { value = 42, grade = "established", doc = "nicfg ni0|ni1 <number>" }
+nicfg_ni0_number_number = { value = 43, grade = "established", doc = "nicfg ni0|ni1 <number> <number>" }
+nicfg_ni0_number_number_number = { value = 44, grade = "established", doc = "nicfg ni0|ni1 <number> <number> <number>" }
+nicfg_ni0_number_number_number_number = { value = 45, grade = "established", doc = "nicfg ni0|ni1 <number> <number> <number> <number>" }
+nicfg_ni0_number_number_number_number_number = { value = 46, grade = "established", doc = "nicfg ni0|ni1 <number> <number> <number> <number> <number>" }
+nicfg_number_ni0_number = { value = 47, grade = "established", doc = "nicfg <number> ni0|ni1 <number>" }
+nicfg_number_ni0_number_number = { value = 48, grade = "established", doc = "nicfg <number> ni0|ni1 <number> <number>" }
+nicfg_number_ni0_number_number_number = { value = 49, grade = "established", doc = "nicfg <number> ni0|ni1 <number> <number> <number>" }
+nicfg_number_ni0_number_number_number_number = { value = 50, grade = "established", doc = "nicfg <number> ni0|ni1 <number> <number> <number> <number>" }
+nicfg_number_ni0_number_number_number_number_number = { value = 51, grade = "established", doc = "nicfg <number> ni0|ni1 <number> <number> <number> <number> <number>" }
+nlcfg = { value = 52, grade = "established", doc = "nlcfg" }
+nlcfg_word = { value = 53, grade = "established", doc = "nlcfg <word>" }
+nlcfg_word_word = { value = 54, grade = "established", doc = "nlcfg <word> <word>" }
+nlcfg_word_nl3 = { value = 55, grade = "established", doc = "nlcfg <word> nl3|nl4" }
+nlcfg_word_word_nl3 = { value = 56, grade = "established", doc = "nlcfg <word> <word> nl3|nl4" }
+nlcfg_word_enable = { value = 57, grade = "established", doc = "nlcfg <word> enable|e" }
+nlcfg_word_word_enable = { value = 58, grade = "established", doc = "nlcfg <word> <word> enable|e" }
+nlcfg_word_disable = { value = 59, grade = "established", doc = "nlcfg <word> disable|d" }
+nlcfg_word_word_disable = { value = 60, grade = "established", doc = "nlcfg <word> <word> disable|d" }
+rmmr_word_number = { value = 61, grade = "established", doc = "rmmr|mmr_rd <word> <number>" }
+wmmr_word_number_number_number = { value = 62, grade = "established", doc = "wmmr|mmr_wr <word> <number> <number> <number>" }
+pktgen_read_word_number = { value = 63, grade = "established", doc = "pktgen read|r <word> <number>" }
+pktgen_write_word_number_number_number = { value = 64, grade = "established", doc = "pktgen write|w <word> <number> <number> <number>" }
+pktgen_debug_number = { value = 65, grade = "established", doc = "pktgen debug <number>" }
+tune_get = { value = 66, grade = "established", doc = "tune get" }
+promice = { value = 67, grade = "established", doc = "promice" }
+promice_e = { value = 68, grade = "established", doc = "promice e" }
+promice_d = { value = 69, grade = "established", doc = "promice d" }
+promice_number_e = { value = 70, grade = "established", doc = "promice <number> e" }
+promice_number_d = { value = 71, grade = "established", doc = "promice <number> d" }
+promver = { value = 72, grade = "established", doc = "promver|promversion" }
+node = { value = 73, grade = "established", doc = "node" }
+node_e = { value = 74, grade = "established", doc = "node e" }
+node_d = { value = 75, grade = "established", doc = "node d" }
+node_number_e = { value = 76, grade = "established", doc = "node <number> e" }
+node_number_d = { value = 77, grade = "established", doc = "node <number> d" }
+pic_mode = { value = 78, grade = "established", doc = "pic mode" }
+war = { value = 79, grade = "established", doc = "war" }
+war_e = { value = 80, grade = "established", doc = "war e" }
+war_d = { value = 81, grade = "established", doc = "war d" }
+shdbg = { value = 82, grade = "established", doc = "shdbg" }
+shdbg_retrylimit_number = { value = 83, grade = "established", doc = "shdbg retrylimit <number>" }
+shdbg_rdelay_number = { value = 84, grade = "established", doc = "shdbg rdelay <number>" }
+shdbg_fullreset_number = { value = 85, grade = "established", doc = "shdbg fullreset|fr <number>" }
+shdbg_linkdown_number = { value = 86, grade = "established", doc = "shdbg linkdown|ld <number>" }
+mbrick = { value = 87, grade = "established", doc = "mbrick" }
+mbrick_memory = { value = 88, grade = "established", doc = "mbrick memory" }
+mbrick_memory_confirm = { value = 89, grade = "established", doc = "mbrick memory confirm (hidden)" }
+mbrick_cpu_word_word_word_word = { value = 90, grade = "established", doc = "mbrick cpu <word> <word> <word> <word>" }
+mbrick_cpu = { value = 91, grade = "established", doc = "mbrick cpu" }
+if_i_only_had_a_brain = { value = 92, grade = "established", doc = "if I only had a brain (hidden)" }
+ssi = { value = 93, grade = "established", doc = "ssi" }
+ssi_service_word_word_word_word = { value = 94, grade = "established", doc = "ssi service <word> <word> <word> <word>" }
+ssi_service_off = { value = 95, grade = "established", doc = "ssi service off" }
+ssi_word_word_word_word_word = { value = 96, grade = "established", doc = "ssi <word> <word> <word> <word> <word>" }
+mad_with_power_number = { value = 97, grade = "established", doc = "mad with power <number> (hidden)" }
+pwm_read = { value = 98, grade = "established", doc = "pwm read" }
+pwm_set_number_number = { value = 99, grade = "established", doc = "pwm set <number> <number>" }
+sys_link_sim_on = { value = 100, grade = "established", doc = "syscom sim on" }
+sys_link_sim_on_number_number = { value = 101, grade = "established", doc = "syscom sim on <number> <number>" }
+sys_link_sim_off = { value = 102, grade = "established", doc = "syscom sim off" }
+sys_link_dump_input_number = { value = 103, grade = "established", doc = "syscom dump|d input|i <number>" }
+sys_link_dump_output_number = { value = 104, grade = "established", doc = "syscom dump|d output|o <number>" }
+sys_link_capture_reset = { value = 105, grade = "established", doc = "syscom capture reset|rst" }
+sys_link_log_number = { value = 106, grade = "established", doc = "syscom log <number>" }
+sys_link_log_all = { value = 107, grade = "established", doc = "syscom log all|*" }
+sys_link_log_reset = { value = 108, grade = "established", doc = "syscom log reset|rst" }
+sys_link_log_number_insert_command = { value = 109, grade = "established", doc = "syscom log <number> insert <command>" }
+sys_link_config = { value = 110, grade = "established", doc = "syscom config|cfg" }
+sys_link_qsuspend = { value = 111, grade = "established", doc = "syscom qsuspend" }
+sys_link_qsuspend_number = { value = 112, grade = "established", doc = "syscom qsuspend <number>" }
+error_number = { value = 113, grade = "established", doc = "error <number>" }

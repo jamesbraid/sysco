@@ -54,7 +54,7 @@ The node link frames its traffic as the peer links do ([rs422-router.md](rs422-r
 
 The node end of the link is a 16550-style register block in the node's Hub special space, at the node base plus `0x3000_0080` (`L1LF_NODE_UART_BLOCK_OFFSET`). Registers sit one per 8 bytes and are accessed as 64-bit loads and stores, with the low byte significant. The L1 side is channel 3 of the quad UART (port 6 above), and this reading does not show which channel pin reaches the block.
 
-The source gives no routine address for the block offset, the 256-byte cap or the 128-byte payload limit, so those rest on the reading alone and are graded inferred in [defs/l1_link_framing.toml](../../defs/l1_link_framing.toml). No independent review has been done.
+The source gives no routine address for the block offset, the 256-byte cap or the 128-byte payload limit, so those rest on the reading alone and are graded inferred in [formats/l1_link_framing/format.toml](../../formats/l1_link_framing/format.toml). No independent review has been done.
 
 ## Not settled
 

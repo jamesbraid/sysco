@@ -38,8 +38,8 @@ an address in an image.
 - The L1 request tables for packages 1, 3 and 5 return -104 as "no data" for
   brick serial and system serial when the value is absent, and package 1 does
   the same for inventory (see
-  `defs/l1_pkg1_requests.toml`, `defs/l1_pkg3_requests.toml` and
-  `defs/l1_pkg5_requests.toml`; established there). The driver name and the
+  `formats/l1_pkg1_requests/format.toml`, `formats/l1_pkg3_requests/format.toml` and
+  `formats/l1_pkg5_requests/format.toml`; established there). The driver name and the
   image value agree on the number.
 - The same header defines no V-brick reply and no reply for an unknown
   identity. A reply of -104 from a V-brick L1 would be a choice, not something

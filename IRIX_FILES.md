@@ -2,7 +2,7 @@
 
 This lists the proprietary SGI files a reader copies from their own IRIX media or patches into a local `root/` directory. They are not tracked in source control. Paths only: this repository holds no file contents.
 
-All controller firmware ships in one inst product, `field_diags_sysco`, which installs under `/usr/cpu/firmware/sysco` and `/usr/sbin`. `root/` holds one directory per source, each mirroring the install paths: `root/6.5.30/`, `root/6.5.22/` and `root/patches/SGnnnnnnn/`. `scripts/inventory-root.sha256` pins the SHA-256 of every file the tables are measured from.
+All controller firmware ships in one inst product, `field_diags_sysco`, which installs under `/usr/cpu/firmware/sysco` and `/usr/sbin`. `root/` holds one directory per source, each mirroring the install paths: `root/6.5.30/`, `root/6.5.22/` and `root/patches/SGnnnnnnn/`. `tools/config/inventory-root.sha256` pins the SHA-256 of every file the tables are measured from.
 
 Files wanted from each source (install path inside the source directory):
 

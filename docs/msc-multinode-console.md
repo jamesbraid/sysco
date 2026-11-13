@@ -10,7 +10,7 @@ Every fact here is restated from the IRIX 6.5.7 IP27 PROM (console selection, ma
 election and output formatting) and from the IRIX 6.5.7 kernel system-controller driver
 (the console and warning broadcast). The PROM and kernel images are not re-read against the
 files in this repository, and no image address is recorded for these facts. Each one is
-therefore graded inferred. Constants are in [defs/msc_multinode.toml](../defs/msc_multinode.toml).
+therefore graded inferred. Constants are in [formats/msc_multinode/format.toml](../formats/msc_multinode/format.toml).
 Cite the IRIX release with any of these facts, because PROM revisions differ.
 
 ## Master election

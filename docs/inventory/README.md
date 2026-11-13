@@ -1,6 +1,6 @@
 # Inventory tables
 
-Generated; do not edit. `retools/tools/inventory.py` writes the host-tool tables, `retools/tools/sysco/sysco_tables.py` the firmware tables. A run of both leaves `git status --short docs` empty when `root/` matches `scripts/inventory-root.sha256`.
+Generated; do not edit. `retools/tools/inventory.py` writes the host-tool tables, `retools/tools/sysco/sysco_tables.py` the firmware tables. A run of both leaves `git status --short docs` empty when `root/` matches `tools/config/inventory-root.sha256`.
 
 ## Statuses
 
