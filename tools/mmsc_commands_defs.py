@@ -2,11 +2,11 @@
 
 Loaded by retools/tools/defs/defs-check through the plugin key in tools/config/defs-check.toml.
 
-formats/mmsc_commands/format.toml against docs/mmsc/commands.tsv: each command word in the table must appear once
+formats/mmsc_commands/format.toml against software/firmware/mmsc/commands.tsv: each command word in the table must appear once
 as a CMD.index enum value, at the table position the TSV gives. Aliases stay in the table; the help
 alias is the one name that is not an identifier and has no enum value.
 
-formats/l1_pkg<n>_console/format.toml against docs/l1/command-table.tsv: every row of the package must have one
+formats/l1_pkg<n>_console/format.toml against software/firmware/l1/command-table.tsv: every row of the package must have one
 CMD<t>.index enum value at the row's position, whose doc repeats the row's typed pattern (and marks
 it hidden when the row is), and the unit may hold no other position.
 """
@@ -15,8 +15,8 @@ import io
 import re
 
 UNIT = 'mmsc_commands'
-TABLE = 'docs/mmsc/commands.tsv'
-L1_TABLE = 'docs/l1/command-table.tsv'
+TABLE = 'software/firmware/mmsc/commands.tsv'
+L1_TABLE = 'software/firmware/l1/command-table.tsv'
 L1_UNIT = re.compile(r'l1_pkg(\d+)_console')
 
 

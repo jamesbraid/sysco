@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """File-level diff of the Linux L1 cramfs roots between two sets.
 
-Usage: retools/tools/re-run python3 tools/linux_file_diff.py [--out docs/version-diffs]
+Usage: retools/tools/re-run python3 tools/linux_file_diff.py [--out evidence/version-diffs]
 
-Reads the generated table docs/inventory/arm-linux-files.tsv (one row per CramFS entry of each
+Reads the generated table evidence/inventory/arm-linux-files.tsv (one row per CramFS entry of each
 Linux L1 package, with type, mode, size, sha256 and symlink target). Each pair below is compared
 by path. The output lists the paths that are added, removed or changed, not the unchanged ones.
 The kernels inside the packages are compared byte by byte, run by run of differing bytes; each run
 is marked printable when both sides are printable ASCII, and binary otherwise. The bytes of runs
 of 32 or more are not written.
 
-Writes docs/version-diffs/cd-ist-3.24-linux-files.tsv and cd-ist-3.24-linux-kernels.tsv.
+Writes evidence/version-diffs/cd-ist-3.24-linux-files.tsv and cd-ist-3.24-linux-kernels.tsv.
 """
 import collections
 import os
@@ -20,7 +20,7 @@ import zlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import sysco_tables as st  # noqa: E402
 
-OUT = os.path.join(st.REPO, 'docs', 'version-diffs')
+OUT = os.path.join(st.REPO, st.VERSION_DIFFS_DIR)
 PAIRS = [
     ('cd-ist-3.24:l1#2', 'patches/SG0007149:l1#4', 'Legacy Linux L1 image'),
     ('cd-ist-3.24:l1#4', 'patches/SG0007149:l1#6', 'Linux L1 image'),
@@ -79,7 +79,7 @@ def main():
         (rn, ino), (ro, io_) = [tuple(x.split(':l1#')) for x in (new, old)]
         for r in kernel_rows((rn, int(ino)), (ro, int(io_)), new + ' vs ' + old):
             krows.append(r)
-    inv = load(os.path.join(st.REPO, 'docs', 'inventory', 'arm-linux-files.tsv'))
+    inv = load(os.path.join(st.REPO, st.INVENTORY_DIR, 'arm-linux-files.tsv'))
     rows = [['pair', 'label', 'path', 'change', 'old_type', 'new_type', 'old_sha256', 'new_sha256', 'old_bytes',
              'new_bytes', 'old_target', 'new_target']]
     summary = collections.OrderedDict()

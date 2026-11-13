@@ -2,7 +2,7 @@
 """Routine-level diff of the L2 user-space ELFs between two sets, plus the kernel.
 
 Usage: UV_CACHE_DIR=$HOME/.cache/uv uv run --no-project --with pyelftools python -I \\
-           tools/l2_routine_diff.py --old DIR_OLD --new DIR_NEW [--out docs/version-diffs]
+           tools/l2_routine_diff.py --old DIR_OLD --new DIR_NEW [--out evidence/version-diffs]
 
 DIR_OLD and DIR_NEW are the output directories of retools/tools/sysco/l2_extract.py (kernel.bin and rootfs/).
 Each ELF present in both roots is read through its program headers. Routines are the defined
@@ -10,7 +10,7 @@ dynamic symbols of type FUNC with a nonzero size: the L2 binaries are stripped, 
 routines are the only named ones. A routine is compared by the hash of its bytes. Internal
 routines of the daemon are not covered.
 
-Writes docs/version-diffs/cd-ist-3.24-l2-routines.tsv (one row per changed, added or removed
+Writes evidence/version-diffs/cd-ist-3.24-l2-routines.tsv (one row per changed, added or removed
 exported routine, and one row per changed ELF with no routine change) and prints the counts.
 The kernel is compared by 4 KB block when the two kernels are the same length, else by block
 match counts, as retools/tools/sysco/version_diff.py does for the 1.x sets.
@@ -23,7 +23,7 @@ import sys
 
 from elftools.elf.elffile import ELFFile
 
-OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'docs', 'version-diffs')
+OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'evidence', 'version-diffs')
 if '--out' in sys.argv:
     OUT = os.path.abspath(sys.argv[sys.argv.index('--out') + 1])
 OLD = os.path.abspath(sys.argv[sys.argv.index('--old') + 1])

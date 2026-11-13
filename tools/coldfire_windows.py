@@ -3,9 +3,9 @@
 
     uv run --with capstone --with pyelftools --with numpy --with unicorn \\
         python -I tools/coldfire_windows.py generate --pool POOL.json --index N --batch-size 250 \\
-            --work DIR --out-md docs/l1/NAME.md --out-facts docs/l1/disasm/coldfire-variants/NAME-facts.txt
+            --work DIR --out-md software/firmware/l1/NAME.md --out-facts software/firmware/l1/disasm/coldfire-variants/NAME-facts.txt
     ... python -I tools/coldfire_windows.py validate --pool POOL.json --index N --batch-size 250 \\
-            --work DIR --md docs/l1/NAME.md --facts docs/l1/disasm/coldfire-variants/NAME-facts.txt
+            --work DIR --md software/firmware/l1/NAME.md --facts software/firmware/l1/disasm/coldfire-variants/NAME-facts.txt
 
 POOL.json is a list of {"image", "start", "size"} rows. Rows are ordered by image key and address, then cut into
 batches of --batch-size; --index picks one batch (from 1). The binary root is `root/` of this repository.
@@ -506,7 +506,7 @@ def generate(args):
     batch = load_batch(args.pool, args.index, args.batch_size)
     images = open_images(batch, args.work)
     title = args.title
-    facts_name = os.path.relpath(args.out_facts, os.path.join(REPO, 'docs', 'l1'))
+    facts_name = os.path.relpath(args.out_facts, os.path.join(REPO, 'software', 'firmware', 'l1'))
     lines = ['# ' + title, ''] + PREAMBLE + ['', 'The [full facts](%s) retain all instructions, constants and warnings.' % facts_name, '']
     facts_text = []
     stats = collections.Counter()

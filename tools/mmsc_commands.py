@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The MMSC command catalogue: the command table of the MMSC firmware image, one row per entry.
 
-Usage: tools/mmsc_commands.py [--out docs/mmsc/commands.tsv]
+Usage: tools/mmsc_commands.py [--out software/firmware/mmsc/commands.tsv]
 
 Run from the repository root inside the toolchain container (retools/tools/re-run python3
 tools/mmsc_commands.py). Reads root/6.5.30/usr/cpu/firmware/mmscfw.bin, the MMSC
@@ -21,7 +21,7 @@ routine (its strings) are not read as code.
 
 Routines are named by address only. The image's symbol names are not copied here.
 
-Columns (every value is read from the image; the curated reading is in docs/mmsc/commands.md):
+Columns (every value is read from the image; the curated reading is in software/firmware/mmsc/commands.md):
   index, name, help (yes when the entry has help text), handler_addr, insns, first, last
                the handler routine and the span of its reachable code
   usage        the syntax of each help line, the words before " - ", joined with " | "
@@ -33,7 +33,7 @@ Columns (every value is read from the image; the curated reading is in docs/mmsc
   levels       every read of the session authority word (offset 0x20 of the session
                structure) with the compare that follows it: address, compare immediate and
                the jump after it, and `level>N` or `level<=N` when that jump is taken for
-               a value above or at most N (see docs/mmsc/commands.md for the levels)
+               a value above or at most N (see software/firmware/mmsc/commands.md for the levels)
 """
 import argparse
 import bisect
@@ -224,7 +224,7 @@ def analyse(img, handler):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
-    ap.add_argument('--out', default=os.path.join(REPO, 'docs', 'mmsc', 'commands.tsv'))
+    ap.add_argument('--out', default=os.path.join(REPO, 'software', 'firmware', 'mmsc', 'commands.tsv'))
     a = ap.parse_args()
     img = Image(IMAGE)
     rows = command_table(img)

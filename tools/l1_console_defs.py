@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write the per-package console command units under formats/ from docs/l1/command-table.tsv.
+"""Write the per-package console command units under formats/ from software/firmware/l1/command-table.tsv.
 
 usage: tools/l1_console_defs.py [--check]
 
@@ -22,10 +22,10 @@ import re
 import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TABLE = os.path.join(REPO, 'docs', 'l1', 'command-table.tsv')
+TABLE = os.path.join(REPO, 'software', 'firmware', 'l1', 'command-table.tsv')
 PACKAGES = (0, 1, 2, 3, 5)
 
-HEAD = '''# Written by tools/l1_console_defs.py from docs/l1/command-table.tsv. Do not edit by hand.
+HEAD = '''# Written by tools/l1_console_defs.py from software/firmware/l1/command-table.tsv. Do not edit by hand.
 unit = "l1_pkg%(n)s_console"
 prefix = "L1P%(n)sC"
 title = "console command tables of ColdFire L1 firmware package %(n)s"

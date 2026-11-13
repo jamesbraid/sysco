@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Routine and request-code diff of paired L1 packages in two shipped sets.
 
-Usage: retools/tools/re-run python3 tools/package_diff.py [--out docs/version-diffs]
+Usage: retools/tools/re-run python3 tools/package_diff.py [--out evidence/version-diffs]
 
 Pairs are chosen by package label, not by position: a package in the newer set is compared with
 the package of the older set that carries the same product label. The pairs are listed in PAIRS;
 each one is marked as label-matched or as a guess.
 
-Writes under docs/version-diffs/:
+Writes under evidence/version-diffs/:
 
   cd-ist-3.24-routines.tsv   routines added, removed or changed between each pair (same method as
                              version_diff.py: link.w a6 prologues, jsr and bsr targets, vector handlers)
@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import version_diff as vd  # noqa: E402
 import sysco_tables as st  # noqa: E402
 
-OUT = os.path.join(st.REPO, 'docs', 'version-diffs')
+OUT = os.path.join(st.REPO, st.VERSION_DIFFS_DIR)
 if '--out' in sys.argv:
     OUT = os.path.abspath(sys.argv[sys.argv.index('--out') + 1])
 

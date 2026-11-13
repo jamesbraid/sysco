@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """List the message call sites of the Origin 300 L1 ColdFire package.
 
-Usage: tools/console_messages.py [--out docs/inventory/console-messages.tsv]
+Usage: tools/console_messages.py [--out evidence/inventory/console-messages.tsv]
 
 Reads package 1 of L1 1.44.0 (`Fuel/PE/O300 1MB`, the body loaded at 0xffe00000) from root/,
-its linear listing and routine splits from docs/l1/disasm/, and writes one row per call of the
+its linear listing and routine splits from software/firmware/l1/disasm/, and writes one row per call of the
 two text sinks in that body:
 
   log_message(severity, file, line, flags, format, ...)   0xffe58380
@@ -16,7 +16,7 @@ it in the same straight-line run. A value that comes from a call result, a frame
 expression is written as such, not as a literal. The guard is the nearest conditional branch
 that jumps over the call; its meaning is read from its mnemonic only.
 
-Curated roles are in docs/l1/console-message-roles.tsv, keyed by call address. A row without a
+Curated roles are in software/firmware/l1/console-message-roles.tsv, keyed by call address. A row without a
 curated role keeps the status "extracted": the arguments were read by this script, and nothing
 else about the call was read.
 
@@ -32,10 +32,10 @@ import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMAGE = os.path.join(REPO, 'root', '6.5.30', 'usr', 'cpu', 'firmware', 'sysco', 'l1.bin')
-DISASM = os.path.join(REPO, 'docs', 'l1', 'disasm', 'mcf5206e-1.44.0-fuel-pe-o300')
-OUT = os.path.join(REPO, 'docs', 'inventory', 'console-messages.tsv')
-ROLES = os.path.join(REPO, 'docs', 'l1', 'console-message-roles.tsv')
-FUNCS = os.path.join(REPO, 'docs', 'l1', 'functions.tsv')
+DISASM = os.path.join(REPO, 'software', 'firmware', 'l1', 'disasm', 'mcf5206e-1.44.0-fuel-pe-o300')
+OUT = os.path.join(REPO, 'evidence', 'inventory', 'console-messages.tsv')
+ROLES = os.path.join(REPO, 'software', 'firmware', 'l1', 'console-message-roles.tsv')
+FUNCS = os.path.join(REPO, 'software', 'firmware', 'l1', 'functions.tsv')
 PKG_KEY = '6.5.30:l1#1'
 PKG_INDEX = 1
 LOAD = 0xffe00000
