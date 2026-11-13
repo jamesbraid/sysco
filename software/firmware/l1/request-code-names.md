@@ -1,6 +1,6 @@
 # Request code names
 
-The `L1P<n>_CMD_CODE_*` macros in the `*_DECODE.h` headers name the console request codes of each ColdFire package. This note says what each name's code does in package 1, the Origin 300 reference, so that a header name can be read against its handler. The handler addresses are first-bank body addresses in 6.5.30:l1#1 (L1 1.44.0, package 1). Each role is read from the handler row in [request-codes.tsv](request-codes.tsv) and restated in our own words; the grade is the one that row gives. The task number is the one the dispatcher uses for the code.
+The `L1P<n>_CMD_CODE_*` macros in the `generated/c/l1_pkg<n>_requests.h` headers name the console request codes of each ColdFire package. This note says what each name's code does in package 1, the Origin 300 reference, so that a header name can be read against its handler. The handler addresses are first-bank body addresses in 6.5.30:l1#1 (L1 1.44.0, package 1). Each role is read from the handler row in [request-codes.tsv](request-codes.tsv) and restated in our own words; the grade is the one that row gives. The task number is the one the dispatcher uses for the code.
 
 Packages 0 and 2 run the same handler for the 39 codes that package 1 shares with them, as [brick-request-handlers.md](brick-request-handlers.md) records. Packages 3 and 5 are not covered here.
 

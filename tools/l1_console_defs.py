@@ -41,10 +41,6 @@ system-link word spelled sys_link; positions of entries that share a pattern are
 a numeric suffix.
 """
 from = "IRIX 6.5.30 l1.bin (L1 1.44.0), ColdFire package %(n)s image"
-
-[c]
-legacy_header = "L1P%(n)s_CONSOLE_DECODE.h"
-legacy_guard = "L1P%(n)s_CONSOLE_DECODE_H"
 '''
 
 
