@@ -5,8 +5,8 @@
 Bit values and field codes of the Philips PCD8584 / PCF8584 I2C-bus controller, the part each Hub
 uses to reach the module system controller on the management bus. The register selection is set by
 control bits, not by offsets, so the table of selections is in devices/pcf8584/README.md. Each value is the
-chip's public register layout as summarised in the source notes; the chip sheet itself was not read
-in this pass, so every item is inferred.
+chip's public register layout as summarised in the source notes; the values were checked against the Philips product
+specification of 21 Oct 1997 (tables 2 to 5); they stay inferred because no shipped image programs them here.
 
 Unit `pcf8584`, macro prefix `PCF8584`.
 
@@ -25,7 +25,7 @@ Every item has a grade: established, inferred or unknown. A grade says how the i
 | `CLOCK_SCL_1_5KHZ` | 0x3 | inferred |  | clock-control SCL select 3: bus speed 1.5 kHz |
 | `CLOCK_SCL_45KHZ` | 0x1 | inferred |  | clock-control SCL select 1: bus speed 45 kHz |
 | `CLOCK_SCL_90KHZ` | 0x0 | inferred |  | clock-control SCL select 0: bus speed 90 kHz |
-| `CTRL_ES1` | 0x20 | inferred |  | control register bit 5; register select 1; ignored once the serial interface is enabled |
+| `CTRL_ES1` | 0x20 | inferred |  | control register bit 5, register select 1; with ESO set, ES1 set selects the long-distance (4-wire) mode, in which only S0 and S1 are addressable |
 | `CTRL_ESO` | 0x40 | inferred |  | control register bit 6; serial interface enable; with it clear, ES1 and ES2 choose the own-address, clock-control or interrupt-vector register |
-| `CTRL_PIN` | 0x80 | inferred |  | control register bit 7; the pending-interrupt bit on this chip |
+| `CTRL_PIN` | 0x80 | inferred |  | control register bit 7, PIN (pending interrupt not, active low); writing one resets the status bits |
 | `OWN_ADDRESS_MASK` | 0x7f | inferred |  | own-address register: seven-bit address in the low bits; the chip shifts it left one bit on the wire, as transaction addresses are shifted |

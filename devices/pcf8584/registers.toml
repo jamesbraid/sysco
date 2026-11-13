@@ -5,22 +5,22 @@ doc = """
 Bit values and field codes of the Philips PCD8584 / PCF8584 I2C-bus controller, the part each Hub
 uses to reach the module system controller on the management bus. The register selection is set by
 control bits, not by offsets, so the table of selections is in devices/pcf8584/README.md. Each value is the
-chip's public register layout as summarised in the source notes; the chip sheet itself was not read
-in this pass, so every item is inferred.
+chip's public register layout as summarised in the source notes; the values were checked against the Philips product
+specification of 21 Oct 1997 (tables 2 to 5); they stay inferred because no shipped image programs them here.
 """
-from = "public PCD8584 / PCF8584 I2C-bus controller data sheet (named, not read in this pass); Linux i2c-algo-pcf driver for the address shift"
+from = "Philips PCF8584 I2C-bus controller product specification, 21 Oct 1997: tables 2 to 5, section 6.4 (own address and the one-bit offset to S0)"
 
 [constants]
-CTRL_PIN = { value = 0x80, grade = "inferred", doc = "control register bit 7; the pending-interrupt bit on this chip" }
-CTRL_ESO = { value = 0x40, grade = "inferred", doc = "control register bit 6; serial interface enable; with it clear, ES1 and ES2 choose the own-address, clock-control or interrupt-vector register" }
-CTRL_ES1 = { value = 0x20, grade = "inferred", doc = "control register bit 5; register select 1; ignored once the serial interface is enabled" }
-OWN_ADDRESS_MASK = { value = 0x7f, grade = "inferred", doc = "own-address register: seven-bit address in the low bits; the chip shifts it left one bit on the wire, as transaction addresses are shifted" }
-CLOCK_OSC_3MHZ = { value = 0x00, grade = "inferred", doc = "clock-control field: main oscillator 3 MHz" }
-CLOCK_OSC_4_43MHZ = { value = 0x10, grade = "inferred", doc = "clock-control field: main oscillator 4.43 MHz" }
-CLOCK_OSC_6MHZ = { value = 0x14, grade = "inferred", doc = "clock-control field: main oscillator 6 MHz" }
-CLOCK_OSC_8MHZ = { value = 0x18, grade = "inferred", doc = "clock-control field: main oscillator 8 MHz" }
-CLOCK_OSC_12MHZ = { value = 0x1c, grade = "inferred", doc = "clock-control field: main oscillator 12 MHz" }
-CLOCK_SCL_90KHZ = { value = 0x0, grade = "inferred", doc = "clock-control SCL select 0: bus speed 90 kHz" }
-CLOCK_SCL_45KHZ = { value = 0x1, grade = "inferred", doc = "clock-control SCL select 1: bus speed 45 kHz" }
-CLOCK_SCL_11KHZ = { value = 0x2, grade = "inferred", doc = "clock-control SCL select 2: bus speed 11 kHz" }
-CLOCK_SCL_1_5KHZ = { value = 0x3, grade = "inferred", doc = "clock-control SCL select 3: bus speed 1.5 kHz" }
+CTRL_PIN = { value = 0x80, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 4 (S1 bit order) and section 6.8.1", doc = "control register bit 7, PIN (pending interrupt not, active low); writing one resets the status bits" }
+CTRL_ESO = { value = 0x40, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 4 (S1 bit order) and section 6.8.1", doc = "control register bit 6; serial interface enable; with it clear, ES1 and ES2 choose the own-address, clock-control or interrupt-vector register" }
+CTRL_ES1 = { value = 0x20, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 4 (S1 bit order) and section 6.8.1", doc = "control register bit 5, register select 1; with ESO set, ES1 set selects the long-distance (4-wire) mode, in which only S0 and S1 are addressable" }
+OWN_ADDRESS_MASK = { value = 0x7f, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, section 6.4 (program 0x55, recognised address 0xaa)", doc = "own-address register: seven-bit address in the low bits; the chip shifts it left one bit on the wire, as transaction addresses are shifted" }
+CLOCK_OSC_3MHZ = { value = 0x00, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 3 (S24 to S22)", doc = "clock-control field: main oscillator 3 MHz" }
+CLOCK_OSC_4_43MHZ = { value = 0x10, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 3 (S24 to S22)", doc = "clock-control field: main oscillator 4.43 MHz" }
+CLOCK_OSC_6MHZ = { value = 0x14, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 3 (S24 to S22)", doc = "clock-control field: main oscillator 6 MHz" }
+CLOCK_OSC_8MHZ = { value = 0x18, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 3 (S24 to S22)", doc = "clock-control field: main oscillator 8 MHz" }
+CLOCK_OSC_12MHZ = { value = 0x1c, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 3 (S24 to S22)", doc = "clock-control field: main oscillator 12 MHz" }
+CLOCK_SCL_90KHZ = { value = 0x0, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 2 (S21, S20)", doc = "clock-control SCL select 0: bus speed 90 kHz" }
+CLOCK_SCL_45KHZ = { value = 0x1, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 2 (S21, S20)", doc = "clock-control SCL select 1: bus speed 45 kHz" }
+CLOCK_SCL_11KHZ = { value = 0x2, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 2 (S21, S20)", doc = "clock-control SCL select 2: bus speed 11 kHz" }
+CLOCK_SCL_1_5KHZ = { value = 0x3, grade = "inferred", from = "PCF8584 product specification 21 Oct 1997, table 2 (S21, S20)", doc = "clock-control SCL select 3: bus speed 1.5 kHz" }
