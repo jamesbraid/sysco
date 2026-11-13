@@ -25,10 +25,8 @@ rest only on non-public source were left out.
   terminal to that port; a rack module's ACP connects to the multimodule system controller.
   Source: SGI 108-0164-002, section B.1 and Figure B-1 (the figure also shows the display,
   DIP switches, power and fan control, voltage margin control, NVRAM and UST control on the MSC).
-- **Conflict.** [The multi-node console note](../../formats/msc_multinode/README.md) says each node has its
-  own module and its own MSC. For a four-node module this page says the four nodes share one
-  MSC. The two statements cannot both hold for the same module. The console note needs
-  reconciling; this page does not change it.
+- The [multi-node console note](../../formats/msc_multinode/README.md) once said each node has its own module
+  and MSC. It now says one MSC serves the four nodes of a module, in line with Figure B-1.
 
 ## Management NVRAM
 

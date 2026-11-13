@@ -1,7 +1,10 @@
 # Multi-node console and master election
 
-On a machine with more than one node, each node has its own module and its own module
-system controller (MSC, also called ELSC; see [controllers.md](../../evidence/controllers.md)). The console
+On a machine with more than one module, each module has its own module
+system controller (MSC, also called ELSC; see [controllers.md](../../evidence/controllers.md)).
+A four-node Origin 2000 module has one MSC for its four nodes (SGI 108-0164-002, Figure B-1; see
+[module management](../../platforms/ip27/module-management.md)), so the earlier wording "each node has its
+own module and MSC" was wrong for that product. The console
 and the diagnostic output then span those controllers. This note records which module owns
 the interactive console, where a failing node's output goes, how the kernel relays messages
 to every module, and which facts are still open.

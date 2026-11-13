@@ -6,10 +6,14 @@ BASEIO PROM read it there. The register, field and constant layout is in
 [devices/gigachannel_status/registers.toml](registers.toml), with the generated reference at
 [devices/gigachannel_status/registers.md](registers.md).
 
-**Unverified.** This page holds one author's readings of the IRIX 6.5.30 kernel and the BASEIO PROM
-6.156, made by disassembly. Nobody has re-read them against the images. The images are not committed,
-and this repository's ignored `root/` does not hold them. Every item is inferred, because each one is what the software expects the
-word to mean. No image here writes the word, so nothing says what sets its bits.
+**Partly checked.** This page holds one author's readings of the IRIX 6.5.30 kernel and the BASEIO PROM
+6.156, made by disassembly. A later byte scan of an IRIX IP27 kernel image found the literal
+`0x9200000008e00000` and the three notice strings the table quotes (blower failure, backup supply and
+redundancy lost, manufacturing mode). The kernel image checked is not the one whose hash is given under
+Sources, so the match is a consistency check only. The mapping from each bit to its notice, the poll
+and shutdown behaviour, and the BASEIO PROM readings were not re-derived, and the BASEIO PROM was not
+reachable. Every item is inferred, because each one is what the software expects the word to mean.
+No image here writes the word, so nothing says what sets its bits.
 
 ## The word and how it is reached
 
