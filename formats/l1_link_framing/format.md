@@ -3,10 +3,9 @@
 # frame bytes and link context constants of the ColdFire L1 node and peer links
 
 Constants of the PPP-style frame that the ColdFire L1 uses on its node link (the Bedrock UART) and on
-its RS-422 peer links, and the Bedrock-side register block the node link reaches. The frame bytes and
-the receive check value are shared by both links. The context values (body offset, growth limit, escape
-list) belong to the peer link and the node port's setup. Offsets of the node-side register block are
-from the node base in the Hub special space.
+its RS-422 peer links. The frame bytes and the receive check value are shared by both links. The
+context values (body offset, growth limit, escape list) belong to the peer link and the node port's
+setup.
 
 Grades: the byte values and context numbers are read from the L1 image's frame and link set-up code.
 The meaning given to each one is an inference unless the item says otherwise.
@@ -25,8 +24,6 @@ Every item has a grade: established, inferred or unknown. A grade says how the i
 | `FRAME_ESCAPE_XOR` | 0x20 | established |  | value XOR'd into an escaped byte |
 | `FRAME_FLAG` | 0x7e | established |  | frame delimiter on both links |
 | `NODE_BODY_CAP` | 0x100 | inferred |  | receive body cap of the node port, in bytes, with no growth |
-| `NODE_PAYLOAD_MAX` | 0x80 | inferred |  | largest payload the node port sends in one frame |
-| `NODE_UART_BLOCK_OFFSET` | 0x30000080 | inferred |  | offset of the node-side 16550-style register block from the node base in the Hub special space; one register per 8 bytes, accessed as 64-bit loads and stores with the low byte significant |
 | `PEER_BODY_OFFSET` | 0x10 | established |  | receive body offset in bytes; read as the segment's reserved header, which is inferred |
 | `PEER_ESCAPE_TX_A` | 0x11 | inferred |  | on the peer link the context escapes this byte on transmit (constants established, meaning inferred) |
 | `PEER_ESCAPE_TX_B` | 0x13 | inferred |  | on the peer link the context escapes this byte on transmit (constants established, meaning inferred) |

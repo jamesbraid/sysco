@@ -7,7 +7,7 @@ WORDS = {}
 FIELDS = {}
 ENUMS = {}
 FIELD_ENUM = {}
-CONSTANTS = {'FRAME_CHECK_RECEIVE': {'value': 61624, 'count': 1, 'stride': 1}, 'FRAME_CHECK_SEED': {'value': 65535, 'count': 1, 'stride': 1}, 'FRAME_ESCAPE': {'value': 125, 'count': 1, 'stride': 1}, 'FRAME_ESCAPE_XOR': {'value': 32, 'count': 1, 'stride': 1}, 'FRAME_FLAG': {'value': 126, 'count': 1, 'stride': 1}, 'NODE_BODY_CAP': {'value': 256, 'count': 1, 'stride': 1}, 'NODE_PAYLOAD_MAX': {'value': 128, 'count': 1, 'stride': 1}, 'NODE_UART_BLOCK_OFFSET': {'value': 805306496, 'count': 1, 'stride': 1}, 'PEER_BODY_OFFSET': {'value': 16, 'count': 1, 'stride': 1}, 'PEER_ESCAPE_TX_A': {'value': 17, 'count': 1, 'stride': 1}, 'PEER_ESCAPE_TX_B': {'value': 19, 'count': 1, 'stride': 1}, 'PEER_GROWTH_LIMIT': {'value': 1040, 'count': 1, 'stride': 1}}
+CONSTANTS = {'FRAME_CHECK_RECEIVE': {'value': 61624, 'count': 1, 'stride': 1}, 'FRAME_CHECK_SEED': {'value': 65535, 'count': 1, 'stride': 1}, 'FRAME_ESCAPE': {'value': 125, 'count': 1, 'stride': 1}, 'FRAME_ESCAPE_XOR': {'value': 32, 'count': 1, 'stride': 1}, 'FRAME_FLAG': {'value': 126, 'count': 1, 'stride': 1}, 'NODE_BODY_CAP': {'value': 256, 'count': 1, 'stride': 1}, 'PEER_BODY_OFFSET': {'value': 16, 'count': 1, 'stride': 1}, 'PEER_ESCAPE_TX_A': {'value': 17, 'count': 1, 'stride': 1}, 'PEER_ESCAPE_TX_B': {'value': 19, 'count': 1, 'stride': 1}, 'PEER_GROWTH_LIMIT': {'value': 1040, 'count': 1, 'stride': 1}}
 TESTS = []
 
 

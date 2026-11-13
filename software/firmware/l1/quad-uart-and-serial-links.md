@@ -48,13 +48,11 @@ Letters outside a table's listed groups fall into the "nothing" arm of that tabl
 
 `CS4`'s UART drives external level 4 (vector 28); a `CS5` UART, present only for letter `6`, drives level 3 (vector 27). The handler masks nothing itself and the driver clears the interrupt-enable registers (`+1`) of all four channels at probe time and enables receive and line-status interrupts per open channel. The routine `0xffe63d44` services every channel with a pending identification in one pass.
 
-## Node-side frame and register block
+## Node-side frame
 
-The node link frames its traffic as the peer links do ([rs422-router.md](rs422-router.md), "Peer frame format"): flag `0x7e`, escape `0x7d` with exclusive-or `0x20`, and the same frame check. Only the frame's own flag and escape bytes are escaped on this port, so neither flow-control byte is. The setup context (`0xffe346d4` to `0xffe34706`, with the context set-up at `0xffe62330`) gives a receive body offset of 0, no growth and 256-byte buffers. Inferred: the receive body cap is 256 bytes, and the sender puts at most 128 payload bytes in one frame. The frame header carries the type in bits 7 to 5 and the subchannel in bits 4 to 0.
+The node link frames its traffic as the peer links do ([rs422-router.md](rs422-router.md), "Peer frame format"): flag `0x7e`, escape `0x7d` with exclusive-or `0x20`, and the same frame check. Only the frame's own flag and escape bytes are escaped on this port, so neither flow-control byte is. The setup context (`0xffe346ce` to `0xffe34706`, with the context set-up at `0xffe62330`) passes a receive body offset of 0, no growth and 256-byte buffers (read in the 1.44.0 package 1 listing). Inferred: the receive body cap is 256 bytes.
 
-The node end of the link is a 16550-style register block in the node's Hub special space, at the node base plus `0x3000_0080` (`L1LF_NODE_UART_BLOCK_OFFSET`). Registers sit one per 8 bytes and are accessed as 64-bit loads and stores, with the low byte significant. The L1 side is channel 3 of the quad UART (port 6 above), and this reading does not show which channel pin reaches the block.
-
-The source gives no routine address for the block offset, the 256-byte cap or the 128-byte payload limit, so those rest on the reading alone and are graded inferred in [formats/l1_link_framing/format.toml](../../../formats/l1_link_framing/format.toml). No independent review has been done.
+Not established: any register block at the node end (a 16550-style block in the Hub special space, for example), a 128-byte payload limit, or a split of the header byte into type and subchannel fields. The L1 image carries no instruction that reaches such a block (the one absolute reference to `0x30000080` in package 1, at `0xffe782b8`, reads a RAM word) and no routine bounds the payload at 128 bytes. The node end's registers are a question for sources about the node side, not this firmware.
 
 ## Not settled
 
