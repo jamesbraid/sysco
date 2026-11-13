@@ -9,8 +9,6 @@
 #define ELSCNV_CFG_CELL                              0x70du /* inferred */
 #define ELSCNV_CFG_CLUSTER                           0x70cu /* inferred */
 #define ELSCNV_CFG_CONTROLLER                        0x707u /* inferred */
-#define ELSCNV_CFG_CONTROLLER_AUTO_POWER_BIT         0x1u /* inferred */
-#define ELSCNV_CFG_CONTROLLER_FANS_HIGH_BIT          0x0u /* inferred */
 #define ELSCNV_CFG_DOMAIN                            0x70bu /* inferred */
 #define ELSCNV_CFG_PARTITION                         0x70au /* inferred */
 #define ELSCNV_CFG_PASSWORD                          0x701u /* inferred */

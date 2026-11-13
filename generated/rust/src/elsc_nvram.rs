@@ -5,8 +5,6 @@
 pub const CFG_CELL: u32 = 0x70d; // inferred
 pub const CFG_CLUSTER: u32 = 0x70c; // inferred
 pub const CFG_CONTROLLER: u32 = 0x707; // inferred
-pub const CFG_CONTROLLER_AUTO_POWER_BIT: u32 = 0x1; // inferred
-pub const CFG_CONTROLLER_FANS_HIGH_BIT: u32 = 0x0; // inferred
 pub const CFG_DOMAIN: u32 = 0x70b; // inferred
 pub const CFG_PARTITION: u32 = 0x70a; // inferred
 pub const CFG_PASSWORD: u32 = 0x701; // inferred

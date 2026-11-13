@@ -7,7 +7,7 @@ WORDS = {}
 FIELDS = {}
 ENUMS = {}
 FIELD_ENUM = {}
-CONSTANTS = {'CFG_CELL': {'value': 1805, 'count': 1, 'stride': 1}, 'CFG_CLUSTER': {'value': 1804, 'count': 1, 'stride': 1}, 'CFG_CONTROLLER': {'value': 1799, 'count': 1, 'stride': 1}, 'CFG_CONTROLLER_AUTO_POWER_BIT': {'value': 1, 'count': 1, 'stride': 1}, 'CFG_CONTROLLER_FANS_HIGH_BIT': {'value': 0, 'count': 1, 'stride': 1}, 'CFG_DOMAIN': {'value': 1803, 'count': 1, 'stride': 1}, 'CFG_PARTITION': {'value': 1802, 'count': 1, 'stride': 1}, 'CFG_PASSWORD': {'value': 1793, 'count': 1, 'stride': 1}, 'CFG_PASSWORD_LEN': {'value': 4, 'count': 1, 'stride': 1}, 'CFG_RESERVED_FIRST': {'value': 1806, 'count': 1, 'stride': 1}, 'CFG_SELFTEST': {'value': 1801, 'count': 1, 'stride': 1}, 'CFG_SWITCH_PHYSICAL_XOR': {'value': 1798, 'count': 1, 'stride': 1}, 'CFG_SWITCH_VIRTUAL_XOR': {'value': 1797, 'count': 1, 'stride': 1}}
+CONSTANTS = {'CFG_CELL': {'value': 1805, 'count': 1, 'stride': 1}, 'CFG_CLUSTER': {'value': 1804, 'count': 1, 'stride': 1}, 'CFG_CONTROLLER': {'value': 1799, 'count': 1, 'stride': 1}, 'CFG_DOMAIN': {'value': 1803, 'count': 1, 'stride': 1}, 'CFG_PARTITION': {'value': 1802, 'count': 1, 'stride': 1}, 'CFG_PASSWORD': {'value': 1793, 'count': 1, 'stride': 1}, 'CFG_PASSWORD_LEN': {'value': 4, 'count': 1, 'stride': 1}, 'CFG_RESERVED_FIRST': {'value': 1806, 'count': 1, 'stride': 1}, 'CFG_SELFTEST': {'value': 1801, 'count': 1, 'stride': 1}, 'CFG_SWITCH_PHYSICAL_XOR': {'value': 1798, 'count': 1, 'stride': 1}, 'CFG_SWITCH_VIRTUAL_XOR': {'value': 1797, 'count': 1, 'stride': 1}}
 TESTS = []
 
 

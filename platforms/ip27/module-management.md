@@ -20,10 +20,11 @@ rest only on non-public source were left out.
   Figure B-1.
 - **Hint.** The figure shows no four independent MSCs behind the four nodes and no private
   NVRAM copy for each node. Each node has its own interface to the bus, one per Hub.
-- **Hint, unverified.** The MSC has one RS-232 alternate-console port. Four node interfaces
+- **Hint.** The MSC has one RS-232 alternate-console port (ACP). Four node interfaces
   do not mean four console ports or four module controllers. A deskside module can attach a
-  terminal to that port; a rack module can route it to the multimodule system controller.
-  The page reference for this was not checked in this pass.
+  terminal to that port; a rack module's ACP connects to the multimodule system controller.
+  Source: SGI 108-0164-002, section B.1 and Figure B-1 (the figure also shows the display,
+  DIP switches, power and fan control, voltage margin control, NVRAM and UST control on the MSC).
 - **Conflict.** [The multi-node console note](../../formats/msc_multinode/README.md) says each node has its
   own module and its own MSC. For a four-node module this page says the four nodes share one
   MSC. The two statements cannot both hold for the same module. The console note needs
@@ -41,44 +42,42 @@ rest only on non-public source were left out.
 ## Controller configuration block
 
 The bytes at 0x700 to 0x7ff are reserved for the controller. The marker at 0x700 and the module
-number at 0x708 are already in the host request set. The rest of the block is as published in the
-public Linux SN controller driver and the IP27 PROM Technical Reference (inferred, not checked
-against an image). Constants are in [devices/elsc_nvram/registers.toml](../../devices/elsc_nvram/registers.toml).
+number at 0x708 are already in the host request set. The rest of the block is as named in the
+public Linux 2.5.0 SN controller driver (`NVRAM_*` definitions) and the IP27 PROM Technical Reference
+(printed page 4-22: addresses 1792 to 2047 are reserved for the controller, the password defaults
+to none, the debug switches are virtual then physical). Inferred, not checked against an image. Constants are in [devices/elsc_nvram/registers.toml](../../devices/elsc_nvram/registers.toml).
 
 | Byte | Meaning |
 |---|---|
 | 0x701 to 0x704 | four-character controller password; the default text is `none` |
 | 0x705 | virtual debug-switch XOR override |
 | 0x706 | physical debug-switch XOR override |
-| 0x707 | controller configuration: bit 0 holds the fans high, bit 1 enables automatic power-up |
+| 0x707 | controller configuration (the driver names the byte and uses no bits; the bit meanings are unknown) |
 | 0x709 | self-test flags, two bits per node board |
 | 0x70a | partition |
 | 0x70b | domain |
 | 0x70c | cluster |
 | 0x70d | cell |
-| 0x70e to 0x7ff | controller-reserved, no published use |
+| 0x70e to 0x7ff | controller-reserved; the driver names nothing here |
 
-The domain byte is used as a domain number on the Origin 2000 boot path. Whether the controller's
-own initialization writes a clock-select default there, and how that default and the domain use
-fit together, is unknown.
-
-**Conflict.** The Origin 2000 Deskside Owner's Guide (007-3453-002, PDF page 83) gives the
-controller's NVRAM as 1024 by 8 bits. The firmware addresses 2048 bytes, including block 7. The
-manual's figure is not explained by any read so far, so the page keeps both and treats the size as
-unknown.
+**Conflict (owner's guide figure unverified).** The Origin 2000 Deskside Owner's Guide (007-3453-002,
+PDF page 83) is said to give the controller's NVRAM as 1024 by 8 bits; that page's text was not
+reachable here, so the figure is unconfirmed. The PROM Technical Reference addresses 2048 bytes
+(0 to 2047), including the reserved block 7. The page keeps both and treats the size as unknown.
 
 ## Module number
 
 - **Hint.** The module number is an integer from 1 to 255. Zero means the module is unassigned.
-  Assigned numbers are unique within a system. A module number is not a node NASID, a physical
-  slot number, a graph identifier or an array index. Source: SGI 108-0170-001, *Origin200/2000
+  Assigned numbers are unique within a system, and duplicates stop the boot. The manual calls it the identifier
+  IRIX uses for modules in the hardware graph. Inferred, not stated in those words: it is not a node NASID, a physical
+  slot number or an array index. Source: SGI 108-0170-001, *Origin200/2000
   IP27 PROM Technical Reference Manual*, printed pages 1-4 and 1-5 (PDF pages 18 and 19).
 - **Hint.** The MSC keeps the number in its shared NVRAM. A documented maintenance change to the
-  system's identity takes effect at the next reboot. The same manual pages describe automatic
-  assignment for a module that has no number. The manual is the only source for these three
+  system's identity takes effect at the next reboot. The same manual pages (1-4 and 1-5) describe automatic
+  assignment for a module that has no number, followed by a reboot. The manual is the only source for these three
   points, and the automatic-assignment procedure itself is not written up here.
-- **Hint, unverified.** Node-card PROM logs keep backup copies of the module number, for use
-  when the MSC's NVRAM cannot be read. The page reference for this was not checked in this pass.
+- **Hint.** Node-card PROM logs keep backup copies of the module number, for use
+  when the MSC's NVRAM cannot be read (PROM Technical Reference, printed page 1-4, section 1.5).
 - The module number lives in the MSC's NVRAM, which the host request set reaches at byte 0x708
   (decimal 1800). The validity marker is byte 0x700 (decimal 1792), read as 0x37. Those are the
   existing sysco readings, not from this page.
