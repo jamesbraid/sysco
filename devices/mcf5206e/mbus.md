@@ -107,8 +107,9 @@ Chapter 8 routes the M-Bus request to the SIM (manual pp. 8-5, 8-7, 8-10 to 8-12
 - The pending bit is bit 11 of IPR at `+0x3a`. An active internal request sets it on the
   following processor clock, whether or not the mask is set.
 - The pending bit clears when the request clears, or at the end of the interrupt acknowledge.
-- Acknowledge does not clear `MIF`. Software must clear `MIF` to remove the level-sensitive
-  condition.
+- Inferred: acknowledge does not clear `MIF`. The manual says software clears `MIF` by writing
+  zero (13.5.4) and says the pending bit follows the internal request; it does not say what the
+  acknowledge cycle does to `MIF`.
 - Inferred from that level-sensitive condition: a request that continues after acknowledge may
   become pending again. The timing of that re-pend needs a test rather than an assumption.
 
@@ -128,7 +129,7 @@ facts; the L1's programmed value is in [l1-board-contract.md](../l1_board/README
 | `0x20` | 20 |
 | `0x3f` | 2048 |
 
-Unverified: the `0x07` and `0x20` rows are not yet checked against the manual's table 13-2.
+All five rows match table 13-2 (manual p. 13-7). The errata's own example is `0x07` for a divider of 68.
 
 Errata (MCF5206EUMAD rev. 3, printed p. 17, correction to section 13.5.2): the SCL frequency is the
 CPU frequency divided by the selected divider. The selection must keep the M-Bus below 100 kHz.
