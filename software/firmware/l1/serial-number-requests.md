@@ -133,7 +133,7 @@ The 700 MHz boards carry R16000 processors at CPU revision 2.1 in the postings. 
 prints revision `D` (two posted boards), so `C` is one of two revisions seen, not the only one.
 
 The same postings show other parts. Revisions and the `Tap` value as printed are below (inferred, from the postings,
-not checked against an image). Each row is one part with the revisions seen:
+not checked against an image; the postings themselves were not re-read when this table was checked, so each row is unverified). Each row is one part with the revisions seen:
 
 | Part | Board name | Revisions seen | Clock, cache | `Tap` and CPU revision | Note |
 |---|---|---|---|---|---|
