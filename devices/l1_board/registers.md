@@ -185,7 +185,7 @@ I-brick bridge control expander: expander index 5, 7-bit address 0x24.
 | `FLASH_CMD_RESET` | 0xf0 | established |  |  |
 | `FLASH_CMD_SECTOR_ERASE` | 0x30 | established |  |  |
 | `FLASH_HELPER_ERR_PROGRAM` | 0xfffffaeb | established |  | returned by the write helper on a program failure; package 1 |
-| `FLASH_HELPER_ERR_RANGE` | 0xfffffaec | established |  | returned by the erase helper when the span is outside the limits, and by the boot-block path below the flash base; package 1 |
+| `FLASH_HELPER_ERR_RANGE` | 0xfffffaec | established |  | returned by the erase helper and the write helper when the span lies outside the flash limits block held in RAM, and by the erase helper when a sector range overlaps a second range held in the same block; package 1 |
 | `FLASH_HELPER_ERR_VERIFY` | 0xfffffaea | established |  | returned by the write helper on a verify mismatch; package 1 |
 | `FLASH_UNLOCK_ADDR_1` | 0xaaa | established |  |  |
 | `FLASH_UNLOCK_ADDR_2` | 0x554 | established |  |  |
