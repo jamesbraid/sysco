@@ -28,7 +28,7 @@ and Altix 4700 guide `007-4823-001`, and the brick type codes in Linux v5.3
   [arm-linux26-shub2-tio-state-1.44.0.md](arm-linux26-shub2-tio-state-1.44.0.md),
   [arm-tio-link-reset-1.40.5.md](arm-tio-link-reset-1.40.5.md)).
 
-**Established, from SGI's manuals.** `IP57` is the node board of the Altix 350 (007-4660-001 pp.100 to 105: "IP57 Node
+**Established, from SGI's manuals.** `IP57` is the node board of the Altix 350 (007-4660-001 pp.100, 121 and 132: "IP57 Node
 Board" in the base compute, CPU expansion and CMPX modules). The L1 guide's valid blade types for the Altix 4700 call
 the compute blades C1 and C2 "SHub 2.x based" (007-3938-005 p.50), which is the generation the `SHUB2_*` routines serve.
 
@@ -91,3 +91,19 @@ reach is by the routines and labels named in [arm-linux-packages.md](arm-linux-p
 2. The Altix 3000 C-brick's type letter.
 3. Whether the 1.62.1 images on the Altix support disc add Altix 450 and 4700 bricks beyond the 1.44.0 labels. The disc is
    held (`evidence/irix-files.md`) but its container was only measured, not read for labels.
+
+## Review
+
+Independent review, 2026-11-14, by a reviewer who did not write this note. Reviewed sysco revision 89bff53.
+
+Checks:
+- IP57 is the Altix 350 node board: 007-4660-001 prints "IP57 Node Board" in the base compute module (p.100), the CPU expansion module (p.121) and the CMPX module (p.132), and the second guide repeats the board in its interface-board text (-002 p.114). Established as written; the page range was corrected from "pp.100 to 105" to the three pages that name the board in each module (mechanical).
+- "The 350 modules are 2U" (007-4660-001 p.69): confirmed. The inference that type `O` with the record name `IPF_2UINT` is the 350 module is reasoning from a name and the enclosure height; it is correctly graded inferred, and the note correctly says the 350's own L1 CPU is unknown.
+- 007-3938-005 p.50 "SHub 2.x based" for C1 and C2 and p.51 blade list (including the table's "14E" misprint): confirmed. p.49 `config` output with `003c01` and the "IRouter:read failed" text: confirmed.
+- Linux v5.3 `arch/ia64/include/asm/sn/l1.h`: every brick type code and board code the note lists is present with the stated value and case (PX 0x23, IX 0x3d, IP41 0x35, IP45 0x34, OPUS `o`, OPUS_TIO `f`, PA `j`, IA `k`, SA `^`, ATHENA `+`, DAYTONA `z`, 1932 `,`, 191010 `.`; board codes CA, CB, IB, IC, ID, IE, AB, AD). The count of thirteen case-folded name pairs checks out. The package-to-brick reasoning (type letter in the supported-brick string decides whether the updater offers an image; shared enclosures do not separate Origin 3000 from Altix 3000) is sound as stated and every unknown names a route.
+- Not re-verified here: the package readings the note cites (string counts, `IP57_*` routine counts, supported-brick strings, the June 2006 build date of the 2.6 images), the Altix 4700 guide's chapter 5 dense-router naming, and the revision-log dates of 007-3938-005 (its record of revision has no extractable text).
+- No manual text beyond short quoted phrases; names such as Opus, Athena and Daytona are strings from the shipped firmware; no private paths.
+
+Findings: none that change a claim. Note the `l1.h` table in the note is graded established, which matches the evidence order (SGI's Linux platform headers rank first).
+
+Cleared scope: the IP57 claim, the type-letter mapping against Linux, and the package assignment table as reasoning. Not cleared: the firmware-side counts listed as not re-verified.

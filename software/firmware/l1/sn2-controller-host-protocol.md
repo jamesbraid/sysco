@@ -129,3 +129,20 @@ I/O board get.
 - What the PROM does between a SAL call and the controller (which UART or USB path, which buffers, which timing).
 - The controller packet format on the IRouter subchannel.
 - The meaning of the source address and of the ESP code beyond how the kernel prints them.
+
+## Review
+
+Independent review, 2026-11-14, by a reviewer who did not write this note. Reviewed sysco revision 89bff53.
+
+Checks against Linux v5.3 (`arch/ia64/include/asm/sn/sn_sal.h`, `drivers/char/snsc.c`, `snsc.h`, `snsc_event.c`, `drivers/tty/serial/sn_console.c`, `intr.h`):
+- Console calls 0x02000021 to 0x02000028, 0x0200002a, 0x0200002b; `SN_SAL_IROUTER_OP` 0x02000043; `SN_SAL_SYSCTL_EVENT` 0x02000044; `SN_SAL_GET_MASTER_NASID` 0x02000004; `SN_SAL_SYSCTL_OP` 0x02000030 with operations 1 and 2; the other listed sysctl numbers (0x31, 0x32, 0x33, 0x35, 0x36, 0x3a, 0x3f, 0x42): all match.
+- IRouter operations 0 to 7 and their argument and result conventions (open and send return the first result word, close, receive and init return the status; receive passes a pointer to the capacity; init passes node, buffer, length): match `ia64_sn_irtr_*`. Status codes 1, 0, -1, -2, -3 match. Chunk size 127, driver buffer 2048, one-second wait, "outdated PROM?" message, device name `<module>^<slot>#<slab>`, receive interrupt enabled per node: match `snsc.c`/`snsc.h`.
+- Event record: offsets 0, 4, 8, 9, 10, 14, 15 and 17 and the field types match `scdrv_parse_event`; the forced terminator lands at offset 141 (index 126 counted from offset 15), past a 127-byte buffer, as the note says. Class, severity and component masks, the class and severity values, `ENV_PWRDN_PEND` 0x4101, the `SIGPWR` path, and the console-node-only event subchannel (`ia64_sn_get_console_nasid` uses `SN_SAL_GET_MASTER_NASID`): match.
+- Console driver constants (16-character FIFO model at 960 characters per second, 64 KB buffer, vector 0xe9, `ttySG0`): match.
+- The note's grade (established for what the kernel does, unknown for PROM and controller side) is right for the call numbers and arguments, which come from `sn_sal.h` (platform header, first in the evidence order).
+
+Findings:
+1. The event layout, the 127-byte chunking and the device naming come from `drivers/char/snsc*.c` and `sn_console.c`, which are not in the platform trees the evidence order lists first. They are SGI-authored and describe only what the kernel does, which is how the note labels them; if the project wants the strict reading, the event-layout table is `inferred` until a controller-side source or binary confirms it.
+2. PUTB's "does not return until done" is the note's reading of the driver's use (`snt_hw_puts_raw`), not a header statement; harmless.
+
+Cleared scope: all SAL numbers, argument lists, result conventions, the event record layout as the kernel parses it and the "what a model needs" list. Not cleared: the strict-grade question in finding 1. Not read here: SAL or controller firmware behaviour (not held).
