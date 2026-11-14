@@ -176,6 +176,12 @@ Established, L1 1.44.0 package 2. Unverified.
 - **`0x000e`** returns the position, the port number *p* above. Each node's request
   gets its own position.
 
+## Router port records (Cx-brick), re-read 2026-11-13
+
+Inferred (reasoning below); the table itself is established. L1 1.44.0 package 2. The personality `6` installer registers a table of 24-byte port records, sixteen records per block, with the block repeated sixteen times at a stride of `0x180` (first block: records from `0xffe5ae14`, names from `0xffe5dec7`). The sixteen names of a block, in table order, are `PORT A`, `INT N1`, `INT N2`, `INT N0`, `INT N3`, `PORT F`, `PORT G`, `PORT H`, then `NI 0`, `XIO 0`, `NI 1`, `XIO 1`, `NI 2`, `XIO 2`, `NI 3`, `XIO 3`. The first eight are the router's eight ports: the four letters match the external connector labels (ports 1, 6, 7 and 8 of the router, labelled A, F, G, H), and the four `INT` names are the internal links to the node boards. The word at the start of each of those eight records holds an expander index (three values shared in pairs: `INT N1` and `INT N0`, `INT N2` and `INT N3`, `PORT F` and `PORT G`, `PORT A` and `PORT H`), a half selector, and a one-bit mask. Read in table order the masks are `0x02`, `0x04`, `0x08`, `0x10`, `0x20`, `0x40`, `0x80`, then `0x01` for the eighth: bit `k mod 8` for the record at position `k` (1 to 8).
+
+Reading: if the record at position `k` is router port `k`, the masks fall out exactly (port 8 wraps to bit 0), and the external names land on ports 1, 6, 7, 8 as the connector labels say. That puts the internal links at port 2 = node 1, port 3 = node 2, port 4 = node 0, port 5 = node 3. The image never states a router port number, so this is an inference from the mask pattern and the connector labels, not a read of a port number. It differs from a plain "node *n* on port *n* + 2" order: here node 0 sits on port 4 and nodes 1 and 2 on ports 2 and 3. The pairing of the internal links on expanders (`N0` with `N1`, `N2` with `N3`) holds in either order. The four `NI n` and `XIO n` records are per node; the first byte of their records is `0x15`, `0x21`, `0x2d`, `0x39` for nodes 0 to 3. No IRIX 6.5.7 source maps an Origin 3000 node board to a router port (that tree has no Origin 3000 compute-brick code), and the IP35 boot firmware was not read for this.
+
 ## Power inlet record (Cx-brick component 0)
 
 Table component 0 is a board record (header, chassis, board and internal-use
