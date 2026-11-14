@@ -5,7 +5,7 @@ Generated; do not edit. `retools/tools/inventory.py` writes the host-tool tables
 ## Statuses
 
 - `understood`: a curated row (software/firmware/l1/*.tsv) gives the item a grade (`established` or `inferred`), a role stated in at least a few words and a locator, and any byte check passes.
-- `located`: the item's address, offset or hash is cited in a note under `docs/`.
+- `located`: the item's address, offset or hash is cited in a note.
 - `undocumented`: neither.
 
 ## Firmware tables (`retools/tools/sysco/sysco_tables.py`)
