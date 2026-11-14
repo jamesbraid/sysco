@@ -74,4 +74,4 @@ Still unread: the hook's branches for types `5`, `6` and `O`, and the part of th
 the type-7 one) and per-generation margin and voltage entries named `IP53` or `IP59`. None of the host request
 handlers in [brick-request-handlers.md](brick-request-handlers.md) returns a processor-module code: the code stays inside
 the controller. **Inferred:** the host's view of the same code is the low nibble of the Bedrock board word, which the PROM
-reads and labels "board/PIMM PSC" (chips repository, `docs/questions/ip35-board-word-and-config-block.md`).
+reads and labels "board/PIMM PSC" (chips repository, `questions/ip35-board-word-and-config-block.md`).

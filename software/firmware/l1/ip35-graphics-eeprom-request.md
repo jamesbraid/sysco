@@ -1,6 +1,6 @@
 # L1 side of the graphics board EEPROM read on a Tezro (host request 6, component 2, area 2)
 
-Question. What does the host ask the tower L1 for the graphics board's EEPROM, and does a real L1 answer? Grades: E established, I inferred, U unknown. Host side: kudzu `docs/ip35-graphics-eeprom-label.md` (IRIX 6.5.30 `unix.IP35`).
+Question. What does the host ask the tower L1 for the graphics board's EEPROM, and does a real L1 answer? Grades: E established, I inferred, U unknown. Host side: kudzu `software/kernel/ip35-graphics-eeprom-label.md` (IRIX 6.5.30 `unix.IP35`).
 
 - Host request (E): `read_ia` (kernel 0x929b8) builds a request with the component at message +4 and the area at +0x14 (area 2 is the board area), reading 64-byte chunks at rising offsets until a chunk is shorter than 64. A graphics read on a chimera host uses component 2. Any nonzero status word in the reply (the first four bytes) makes the host treat the read as failed; it adds no label (no failure text).
 - L1 firmware (E, `ip53-eeprom-record-tables-1.44.0.md`): the tower (type 9) table has an ODYSSEY device at table entry 2, wire address 0xac, bus selector 4. The Origin 300 firmware answers -104 for an entry whose probe failed and -107 for a bad header or area checksum ([board-records.md](board-records.md); I for the 1.44.0 package 2 image).
