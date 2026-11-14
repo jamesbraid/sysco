@@ -1,680 +1,131 @@
 # sysco
 
-## Start here
+Notes on SGI's system controllers: the L1 in every Origin 300, 3000 and 350 brick, the L2 that runs a rack, and
+the older MSC and MMSC from the Origin 2000 and Onyx2. They look after power, the board monitors and the console.
+The name is the directory IRIX ships their firmware in, `usr/cpu/firmware/sysco`.
 
-- To use the definitions in code, go to [generated/c](generated/c/) and [generated/rust](generated/rust/). Python, JSON and XML forms are in [generated/](generated/).
-- To understand one unit, open its directory: [devices/](devices/) for chips and boards, [formats/](formats/) for request tables, console tables and framing. Each has a README on how the hardware behaves, the hand-edited source and a generated register table.
-- Boards and bricks are in [platforms/](platforms/). How the firmware and the IRIX host tools drive the hardware is in [software/](software/): the L1, L2 and MMSC firmware under [software/firmware/](software/firmware/) and the host side under [software/userland/](software/userland/).
-- What is covered, and what is not, is in [evidence/coverage.md](evidence/coverage.md). The measured tables and routine readings are in [evidence/](evidence/). Open questions, each with what would settle it, are in [questions/](questions/README.md). The public documents the notes cite are indexed in [references/documents/](references/documents/published-sources.md).
+It's all read out of the firmware images and host tools that ship with IRIX, plus the public IRIX source, SGI
+manuals and the Linux and BSD drivers. Every fact notes where it came from and whether it's established,
+inferred or still unknown.
 
-Reverse-engineering notes for the SGI system-controller firmware of the Origin 300, Origin 3000 and Origin 350 generation, read from the images IRIX ships to flash it. "sysco" is the name of the shipped firmware directory (`usr/cpu/firmware/sysco`).
+What comes out is a description of each controller (its chips, addresses, protocols, how it boots and the
+requests it answers) and headers in C, Rust, Python, JSON and XML.
 
-Two controllers are in scope for the reading notes below; [evidence/controllers.md](evidence/controllers.md) surveys every other SGI system controller (the Challenge and Onyx controller, the MSC and ELSC, the MMSC, the L3 and the Altix generations), what is held for each, and the order the rest will be read in.
+## Controllers
 
-- **L1**, the per-brick controller. The first target is the Origin 300 L1 (the Fuel/PE/O300 1 MB ColdFire MCF5206e image), then the personalities for the C-brick, I-brick and R-brick. The L1 container also carries ColdFire images for other brick families and two embedded-Linux images for ARM S3C2410 controllers; they come after the Origin 300 image.
-- **L2**, the rack controller: a PowerPC MPC860 running Linux 2.4.7 with a cramfs root. It comes second.
+- **L1, Origin 300:** a ColdFire MCF5206e running firmware 1.44.0, and the one read most closely. Boot, the
+  M-Bus and board records, the USB device side, the RS-422 router and the node link.
+- **L1, other bricks:** the C-, I- and R-brick firmware, compared routine by routine against the Origin 300 one.
+- **L1, ARM Linux images:** kernel and file system found and the programs listed. Not much of the userland is
+  read yet.
+- **L2:** a PowerPC MPC860 running Linux 2.4.7. Boot loader, memory map, kernel interface and how it talks to
+  the L1s. The file system isn't fully walked.
+- **MMSC:** x86 running VxWorks. Segment map, symbols, flash and NVRAM, and the download protocol.
+- **Older machines:** no firmware held for the Everest-era controllers, just the IRIX drivers and daemons that
+  talk to them.
 
-The findings are specifications and reading notes, not a reimplementation. They are meant to cover the firmware's whole hardware interface: which peripherals the code touches, at which addresses and widths, what it expects back, and how it talks to the node, to its peers and to a host over USB.
+The firmware pages are under [software/firmware/](software/firmware/), the boards under
+[devices/](devices/README.md) and [platforms/](platforms/README.md).
 
-What is here:
+## How they connect
 
-- [evidence/firmware-versions.md](evidence/firmware-versions.md): every L1 and L2 version found, with sizes, hashes and the media or patch each came from.
-- [software/firmware/l1/](software/firmware/l1/): reading notes for the Origin 300 L1 1.44.0 image (package layout, boot, M-Bus and board records, USB device side, RS-422 router, node link, debug console), the request catalogue, I/O register and protocol tables, the symbol map, and the listing of that image under `software/firmware/l1/disasm/`.
-- [software/firmware/l1/console-behaviour.md](software/firmware/l1/console-behaviour.md): what the Origin 300 L1 prints and answers on its console in each state, with graded facts and the tests that would settle the unknowns.
-- [software/firmware/l2/kernel-interface.md](software/firmware/l2/kernel-interface.md): what the L2 user-space programs need from the kernel and the board (loader hand-off, physical windows, backing drivers, system-call surface, the PCI and USB chain to the first registered L1).
-- [devices/l1_board/README.md](devices/l1_board/README.md): the C-brick, I-brick and R-brick L1 board contract: peripheral map, chip selects, serial ports, M-Bus devices on each brick, the power, reset and NMI lines, NVRAM layout, and the boot order with every access before the first log line.
-- [platforms/bricks/router-board-records.md](platforms/bricks/router-board-records.md): the EEPROM records the L1 serves for the three router boards (R-brick, NUMAlink module and the Origin 3900 Cx-brick router): the record tables, the Cx-brick port rule, the board-record layout and the part numbers, with the unknowns.
-- [platforms/bricks/l1-pci-expansion.md](platforms/bricks/l1-pci-expansion.md): the Origin 300 PCI expansion chassis personality of the same L1 image: its type character, board-record positions, and which UART selectors and slots it uses against the compute chassis.
-- [platforms/bricks/tezro-l1-brick-identity.md](platforms/bricks/tezro-l1-brick-identity.md): which brick-type characters the L1 firmware gives the Tezro workstation and rackmount profiles, what the published Linux driver names them, and what is unknown.
-- [platforms/bricks/vbrick-l1.md](platforms/bricks/vbrick-l1.md): the L1 controller on the Onyx 3000 V-brick as the published manuals and one OpenBSD header describe it: topology, the type character and no-data status, and what remains unknown. No firmware image covers it yet.
-- [devices/gigachannel_status/README.md](devices/gigachannel_status/README.md): the GIGAchannel cabinet's 16-bit status word as the IRIX kernel and the BASEIO PROM read it: where it sits, the bits as software reads them, and the unknowns. Unverified; the definitions are in [devices/gigachannel_status/registers.toml](devices/gigachannel_status/registers.toml).
-- [software/firmware/l1/cpu-features.md](software/firmware/l1/cpu-features.md): which MCF5206e instructions and control features the five ColdFire L1 packages use beyond the base set (`MOVEC` targets, vector base, cache setup, `HALT`, MAC), with the address of each use.
-- [devices/mcf5206e/mbus.md](devices/mcf5206e/mbus.md): the MCF5206e's on-chip M-Bus module as the chip manual specifies it: reset values, transfer and acknowledge rules, SIM interrupt routing, the clock selector, and what the manual leaves open.
-- [software/userland/host-tool-options.md](software/userland/host-tool-options.md): the command lines of `l1cmd`, `l2cmd` and `flashsc`, and what the first two send.
-- [software/firmware/l2/l1-conversation.md](software/firmware/l2/l1-conversation.md): the L2's side of the conversation with an L1, in order: attach, configuration request and route, the routed `p <id> pwr d` shutdown, and the partition-record reply.
-- [devices/](devices/) and [formats/](formats/): the hardware facts as TOML sources (layouts, command positions, constants, each graded and sourced), one directory per unit, and [generated/](generated/), everything generated from them: C headers, a Rust crate, Python and JSON forms, plus a reference page per unit next to its source. `generated/` is never edited by hand; change the TOML and run `retools/tools/defs/defs-gen`.
-- [evidence/inventory/](evidence/inventory/README.md): tables measured from the images (images, packages, functions, request codes, I/O registers, protocols) plus the host tools' ELF tables.
-- [evidence/coverage.md](evidence/coverage.md) is the map of what is covered; [questions/README.md](questions/README.md) lists what the images have not yet answered.
+Origin 300 and 3000:
 
-The firmware images are not tracked. [evidence/irix-files.md](evidence/irix-files.md) says which files to copy from which media into the ignored `root/` directory. [AGENTS.md](AGENTS.md) has the scope, the evidence rules and the finish line.
+<!-- Question: which controller talks to which, over what link? Evidence: the sources linked above. The L1 is a USB slave to upstream controllers, the L2 runs the USB host side (OHCI, sgil1 driver), the IRIX tools name an L2 by host/interface or a local L1 controller device, an L3 PC reaches an L2 over Ethernet or an L1 over USB. Only links those notes state are drawn; the L1 to node serial selectors are not tied to connector nets by any image. -->
+```mermaid
+flowchart LR
+  tools["IRIX host or L3 PC:<br/>l1cmd, l2cmd, flashsc"]
+  l2["Rack L2:<br/>MPC860, Linux 2.4.7"]
+  l1["Brick L1:<br/>ColdFire MCF5206e"]
+  node["Node:<br/>Bedrock"]
+  boards["Board EEPROMs,<br/>monitors, expanders"]
+  peer["Other bricks' L1"]
+  tools -- "network (--l2 host)" --> l2
+  tools -- "local L1 controller device" --> l1
+  tools -. "L3 only: USB" .-> l1
+  l2 -- "USB (L1 is slave)" --> l1
+  l1 -- "node UART link:<br/>PPP-framed or raw" --> node
+  l1 -- "M-Bus" --> boards
+  l1 -- "RS-422 peer links,<br/>PPP frames" --> peer
+```
 
-## Every other doc
+Origin 2000, Onyx2 and Origin 200. No MSC firmware is held, so the MSC side comes from the IRIX driver and the
+MMSC's client for it.
 
-Each doc below is listed once. The one-line descriptions are the doc's own first heading, or its first sentence when the heading is too short or too long; they are not summaries.
+<!-- Question: which older-generation controller talks to which, over what link? Evidence: evidence/controllers.md (families MSC and ELSC, MMSC: Ethernet between MMSCs, one serial cable to each module's MSC bays; Origin 200 has two MSCs in a dual-chassis setup with only the master active), formats/elsc_host/README.md (kernel driver elsc.o reaches the MSC over I2C: request mailbox at slave 8, NVRAM at 0x50, established; same driver object serves Origin 200, 2000 and Onyx2), platforms/ip27/module-management.md (one MSC per four-node module on one shared management I2C bus with NVRAM; one RS-232 alternate-console port, a deskside terminal or, in a rack module, the multimodule controller; all hint grade from the diagnostic roadmap figure), software/firmware/mmsc/msc-client.md (MMSC firmware talks to up to two MSCs over two serial lines, bays U and L, read from the image), rack-election.md (MMSCs on one Ethernet segment), flash-nvram-download.md (flashmmsc flashes the MMSC over the serial line). Dotted edge: the deskside terminal on the alternate-console port, hint grade only. Not drawn: any link between the two Origin 200 MSCs, any MSC CPU or firmware path (none is stated), mmscd's link to the MMSC (not read), the Hub-side I2C interface per node (hint, not tied to a connector). -->
+```mermaid
+flowchart LR
+  subgraph module["Origin 2000 or Onyx2 module"]
+    kern["IRIX kernel:<br/>elsc.o driver"]
+    msc["Module system controller<br/>(MSC, also ELSC)"]
+    nv["Controller NVRAM,<br/>block 0x700 to 0x7ff"]
+  end
+  subgraph o200["Origin 200 chassis<br/>(two in a dual setup, only the master active)"]
+    kern2["IRIX kernel:<br/>elsc.o driver"]
+    msc2["Module system controller"]
+  end
+  subgraph rack["Rack"]
+    mmsc["Multi-module system controller<br/>(MMSC): x86, VxWorks"]
+  end
+  mmsc2["Other racks' MMSC"]
+  flasher["IRIX host:<br/>flashmmsc"]
+  term["Deskside terminal"]
+  kern -- "I2C (request mailbox)" --> msc
+  kern -- "I2C (NVRAM)" --> nv
+  kern2 -- "I2C" --> msc2
+  mmsc -- "serial, one line per MSC bay<br/>(bays U and L)" --- msc
+  mmsc -- "Ethernet broadcast frames" --- mmsc2
+  flasher -- "serial, XMODEM-CRC download" --> mmsc
+  term -. "RS-232 alternate-console port" .- msc
+```
 
-### Origin 300 and other L1 reading notes (`software/firmware/l1/`)
+## Using it
 
-- [software/firmware/l1/README.md](software/firmware/l1/README.md): Reading notes for the L1 system controller
-- [software/firmware/l1/arm-b2b-router-1.34.2.md](software/firmware/l1/arm-b2b-router-1.34.2.md): ARM board-link and router entry paths in 1.34.2
-- [software/firmware/l1/arm-blade-presence-nmi-1.40.5.md](software/firmware/l1/arm-blade-presence-nmi-1.40.5.md): ARM blade presence and NMI paths in 1.40.5
-- [software/firmware/l1/arm-board-bus-reset-1.44.0.md](software/firmware/l1/arm-board-bus-reset-1.44.0.md): ARM board and bus reset paths in 1.44.0
-- [software/firmware/l1/arm-board-configuration-events-1.38.4.md](software/firmware/l1/arm-board-configuration-events-1.38.4.md): ARM board configuration and environment callbacks in 1.38.4
-- [software/firmware/l1/arm-board-operation-records-1.38.4.md](software/firmware/l1/arm-board-operation-records-1.38.4.md): ARM board-operation records in version 1.38.4
-- [software/firmware/l1/arm-board-operations-setup-1.44.0.md](software/firmware/l1/arm-board-operations-setup-1.44.0.md): ARM board-operation setup paths in 1.44.0
-- [software/firmware/l1/arm-board-operations-smp-commands-1.34.2.md](software/firmware/l1/arm-board-operations-smp-commands-1.34.2.md): ARM board operations and SMP commands in 1.34.2
-- [software/firmware/l1/arm-board-reset-1.40.5.md](software/firmware/l1/arm-board-reset-1.40.5.md): ARM board reset callers in 1.40.5
-- [software/firmware/l1/arm-board-reset-io-1.34.2.md](software/firmware/l1/arm-board-reset-io-1.34.2.md): ARM board reset and I/O paths in 1.34.2
-- [software/firmware/l1/arm-board-reset-wrappers-1.38.4.md](software/firmware/l1/arm-board-reset-wrappers-1.38.4.md): ARM board-reset wrappers in version 1.38.4
-- [software/firmware/l1/arm-board-serial-configuration-1.38.4.md](software/firmware/l1/arm-board-serial-configuration-1.38.4.md): ARM board, serial number and configuration helpers in 1.38.4
-- [software/firmware/l1/arm-boot-board-configuration-1.38.4.md](software/firmware/l1/arm-boot-board-configuration-1.38.4.md): ARM boot and board configuration in 1.38.4
-- [software/firmware/l1/arm-boot-character-io-1.44.0.md](software/firmware/l1/arm-boot-character-io-1.44.0.md): ARM boot, scan and character I/O helpers in 1.44.0
-- [software/firmware/l1/arm-boot-ppp-trigger-1.40.5.md](software/firmware/l1/arm-boot-ppp-trigger-1.40.5.md): ARM boot, PPP and trigger helpers in 1.40.5
-- [software/firmware/l1/arm-brick-init-reset-state-1.38.4.md](software/firmware/l1/arm-brick-init-reset-state-1.38.4.md): ARM brick initialization and reset state in 1.38.4
-- [software/firmware/l1/arm-brick-operations-setup-1.40.5.md](software/firmware/l1/arm-brick-operations-setup-1.40.5.md): ARM brick-operation setup in version 1.40.5
-- [software/firmware/l1/arm-brick-records-flash-commands-1.38.4.md](software/firmware/l1/arm-brick-records-flash-commands-1.38.4.md): ARM brick records and flash commands in 1.38.4
-- [software/firmware/l1/arm-brick-type-protocol-scan-1.38.4.md](software/firmware/l1/arm-brick-type-protocol-scan-1.38.4.md): ARM brick types, protocol reset and scan helpers in 1.38.4
-- [software/firmware/l1/arm-byte-transfer-slot-variants.md](software/firmware/l1/arm-byte-transfer-slot-variants.md): ARM L1 byte-transfer and slot variants
-- [software/firmware/l1/arm-capture-image-sync-1.40.5.md](software/firmware/l1/arm-capture-image-sync-1.40.5.md): ARM capture and image synchronization paths in 1.40.5
-- [software/firmware/l1/arm-character-io-link-helpers-1.40.5.md](software/firmware/l1/arm-character-io-link-helpers-1.40.5.md): ARM character I/O and link helpers in 1.40.5
-- [software/firmware/l1/arm-character-io-node-control-1.38.4.md](software/firmware/l1/arm-character-io-node-control-1.38.4.md): ARM character I/O and node control in 1.38.4
-- [software/firmware/l1/arm-chip-field-link-setup-1.44.0.md](software/firmware/l1/arm-chip-field-link-setup-1.44.0.md): ARM chip fields and link setup in 1.44.0
-- [software/firmware/l1/arm-chip-fields-powerbay-init-1.34.2.md](software/firmware/l1/arm-chip-fields-powerbay-init-1.34.2.md): ARM chip fields and power-bay initialization in 1.34.2
-- [software/firmware/l1/arm-chip-port-scan-setup-1.38.4.md](software/firmware/l1/arm-chip-port-scan-setup-1.38.4.md): ARM chip, port and scan setup in 1.38.4
-- [software/firmware/l1/arm-chip-register-paths-1.34.2.md](software/firmware/l1/arm-chip-register-paths-1.34.2.md): ARM chip lookup and register entry paths in 1.34.2
-- [software/firmware/l1/arm-chip-register-selection-1.44.0.md](software/firmware/l1/arm-chip-register-selection-1.44.0.md): ARM chip register and selection paths in 1.44.0
-- [software/firmware/l1/arm-command-library-helpers-1.40.5.md](software/firmware/l1/arm-command-library-helpers-1.40.5.md): ARM command libraries and protocol helpers in 1.40.5
-- [software/firmware/l1/arm-command-protocol-scan-helpers-1.38.4.md](software/firmware/l1/arm-command-protocol-scan-helpers-1.38.4.md): ARM command, protocol and scan helpers in 1.38.4
-- [software/firmware/l1/arm-communication-capture-ppp-helpers-1.38.4.md](software/firmware/l1/arm-communication-capture-ppp-helpers-1.38.4.md): ARM communication capture and PPP helpers in 1.38.4
-- [software/firmware/l1/arm-communication-log-events-1.44.0.md](software/firmware/l1/arm-communication-log-events-1.44.0.md): ARM communication logs and event paths in 1.44.0
-- [software/firmware/l1/arm-configuration-access-1.40.5.md](software/firmware/l1/arm-configuration-access-1.40.5.md): ARM configuration records and protocol callers in 1.40.5
-- [software/firmware/l1/arm-configuration-event-setup-1.40.5.md](software/firmware/l1/arm-configuration-event-setup-1.40.5.md): ARM configuration events and network setup in 1.40.5
-- [software/firmware/l1/arm-configuration-events-records-1.44.0.md](software/firmware/l1/arm-configuration-events-records-1.44.0.md): ARM configuration events and record paths in 1.44.0
-- [software/firmware/l1/arm-configuration-packet-diagnostic-paths-1.38.4.md](software/firmware/l1/arm-configuration-packet-diagnostic-paths-1.38.4.md): ARM configuration, packet and diagnostic paths in 1.38.4
-- [software/firmware/l1/arm-configuration-queues-1.44.0.md](software/firmware/l1/arm-configuration-queues-1.44.0.md): ARM configuration state and router queue paths in 1.44.0
-- [software/firmware/l1/arm-configuration-state-coordination-1.38.4.md](software/firmware/l1/arm-configuration-state-coordination-1.38.4.md): ARM configuration state coordination in 1.38.4
-- [software/firmware/l1/arm-console-port-configuration-1.38.4.md](software/firmware/l1/arm-console-port-configuration-1.38.4.md): ARM console and port configuration in 1.38.4
-- [software/firmware/l1/arm-controller-command-fru-identity-1.44.0.md](software/firmware/l1/arm-controller-command-fru-identity-1.44.0.md): ARM controller commands and FRU identity in 1.44.0
-- [software/firmware/l1/arm-controller-configuration-1.44.0.md](software/firmware/l1/arm-controller-configuration-1.44.0.md): ARM controller configuration paths in 1.44.0
-- [software/firmware/l1/arm-controller-outbound-state-1.34.2.md](software/firmware/l1/arm-controller-outbound-state-1.34.2.md): ARM outbound controller and state paths in 1.34.2
-- [software/firmware/l1/arm-cpu-node-nmi-1.44.0.md](software/firmware/l1/arm-cpu-node-nmi-1.44.0.md): ARM CPU, node and NMI helpers in 1.44.0
-- [software/firmware/l1/arm-cpu-node-state-1.40.5.md](software/firmware/l1/arm-cpu-node-state-1.40.5.md): ARM CPU and node state paths in 1.40.5
-- [software/firmware/l1/arm-discovery-request-startup-1.44.0.md](software/firmware/l1/arm-discovery-request-startup-1.44.0.md): ARM discovery and request startup paths in 1.44.0
-- [software/firmware/l1/arm-discovery-topology-1.40.5.md](software/firmware/l1/arm-discovery-topology-1.40.5.md): ARM discovery and topology entry paths in 1.40.5
-- [software/firmware/l1/arm-display-led-paths-1.34.2.md](software/firmware/l1/arm-display-led-paths-1.34.2.md): ARM display and LED entry paths in 1.34.2
-- [software/firmware/l1/arm-display-panel-1.44.0.md](software/firmware/l1/arm-display-panel-1.44.0.md): ARM display and panel paths in 1.44.0
-- [software/firmware/l1/arm-display-panel-control-1.40.5.md](software/firmware/l1/arm-display-panel-control-1.40.5.md): ARM display and panel control in 1.40.5
-- [software/firmware/l1/arm-display-state-initialization-1.38.4.md](software/firmware/l1/arm-display-state-initialization-1.38.4.md): ARM display state and initialisation in 1.38.4
-- [software/firmware/l1/arm-eeprom-1.34.2.md](software/firmware/l1/arm-eeprom-1.34.2.md): ARM L1 EEPROM entry paths in 1.34.2
-- [software/firmware/l1/arm-eeprom-expander-access-1.40.5.md](software/firmware/l1/arm-eeprom-expander-access-1.40.5.md): ARM EEPROM and expander access in 1.40.5
-- [software/firmware/l1/arm-eeprom-interrupt-access-1.38.4.md](software/firmware/l1/arm-eeprom-interrupt-access-1.38.4.md): ARM EEPROM and interrupt-access paths in 1.38.4
-- [software/firmware/l1/arm-eeprom-monitor-board-1.44.0.md](software/firmware/l1/arm-eeprom-monitor-board-1.44.0.md): ARM EEPROM, panel and board helpers in 1.44.0
-- [software/firmware/l1/arm-environment-console-1.34.2.md](software/firmware/l1/arm-environment-console-1.34.2.md): ARM environment and console state paths in 1.34.2
-- [software/firmware/l1/arm-environment-events-state-1.38.4.md](software/firmware/l1/arm-environment-events-state-1.38.4.md): ARM environmental events and state in 1.38.4
-- [software/firmware/l1/arm-environment-fan-1.40.5.md](software/firmware/l1/arm-environment-fan-1.40.5.md): ARM environment interrupts and fan callers in 1.40.5
-- [software/firmware/l1/arm-expander-device-reset-1.44.0.md](software/firmware/l1/arm-expander-device-reset-1.44.0.md): ARM expander device reset and interrupt paths in 1.44.0
-- [software/firmware/l1/arm-expander-interrupt-control-1.44.0.md](software/firmware/l1/arm-expander-interrupt-control-1.44.0.md): ARM expander interrupt and control paths in 1.44.0
-- [software/firmware/l1/arm-expander-pcix-control-1.44.0.md](software/firmware/l1/arm-expander-pcix-control-1.44.0.md): ARM expander and PCI-X control paths in 1.44.0
-- [software/firmware/l1/arm-expander-power-1.40.5.md](software/firmware/l1/arm-expander-power-1.40.5.md): ARM expander and power control helpers in 1.40.5
-- [software/firmware/l1/arm-fan-1.34.2.md](software/firmware/l1/arm-fan-1.34.2.md): ARM L1 fan entry paths in 1.34.2
-- [software/firmware/l1/arm-fan-control-1.40.5.md](software/firmware/l1/arm-fan-control-1.40.5.md): ARM fan control callers in 1.40.5
-- [software/firmware/l1/arm-fan-control-interrupts-1.44.0.md](software/firmware/l1/arm-fan-control-interrupts-1.44.0.md): ARM fan control and interrupt paths in 1.44.0
-- [software/firmware/l1/arm-fan-link-routing-monitor-1.38.4.md](software/firmware/l1/arm-fan-link-routing-monitor-1.38.4.md): ARM fan, link and routing monitors in 1.38.4
-- [software/firmware/l1/arm-fan-monitor-board-config-1.44.0.md](software/firmware/l1/arm-fan-monitor-board-config-1.44.0.md): ARM fan, EEPROM and board configuration in 1.44.0
-- [software/firmware/l1/arm-fan-power-state-1.38.4.md](software/firmware/l1/arm-fan-power-state-1.38.4.md): ARM fan and power state paths in 1.38.4
-- [software/firmware/l1/arm-fan-reset-control-1.38.4.md](software/firmware/l1/arm-fan-reset-control-1.38.4.md): ARM fan reset and control paths in 1.38.4
-- [software/firmware/l1/arm-flash-access-programming-1.44.0.md](software/firmware/l1/arm-flash-access-programming-1.44.0.md): ARM flash access and programming paths in 1.44.0
-- [software/firmware/l1/arm-flash-access-selectors-1.34.2.md](software/firmware/l1/arm-flash-access-selectors-1.34.2.md): ARM flash access and selector paths in 1.34.2
-- [software/firmware/l1/arm-flash-control-1.40.5.md](software/firmware/l1/arm-flash-control-1.40.5.md): ARM flash access and image selection in 1.40.5
-- [software/firmware/l1/arm-flash-image-reset-paths-1.38.4.md](software/firmware/l1/arm-flash-image-reset-paths-1.38.4.md): ARM flash image and peripheral reset paths in 1.38.4
-- [software/firmware/l1/arm-flash-message-selectors-1.34.2.md](software/firmware/l1/arm-flash-message-selectors-1.34.2.md): ARM flash commands and message selectors in 1.34.2
-- [software/firmware/l1/arm-flash-port-callers-1.40.5.md](software/firmware/l1/arm-flash-port-callers-1.40.5.md): ARM flash and port callers in 1.40.5
-- [software/firmware/l1/arm-flash-reset-callers-1.44.0.md](software/firmware/l1/arm-flash-reset-callers-1.44.0.md): ARM flash and reset caller paths in 1.44.0
-- [software/firmware/l1/arm-front-panel-startup-1.40.5.md](software/firmware/l1/arm-front-panel-startup-1.40.5.md): ARM front-panel and startup paths in 1.40.5
-- [software/firmware/l1/arm-fru-capture-event-helpers-1.44.0.md](software/firmware/l1/arm-fru-capture-event-helpers-1.44.0.md): ARM FRU capture and event helpers in 1.44.0
-- [software/firmware/l1/arm-fru-capture-paths-1.34.2.md](software/firmware/l1/arm-fru-capture-paths-1.34.2.md): ARM FRU capture and status paths in 1.34.2
-- [software/firmware/l1/arm-fru-capture-status-1.40.5.md](software/firmware/l1/arm-fru-capture-status-1.40.5.md): ARM FRU capture and status paths in 1.40.5
-- [software/firmware/l1/arm-fru-chip-scan-records-1.38.4.md](software/firmware/l1/arm-fru-chip-scan-records-1.38.4.md): ARM FRU, chip and scan records in 1.38.4
-- [software/firmware/l1/arm-fru-event-packing-report-1.44.0.md](software/firmware/l1/arm-fru-event-packing-report-1.44.0.md): ARM FRU event packing and reporting in 1.44.0
-- [software/firmware/l1/arm-fru-events-capture-1.38.4.md](software/firmware/l1/arm-fru-events-capture-1.38.4.md): ARM FRU events and capture paths in 1.38.4
-- [software/firmware/l1/arm-fru-events-dump-1.40.5.md](software/firmware/l1/arm-fru-events-dump-1.40.5.md): ARM FRU events and dump paths in 1.40.5
-- [software/firmware/l1/arm-fru-events-reset-1.34.2.md](software/firmware/l1/arm-fru-events-reset-1.34.2.md): ARM FRU events, deadlock and reset-report paths in 1.34.2
-- [software/firmware/l1/arm-gpio-controller-messages-1.34.2.md](software/firmware/l1/arm-gpio-controller-messages-1.34.2.md): ARM GPIO and controller message paths in 1.34.2
-- [software/firmware/l1/arm-gpio-expander-1.44.0.md](software/firmware/l1/arm-gpio-expander-1.44.0.md): ARM GPIO and expander paths in 1.44.0
-- [software/firmware/l1/arm-gpio-flash-wrappers-1.38.4.md](software/firmware/l1/arm-gpio-flash-wrappers-1.38.4.md): ARM GPIO and flash wrappers in 1.38.4
-- [software/firmware/l1/arm-gpio-nvram-1.40.5.md](software/firmware/l1/arm-gpio-nvram-1.40.5.md): ARM GPIO and NVRAM callers in 1.40.5
-- [software/firmware/l1/arm-hub-config-access-1.40.5.md](software/firmware/l1/arm-hub-config-access-1.40.5.md): ARM hub configuration and access helpers in 1.40.5
-- [software/firmware/l1/arm-hub-init-link-1.40.5.md](software/firmware/l1/arm-hub-init-link-1.40.5.md): ARM hub initialization and link callers in 1.40.5
-- [software/firmware/l1/arm-hub-reset-scan-1.40.5.md](software/firmware/l1/arm-hub-reset-scan-1.40.5.md): ARM hub reset and scan callers in 1.40.5
-- [software/firmware/l1/arm-i2c-1.34.2.md](software/firmware/l1/arm-i2c-1.34.2.md): ARM L1 I2C entry paths in 1.34.2
-- [software/firmware/l1/arm-i2c-board-config-1.40.5.md](software/firmware/l1/arm-i2c-board-config-1.40.5.md): ARM I2C board configuration callers in 1.40.5
-- [software/firmware/l1/arm-i2c-bus-switch-1.44.0.md](software/firmware/l1/arm-i2c-bus-switch-1.44.0.md): ARM I2C bus and switch paths in 1.44.0
-- [software/firmware/l1/arm-i2c-environment-paths-1.34.2.md](software/firmware/l1/arm-i2c-environment-paths-1.34.2.md): ARM I2C configuration and environment paths in 1.34.2
-- [software/firmware/l1/arm-i2c-fan-power-1.62.1-1.48.1.md](software/firmware/l1/arm-i2c-fan-power-1.62.1-1.48.1.md): ARM L1 I²C, fan and power routines
-- [software/firmware/l1/arm-i2c-interrupt-1.34.2.md](software/firmware/l1/arm-i2c-interrupt-1.34.2.md): ARM L1 I2C interrupt and locking paths in 1.34.2
-- [software/firmware/l1/arm-i2c-multiplexer-1.44.0.md](software/firmware/l1/arm-i2c-multiplexer-1.44.0.md): ARM I2C multiplexer paths in 1.44.0
-- [software/firmware/l1/arm-i2c-mux-1.34.2.md](software/firmware/l1/arm-i2c-mux-1.34.2.md): ARM L1 I2C mux paths in 1.34.2
-- [software/firmware/l1/arm-i2c-mux-state-1.38.4.md](software/firmware/l1/arm-i2c-mux-state-1.38.4.md): ARM I2C locking and multiplexer state in 1.38.4
-- [software/firmware/l1/arm-i2c-paths-1.38.4.md](software/firmware/l1/arm-i2c-paths-1.38.4.md): ARM I2C entry paths in 1.38.4
-- [software/firmware/l1/arm-i2c-paths-1.40.5.md](software/firmware/l1/arm-i2c-paths-1.40.5.md): ARM I2C entry paths in 1.40.5
-- [software/firmware/l1/arm-i2c-router-nvram-variants.md](software/firmware/l1/arm-i2c-router-nvram-variants.md): ARM L1 I²C, router and NVRAM variants
-- [software/firmware/l1/arm-i2c-uart-nvram-1.38.4.md](software/firmware/l1/arm-i2c-uart-nvram-1.38.4.md): ARM raw multiplexer, UART and NVRAM paths in 1.38.4
-- [software/firmware/l1/arm-i2c-uart-nvram-1.40.5.md](software/firmware/l1/arm-i2c-uart-nvram-1.40.5.md): ARM multiplexer, UART and NVRAM callers in 1.40.5
-- [software/firmware/l1/arm-icmb-ipmb-messages-1.44.0.md](software/firmware/l1/arm-icmb-ipmb-messages-1.44.0.md): ARM ICMB and IPMB message paths in 1.44.0
-- [software/firmware/l1/arm-icmb-message-fields-1.40.5.md](software/firmware/l1/arm-icmb-message-fields-1.40.5.md): ARM ICMB message fields and builders in 1.40.5
-- [software/firmware/l1/arm-icmb-packet-paths-1.34.2.md](software/firmware/l1/arm-icmb-packet-paths-1.34.2.md): ARM controller-message packet paths in 1.34.2
-- [software/firmware/l1/arm-interrupt-image-sync-1.44.0.md](software/firmware/l1/arm-interrupt-image-sync-1.44.0.md): ARM interrupts and image synchronization in 1.44.0
-- [software/firmware/l1/arm-interrupt-image-sync-state-1.38.4.md](software/firmware/l1/arm-interrupt-image-sync-state-1.38.4.md): ARM interrupt and image synchronisation state in 1.38.4
-- [software/firmware/l1/arm-interrupt-packet-display-1.40.5.md](software/firmware/l1/arm-interrupt-packet-display-1.40.5.md): ARM interrupt, packet and display paths in 1.40.5
-- [software/firmware/l1/arm-io-display-router-controls-1.44.0.md](software/firmware/l1/arm-io-display-router-controls-1.44.0.md): ARM I/O, display and router controls in 1.44.0
-- [software/firmware/l1/arm-io-expander-1.34.2.md](software/firmware/l1/arm-io-expander-1.34.2.md): ARM L1 I/O-expander entry paths in 1.34.2
-- [software/firmware/l1/arm-io-expander-control-1.38.4.md](software/firmware/l1/arm-io-expander-control-1.38.4.md): ARM I/O-expander control paths in 1.38.4
-- [software/firmware/l1/arm-io-expander-interrupt-1.34.2.md](software/firmware/l1/arm-io-expander-interrupt-1.34.2.md): ARM L1 I/O-expander interrupt and dispatch paths in 1.34.2
-- [software/firmware/l1/arm-io-expander-interrupts-1.38.4.md](software/firmware/l1/arm-io-expander-interrupts-1.38.4.md): ARM I/O-expander interrupts and data paths in 1.38.4
-- [software/firmware/l1/arm-io-expander-interrupts-1.40.5.md](software/firmware/l1/arm-io-expander-interrupts-1.40.5.md): ARM I/O-expander callers in version 1.40.5
-- [software/firmware/l1/arm-ip57-configuration-control-1.40.5.md](software/firmware/l1/arm-ip57-configuration-control-1.40.5.md): ARM IP57 configuration and control paths in 1.40.5
-- [software/firmware/l1/arm-ip65-node-power-1.40.5.md](software/firmware/l1/arm-ip65-node-power-1.40.5.md): ARM IP65 node and power callers in 1.40.5
-- [software/firmware/l1/arm-ipmb-packet-checksum-helpers-1.38.4.md](software/firmware/l1/arm-ipmb-packet-checksum-helpers-1.38.4.md): ARM IPMB packet and checksum helpers in 1.38.4
-- [software/firmware/l1/arm-jchip-config-1.40.5.md](software/firmware/l1/arm-jchip-config-1.40.5.md): ARM JChip configuration and lookup routines in 1.40.5
-- [software/firmware/l1/arm-jtag-config-1.40.5.md](software/firmware/l1/arm-jtag-config-1.40.5.md): ARM JTAG configuration and scan-data routines in 1.40.5
-- [software/firmware/l1/arm-jtag-config-shub-scan-1.38.4.md](software/firmware/l1/arm-jtag-config-shub-scan-1.38.4.md): ARM JTAG configuration and SHUB scan paths in 1.38.4
-- [software/firmware/l1/arm-jtag-master-1.40.5.md](software/firmware/l1/arm-jtag-master-1.40.5.md): ARM JTAG master and communication routines in 1.40.5
-- [software/firmware/l1/arm-jtag-scan-configuration-1.44.0.md](software/firmware/l1/arm-jtag-scan-configuration-1.44.0.md): ARM JTAG scan and configuration paths in 1.44.0
-- [software/firmware/l1/arm-jtag-scan-reset-control-1.38.4.md](software/firmware/l1/arm-jtag-scan-reset-control-1.38.4.md): ARM JTAG and scan-reset control in 1.38.4
-- [software/firmware/l1/arm-l1-configuration-1.34.2.md](software/firmware/l1/arm-l1-configuration-1.34.2.md): ARM L1 configuration and request entry paths in 1.34.2
-- [software/firmware/l1/arm-l1-discovery-1.34.2.md](software/firmware/l1/arm-l1-discovery-1.34.2.md): ARM L1 discovery and configuration entry paths in 1.34.2
-- [software/firmware/l1/arm-l1-serial-and-flash.md](software/firmware/l1/arm-l1-serial-and-flash.md): ARM Linux L1 serial ports, flash access and the router layers
-- [software/firmware/l1/arm-l2-discovery-scan-control-1.38.4.md](software/firmware/l1/arm-l2-discovery-scan-control-1.38.4.md): ARM L2 discovery and scan-control paths in 1.38.4
-- [software/firmware/l1/arm-lbi-memory-1.40.5.md](software/firmware/l1/arm-lbi-memory-1.40.5.md): ARM LBI memory and JChip transfer routines in 1.40.5
-- [software/firmware/l1/arm-library-bounded-tail-paths-1.44.0.md](software/firmware/l1/arm-library-bounded-tail-paths-1.44.0.md): ARM library calls and undecoded tails
-- [software/firmware/l1/arm-library-call-pointer-paths-1.44.0.md](software/firmware/l1/arm-library-call-pointer-paths-1.44.0.md): ARM shared-library call and pointer paths
-- [software/firmware/l1/arm-library-calls-memory-1.44.0.md](software/firmware/l1/arm-library-calls-memory-1.44.0.md): ARM library calls and memory accesses
-- [software/firmware/l1/arm-library-load-store-call-paths-1.44.0.md](software/firmware/l1/arm-library-load-store-call-paths-1.44.0.md): ARM library loads, stores and calls
-- [software/firmware/l1/arm-library-nvram-router-paths-1.44.0.md](software/firmware/l1/arm-library-nvram-router-paths-1.44.0.md): ARM library NVRAM and router paths
-- [software/firmware/l1/arm-library-nvram-unresolved-dispatch-1.44.0.md](software/firmware/l1/arm-library-nvram-unresolved-dispatch-1.44.0.md): ARM library NVRAM set and get: unresolved dispatch targets in 1.44.0
-- [software/firmware/l1/arm-library-protocol-config-paths-1.44.0.md](software/firmware/l1/arm-library-protocol-config-paths-1.44.0.md): ARM library protocol and configuration paths
-- [software/firmware/l1/arm-library-router-paths-1.44.0.md](software/firmware/l1/arm-library-router-paths-1.44.0.md): ARM router library windows in 1.44.0 from selected symbol spans
-- [software/firmware/l1/arm-library-state-indirect-call-paths-1.44.0.md](software/firmware/l1/arm-library-state-indirect-call-paths-1.44.0.md): ARM library state and indirect-call paths
-- [software/firmware/l1/arm-link-controller-communication-1.44.0.md](software/firmware/l1/arm-link-controller-communication-1.44.0.md): ARM link and controller communication paths in 1.44.0
-- [software/firmware/l1/arm-link-controller-setup-1.40.5.md](software/firmware/l1/arm-link-controller-setup-1.40.5.md): ARM link controller setup paths in 1.40.5
-- [software/firmware/l1/arm-link-errors-prom-control-1.40.5.md](software/firmware/l1/arm-link-errors-prom-control-1.40.5.md): ARM link errors and PROM control paths in 1.40.5
-- [software/firmware/l1/arm-link-pcix-power-state-1.34.2.md](software/firmware/l1/arm-link-pcix-power-state-1.34.2.md): ARM link, PCI-X and power state in 1.34.2
-- [software/firmware/l1/arm-link-pic-power-display-1.44.0.md](software/firmware/l1/arm-link-pic-power-display-1.44.0.md): ARM link, PIC, power and display helpers in 1.44.0
-- [software/firmware/l1/arm-link-power-uart-variants.md](software/firmware/l1/arm-link-power-uart-variants.md): ARM L1 link, power and UART variants
-- [software/firmware/l1/arm-linux-boot-scripts-and-flash-tools.md](software/firmware/l1/arm-linux-boot-scripts-and-flash-tools.md): ARM Linux L1 network and flash scripts, MTD tools, MAC address
-- [software/firmware/l1/arm-linux-packages.md](software/firmware/l1/arm-linux-packages.md): Linux L1 packages (ARM S3C2410) in the 1.44.0 and 1.48.1 containers
-- [software/firmware/l1/arm-linux26-blade-control-reset-1.44.0.md](software/firmware/l1/arm-linux26-blade-control-reset-1.44.0.md): ARM Linux 2.6 blade control and reset routines in 1.44.0
-- [software/firmware/l1/arm-linux26-blade-slot-state-1.44.0.md](software/firmware/l1/arm-linux26-blade-slot-state-1.44.0.md): ARM Linux 2.6 blade slot and state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-board-presence-reset-1.44.0.md](software/firmware/l1/arm-linux26-board-presence-reset-1.44.0.md): ARM Linux 2.6 board presence, reset and field helpers in 1.44.0
-- [software/firmware/l1/arm-linux26-board-probe-interrupt-1.44.0.md](software/firmware/l1/arm-linux26-board-probe-interrupt-1.44.0.md): ARM Linux 2.6 board probe and interrupt routines in 1.44.0
-- [software/firmware/l1/arm-linux26-board-router-queues-1.44.0.md](software/firmware/l1/arm-linux26-board-router-queues-1.44.0.md): ARM Linux 2.6 board links and router queues in 1.44.0
-- [software/firmware/l1/arm-linux26-board-setup-dispatch-1.44.0.md](software/firmware/l1/arm-linux26-board-setup-dispatch-1.44.0.md): ARM Linux 2.6 BrickOpsInit and related entrypoints in 1.44.0
-- [software/firmware/l1/arm-linux26-boot-console-scan-helpers-1.44.0.md](software/firmware/l1/arm-linux26-boot-console-scan-helpers-1.44.0.md): Selected ARM Linux 2.6 routines in 1.44.0
-- [software/firmware/l1/arm-linux26-brick-blade-setup-1.44.0.md](software/firmware/l1/arm-linux26-brick-blade-setup-1.44.0.md): ARM Linux 2.6 brick and blade setup routines in 1.44.0
-- [software/firmware/l1/arm-linux26-configuration-discovery-ports-1.44.0.md](software/firmware/l1/arm-linux26-configuration-discovery-ports-1.44.0.md): ARM Linux 2.6 configuration discovery and ports in 1.44.0
-- [software/firmware/l1/arm-linux26-configuration-getters-events-1.44.0.md](software/firmware/l1/arm-linux26-configuration-getters-events-1.44.0.md): ARM Linux 2.6 configuration getters and events in 1.44.0
-- [software/firmware/l1/arm-linux26-configuration-state-requests-1.44.0.md](software/firmware/l1/arm-linux26-configuration-state-requests-1.44.0.md): ARM Linux 2.6 configuration state and requests in 1.44.0
-- [software/firmware/l1/arm-linux26-controller-command-init-1.44.0.md](software/firmware/l1/arm-linux26-controller-command-init-1.44.0.md): ARM Linux 2.6 controller command and initialization routines in 1.44.0
-- [software/firmware/l1/arm-linux26-cpu-presence-state-1.44.0.md](software/firmware/l1/arm-linux26-cpu-presence-state-1.44.0.md): ARM Linux 2.6 CPU presence and state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-diagnostic-link-commands-1.44.0.md](software/firmware/l1/arm-linux26-diagnostic-link-commands-1.44.0.md): ARM Linux 2.6 diagnostic and link command routines in 1.44.0
-- [software/firmware/l1/arm-linux26-eeprom-access-1.44.0.md](software/firmware/l1/arm-linux26-eeprom-access-1.44.0.md): ARM Linux 2.6 EEPROM access paths in 1.44.0
-- [software/firmware/l1/arm-linux26-environment-event-reset-1.44.0.md](software/firmware/l1/arm-linux26-environment-event-reset-1.44.0.md): ARM Linux 2.6 environment events and reset paths in 1.44.0
-- [software/firmware/l1/arm-linux26-environment-flash-addressing-1.44.0.md](software/firmware/l1/arm-linux26-environment-flash-addressing-1.44.0.md): ARM Linux 2.6 environment state and flash addressing in 1.44.0
-- [software/firmware/l1/arm-linux26-expander-interrupt-transfers-1.44.0.md](software/firmware/l1/arm-linux26-expander-interrupt-transfers-1.44.0.md): ARM Linux 2.6 I/O expander interrupts and transfers in 1.44.0
-- [software/firmware/l1/arm-linux26-expander-reset-access-1.44.0.md](software/firmware/l1/arm-linux26-expander-reset-access-1.44.0.md): ARM Linux 2.6 I/O expander reset and access paths in 1.44.0
-- [software/firmware/l1/arm-linux26-external-interrupts-1.44.0.md](software/firmware/l1/arm-linux26-external-interrupts-1.44.0.md): ARM Linux 2.6 external interrupt paths in 1.44.0
-- [software/firmware/l1/arm-linux26-fan-controls-1.44.0.md](software/firmware/l1/arm-linux26-fan-controls-1.44.0.md): ARM Linux 2.6 fan controls in 1.44.0
-- [software/firmware/l1/arm-linux26-flash-programming-boot-1.44.0.md](software/firmware/l1/arm-linux26-flash-programming-boot-1.44.0.md): ARM Linux 2.6 flash and boot candidates in 1.44.0
-- [software/firmware/l1/arm-linux26-fru-records-1.44.0.md](software/firmware/l1/arm-linux26-fru-records-1.44.0.md): ARM Linux 2.6 FRU record routines in 1.44.0
-- [software/firmware/l1/arm-linux26-gpio-transfer-1.44.0.md](software/firmware/l1/arm-linux26-gpio-transfer-1.44.0.md): ARM Linux 2.6 GPIO and I2C transfer paths in 1.44.0
-- [software/firmware/l1/arm-linux26-hourmeter-panel-psic-1.44.0.md](software/firmware/l1/arm-linux26-hourmeter-panel-psic-1.44.0.md): ARM Linux 2.6 hourmeter, panel and PSIC routines in 1.44.0
-- [software/firmware/l1/arm-linux26-i2c-1.44.0.md](software/firmware/l1/arm-linux26-i2c-1.44.0.md): ARM Linux 2.6 I2C paths in 1.44.0
-- [software/firmware/l1/arm-linux26-i2c-multiplexers-1.44.0.md](software/firmware/l1/arm-linux26-i2c-multiplexers-1.44.0.md): ARM Linux 2.6 I2C multiplexers in 1.44.0
-- [software/firmware/l1/arm-linux26-i2c-power-config-1.44.0.md](software/firmware/l1/arm-linux26-i2c-power-config-1.44.0.md): ARM Linux 2.6 I2C and power configuration routines in 1.44.0
-- [software/firmware/l1/arm-linux26-icmb-checksum-fru-1.44.0.md](software/firmware/l1/arm-linux26-icmb-checksum-fru-1.44.0.md): ARM Linux 2.6 ICMB, checksum and FRU helpers in 1.44.0
-- [software/firmware/l1/arm-linux26-jchip-field-data-1.44.0.md](software/firmware/l1/arm-linux26-jchip-field-data-1.44.0.md): ARM Linux 2.6 field and data routines in 1.44.0
-- [software/firmware/l1/arm-linux26-jchip-register-link-1.44.0.md](software/firmware/l1/arm-linux26-jchip-register-link-1.44.0.md): ARM Linux 2.6 register and link routines in 1.44.0
-- [software/firmware/l1/arm-linux26-jchip-target-state-1.44.0.md](software/firmware/l1/arm-linux26-jchip-target-state-1.44.0.md): ARM Linux 2.6 target and state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-jmstr-llp-helpers-1.44.0.md](software/firmware/l1/arm-linux26-jmstr-llp-helpers-1.44.0.md): ARM Linux 2.6 LLP and jmstr routines in 1.44.0
-- [software/firmware/l1/arm-linux26-jtag-configuration-1.44.0.md](software/firmware/l1/arm-linux26-jtag-configuration-1.44.0.md): ARM Linux 2.6 JTAG_Cfg routines in 1.44.0
-- [software/firmware/l1/arm-linux26-lbi-memory-controls-1.44.0.md](software/firmware/l1/arm-linux26-lbi-memory-controls-1.44.0.md): ARM Linux 2.6 memory control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-led-link-console-1.44.0.md](software/firmware/l1/arm-linux26-led-link-console-1.44.0.md): ARM Linux 2.6 LED, link and console routines in 1.44.0
-- [software/firmware/l1/arm-linux26-link-errors-led-access-1.44.0.md](software/firmware/l1/arm-linux26-link-errors-led-access-1.44.0.md): ARM Linux 2.6 link-error and LED access routines in 1.44.0
-- [software/firmware/l1/arm-linux26-link-pic-initialization-1.44.0.md](software/firmware/l1/arm-linux26-link-pic-initialization-1.44.0.md): ARM Linux 2.6 link and PIC initialization routines in 1.44.0
-- [software/firmware/l1/arm-linux26-monitor-limits-readings-1.44.0.md](software/firmware/l1/arm-linux26-monitor-limits-readings-1.44.0.md): ARM Linux 2.6 monitor limits and readings in 1.44.0
-- [software/firmware/l1/arm-linux26-monitor-output-power-status-1.44.0.md](software/firmware/l1/arm-linux26-monitor-output-power-status-1.44.0.md): ARM Linux 2.6 monitor output and power status in 1.44.0
-- [software/firmware/l1/arm-linux26-node-frontpanel-state-1.44.0.md](software/firmware/l1/arm-linux26-node-frontpanel-state-1.44.0.md): ARM Linux 2.6 node and front-panel state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-nvram-records-1.44.0.md](software/firmware/l1/arm-linux26-nvram-records-1.44.0.md): ARM Linux 2.6 NVRAM records in 1.44.0
-- [software/firmware/l1/arm-linux26-packet-flash-router-1.44.0.md](software/firmware/l1/arm-linux26-packet-flash-router-1.44.0.md): ARM Linux 2.6 packet, flash and router routines in 1.44.0
-- [software/firmware/l1/arm-linux26-packet-serial-main-1.44.0.md](software/firmware/l1/arm-linux26-packet-serial-main-1.44.0.md): ARM Linux 2.6 packet, serial and main routines in 1.44.0
-- [software/firmware/l1/arm-linux26-panel-interrupt-status-1.44.0.md](software/firmware/l1/arm-linux26-panel-interrupt-status-1.44.0.md): ARM Linux 2.6 panel and serial status routines in 1.44.0
-- [software/firmware/l1/arm-linux26-pbay-control-1.44.0.md](software/firmware/l1/arm-linux26-pbay-control-1.44.0.md): ARM Linux 2.6 power-bay control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-pbay-icmb-records-1.44.0.md](software/firmware/l1/arm-linux26-pbay-icmb-records-1.44.0.md): ARM Linux 2.6 power-bay and ICMB records in 1.44.0
-- [software/firmware/l1/arm-linux26-pcix-presence-fru-1.44.0.md](software/firmware/l1/arm-linux26-pcix-presence-fru-1.44.0.md): ARM Linux 2.6 PCI-X presence and FRU routines in 1.44.0
-- [software/firmware/l1/arm-linux26-pcix-reset-leds-1.44.0.md](software/firmware/l1/arm-linux26-pcix-reset-leds-1.44.0.md): ARM Linux 2.6 PCI-X reset and LED routines in 1.44.0
-- [software/firmware/l1/arm-linux26-pio-scan-records-1.44.0.md](software/firmware/l1/arm-linux26-pio-scan-records-1.44.0.md): ARM Linux 2.6 PIO and scan record routines in 1.44.0
-- [software/firmware/l1/arm-linux26-port-control-state-1.44.0.md](software/firmware/l1/arm-linux26-port-control-state-1.44.0.md): ARM Linux 2.6 port control and state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-port-display-packet-1.44.0.md](software/firmware/l1/arm-linux26-port-display-packet-1.44.0.md): ARM Linux 2.6 port, display and packet routines in 1.44.0
-- [software/firmware/l1/arm-linux26-power-command-reset-1.44.0.md](software/firmware/l1/arm-linux26-power-command-reset-1.44.0.md): ARM Linux 2.6 power, command and reset routines in 1.44.0
-- [software/firmware/l1/arm-linux26-power-margin-1.44.0.md](software/firmware/l1/arm-linux26-power-margin-1.44.0.md): ARM Linux 2.6 power margin paths in 1.44.0
-- [software/firmware/l1/arm-linux26-power-margin-state-1.44.0.md](software/firmware/l1/arm-linux26-power-margin-state-1.44.0.md): ARM Linux 2.6 power state and NVRAM access in 1.44.0
-- [software/firmware/l1/arm-linux26-power-presence-1.44.0.md](software/firmware/l1/arm-linux26-power-presence-1.44.0.md): ARM Linux 2.6 power presence and status in 1.44.0
-- [software/firmware/l1/arm-linux26-ppp-frame-network-1.44.0.md](software/firmware/l1/arm-linux26-ppp-frame-network-1.44.0.md): ARM Linux 2.6 PPP, frame and network routines in 1.44.0
-- [software/firmware/l1/arm-linux26-psic-image-network-1.44.0.md](software/firmware/l1/arm-linux26-psic-image-network-1.44.0.md): ARM Linux 2.6 PSIC, image and network routines in 1.44.0
-- [software/firmware/l1/arm-linux26-regulator-autofan-state-1.44.0.md](software/firmware/l1/arm-linux26-regulator-autofan-state-1.44.0.md): ARM Linux 2.6 regulator status and automatic fan paths in 1.44.0
-- [software/firmware/l1/arm-linux26-regulator-mic74-controls-1.44.0.md](software/firmware/l1/arm-linux26-regulator-mic74-controls-1.44.0.md): ARM Linux 2.6 regulator and MIC74 controls in 1.44.0
-- [software/firmware/l1/arm-linux26-request-routing-events-1.44.0.md](software/firmware/l1/arm-linux26-request-routing-events-1.44.0.md): ARM Linux 2.6 request routing and remaining configuration events in 1.44.0
-- [software/firmware/l1/arm-linux26-router-packets-1.44.0.md](software/firmware/l1/arm-linux26-router-packets-1.44.0.md): ARM Linux 2.6 router packet paths in 1.44.0
-- [software/firmware/l1/arm-linux26-scan-bitfiles-fru-1.44.0.md](software/firmware/l1/arm-linux26-scan-bitfiles-fru-1.44.0.md): ARM Linux 2.6 scan bitfiles and FRU helpers in 1.44.0
-- [software/firmware/l1/arm-linux26-scan-command-controls-1.44.0.md](software/firmware/l1/arm-linux26-scan-command-controls-1.44.0.md): ARM Linux 2.6 scan-command controls in 1.44.0
-- [software/firmware/l1/arm-linux26-scan-data-socket-1.44.0.md](software/firmware/l1/arm-linux26-scan-data-socket-1.44.0.md): ARM Linux 2.6 scan data and socket routines in 1.44.0
-- [software/firmware/l1/arm-linux26-scan-links-port-controls-1.44.0.md](software/firmware/l1/arm-linux26-scan-links-port-controls-1.44.0.md): ARM Linux 2.6 scan, link and port control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-serial-interrupt-controls-1.44.0.md](software/firmware/l1/arm-linux26-serial-interrupt-controls-1.44.0.md): ARM Linux 2.6 serial interrupt control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-shub-configuration-1.44.0.md](software/firmware/l1/arm-linux26-shub-configuration-1.44.0.md): ARM Linux 2.6 SHUB configuration routines in 1.44.0
-- [software/firmware/l1/arm-linux26-shub-reset-controls-1.44.0.md](software/firmware/l1/arm-linux26-shub-reset-controls-1.44.0.md): ARM Linux 2.6 SHUB reset and control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-shub-scan-1.44.0.md](software/firmware/l1/arm-linux26-shub-scan-1.44.0.md): ARM Linux 2.6 SHUB scan routines in 1.44.0
-- [software/firmware/l1/arm-linux26-shub2-tio-state-1.44.0.md](software/firmware/l1/arm-linux26-shub2-tio-state-1.44.0.md): ARM Linux 2.6 SHUB2 and TIO state routines in 1.44.0
-- [software/firmware/l1/arm-linux26-slot-reset-controls-1.44.0.md](software/firmware/l1/arm-linux26-slot-reset-controls-1.44.0.md): ARM Linux 2.6 slot reset control routines in 1.44.0
-- [software/firmware/l1/arm-linux26-sn1sc-jtag-transfers-1.44.0.md](software/firmware/l1/arm-linux26-sn1sc-jtag-transfers-1.44.0.md): ARM Linux 2.6 sn1sc and JTAG routines in 1.44.0
-- [software/firmware/l1/arm-linux26-syscom-endpoints-1.44.0.md](software/firmware/l1/arm-linux26-syscom-endpoints-1.44.0.md): ARM Linux 2.6 communication endpoints in 1.44.0
-- [software/firmware/l1/arm-linux26-syscom-state-capture-1.44.0.md](software/firmware/l1/arm-linux26-syscom-state-capture-1.44.0.md): ARM Linux 2.6 communication state and captures in 1.44.0
-- [software/firmware/l1/arm-linux26-temperature-monitor-init-1.44.0.md](software/firmware/l1/arm-linux26-temperature-monitor-init-1.44.0.md): ARM Linux 2.6 temperature entry paths and monitor initialization in 1.44.0
-- [software/firmware/l1/arm-linux26-tio-pcix-setup-1.44.0.md](software/firmware/l1/arm-linux26-tio-pcix-setup-1.44.0.md): ARM Linux 2.6 TIO and PCI-X setup routines in 1.44.0
-- [software/firmware/l1/arm-linux26-uart-fan-status-1.44.0.md](software/firmware/l1/arm-linux26-uart-fan-status-1.44.0.md): ARM Linux 2.6 UART and fan status in 1.44.0
-- [software/firmware/l1/arm-linux26-vram-node-configuration-1.44.0.md](software/firmware/l1/arm-linux26-vram-node-configuration-1.44.0.md): ARM Linux 2.6 VRAM and node configuration routines in 1.44.0
-- [software/firmware/l1/arm-linux26-vsc055-interrupts-1.44.0.md](software/firmware/l1/arm-linux26-vsc055-interrupts-1.44.0.md): ARM Linux 2.6 VSC055 reset and interrupt paths in 1.44.0
-- [software/firmware/l1/arm-log-brick-records-1.40.5.md](software/firmware/l1/arm-log-brick-records-1.40.5.md): ARM logs and brick identity records in 1.40.5
-- [software/firmware/l1/arm-log-rack-events-1.34.2.md](software/firmware/l1/arm-log-rack-events-1.34.2.md): ARM log, rack and event entry paths in 1.34.2
-- [software/firmware/l1/arm-margin-interrupt-reset-1.38.4.md](software/firmware/l1/arm-margin-interrupt-reset-1.38.4.md): ARM multi-device margin, interrupt and reset paths in 1.38.4
-- [software/firmware/l1/arm-margin-sensor-config-1.44.0.md](software/firmware/l1/arm-margin-sensor-config-1.44.0.md): ARM margin and sensor configuration in 1.44.0
-- [software/firmware/l1/arm-memory-link-scan-transfers-1.38.4.md](software/firmware/l1/arm-memory-link-scan-transfers-1.38.4.md): ARM memory, link and scan transfers in 1.38.4
-- [software/firmware/l1/arm-mmr-pio-link-1.40.5.md](software/firmware/l1/arm-mmr-pio-link-1.40.5.md): ARM MMR, PIO and link status routines in 1.40.5
-- [software/firmware/l1/arm-mmr-pio-tap-drivers-1.38.4.md](software/firmware/l1/arm-mmr-pio-tap-drivers-1.38.4.md): ARM MMR, PIO and TAP driver paths in 1.38.4
-- [software/firmware/l1/arm-monitor-1.34.2.md](software/firmware/l1/arm-monitor-1.34.2.md): ARM L1 monitor entry paths in 1.34.2
-- [software/firmware/l1/arm-monitor-environment-events-1.40.5.md](software/firmware/l1/arm-monitor-environment-events-1.40.5.md): ARM monitor interrupts and environment events in 1.40.5
-- [software/firmware/l1/arm-monitor-interrupt-power-1.34.2.md](software/firmware/l1/arm-monitor-interrupt-power-1.34.2.md): ARM L1 monitor interrupts and power paths in 1.34.2
-- [software/firmware/l1/arm-monitor-panel-link-control-1.38.4.md](software/firmware/l1/arm-monitor-panel-link-control-1.38.4.md): ARM monitor, panel and link-control paths in 1.38.4
-- [software/firmware/l1/arm-monitor-sensor-control-1.40.5.md](software/firmware/l1/arm-monitor-sensor-control-1.40.5.md): ARM monitor sensor and control callers in 1.40.5
-- [software/firmware/l1/arm-monitor-tach-output-dispatch-1.38.4.md](software/firmware/l1/arm-monitor-tach-output-dispatch-1.38.4.md): ARM monitor tachometer and output dispatch in 1.38.4
-- [software/firmware/l1/arm-mux-uart-lifecycle-1.40.5.md](software/firmware/l1/arm-mux-uart-lifecycle-1.40.5.md): ARM multiplexer and UART lifecycle callers in 1.40.5
-- [software/firmware/l1/arm-nmi-prom-configuration-helpers-1.38.4.md](software/firmware/l1/arm-nmi-prom-configuration-helpers-1.38.4.md): ARM NMI, PROM and configuration helpers in 1.38.4
-- [software/firmware/l1/arm-node-cpu-control-1.34.2.md](software/firmware/l1/arm-node-cpu-control-1.34.2.md): ARM node, CPU and interrupt paths in 1.34.2
-- [software/firmware/l1/arm-node-events-message-fields-1.38.4.md](software/firmware/l1/arm-node-events-message-fields-1.38.4.md): ARM node events and message fields in 1.38.4
-- [software/firmware/l1/arm-nvram-log-fan-config-1.44.0.md](software/firmware/l1/arm-nvram-log-fan-config-1.44.0.md): ARM NVRAM log and fan configuration paths in 1.44.0
-- [software/firmware/l1/arm-nvram-margin-configuration-1.34.2.md](software/firmware/l1/arm-nvram-margin-configuration-1.34.2.md): ARM NVRAM, margin and configuration entry paths in 1.34.2
-- [software/firmware/l1/arm-nvram-reset-paths-1.38.4.md](software/firmware/l1/arm-nvram-reset-paths-1.38.4.md): ARM NVRAM, reset and rack-slot paths in 1.38.4
-- [software/firmware/l1/arm-nvram-serial-identity-1.44.0.md](software/firmware/l1/arm-nvram-serial-identity-1.44.0.md): ARM NVRAM and serial identity paths in 1.44.0
-- [software/firmware/l1/arm-packet-capture-dispatch-1.44.0.md](software/firmware/l1/arm-packet-capture-dispatch-1.44.0.md): ARM packet capture and dispatch paths in 1.44.0
-- [software/firmware/l1/arm-packet-fault-record-helpers-1.38.4.md](software/firmware/l1/arm-packet-fault-record-helpers-1.38.4.md): ARM packet and fault record helpers in 1.38.4
-- [software/firmware/l1/arm-packet-interrupt-socket-helpers-1.38.4.md](software/firmware/l1/arm-packet-interrupt-socket-helpers-1.38.4.md): ARM packet, interrupt and socket helpers in 1.38.4
-- [software/firmware/l1/arm-packet-scan-image-helpers-1.44.0.md](software/firmware/l1/arm-packet-scan-image-helpers-1.44.0.md): ARM packet, scan and image helpers in 1.44.0
-- [software/firmware/l1/arm-packet-trigger-reporting-1.44.0.md](software/firmware/l1/arm-packet-trigger-reporting-1.44.0.md): ARM packet generators and trigger reporting in 1.44.0
-- [software/firmware/l1/arm-pcix-board-node-setup-1.44.0.md](software/firmware/l1/arm-pcix-board-node-setup-1.44.0.md): ARM PCI-X, board and node setup in 1.44.0
-- [software/firmware/l1/arm-pcix-bus-config-1.40.5.md](software/firmware/l1/arm-pcix-bus-config-1.40.5.md): ARM PCI-X bus configuration and probe callers in 1.40.5
-- [software/firmware/l1/arm-pcix-link-controller-helpers-1.38.4.md](software/firmware/l1/arm-pcix-link-controller-helpers-1.38.4.md): ARM PCI-X and link controller helpers in 1.38.4
-- [software/firmware/l1/arm-pcix-power-reset-1.40.5.md](software/firmware/l1/arm-pcix-power-reset-1.40.5.md): ARM PCI-X power and reset callers in 1.40.5
-- [software/firmware/l1/arm-peripheral-reset-1.40.5.md](software/firmware/l1/arm-peripheral-reset-1.40.5.md): ARM peripheral reset callers in 1.40.5
-- [software/firmware/l1/arm-pio-fru-controller-communication-1.34.2.md](software/firmware/l1/arm-pio-fru-controller-communication-1.34.2.md): ARM PIO, FRU and controller communication in 1.34.2
-- [software/firmware/l1/arm-pio-scan-transport-1.44.0.md](software/firmware/l1/arm-pio-scan-transport-1.44.0.md): ARM PIO and scan transport paths in 1.44.0
-- [software/firmware/l1/arm-port-led-environment-1.44.0.md](software/firmware/l1/arm-port-led-environment-1.44.0.md): ARM port, LED and environment paths in 1.44.0
-- [software/firmware/l1/arm-port-panel-led-1.38.4.md](software/firmware/l1/arm-port-panel-led-1.38.4.md): ARM port setup and panel LED paths in 1.38.4
-- [software/firmware/l1/arm-port-reset-control-1.44.0.md](software/firmware/l1/arm-port-reset-control-1.44.0.md): ARM port reset and control paths in 1.44.0
-- [software/firmware/l1/arm-port-state-1.34.2.md](software/firmware/l1/arm-port-state-1.34.2.md): ARM port state and status entry paths in 1.34.2
-- [software/firmware/l1/arm-port-state-1.40.5.md](software/firmware/l1/arm-port-state-1.40.5.md): ARM port state and interrupt paths in 1.40.5
-- [software/firmware/l1/arm-port-state-query-interrupts-1.38.4.md](software/firmware/l1/arm-port-state-query-interrupts-1.38.4.md): ARM port state, query and interrupt paths in 1.38.4
-- [software/firmware/l1/arm-power-1.34.2.md](software/firmware/l1/arm-power-1.34.2.md): ARM L1 power entry paths in 1.34.2
-- [software/firmware/l1/arm-power-bay-fru-replies-1.38.4.md](software/firmware/l1/arm-power-bay-fru-replies-1.38.4.md): ARM power-bay and FRU replies in 1.38.4
-- [software/firmware/l1/arm-power-bay-requests-status-1.40.5.md](software/firmware/l1/arm-power-bay-requests-status-1.40.5.md): ARM power-bay requests and status in 1.40.5
-- [software/firmware/l1/arm-power-control-reading-1.38.4.md](software/firmware/l1/arm-power-control-reading-1.38.4.md): ARM power control and reading paths in 1.38.4
-- [software/firmware/l1/arm-power-margin-state-1.40.5.md](software/firmware/l1/arm-power-margin-state-1.40.5.md): ARM power margin and reset callers in 1.40.5
-- [software/firmware/l1/arm-power-reset-state-1.44.0.md](software/firmware/l1/arm-power-reset-state-1.44.0.md): ARM power reset and state paths in 1.44.0
-- [software/firmware/l1/arm-power-sequence-margin-1.40.5.md](software/firmware/l1/arm-power-sequence-margin-1.40.5.md): ARM power sequence and margin callers in 1.40.5
-- [software/firmware/l1/arm-power-sequence-monitor-1.44.0.md](software/firmware/l1/arm-power-sequence-monitor-1.44.0.md): ARM power sequencing and monitor helpers in 1.44.0
-- [software/firmware/l1/arm-power-sequence-reading-1.34.2.md](software/firmware/l1/arm-power-sequence-reading-1.34.2.md): ARM L1 power sequence and reading entry paths in 1.34.2
-- [software/firmware/l1/arm-power-state-1.40.5.md](software/firmware/l1/arm-power-state-1.40.5.md): ARM power control and status callers in 1.40.5
-- [software/firmware/l1/arm-power-status-margin-1.44.0.md](software/firmware/l1/arm-power-status-margin-1.44.0.md): ARM power status and margin paths in 1.44.0
-- [software/firmware/l1/arm-power-up-margin-1.38.4.md](software/firmware/l1/arm-power-up-margin-1.38.4.md): ARM power-up and margin paths in 1.38.4
-- [software/firmware/l1/arm-powerbay-fru-tio-link-1.44.0.md](software/firmware/l1/arm-powerbay-fru-tio-link-1.44.0.md): ARM power-bay FRU and TIO link paths in 1.44.0
-- [software/firmware/l1/arm-powerbay-request-status-1.34.2.md](software/firmware/l1/arm-powerbay-request-status-1.34.2.md): ARM power-bay request and status paths in 1.34.2
-- [software/firmware/l1/arm-powerbay-state-requests-1.44.0.md](software/firmware/l1/arm-powerbay-state-requests-1.44.0.md): ARM power-bay state and request paths in 1.44.0
-- [software/firmware/l1/arm-ppp-socket-transport-1.44.0.md](software/firmware/l1/arm-ppp-socket-transport-1.44.0.md): ARM PPP, packet and socket transport in 1.44.0
-- [software/firmware/l1/arm-processor-blade-presence-1.38.4.md](software/firmware/l1/arm-processor-blade-presence-1.38.4.md): ARM processor and blade presence helpers in 1.38.4
-- [software/firmware/l1/arm-processor-state-mask-helpers-1.38.4.md](software/firmware/l1/arm-processor-state-mask-helpers-1.38.4.md): ARM processor state and mask helpers in 1.38.4
-- [software/firmware/l1/arm-programs.md](software/firmware/l1/arm-programs.md): ARM Linux L1: the helper programs and the L1 program's start-up
-- [software/firmware/l1/arm-protocol-discovery-argument-helpers-1.38.4.md](software/firmware/l1/arm-protocol-discovery-argument-helpers-1.38.4.md): ARM protocol, discovery and argument helpers in 1.38.4
-- [software/firmware/l1/arm-psic-lbi-1.40.5.md](software/firmware/l1/arm-psic-lbi-1.40.5.md): ARM PSIC and LBI scan routines in 1.40.5
-- [software/firmware/l1/arm-regulator-environment-1.44.0.md](software/firmware/l1/arm-regulator-environment-1.44.0.md): ARM regulator interrupts and environmental state in 1.44.0
-- [software/firmware/l1/arm-regulator-state-storage-1.38.4.md](software/firmware/l1/arm-regulator-state-storage-1.38.4.md): ARM regulator state and storage helpers in 1.38.4
-- [software/firmware/l1/arm-request-event-1.34.2.md](software/firmware/l1/arm-request-event-1.34.2.md): ARM request and event paths in 1.34.2
-- [software/firmware/l1/arm-request-packet-console-1.40.5.md](software/firmware/l1/arm-request-packet-console-1.40.5.md): ARM request, packet and console paths in 1.40.5
-- [software/firmware/l1/arm-reset-paths-1.34.2.md](software/firmware/l1/arm-reset-paths-1.34.2.md): ARM reset wrapper and PCI-X paths in 1.34.2
-- [software/firmware/l1/arm-reset-release-control-1.44.0.md](software/firmware/l1/arm-reset-release-control-1.44.0.md): ARM reset and release control paths in 1.44.0
-- [software/firmware/l1/arm-router-events-dispatch-1.40.5.md](software/firmware/l1/arm-router-events-dispatch-1.40.5.md): ARM router events and dispatch in 1.40.5
-- [software/firmware/l1/arm-router-packet-1.34.2.md](software/firmware/l1/arm-router-packet-1.34.2.md): ARM router registration and packet entry paths in 1.34.2
-- [software/firmware/l1/arm-router-packet-paths-1.38.4.md](software/firmware/l1/arm-router-packet-paths-1.38.4.md): ARM router packet paths in 1.38.4
-- [software/firmware/l1/arm-router-packet-paths-1.40.5.md](software/firmware/l1/arm-router-packet-paths-1.40.5.md): ARM router packet paths in 1.40.5
-- [software/firmware/l1/arm-router-queues-configuration-1.38.4.md](software/firmware/l1/arm-router-queues-configuration-1.38.4.md): ARM router queues and configuration paths in 1.38.4
-- [software/firmware/l1/arm-router-registration-1.40.5.md](software/firmware/l1/arm-router-registration-1.40.5.md): ARM router registration and queue state in 1.40.5
-- [software/firmware/l1/arm-router-scan-dispatch-1.38.4.md](software/firmware/l1/arm-router-scan-dispatch-1.38.4.md): ARM router and scan dispatch in 1.38.4
-- [software/firmware/l1/arm-routing-packet-setup-1.44.0.md](software/firmware/l1/arm-routing-packet-setup-1.44.0.md): ARM routing and packet setup paths in 1.44.0
-- [software/firmware/l1/arm-scan-bitfile-readers-1.40.5.md](software/firmware/l1/arm-scan-bitfile-readers-1.40.5.md): ARM scan bitfile and header readers in 1.40.5
-- [software/firmware/l1/arm-scan-command-callbacks-1.38.4.md](software/firmware/l1/arm-scan-command-callbacks-1.38.4.md): ARM scan commands and configuration callbacks in 1.38.4
-- [software/firmware/l1/arm-scan-command-paths-1.34.2.md](software/firmware/l1/arm-scan-command-paths-1.34.2.md): ARM scan-command and port paths in 1.34.2
-- [software/firmware/l1/arm-scan-configuration-records-1.38.4.md](software/firmware/l1/arm-scan-configuration-records-1.38.4.md): ARM scan configuration and record setup in 1.38.4
-- [software/firmware/l1/arm-scan-data-link-1.34.2.md](software/firmware/l1/arm-scan-data-link-1.34.2.md): ARM scan data and link configuration in 1.34.2
-- [software/firmware/l1/arm-scan-field-1.40.5.md](software/firmware/l1/arm-scan-field-1.40.5.md): ARM scan field and definition helpers in 1.40.5
-- [software/firmware/l1/arm-scan-field-data-helpers-1.38.4.md](software/firmware/l1/arm-scan-field-data-helpers-1.38.4.md): ARM scan field and data helpers in 1.38.4
-- [software/firmware/l1/arm-scan-io-helpers-1.34.2.md](software/firmware/l1/arm-scan-io-helpers-1.34.2.md): ARM scan I/O helpers in 1.34.2
-- [software/firmware/l1/arm-scan-packet-1.40.5.md](software/firmware/l1/arm-scan-packet-1.40.5.md): ARM scan packet commands and link control in 1.40.5
-- [software/firmware/l1/arm-scan-record-link-helpers-1.38.4.md](software/firmware/l1/arm-scan-record-link-helpers-1.38.4.md): ARM scan records and link-reading helpers in 1.38.4
-- [software/firmware/l1/arm-scan-register-data-1.34.2.md](software/firmware/l1/arm-scan-register-data-1.34.2.md): ARM scan register data helpers in 1.34.2
-- [software/firmware/l1/arm-scan-select-config-1.34.2.md](software/firmware/l1/arm-scan-select-config-1.34.2.md): ARM scan selection and configuration in 1.34.2
-- [software/firmware/l1/arm-scan-selection-dispatch-1.44.0.md](software/firmware/l1/arm-scan-selection-dispatch-1.44.0.md): ARM scan selection and dispatch paths in 1.44.0
-- [software/firmware/l1/arm-scan-setup-commands-1.34.2.md](software/firmware/l1/arm-scan-setup-commands-1.34.2.md): ARM scan setup and command paths in 1.34.2
-- [software/firmware/l1/arm-scan-setup-fru-records-1.40.5.md](software/firmware/l1/arm-scan-setup-fru-records-1.40.5.md): ARM scan setup and FRU record helpers in 1.40.5
-- [software/firmware/l1/arm-scan-tap-1.40.5.md](software/firmware/l1/arm-scan-tap-1.40.5.md): ARM scan command and TAP routines in 1.40.5
-- [software/firmware/l1/arm-scan-vector-bits-1.40.5.md](software/firmware/l1/arm-scan-vector-bits-1.40.5.md): ARM scan vector bit helpers in 1.40.5
-- [software/firmware/l1/arm-serial-key-log-helpers-1.44.0.md](software/firmware/l1/arm-serial-key-log-helpers-1.44.0.md): ARM serial keys and log helpers in 1.44.0
-- [software/firmware/l1/arm-serial-reset-service-1.34.2.md](software/firmware/l1/arm-serial-reset-service-1.34.2.md): ARM serial, reset and service entry paths in 1.34.2
-- [software/firmware/l1/arm-shub-configuration-fields-1.34.2.md](software/firmware/l1/arm-shub-configuration-fields-1.34.2.md): ARM SHUB configuration and field paths in 1.34.2
-- [software/firmware/l1/arm-shub-policy-pcix-state-1.38.4.md](software/firmware/l1/arm-shub-policy-pcix-state-1.38.4.md): ARM SHUB policy and PCI-X state in 1.38.4
-- [software/firmware/l1/arm-shub-register-configuration-1.44.0.md](software/firmware/l1/arm-shub-register-configuration-1.44.0.md): ARM SHUB register and configuration paths in 1.44.0
-- [software/firmware/l1/arm-shub-reset-scan-1.34.2.md](software/firmware/l1/arm-shub-reset-scan-1.34.2.md): ARM SHUB reset and scan paths in 1.34.2
-- [software/firmware/l1/arm-shub-scan-link-1.44.0.md](software/firmware/l1/arm-shub-scan-link-1.44.0.md): ARM SHUB scan and link paths in 1.44.0
-- [software/firmware/l1/arm-shub-settings-psic-1.38.4.md](software/firmware/l1/arm-shub-settings-psic-1.38.4.md): ARM SHUB settings and PSIC accessors in 1.38.4
-- [software/firmware/l1/arm-shub-tio-initialization-1.38.4.md](software/firmware/l1/arm-shub-tio-initialization-1.38.4.md): ARM SHUB and TIO initialization in 1.38.4
-- [software/firmware/l1/arm-sic-selection-tio-probe-1.38.4.md](software/firmware/l1/arm-sic-selection-tio-probe-1.38.4.md): ARM SIC selection and TIO probe paths in 1.38.4
-- [software/firmware/l1/arm-socket-endpoint-helpers-1.44.0.md](software/firmware/l1/arm-socket-endpoint-helpers-1.44.0.md): ARM socket endpoint and character I/O helpers in 1.44.0
-- [software/firmware/l1/arm-startup-serial-runtime-1.40.5.md](software/firmware/l1/arm-startup-serial-runtime-1.40.5.md): ARM startup, serial and runtime helpers in 1.40.5
-- [software/firmware/l1/arm-syscom-inbound-1.40.5.md](software/firmware/l1/arm-syscom-inbound-1.40.5.md): ARM inbound communication and request paths in 1.40.5
-- [software/firmware/l1/arm-syscom-outbound-1.40.5.md](software/firmware/l1/arm-syscom-outbound-1.40.5.md): ARM outbound communication and interrupt paths in 1.40.5
-- [software/firmware/l1/arm-system-communication-event-setup-1.38.4.md](software/firmware/l1/arm-system-communication-event-setup-1.38.4.md): ARM system communication and event setup in 1.38.4
-- [software/firmware/l1/arm-system-message-console-1.44.0.md](software/firmware/l1/arm-system-message-console-1.44.0.md): ARM system messages and console paths in 1.44.0
-- [software/firmware/l1/arm-system-protocol-environment-1.44.0.md](software/firmware/l1/arm-system-protocol-environment-1.44.0.md): ARM system protocol and environment paths in 1.44.0
-- [software/firmware/l1/arm-tap-scan-commands-1.44.0.md](software/firmware/l1/arm-tap-scan-commands-1.44.0.md): ARM TAP drivers and scan command paths in 1.44.0
-- [software/firmware/l1/arm-tdr-field-access-1.40.5.md](software/firmware/l1/arm-tdr-field-access-1.40.5.md): ARM TDR fields and chip access builders in 1.40.5
-- [software/firmware/l1/arm-tdr-field-record-helpers-1.44.0.md](software/firmware/l1/arm-tdr-field-record-helpers-1.44.0.md): ARM TDR field and record helpers in 1.44.0
-- [software/firmware/l1/arm-tdr-scan-link-transport-1.44.0.md](software/firmware/l1/arm-tdr-scan-link-transport-1.44.0.md): ARM TDR scan and link transport in 1.44.0
-- [software/firmware/l1/arm-temperature-callbacks-1.38.4.md](software/firmware/l1/arm-temperature-callbacks-1.38.4.md): ARM temperature access and environment callbacks in 1.38.4
-- [software/firmware/l1/arm-temperature-environment-1.40.5.md](software/firmware/l1/arm-temperature-environment-1.40.5.md): ARM temperature and environment callers in 1.40.5
-- [software/firmware/l1/arm-temperature-mic74-1.34.2.md](software/firmware/l1/arm-temperature-mic74-1.34.2.md): ARM L1 temperature and MIC74 entry paths in 1.34.2
-- [software/firmware/l1/arm-temperature-vrm-1.44.0.md](software/firmware/l1/arm-temperature-vrm-1.44.0.md): ARM temperature and regulator paths in 1.44.0
-- [software/firmware/l1/arm-tio-link-reset-1.40.5.md](software/firmware/l1/arm-tio-link-reset-1.40.5.md): ARM TIO link and reset paths in 1.40.5
-- [software/firmware/l1/arm-tio-pcix-system-reset-1.38.4.md](software/firmware/l1/arm-tio-pcix-system-reset-1.38.4.md): ARM TIO, PCI-X and system reset paths in 1.38.4
-- [software/firmware/l1/arm-trigger-record-buffers-1.40.5.md](software/firmware/l1/arm-trigger-record-buffers-1.40.5.md): ARM trigger records and buffers in 1.40.5
-- [software/firmware/l1/arm-uart-byte-transfer-1.44.0.md](software/firmware/l1/arm-uart-byte-transfer-1.44.0.md): ARM UART and I2C byte-transfer paths in 1.44.0
-- [software/firmware/l1/arm-uart-nvram-1.34.2.md](software/firmware/l1/arm-uart-nvram-1.34.2.md): ARM L1 UART and NVRAM entry paths in 1.34.2
-- [software/firmware/l1/arm-uart-power-entry-paths-1.38.4.md](software/firmware/l1/arm-uart-power-entry-paths-1.38.4.md): ARM UART and power entry paths in 1.38.4
-- [software/firmware/l1/arm-voltage-power-bay-1.38.4.md](software/firmware/l1/arm-voltage-power-bay-1.38.4.md): ARM voltage and power-bay paths in 1.38.4
-- [software/firmware/l1/arm-voltage-power-state-1.44.0.md](software/firmware/l1/arm-voltage-power-state-1.44.0.md): ARM voltage and power-state helpers in 1.44.0
-- [software/firmware/l1/arm-vram-prom-presence-1.44.0.md](software/firmware/l1/arm-vram-prom-presence-1.44.0.md): ARM storage, PROM and presence helpers in 1.44.0
-- [software/firmware/l1/arm-vrm-expander-display-1.40.5.md](software/firmware/l1/arm-vrm-expander-display-1.40.5.md): ARM regulator, expander and display paths in 1.40.5
-- [software/firmware/l1/arm-vrm-scan-status-1.34.2.md](software/firmware/l1/arm-vrm-scan-status-1.34.2.md): ARM byte flags and scan routines in 1.34.2
-- [software/firmware/l1/arm-vsc055-1.34.2.md](software/firmware/l1/arm-vsc055-1.34.2.md): ARM L1 VSC055 entry paths in 1.34.2
-- [software/firmware/l1/arm-vsc055-control-1.40.5.md](software/firmware/l1/arm-vsc055-control-1.40.5.md): ARM VSC055 control callers in 1.40.5
-- [software/firmware/l1/arm-vsc055-soft-reset-1.44.0.md](software/firmware/l1/arm-vsc055-soft-reset-1.44.0.md): ARM VSC055 and soft-reset paths in 1.44.0
-- [software/firmware/l1/board-boot-contract.md](software/firmware/l1/board-boot-contract.md): Origin 300 L1 1.44.0: what the processor and board must provide
-- [software/firmware/l1/board-records.md](software/firmware/l1/board-records.md): Origin 300 L1 1.44.0 board-record validation
-- [software/firmware/l1/boot-memory-base.md](software/firmware/l1/boot-memory-base.md): Origin 300 L1 package: boot-time memory-base values
-- [software/firmware/l1/brick-request-handlers-detail.md](software/firmware/l1/brick-request-handlers-detail.md): General-task request handlers re-read where the first comparison left them inferred
-- [software/firmware/l1/brick-request-handlers.md](software/firmware/l1/brick-request-handlers.md): Request handlers of the general task that differ between the ColdFire packages
-- [software/firmware/l1/byte-status-paths.md](software/firmware/l1/byte-status-paths.md): L1 conditional byte-copy and clear paths
-- [software/firmware/l1/chunked-request-frames.md](software/firmware/l1/chunked-request-frames.md): Chunked request frames on the processor link (L1 side)
-- [software/firmware/l1/coldfire-branching-loop-windows.md](software/firmware/l1/coldfire-branching-loop-windows.md): ColdFire branching loop windows, each tied to one carrier and package
-- [software/firmware/l1/coldfire-branching-pointer-memory.md](software/firmware/l1/coldfire-branching-pointer-memory.md): ColdFire branching pointer-memory windows, each tied to one carrier and package
-- [software/firmware/l1/coldfire-byte-state-windows.md](software/firmware/l1/coldfire-byte-state-windows.md): ColdFire L1 byte and state windows
-- [software/firmware/l1/coldfire-byte-stores-6.5.27-patches.md](software/firmware/l1/coldfire-byte-stores-6.5.27-patches.md): ColdFire byte stores in IRIX 6.5.27 and later selected images
-- [software/firmware/l1/coldfire-byte-stores-6.5.9-6.5.30.md](software/firmware/l1/coldfire-byte-stores-6.5.9-6.5.30.md): ColdFire byte stores in selected IRIX 6.5.9 through 6.5.30 images
-- [software/firmware/l1/coldfire-byte-stores-branching-memory.md](software/firmware/l1/coldfire-byte-stores-branching-memory.md): ColdFire byte stores and branching memory windows
-- [software/firmware/l1/coldfire-called-entry-windows.md](software/firmware/l1/coldfire-called-entry-windows.md): ColdFire L1 entry windows reached by decoded calls
-- [software/firmware/l1/coldfire-entry-window-readings-01.md](software/firmware/l1/coldfire-entry-window-readings-01.md): ColdFire L1 entry window readings, set 01
-- [software/firmware/l1/coldfire-entry-window-readings-02.md](software/firmware/l1/coldfire-entry-window-readings-02.md): ColdFire L1 entry window readings, set 02
-- [software/firmware/l1/coldfire-entry-window-readings-03.md](software/firmware/l1/coldfire-entry-window-readings-03.md): ColdFire L1 entry window readings, set 03
-- [software/firmware/l1/coldfire-entry-window-readings-04.md](software/firmware/l1/coldfire-entry-window-readings-04.md): ColdFire L1 entry window readings, set 04
-- [software/firmware/l1/coldfire-entry-window-readings-05.md](software/firmware/l1/coldfire-entry-window-readings-05.md): ColdFire L1 entry window readings, set 05
-- [software/firmware/l1/coldfire-entry-window-readings-06.md](software/firmware/l1/coldfire-entry-window-readings-06.md): ColdFire L1 entry window readings, set 06
-- [software/firmware/l1/coldfire-entry-window-readings-07.md](software/firmware/l1/coldfire-entry-window-readings-07.md): ColdFire L1 entry window readings, set 07
-- [software/firmware/l1/coldfire-entry-window-readings-08.md](software/firmware/l1/coldfire-entry-window-readings-08.md): ColdFire L1 entry window readings, set 08
-- [software/firmware/l1/coldfire-entry-window-readings-09.md](software/firmware/l1/coldfire-entry-window-readings-09.md): ColdFire L1 entry window readings, set 09
-- [software/firmware/l1/coldfire-entry-window-readings-10.md](software/firmware/l1/coldfire-entry-window-readings-10.md): ColdFire L1 entry window readings, set 10
-- [software/firmware/l1/coldfire-entry-window-readings-11.md](software/firmware/l1/coldfire-entry-window-readings-11.md): ColdFire L1 entry window readings, set 11
-- [software/firmware/l1/coldfire-entry-window-readings-12.md](software/firmware/l1/coldfire-entry-window-readings-12.md): ColdFire L1 entry window readings, set 12
-- [software/firmware/l1/coldfire-entry-window-readings-13.md](software/firmware/l1/coldfire-entry-window-readings-13.md): ColdFire L1 entry window readings, set 13
-- [software/firmware/l1/coldfire-entry-window-readings-14.md](software/firmware/l1/coldfire-entry-window-readings-14.md): ColdFire L1 entry window readings, set 14
-- [software/firmware/l1/coldfire-entry-window-readings-15.md](software/firmware/l1/coldfire-entry-window-readings-15.md): ColdFire L1 entry window readings, set 15
-- [software/firmware/l1/coldfire-entry-window-readings-16.md](software/firmware/l1/coldfire-entry-window-readings-16.md): ColdFire L1 entry window readings, set 16
-- [software/firmware/l1/coldfire-entry-window-readings-17.md](software/firmware/l1/coldfire-entry-window-readings-17.md): ColdFire L1 entry window readings, set 17
-- [software/firmware/l1/coldfire-entry-window-readings-18.md](software/firmware/l1/coldfire-entry-window-readings-18.md): ColdFire L1 entry window readings, set 18
-- [software/firmware/l1/coldfire-entry-window-readings-19.md](software/firmware/l1/coldfire-entry-window-readings-19.md): ColdFire L1 entry window readings, set 19
-- [software/firmware/l1/coldfire-entry-window-readings-20.md](software/firmware/l1/coldfire-entry-window-readings-20.md): ColdFire L1 entry window readings, set 20
-- [software/firmware/l1/coldfire-memory-store-paths-selected.md](software/firmware/l1/coldfire-memory-store-paths-selected.md): ColdFire memory-store paths in selected images
-- [software/firmware/l1/coldfire-memory-updates-selected-images.md](software/firmware/l1/coldfire-memory-updates-selected-images.md): ColdFire memory updates in selected images
-- [software/firmware/l1/coldfire-package-sections.md](software/firmware/l1/coldfire-package-sections.md): Origin 300 L1 1.44.0 package sections and boot candidates
-- [software/firmware/l1/coldfire-pointer-call-paths-1.4.1.md](software/firmware/l1/coldfire-pointer-call-paths-1.4.1.md): ColdFire L1 pointer and call observations
-- [software/firmware/l1/coldfire-pointer-paths-1.4.1-1.6.0.md](software/firmware/l1/coldfire-pointer-paths-1.4.1-1.6.0.md): ColdFire L1 pointer paths in 1.4.1 and 1.6.0
-- [software/firmware/l1/coldfire-pointer-store-occurrences-6.5.21-6.5.26.md](software/firmware/l1/coldfire-pointer-store-occurrences-6.5.21-6.5.26.md): ColdFire L1 pointer-store occurrences in IRIX 6.5.21 through 6.5.26
-- [software/firmware/l1/coldfire-pointer-store-occurrences-6.5.26-ist.md](software/firmware/l1/coldfire-pointer-store-occurrences-6.5.26-ist.md): ColdFire L1 pointer-store occurrences in IRIX 6.5.26 through 6.5.29 and IST 3.24
-- [software/firmware/l1/coldfire-pointer-store-occurrences-6.5.9-6.5.22.md](software/firmware/l1/coldfire-pointer-store-occurrences-6.5.9-6.5.22.md): ColdFire L1 pointer-store occurrences in IRIX 6.5.9 through 6.5.22
-- [software/firmware/l1/coldfire-pointer-stores-patches-early-6.5.24.md](software/firmware/l1/coldfire-pointer-stores-patches-early-6.5.24.md): ColdFire L1 pointer stores in patches and selected early through 6.5.24 images
-- [software/firmware/l1/coldfire-pointer-update-windows.md](software/firmware/l1/coldfire-pointer-update-windows.md): ColdFire L1 pointer update windows, each tied to one shipped build
-- [software/firmware/l1/coldfire-pointer-window-observations.md](software/firmware/l1/coldfire-pointer-window-observations.md): ColdFire L1 pointer and call observations
-- [software/firmware/l1/coldfire-pointer-write-variants-6.5.23-6.5.27.md](software/firmware/l1/coldfire-pointer-write-variants-6.5.23-6.5.27.md): ColdFire L1 pointer writes in IRIX 6.5.23 through 6.5.27
-- [software/firmware/l1/coldfire-pointer-write-variants-later-images.md](software/firmware/l1/coldfire-pointer-write-variants-later-images.md): ColdFire L1 pointer-relative write observations in later images
-- [software/firmware/l1/coldfire-reached-window-observations.md](software/firmware/l1/coldfire-reached-window-observations.md): ColdFire L1 reached instruction observations, one per shipped carrier
-- [software/firmware/l1/console-command-tables.md](software/firmware/l1/console-command-tables.md): Console command tables of the ColdFire L1 packages
-- [software/firmware/l1/console-messages.md](software/firmware/l1/console-messages.md): L1 console and log messages printed by the Origin 300
-- [software/firmware/l1/controller-write-loops.md](software/firmware/l1/controller-write-loops.md): L1 pointer-relative controller write loops, one record per package
-- [software/firmware/l1/debug-console.md](software/firmware/l1/debug-console.md): Origin 300 L1 debug command and controller restart reading
-- [software/firmware/l1/debug-task.md](software/firmware/l1/debug-task.md): Origin 300 L1 command-response fields for debug requests
-- [software/firmware/l1/disasm/mcf5206e-1.44.0-fuel-pe-o300/README.md](software/firmware/l1/disasm/mcf5206e-1.44.0-fuel-pe-o300/README.md): L1 1.44.0, package 1 (Fuel/PE/O300 1MB), ColdFire body
-- [software/firmware/l1/early-window-callers.md](software/firmware/l1/early-window-callers.md): L1 1.8.0 to 1.16.0 pointer-relative setup callers
-- [software/firmware/l1/env-fan-power-margin.md](software/firmware/l1/env-fan-power-margin.md): L1 env, fan, power, margin and pbay: applicability, output, sensor tables
-- [software/firmware/l1/env-reset-debug.md](software/firmware/l1/env-reset-debug.md): Origin 300 L1 environmental reset and debug-switch reading
-- [software/firmware/l1/environment.md](software/firmware/l1/environment.md): Origin 300 L1 environmental monitoring and M-Bus reading
-- [software/firmware/l1/extra-routines.md](software/firmware/l1/extra-routines.md): L1 helper routines read from package 1 of 1.44.0
-- [software/firmware/l1/flash-nvram-and-image-records.md](software/firmware/l1/flash-nvram-and-image-records.md): Origin 300 L1 1.44.0: flash, settings storage, clock, image records
-- [software/firmware/l1/ip45-board-fitment.md](software/firmware/l1/ip45-board-fitment.md): Origin 300 IP45 L1 board fitment: public evidence
-- [software/firmware/l1/ip45-io-expanders.md](software/firmware/l1/ip45-io-expanders.md): L1 1.44.0 I/O expanders, the bus switch and the front-panel bits
-- [software/firmware/l1/ip45-mbus-public-fitment.md](software/firmware/l1/ip45-mbus-public-fitment.md): Origin 300 IP45 L1 M-Bus public fitment
-- [software/firmware/l1/ip45-mbus-public-hardware.md](software/firmware/l1/ip45-mbus-public-hardware.md): Origin 300 L1 M-Bus: public hardware evidence
-- [software/firmware/l1/ip45-monitor-registers.md](software/firmware/l1/ip45-monitor-registers.md): Origin 300 L1 1.44.0: what the three monitor chips are asked
-- [software/firmware/l1/ip53-eeprom-record-tables-1.44.0.md](software/firmware/l1/ip53-eeprom-record-tables-1.44.0.md): L1 1.44.0 package 2 board-EEPROM device tables for Chimera
-- [software/firmware/l1/mbus-ds1780-candidate.md](software/firmware/l1/mbus-ds1780-candidate.md): A public sensor candidate for the Origin 300 L1 M-Bus
-- [software/firmware/l1/mbus-environment-task.md](software/firmware/l1/mbus-environment-task.md): Origin 300 L1 M-Bus environmental task trace
-- [software/firmware/l1/mbus.md](software/firmware/l1/mbus.md): Origin 300 L1 1.44.0 M-Bus and EEPROM reading
-- [software/firmware/l1/mcf5206e-peripherals.md](software/firmware/l1/mcf5206e-peripherals.md): Origin 300 L1 1.44.0: on-chip peripherals beyond the M-Bus
-- [software/firmware/l1/package-container.md](software/firmware/l1/package-container.md): L1 composite package and Linux inventory
-- [software/firmware/l1/packet-chunks-and-l2-attach.md](software/firmware/l1/packet-chunks-and-l2-attach.md): Origin 300 L1 1.44.0: chunked requests, L2 attach and request 0x0ffff00e
-- [software/firmware/l1/personalities.md](software/firmware/l1/personalities.md): L1 packages other than the Origin 300 one
-- [software/firmware/l1/personality-2mb-packages.md](software/firmware/l1/personality-2mb-packages.md): The 2 MB packages (2, 3, 5) against the Origin 300 package
-- [software/firmware/l1/personality-base-package.md](software/firmware/l1/personality-base-package.md): Package 0 against package 1, routine by routine
-- [software/firmware/l1/personality-board-init.md](software/firmware/l1/personality-board-init.md): How each ColdFire package turns the brick-type character into board code
-- [software/firmware/l1/power-bay-link.md](software/firmware/l1/power-bay-link.md): Power-bay serial link: framing, commands and flash sequence
-- [software/firmware/l1/power-reset-cbrick.md](software/firmware/l1/power-reset-cbrick.md): C-brick L1: power, reset, requests addressed to an L2, and RS-422 links
-- [software/firmware/l1/power-reset-ibrick-rbrick.md](software/firmware/l1/power-reset-ibrick-rbrick.md): I-brick and R-brick: what power up, power down and reset drive
-- [software/firmware/l1/pre-container-layout.md](software/firmware/l1/pre-container-layout.md): Pre-container L1 images (6.5.9 to 6.5.15)
-- [software/firmware/l1/quad-uart-and-serial-links.md](software/firmware/l1/quad-uart-and-serial-links.md): Origin 300 L1 1.44.0: the four-channel UART and the serial link settings
-- [software/firmware/l1/rs422-router.md](software/firmware/l1/rs422-router.md): Origin 300 L1 router and serial-link reading
-- [software/firmware/l1/serial-number-requests.md](software/firmware/l1/serial-number-requests.md): Serial numbers on the L1: requests 0x0004 and 0x0008, and their formats
-- [software/firmware/l1/settings-record.md](software/firmware/l1/settings-record.md): Origin 300 L1 1.44.0: where each persistent setting lives
-- [software/firmware/l1/unclassified-regions.md](software/firmware/l1/unclassified-regions.md): Origin 300 L1 1.44.0: data and padding the linear listing cannot place
-- [software/firmware/l1/unguarded-indexed-anchors.md](software/firmware/l1/unguarded-indexed-anchors.md): Four indexed data tables in Origin 300 L1 1.44.0
-- [software/firmware/l1/usb-bulk.md](software/firmware/l1/usb-bulk.md): Origin 300 L1 1.44.0: USB bulk packet stream
-- [software/firmware/l1/usb-bus-public-evidence.md](software/firmware/l1/usb-bus-public-evidence.md): Origin 300 L1 USB and bus names in public manuals
-- [software/firmware/l1/usb-control.md](software/firmware/l1/usb-control.md): Origin 300 L1 1.44.0 management USB control path
-- [software/firmware/l1/usb-controller-public-hardware.md](software/firmware/l1/usb-controller-public-hardware.md): Origin 300 L1 USB device-controller fitment
-- [software/firmware/l1/usb-controller-registers.md](software/firmware/l1/usb-controller-registers.md): Origin 300 L1 1.44.0: USB controller accesses
-- [software/firmware/l1/usb-descriptor-fields.md](software/firmware/l1/usb-descriptor-fields.md): Origin 300 L1 1.44.0 USB descriptor fields
-- [software/firmware/l1/usb-descriptors-routing.md](software/firmware/l1/usb-descriptors-routing.md): Origin 300 L1 1.44.0: USB descriptors and routing
-- [software/firmware/l1/usb-l2-revision.md](software/firmware/l1/usb-l2-revision.md): Origin 300 L1 USB and L2: public revision-scoped evidence
-- [software/firmware/l1/usb-lower-controller.md](software/firmware/l1/usb-lower-controller.md): Origin 300 L1 1.44.0: USB lower-controller callback trace
-- [software/firmware/l1/usb-overview.md](software/firmware/l1/usb-overview.md): Origin 300 L1 1.44.0: management USB reading
-- [software/firmware/l1/usb-public-host-drivers.md](software/firmware/l1/usb-public-host-drivers.md): Public L1 USB host-driver evidence from the SGI L1 USB Control project
-- [software/firmware/l1/usb-strings-and-transfers.md](software/firmware/l1/usb-strings-and-transfers.md): Origin 300 L1 1.44.0: USB string descriptors and the one-segment-per-transfer rule
-- [software/firmware/l1/usb-timeouts.md](software/firmware/l1/usb-timeouts.md): Origin 300 L1 1.44.0: USB status handler and setup task
-- [software/firmware/l1/window-callers.md](software/firmware/l1/window-callers.md): L1 pointer-relative setup and window-call paths
+The headers and the crate live in [generated/](generated/). Don't edit them; they're built from the
+TOML under `devices/` and `formats/`.
 
-### MMSC controller routine notes (`software/firmware/mmsc/`)
+To run the checks yourself:
 
-- [software/firmware/mmsc/addrd-routines.md](software/firmware/mmsc/addrd-routines.md): Address daemon routines (addrd): the 29 routines in the addrd object
-- [software/firmware/mmsc/address-service-2.1-routines.md](software/firmware/mmsc/address-service-2.1-routines.md): MMSC 2.1 address-service message paths, read from 6.5.5
-- [software/firmware/mmsc/address-service-2.2-routines.md](software/firmware/mmsc/address-service-2.2-routines.md): MMSC 2.2 address-service message paths, read from 6.5.6
-- [software/firmware/mmsc/address-service-6.4-routines.md](software/firmware/mmsc/address-service-6.4-routines.md): MMSC address service in IRIX 6.4
-- [software/firmware/mmsc/address-service-6.5-routines.md](software/firmware/mmsc/address-service-6.5-routines.md): MMSC address service in IRIX 6.5
-- [software/firmware/mmsc/address-service-6.5.2-routines.md](software/firmware/mmsc/address-service-6.5.2-routines.md): MMSC address-service message paths in IRIX 6.5.2
-- [software/firmware/mmsc/address-service-64-origin-routines.md](software/firmware/mmsc/address-service-64-origin-routines.md): MMSC address-service message paths in the 6.4-origin image
-- [software/firmware/mmsc/address-service-sg0002378-routines.md](software/firmware/mmsc/address-service-sg0002378-routines.md): MMSC address service in patch SG0002378
-- [software/firmware/mmsc/board-boot-64-origin-routines.md](software/firmware/mmsc/board-boot-64-origin-routines.md): MMSC board and boot-support routines in the 6.4-origin image
-- [software/firmware/mmsc/board-boot-sg0002378-routines.md](software/firmware/mmsc/board-boot-sg0002378-routines.md): MMSC board support and boot spans in patch SG0002378
-- [software/firmware/mmsc/bsp-clock-hooks-6.4-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.4-routines.md): MMSC clock and initialization hooks in IRIX 6.4
-- [software/firmware/mmsc/bsp-clock-hooks-6.5-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.5-routines.md): MMSC clock and initialization hooks in IRIX 6.5
-- [software/firmware/mmsc/bsp-clock-hooks-6.5.2-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.5.2-routines.md): MMSC clock and initialization hooks in IRIX 6.5.2
-- [software/firmware/mmsc/bsp-clock-hooks-6.5.30-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.5.30-routines.md): MMSC clock and initialization hooks in IRIX 6.5.30
-- [software/firmware/mmsc/bsp-clock-hooks-6.5.5-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.5.5-routines.md): MMSC clock and initialization hooks in IRIX 6.5.5
-- [software/firmware/mmsc/bsp-clock-hooks-6.5.6-routines.md](software/firmware/mmsc/bsp-clock-hooks-6.5.6-routines.md): MMSC clock and initialization hooks in IRIX 6.5.6
-- [software/firmware/mmsc/bsp-clocks-sg0002378-routines.md](software/firmware/mmsc/bsp-clocks-sg0002378-routines.md): MMSC clocks and board setup in patch SG0002378
-- [software/firmware/mmsc/bsp-serial-pic-6.5-routines.md](software/firmware/mmsc/bsp-serial-pic-6.5-routines.md): MMSC BSP serial and PIC helpers in IRIX 6.5
-- [software/firmware/mmsc/bsp-serial-pic-sg0002378-routines.md](software/firmware/mmsc/bsp-serial-pic-sg0002378-routines.md): MMSC serial and interrupt helpers in patch SG0002378
-- [software/firmware/mmsc/buffers-serial-io-sg0002378-routines.md](software/firmware/mmsc/buffers-serial-io-sg0002378-routines.md): MMSC buffers and serial I/O in patch SG0002378
-- [software/firmware/mmsc/buffers-tty-64-origin-routines.md](software/firmware/mmsc/buffers-tty-64-origin-routines.md): MMSC buffer and TTY I/O callers in the 6.4-origin image
-- [software/firmware/mmsc/clocks-board-64-origin-routines.md](software/firmware/mmsc/clocks-board-64-origin-routines.md): MMSC clock and board-setup callers in the 6.4-origin image
-- [software/firmware/mmsc/clocks-board-657-routines.md](software/firmware/mmsc/clocks-board-657-routines.md): MMSC clock and board-setup callers in the 6.5.7 image
-- [software/firmware/mmsc/command-routines.md](software/firmware/mmsc/command-routines.md): MMSC command handlers, read from the 6.5.30 image
-- [software/firmware/mmsc/commands.md](software/firmware/mmsc/commands.md): MMSC command catalogue: the typed command set of the firmware
-- [software/firmware/mmsc/console-modes.md](software/firmware/mmsc/console-modes.md): MMSC console modes and the system-input dispatch
-- [software/firmware/mmsc/console-routing-64-origin-routines.md](software/firmware/mmsc/console-routing-64-origin-routines.md): MMSC console routing callers in the 6.4-origin image
-- [software/firmware/mmsc/console-tty-64-origin-routines.md](software/firmware/mmsc/console-tty-64-origin-routines.md): MMSC console and TTY callers in the 6.4-origin image
-- [software/firmware/mmsc/controller-2.1-routines.md](software/firmware/mmsc/controller-2.1-routines.md): MMSC 2.1 controller command paths, read from the 6.5.5 image
-- [software/firmware/mmsc/controller-2.2-routines.md](software/firmware/mmsc/controller-2.2-routines.md): MMSC 2.2 controller command and save paths
-- [software/firmware/mmsc/controller-6.5.2-routines.md](software/firmware/mmsc/controller-6.5.2-routines.md): MMSC controller command and save paths in IRIX 6.5.2
-- [software/firmware/mmsc/controller-link-6.4-routines.md](software/firmware/mmsc/controller-link-6.4-routines.md): MMSC controller link in IRIX 6.4
-- [software/firmware/mmsc/controller-port-paths-6.5.2-6.5.6-observations.md](software/firmware/mmsc/controller-port-paths-6.5.2-6.5.6-observations.md): MMSC controller and port-path observations for 6.5.2 to 6.5.6
-- [software/firmware/mmsc/election-2.1-routines.md](software/firmware/mmsc/election-2.1-routines.md): MMSC 2.1 election and rack-identity routines
-- [software/firmware/mmsc/election-2.2-routines.md](software/firmware/mmsc/election-2.2-routines.md): MMSC 2.2 election and rack-identity routines
-- [software/firmware/mmsc/election-6.5.2-routines.md](software/firmware/mmsc/election-6.5.2-routines.md): MMSC election and rack-identity routines in IRIX 6.5.2
-- [software/firmware/mmsc/election-rack-state-6.5-routines.md](software/firmware/mmsc/election-rack-state-6.5-routines.md): MMSC election and rack state in IRIX 6.5
-- [software/firmware/mmsc/election-rack-state-64-origin-routines.md](software/firmware/mmsc/election-rack-state-64-origin-routines.md): MMSC election and rack state in the 6.4-origin image
-- [software/firmware/mmsc/election-rack-state-sg0002378-routines.md](software/firmware/mmsc/election-rack-state-sg0002378-routines.md): MMSC election and rack state in patch SG0002378
-- [software/firmware/mmsc/elsc-client-6.5-routines.md](software/firmware/mmsc/elsc-client-6.5-routines.md): MMSC ELSC client in IRIX 6.5
-- [software/firmware/mmsc/elsc-client-64-origin-routines.md](software/firmware/mmsc/elsc-client-64-origin-routines.md): MMSC ELSC client and command paths in the 6.4-origin image
-- [software/firmware/mmsc/elsc-client-sg0002378-routines.md](software/firmware/mmsc/elsc-client-sg0002378-routines.md): MMSC ELSC client in patch SG0002378
-- [software/firmware/mmsc/ene-port-io-64-origin-routines.md](software/firmware/mmsc/ene-port-io-64-origin-routines.md): MMSC Ethernet port-I/O callers in the 6.4-origin image
-- [software/firmware/mmsc/ene-port-io-sg0002378-routines.md](software/firmware/mmsc/ene-port-io-sg0002378-routines.md): MMSC ene port I/O in patch SG0002378
-- [software/firmware/mmsc/flash-nvram-download.md](software/firmware/mmsc/flash-nvram-download.md): MMSC flash, NVRAM and the image download path
-- [software/firmware/mmsc/flash-nvram-pic-6.5.2-observations.md](software/firmware/mmsc/flash-nvram-pic-6.5.2-observations.md): MMSC flash, NVRAM and interrupt observations
-- [software/firmware/mmsc/flash-window-control-6.5-routines.md](software/firmware/mmsc/flash-window-control-6.5-routines.md): MMSC flash window control in IRIX 6.5
-- [software/firmware/mmsc/flash-window-sg0002378-routines.md](software/firmware/mmsc/flash-window-sg0002378-routines.md): MMSC flash window routines in patch SG0002378
-- [software/firmware/mmsc/hardware-command-paths-6.4-routines.md](software/firmware/mmsc/hardware-command-paths-6.4-routines.md): MMSC hardware command paths in IRIX 6.4
-- [software/firmware/mmsc/hardware-commands-64-origin-routines.md](software/firmware/mmsc/hardware-commands-64-origin-routines.md): MMSC hardware-command and ELSC-mode callers in the 6.4-origin image
-- [software/firmware/mmsc/hardware-commands-sg0002378-routines.md](software/firmware/mmsc/hardware-commands-sg0002378-routines.md): MMSC hardware commands in patch SG0002378
-- [software/firmware/mmsc/i8250-serial-6.4-routines.md](software/firmware/mmsc/i8250-serial-6.4-routines.md): MMSC i8250 serial and port routines in IRIX 6.4
-- [software/firmware/mmsc/identity-2.1-routines.md](software/firmware/mmsc/identity-2.1-routines.md): MMSC 2.1 identity-table and NVRAM callers
-- [software/firmware/mmsc/identity-2.2-routines.md](software/firmware/mmsc/identity-2.2-routines.md): MMSC 2.2 identity and conflict-handling routines
-- [software/firmware/mmsc/identity-6.5.2-routines.md](software/firmware/mmsc/identity-6.5.2-routines.md): MMSC identity and conflict-handling routines in IRIX 6.5.2
-- [software/firmware/mmsc/identity-rack-paths-6.5-observations.md](software/firmware/mmsc/identity-rack-paths-6.5-observations.md): MMSC identity and rack-path observations in the 6.5 images
-- [software/firmware/mmsc/identity-state-6.4-routines.md](software/firmware/mmsc/identity-state-6.4-routines.md): MMSC identity state in IRIX 6.4
-- [software/firmware/mmsc/identity-state-64-origin-routines.md](software/firmware/mmsc/identity-state-64-origin-routines.md): MMSC identity state and NVRAM callers in the 6.4-origin image
-- [software/firmware/mmsc/identity-table-sg0002378-routines.md](software/firmware/mmsc/identity-table-sg0002378-routines.md): MMSC identity table in patch SG0002378
-- [software/firmware/mmsc/identity-table.md](software/firmware/mmsc/identity-table.md): Identity table (identity) and its helpers
-- [software/firmware/mmsc/interrupt-uart-tty-remaining-routines.md](software/firmware/mmsc/interrupt-uart-tty-remaining-routines.md): Selected MMSC symbol spans in IRIX 6.5.2, 6.5.5 and 6.5.6
-- [software/firmware/mmsc/keyboard-console-64-origin-routines.md](software/firmware/mmsc/keyboard-console-64-origin-routines.md): MMSC keyboard and console callers in the 6.4-origin image
-- [software/firmware/mmsc/keyboard-console-657-routines.md](software/firmware/mmsc/keyboard-console-657-routines.md): MMSC keyboard and console callers in the 6.5.7 image
-- [software/firmware/mmsc/keyboard-console-sg0002378-routines.md](software/firmware/mmsc/keyboard-console-sg0002378-routines.md): MMSC keyboard and console paths in patch SG0002378
-- [software/firmware/mmsc/keyboard-state-sg0002378-routines.md](software/firmware/mmsc/keyboard-state-sg0002378-routines.md): MMSC keyboard state and port-call paths in patch SG0002378
-- [software/firmware/mmsc/load-map.md](software/firmware/mmsc/load-map.md): MMSC load map and symbols, measured on ten MMSC images
-- [software/firmware/mmsc/messages-timeouts-64-origin-routines.md](software/firmware/mmsc/messages-timeouts-64-origin-routines.md): MMSC message, timeout and identity callers in the 6.4-origin image
-- [software/firmware/mmsc/messages-timeouts-sg0002378-routines.md](software/firmware/mmsc/messages-timeouts-sg0002378-routines.md): MMSC messages and timeouts in patch SG0002378
-- [software/firmware/mmsc/msc-client.md](software/firmware/mmsc/msc-client.md): MSC client in the MMSC firmware
-- [software/firmware/mmsc/ns16550-driver-6.5-routines.md](software/firmware/mmsc/ns16550-driver-6.5-routines.md): MMSC NS16550 driver in IRIX 6.5
-- [software/firmware/mmsc/ns16550-sg0002378-routines.md](software/firmware/mmsc/ns16550-sg0002378-routines.md): MMSC UART driver routines in patch SG0002378
-- [software/firmware/mmsc/nvram-flash-64-origin-routines.md](software/firmware/mmsc/nvram-flash-64-origin-routines.md): MMSC NVRAM and flash paths in the 6.4-origin image
-- [software/firmware/mmsc/nvram-sram-6.5-routines.md](software/firmware/mmsc/nvram-sram-6.5-routines.md): MMSC NVRAM and SRAM in IRIX 6.5
-- [software/firmware/mmsc/nvram-sram-sg0002378-routines.md](software/firmware/mmsc/nvram-sram-sg0002378-routines.md): MMSC NVRAM and SRAM routines in patch SG0002378
-- [software/firmware/mmsc/nvram-system-6.4-routines.md](software/firmware/mmsc/nvram-system-6.4-routines.md): MMSC NVRAM and system helpers in IRIX 6.4
-- [software/firmware/mmsc/oob-and-router.md](software/firmware/mmsc/oob-and-router.md): Out-of-band messages (oobmsg), the command router (route) and the stack's routing routines
-- [software/firmware/mmsc/palette-ports-64-origin-routines.md](software/firmware/mmsc/palette-ports-64-origin-routines.md): MMSC palette and port paths in IRIX 6.4-origin
-- [software/firmware/mmsc/palette-ports-64-routines.md](software/firmware/mmsc/palette-ports-64-routines.md): MMSC palette and port paths in IRIX 6.4
-- [software/firmware/mmsc/palette-ports-65-routines.md](software/firmware/mmsc/palette-ports-65-routines.md): MMSC palette and port paths in IRIX 6.5
-- [software/firmware/mmsc/palette-ports-652-routines.md](software/firmware/mmsc/palette-ports-652-routines.md): MMSC palette and port paths in IRIX 6.5.2
-- [software/firmware/mmsc/palette-ports-6530-routines.md](software/firmware/mmsc/palette-ports-6530-routines.md): MMSC palette and port paths in IRIX 6.5.30
-- [software/firmware/mmsc/palette-ports-655-routines.md](software/firmware/mmsc/palette-ports-655-routines.md): MMSC palette and port paths in IRIX 6.5.5
-- [software/firmware/mmsc/palette-ports-656-routines.md](software/firmware/mmsc/palette-ports-656-routines.md): MMSC palette and port paths in IRIX 6.5.6
-- [software/firmware/mmsc/palette-ports-657-routines.md](software/firmware/mmsc/palette-ports-657-routines.md): MMSC palette and port callers in the 6.5.7 image
-- [software/firmware/mmsc/palette-ports-sg0002378-routines.md](software/firmware/mmsc/palette-ports-sg0002378-routines.md): MMSC palette and port paths in patch SG0002378
-- [software/firmware/mmsc/pic-rack-election-6.4-routines.md](software/firmware/mmsc/pic-rack-election-6.4-routines.md): MMSC PIC and rack election in IRIX 6.4
-- [software/firmware/mmsc/port-interrupt-leaf-windows.md](software/firmware/mmsc/port-interrupt-leaf-windows.md): MMSC port and interrupt leaf windows
-- [software/firmware/mmsc/ports-pic-657-routines.md](software/firmware/mmsc/ports-pic-657-routines.md): MMSC port and interrupt callers in the 6.5.7 image
-- [software/firmware/mmsc/rack-election.md](software/firmware/mmsc/rack-election.md): Rack identity election and the inter-MMSC link
-- [software/firmware/mmsc/rack-oob-remote-6.5.5-observations.md](software/firmware/mmsc/rack-oob-remote-6.5.5-observations.md): MMSC rack, out-of-band and remote observations
-- [software/firmware/mmsc/remote-link.md](software/firmware/mmsc/remote-link.md): The TCP link between MMSCs (remote)
-- [software/firmware/mmsc/remote-oob-64-origin-routines.md](software/firmware/mmsc/remote-oob-64-origin-routines.md): MMSC remote links and out-of-band message callers in the 6.4-origin image
-- [software/firmware/mmsc/remote-oob-sg0002378-routines.md](software/firmware/mmsc/remote-oob-sg0002378-routines.md): MMSC remote links and out-of-band messages in patch SG0002378
-- [software/firmware/mmsc/repeated-word-transfers-selected.md](software/firmware/mmsc/repeated-word-transfers-selected.md): MMSC repeated word transfers in selected IRIX 6.4 through 6.5.6 images
-- [software/firmware/mmsc/serial-2.1-routines.md](software/firmware/mmsc/serial-2.1-routines.md): MMSC 2.1 serial and port-I/O routines
-- [software/firmware/mmsc/serial-2.2-routines.md](software/firmware/mmsc/serial-2.2-routines.md): MMSC 2.2 serial-driver and port routines
-- [software/firmware/mmsc/serial-6.5.2-routines.md](software/firmware/mmsc/serial-6.5.2-routines.md): MMSC serial-driver and port routines in IRIX 6.5.2
-- [software/firmware/mmsc/serial-config-sg0002378-routines.md](software/firmware/mmsc/serial-config-sg0002378-routines.md): MMSC serial configuration in patch SG0002378
-- [software/firmware/mmsc/serial-driver-657-routines.md](software/firmware/mmsc/serial-driver-657-routines.md): MMSC serial-driver callers in the 6.5.7 image
-- [software/firmware/mmsc/serial-flow-buffer-paths-6.5.6-observations.md](software/firmware/mmsc/serial-flow-buffer-paths-6.5.6-observations.md): MMSC serial flow and buffer-path observations
-- [software/firmware/mmsc/serial-nvram-routines.md](software/firmware/mmsc/serial-nvram-routines.md): MMSC BSP serial and NVRAM routines
-- [software/firmware/mmsc/serial-pic-64-origin-routines.md](software/firmware/mmsc/serial-pic-64-origin-routines.md): MMSC serial and interrupt paths in the 6.4-origin image
-- [software/firmware/mmsc/serial-port-bodies.md](software/firmware/mmsc/serial-port-bodies.md): MMSC serial-driver and port-I/O bodies, from the 2.3 image
-- [software/firmware/mmsc/serial-settings-6.4-routines.md](software/firmware/mmsc/serial-settings-6.4-routines.md): MMSC serial settings in IRIX 6.4
-- [software/firmware/mmsc/serial-settings-6.5-routines.md](software/firmware/mmsc/serial-settings-6.5-routines.md): MMSC serial settings in IRIX 6.5
-- [software/firmware/mmsc/sram-download-64-origin-routines.md](software/firmware/mmsc/sram-download-64-origin-routines.md): MMSC SRAM and flash command paths in the 6.4-origin image
-- [software/firmware/mmsc/sram-flash-6.4-routines.md](software/firmware/mmsc/sram-flash-6.4-routines.md): MMSC SRAM and flash paths in IRIX 6.4
-- [software/firmware/mmsc/tty-command-support-64-origin-routines.md](software/firmware/mmsc/tty-command-support-64-origin-routines.md): MMSC TTY and command-support routines in the 6.4-origin image
-- [software/firmware/mmsc/tty-command-support-sg0002378-routines.md](software/firmware/mmsc/tty-command-support-sg0002378-routines.md): MMSC TTY and command support in patch SG0002378
-- [software/firmware/mmsc/tty-controller-link-paths.md](software/firmware/mmsc/tty-controller-link-paths.md): MMSC tty and controller-link paths at their linked addresses
-- [software/firmware/mmsc/uart-and-board-serial-2.1-2.2.md](software/firmware/mmsc/uart-and-board-serial-2.1-2.2.md): MMSC UART and board serial routines
-- [software/firmware/mmsc/unresolved-indirect-jump-6.5.6-observations.md](software/firmware/mmsc/unresolved-indirect-jump-6.5.6-observations.md): MMSC unresolved indirect jump in one inferred symbol window
-- [software/firmware/mmsc/vga-cursor-64-origin-routines.md](software/firmware/mmsc/vga-cursor-64-origin-routines.md): MMSC VGA cursor and memory-access routines in the 6.4-origin image
-- [software/firmware/mmsc/vga-cursor-buffer-sg0002378-routines.md](software/firmware/mmsc/vga-cursor-buffer-sg0002378-routines.md): MMSC VGA cursor and buffer paths in patch SG0002378
-- [software/firmware/mmsc/vga-display-64-origin-routines.md](software/firmware/mmsc/vga-display-64-origin-routines.md): MMSC VGA display and mode routines in the 6.4-origin image
-- [software/firmware/mmsc/vga-lowlevel-io-64-origin-routines.md](software/firmware/mmsc/vga-lowlevel-io-64-origin-routines.md): MMSC VGA helpers and low-level I/O routines in the 6.4-origin image
-- [software/firmware/mmsc/vga-mode-pixel-6530-routines.md](software/firmware/mmsc/vga-mode-pixel-6530-routines.md): MMSC VGA mode and pixel paths in IRIX 6.5.30
-- [software/firmware/mmsc/vga-mode-pixel-657-routines.md](software/firmware/mmsc/vga-mode-pixel-657-routines.md): MMSC VGA mode and pixel callers in the 6.5.7 image
-- [software/firmware/mmsc/vga-mode-pixel-sg0002378-routines.md](software/firmware/mmsc/vga-mode-pixel-sg0002378-routines.md): MMSC VGA mode and pixel paths in patch SG0002378
-- [software/firmware/mmsc/vga-parser-mode-sg0002378-routines.md](software/firmware/mmsc/vga-parser-mode-sg0002378-routines.md): MMSC VGA parser and mode paths in patch SG0002378
-- [software/firmware/mmsc/vga-setup-keys-64-origin-routines.md](software/firmware/mmsc/vga-setup-keys-64-origin-routines.md): MMSC VGA setup and keyboard-state routines in the 6.4-origin image
+```sh
+git clone https://github.com/jamesbraid/sysco && cd sysco
+tools/setup-clone.sh --root /path/to/your/irix/files
+retools/tools/re-run retools/tools/defs/ci-check
+```
 
-### L2 controller notes (`software/firmware/l2/`)
+You'll need Podman, git, python3 and your own IRIX files. [evidence/irix-files.md](evidence/irix-files.md) lists
+which ones.
 
-- [software/firmware/l2/README.md](software/firmware/l2/README.md): Reading notes for the L2 system controller, an MPC8xx board
-- [software/firmware/l2/config-request-reply.md](software/firmware/l2/config-request-reply.md): The L2 configuration request to an L1 and the reply
-- [software/firmware/l2/daemon.md](software/firmware/l2/daemon.md): The L2 daemon: modes, devices, flash, NVRAM and sockets
-- [software/firmware/l2/image-layout.md](software/firmware/l2/image-layout.md): L2 image: container, kernel and root file system
-- [software/firmware/l2/libdrivers.md](software/firmware/l2/libdrivers.md): libdrivers: the flash access library, read in full from L2 1.44.0
-- [software/firmware/l2/libpart.md](software/firmware/l2/libpart.md): libpart: the partition mode database, read from L2 1.44.0
-- [software/firmware/l2/partition-record.md](software/firmware/l2/partition-record.md): The partition record: request, reply, and database body
-- [software/firmware/l2/partition-task.md](software/firmware/l2/partition-task.md): The partition task (task 10) and the chunked reply framing
-- [software/firmware/l2/power-queue.md](software/firmware/l2/power-queue.md): L2 power command: the send queue, its order and its spacing
-- [software/firmware/l2/rootfs.md](software/firmware/l2/rootfs.md): L2 root file system, boot sequence and user space
-- [software/firmware/l2/router-packet.md](software/firmware/l2/router-packet.md): The router packet in memory and how the packet layer builds it
-- [software/firmware/l2/user-mode.md](software/firmware/l2/user-mode.md): Running the L2 user space under a PowerPC user-mode emulator
-- [software/firmware/l2/userspace.md](software/firmware/l2/userspace.md): L2 user space: the contract the shipped programs expect
+## How far along
 
-### Challenge and Onyx system controller notes (`software/userland/everest/`)
+The Origin 300 L1's requests, registers and protocols are done. The firmware functions are barely started. The open questions are in [questions/](questions/README.md).
+If you spot a mistake or have a manual we don't, [open an issue](https://github.com/jamesbraid/sysco/issues).
 
-- [software/userland/everest/README.md](software/userland/everest/README.md): Challenge and Onyx (Everest) system controller: host side
-- [software/userland/everest/daemon-wire.md](software/userland/everest/daemon-wire.md): sysctlrd: how the daemon talks to the controller
-- [software/userland/everest/driver.md](software/userland/everest/driver.md): The /dev/sysctlr driver (sysctlr.o for IP19, IP21 and IP25)
-- [software/userland/everest/early-builds.md](software/userland/everest/early-builds.md): Challenge and Onyx host side in IRIX 5.0 to 6.4
-- [software/userland/everest/inst-compression.md](software/userland/everest/inst-compression.md): The old inst image format (IRIX 5.0 to 6.2)
-- [software/userland/everest/inventory-record.md](software/userland/everest/inventory-record.md): The inventory record behind syssgi selector 102
-- [software/userland/everest/prom-client.md](software/userland/everest/prom-client.md): The standalone diagnostic as a second client of the controller
-- [software/userland/everest/records.md](software/userland/everest/records.md): Environment, log and diagnostic records in the daemon's frames
-- [software/userland/everest/scmsg.md](software/userland/everest/scmsg.md): scmsg: write one message to the front-panel display
+<!-- coverage:begin -->
+<!-- Generated from the firmware block of evidence/coverage.md; do not edit. Regenerate: retools/tools/re-run python3 retools/tools/sysco/sysco_tables.py -->
+| Table | Rows | Understood | Located | % understood | % located or better |
+|---|---:|---:|---:|---:|---:|
+| [images](evidence/inventory/images.tsv) | 219 | 28 | 44 | 12.8 | 32.9 |
+| [packages](evidence/inventory/packages.tsv) | 70 | 4 | 66 | 5.7 | 100.0 |
+| [firmware-functions](evidence/inventory/firmware-functions.tsv) | 191808 | 672 | 111814 | 0.4 | 58.6 |
+| [request-codes](evidence/inventory/request-codes.tsv) | 201 | 198 | 3 | 98.5 | 100.0 |
+| [io-registers](evidence/inventory/io-registers.tsv) | 44 | 44 | 0 | 100.0 | 100.0 |
+| [protocols](evidence/inventory/protocols.tsv) | 39 | 39 | 0 | 100.0 | 100.0 |
+<!-- coverage:end -->
 
-### Other pages (`devices/`, `formats/`, `platforms/`, `evidence/`, `references/` and `software/userland/`)
+## License
 
-- [formats/elsc_host/README.md](formats/elsc_host/README.md): ELSC host request set, as the IRIX host side drives it
-- [formats/msc_multinode/README.md](formats/msc_multinode/README.md): console ownership, master election and the kernel broadcast across the module controllers of a multi-node machine, and the module serial route
-- [platforms/ip27/module-management.md](platforms/ip27/module-management.md): how a four-node Origin 2000 module wires its MSC, shared I2C bus, management NVRAM, module number and serial parts; hints from published manuals and public inventories
-- [devices/pcf8584/README.md](devices/pcf8584/README.md): the PCF8584 I2C controller each Hub uses to reach the module controller: register selection, own address, clock control and the boot liveness probe
-- [software/userland/host-tool-functions.md](software/userland/host-tool-functions.md): Host controller-client routines read from the l1cmd bodies
-- [platforms/bricks/l1-bedrock-handoffs.md](platforms/bricks/l1-bedrock-handoffs.md): L1 to Bedrock hand-offs: the ordered events the firmware drives
-- [software/firmware/l1/image-layout.md](software/firmware/l1/image-layout.md): L1 firmware image layout: the 1.44.0 container and its ColdFire packages
-- [platforms/l2/board-contract.md](platforms/l2/board-contract.md): L2 board contract: the core, the memory map and the devices
-- [references/documents/published-sources.md](references/documents/published-sources.md): Published sources: public documents the notes cite
-- [evidence/version-diffs.md](evidence/version-diffs.md): Version diffs: what changed between the four firmware sets
+[BSD 3-Clause](LICENSE). The `retools/` scripts started life as gr4's and keep its notice. No SGI binaries in
+here; bring your own.
 
-## Running the tools
+## Credits
 
-The host needs Podman, git and python3. Everything else runs in a container built from `retools/tools/Containerfile`:
+James Braid, plus a lot of Claude and Codex reading ColdFire and PowerPC disassembly so I didn't have to.
 
-    retools/tools/re-run python3 retools/tools/inventory.py        # host-tool ELF tables, root manifest check
-    retools/tools/re-run python3 retools/tools/sysco/sysco_tables.py     # firmware tables and the firmware coverage block
+Thanks to -
 
-`tools/setup-clone.sh --root DIR` links `root/` to a directory you filled. The shared tooling lives in the `retools/` submodule (`git submodule update --init`); shared tools are `retools/tools/`, the ones specific to this repository `retools/tools/sysco/`. Only `retools/tools/re-run` and `tools/ghidra-export.py` link into it. `tools/` holds this repository's own scripts and `tools/config/` their configuration.
-
-Licence: BSD-3-Clause, see [LICENSE](LICENSE). The scripts descend from gr4's and keep its notice in [retools/tools/LICENSE-gr4](retools/tools/LICENSE-gr4).
+* Dominik Behr ([@techomancer](https://github.com/techomancer)) for [gr2](https://github.com/techomancer/gr2)
+  and [gr4](https://github.com/techomancer/gr4), where the layout and working style come from
+* SGI's technical writers, whose L1 and L2 guides and owner's guides describe more of these controllers than
+  you'd expect
+* Freescale and Philips, for the ColdFire and I2C controller manuals
+* Everyone keeping SGI manuals, `hinv` dumps and IRIX media online
