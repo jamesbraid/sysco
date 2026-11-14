@@ -15,6 +15,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [../l2-l1-conversation.md](l1-conversation.md) | the L2's side of the L1 conversation in order: attach, the recurring configuration request, route building and packet routing, the routed `p <id> pwr d` shutdown, and the task-10 partition-record reply |
 | [user-mode.md](user-mode.md) | running `l2` and `l2part` under a user-mode PowerPC emulator |
 | [../l2-kernel-interface.md](kernel-interface.md) | the kernel side: boot-loader hand-off, mapped windows, kernel facilities present and absent, the PCI and USB chain, display, reset, and what must hold to register an L1 |
+| [scale-limits.md](scale-limits.md) | the fixed limits beyond [capacity-limits.md](capacity-limits.md): NVRAM log and write cost, the batch reply deadline, reply matching, descriptor and console-table sizes, L1 transport limits and the boot firmware's message set, judged against a 512-processor system |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
 | [partition-record.md](partition-record.md) | the partition record end to end: the code-1 reply byte by byte, how it meets the boot firmware's reply checks, the database producer in `partmgr`, test vectors |
 | [power-queue.md](power-queue.md) | the `power` command: the send queue and its runner, the sender's class order, and the order and spacing of `fast` and `slow` power-up and of power-down |
