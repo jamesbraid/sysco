@@ -147,4 +147,14 @@ Findings:
 
 Cleared scope: all SAL numbers, argument lists, result conventions, the event record layout as the kernel parses it and the "what a model needs" list. Not cleared: the strict-grade question in finding 1. Not read here: SAL or controller firmware behaviour (not held).
 
-Disposition of finding 1: the evidence order now counts `drivers/char/snsc.c` and `snsc_event.c` as SGI Linux platform code (sgi-retools c50bfeb), so the event layout, the 127-byte chunking and the device naming from those two files are `established` as the note already grades them; no table changes. `drivers/tty/serial/sn_console.c` is SGI-written and SN-specific but is not among the files the rule names; its console-driver constants stay graded as the note has them until the owner says whether the rule covers it.
+Disposition of finding 1: the evidence order now counts `drivers/char/snsc.c` and `snsc_event.c` as SGI Linux platform code (sgi-retools c50bfeb), so the event layout, the 127-byte chunking and the device naming from those two files are `established` as the note already grades them; no table changes. `drivers/tty/serial/sn_console.c` is SGI-written and SN-specific but is not among the files the rule names; the owner has since confirmed that the rule covers SGI's platform drivers generally, `sn_console.c` included, so its console-driver constants are `established` too (see the renewed review below).
+
+### Renewed review
+
+Renewed review of the changed claims only, 2026-11-14, by a reviewer who wrote none of them. Reviewed sysco commit a6cab63. Grading rule: sgi-retools `tools/README-analysis.md` "Evidence order" at c50bfeb, whose paragraph counts SGI-written Linux code for the SN2 platforms wherever it lives; the repository owner confirmed this covers SGI's platform drivers generally, including `drivers/tty/serial/sn_console.c`, which the paragraph does not name.
+
+**Checked.** `sn_console.c` at Linux v5.3 carries "Copyright (c) 2004-2006 Silicon Graphics, Inc." and defines `SN_SAL_BUFFER_SIZE` as 64 KiB, `SN_SAL_UART_FIFO_DEPTH` 16, `SN_SAL_UART_FIFO_SPEED_CPS` 9600/10, `DEVICE_NAME_DYNAMIC` "ttySG0" and requests `SGI_UART_VECTOR` (0xe9, `intr.h` line 15). The note already grades every console fact drawn from this file `established` (what the kernel does; the PROM and controller side stay `unknown`), so no grade in the note sat below established because of the naming gap and no table changes. The only edit is to the disposition sentence, which no longer says the grade waits on the owner. The snsc finding in the first review (event layout, chunking, naming from `snsc.c` and `snsc_event.c`) is settled by the rule's explicit naming of those files.
+
+**Findings.** None.
+
+**Cleared:** the settled grades for the event layout, the 127-byte chunking, the device naming and the console-driver constants. The first review's Not-read items (SAL or controller firmware behaviour) are unchanged.
