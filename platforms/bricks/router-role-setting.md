@@ -37,7 +37,7 @@ For key `0x3c` the getter's word table (index = key, scale 2) jumps to a stub th
 | 3 | `0xffe6fdca` | `0xffe6f0d0` | `0xffe7021a` | `0xffe6f878` | `0x30000b04` |
 | 5 | `0xffe7401a` | `0xffe73320` | `0xffe7446a` | `0xffe73ac8` | `0x30000ac4` |
 
-Keys `0x3d` and `0x3e` go to separate stubs reading byte `+0x17` bits 2:1 and bit 0 (the router port and service state); they do not touch the nibble (E, packages 0 to 5 by table).
+Keys `0x3d` and `0x3e` go to separate stubs reading byte `+0x17` bits 2:1 and bit 0; they do not touch the nibble (E, packages 0 to 5 by table). Re-read 2026-11-14 in package 0 (getter `0xffe59fbc`, word table at `0xffe59fdc`: key `0x3d` stub `0xffe5a40c`, key `0x3e` stub `0xffe5a422`, key `0x3f` stub `0xffe5a436`): the `router` handler uses key `0x3d` as the series selector (0 `NEW`, 1 `UNDECIDED`, 2 `3400 Series`, 3 `3800 Series`; the `INVALID` word cannot come from a two-bit field), key `0x3e` as the service-mode flag and key `0x3f` as the expiry time (handler `0xffe19f08`, calls at `0xffe19fe2`, `0xffe19f6e`, `0xffe19f8a`). Earlier text called these "the router port and service state"; key `0x3d` is the series word. Who writes key `0x3d` was not searched for.
 
 ## 3. Every site that names key `0x3c`
 
