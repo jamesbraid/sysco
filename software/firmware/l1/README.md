@@ -17,6 +17,8 @@ Reading notes for the L1 system controller. Everything here is read from L1 1.44
 | [pre-container-layout.md](pre-container-layout.md) | the six L1 images before the container layout (6.5.9 to 6.5.15): header words, vector table offset, the two bank records of each image |
 | [mcf5206e-peripherals.md](mcf5206e-peripherals.md) | the on-chip peripherals and external devices the code touches besides the M-Bus and USB |
 | [personalities.md](personalities.md) | the other four ColdFire packages of 1.44.0 against the Origin 300 one: supported-brick strings, how the brick-type character is chosen, request catalogue, linked board modules |
+| [sn2-brick-packages.md](sn2-brick-packages.md) | which L1 packages serve the Altix and Prism bricks, brick type by brick type, from the packages, the `l1.h` codes and SGI's controller guide |
+| [sn2-controller-host-protocol.md](sn2-controller-host-protocol.md) | the SN2 kernel's side of the controller protocol: the SAL console and IRouter subchannel calls, the event record, the `l1.h` codes |
 | [personality-board-init.md](personality-board-init.md), [personality-base-package.md](personality-base-package.md) | how each package turns the brick-type character into board code (dispatchers and descriptor blocks), and the generic 1 MB package read routine by routine against the Origin 300 one |
 | [personality-2mb-packages.md](personality-2mb-packages.md) | the three 2 MB packages routine by routine against the Origin 300 one: which changed pairs are real code differences, and the board modules each adds or drops |
 | [rs422-router.md](rs422-router.md) | the packet router, the node UART link and the RS-422 peer links |
