@@ -10,19 +10,29 @@ This repository reverse-engineers the SGI L1 and L2 system-controller firmware (
 - **The goal** is a description of the firmware's hardware interface complete enough that nothing it touches is left to guesswork: every memory-mapped peripheral and external device the code touches, with address, width and expected reply; the packet, USB, RS-422 and node-UART protocols; the boot path and bank selection; the request catalogue.
 - Host tools (`flashsc`, `l1cmd`, `l2cmd`, `flashpbay`, `flashsvf`) are in scope as evidence of how the controllers are driven. SVF JTAG vector files (`.svf`) are inventoried; only their IDCODE reads are used.
 
-## 2. Evidence: software only, any source as a hint
+## 2. Evidence order
 
-No hardware is available. Do not plan, request or wait for measurements on a real machine.
+No hardware is available here. A physical read is a last resort under the rule below.
 
-Readers may open anything: the shipped images and tools of every release and patch, any disassembly or decompilation of them, vendor and chip manuals, public drivers, emulators and kernels for the same CPUs, manuals, release notes and man pages, and published output from real machines (console logs, forum and mailing-list posts).
+For a register or behaviour fact, take it from the highest source that states it and grade it by that source:
 
-But a hint is not a finding. **Every fact is graded and confirmed in a shipped image**: it states the version, package, address or offset it was read at, and says what that read established. A fact taken from a manual, a driver or a post, and not yet seen in an image, is written as a hint with its source, and is not graded established.
+1. IRIX source (public `irix-657m-src` tree): read it, write the fact in your own words, never copy source text, cite the path in the tree. A fact it defines is `established`.
+2. Shipped binaries (PROMs, kernels, libraries): confirm the source matches what shipped, and the release differences (6.5.7 source, 6.5.22 and 6.5.30 binaries).
+3. Public Linux, OpenBSD and NetBSD headers and drivers: `established` once the IRIX source confirms them.
+4. Published SGI and vendor manuals.
+5. Notes from other projects (Origami datasheets, QEMU manual pages, emulator code): may confirm or contradict, never supply a fact. A fact resting only on one stays `unknown`, with the note named.
+
+Reset values: `established` when the source states a power-on default or PROM code relies on a reset state; `inferred` when the PROM depends on a value before its first write (cite the PROM address); a read after firmware initialisation is not a reset value and can only rule values out; otherwise `unknown`. A physical hardware read is a last resort, needs the repository owner's approval, and counts as a reset value only for a register firmware provably never writes. Emulator runs are model behaviour, never hardware evidence.
+
+Full text and the checks that enforce it: `retools/tools/README-analysis.md#evidence-order`.
+
+Readers may open anything: the shipped images and tools of every release and patch, any disassembly or decompilation of them, vendor and chip manuals, public drivers, emulators and kernels for the same CPUs, manuals, release notes and man pages, and published output from real machines (console logs, forum and mailing-list posts). Each fact is graded by the source the order above ranks for it, and cites the version, package, address or offset it came from.
 
 Write findings in your own words. Never paste vendor source, firmware strings beyond the short literals a finding needs, or the images themselves into the repository.
 
 ## 3. Grades
 
-- **established**: read in full in the image (the whole routine, table or record) and the claim follows from what was read. Cite version, package, address.
+- **established**: read in full in a source that section 2 ranks for the fact (the whole routine, table or record) and the claim follows from what was read. Cite version, package, address.
 - **inferred**: a reasoned reading from partial evidence (call lists, store summaries, a neighbouring version, a name). Say what the reasoning is.
 - **unknown**: nothing in any shipped image or public source settles it. List the routes tried in [questions/README.md](questions/README.md) and carry on.
 
