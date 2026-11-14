@@ -1,5 +1,7 @@
 # Open questions
 
+<!-- keep -->
+
 Each entry lists what has been tried and the next route. Move an answered question into the note that owns it and delete the entry.
 
 Each entry starts with its route, one of:
