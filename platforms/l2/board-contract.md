@@ -166,6 +166,18 @@ PCMCIA bridge class strings, IDE strings, parallel and multiport serial strings 
 3. Wrapper (RAM `0x700000`): initialises the serial console, resets and programs the PCI bridge, probes PCI devices 4 and 5, assigns their windows and interrupt lines, reads the EEPROM and prints the MAC address, builds the command line, inflates the kernel to RAM address 0, flushes the instruction cache and branches to address 0 (wrapper `0x7000f8` to `0x700100`; it prints `Uncompressing Linux...` and then `Now booting the kernel`).
 4. Kernel at `0xc0000000` virtual (physical 0): maps itself, mounts the cramfs RAM-disk root, starts `init` (see rootfs.md).
 
+<!-- Question: in what order do the stages of l2.bin run, and what stops the chain? Evidence: board-contract.md section 1 (stages, addresses) and image-layout.md (loader failure strings); each box is a stage or step those notes establish. -->
+```mermaid
+flowchart TD
+  a["Stage A: reset code, vectors, early init"] --> l["Console loader, copied to RAM 0x00e00000"]
+  l --> v{"Image header record sums to zero?"}
+  v -- no --> f["BOOT FAILED printed, loader halts"]
+  v -- yes --> b["Stage B early init, copied to RAM 0"]
+  b --> w["Wrapper at RAM 0x700000: PCI and USB bring-up, MAC fetch, gunzip"]
+  w --> k["Linux 2.4.7 kernel inflated to RAM 0"]
+  k --> r["cramfs root as RAM disk: L2 daemon and libraries"]
+```
+
 Evidence for 2 and 3 is the routines and strings cited above; the exact order of PCI bring-up against EEPROM read in the wrapper is established from the call order at `0x704c20` to `0x704cbc` (bridge init at `0x704c98`, EEPROM at `0x704c24`, device setup at `0x704ca8`/`0x704cb8`).
 
 ## 8a. Ports, power and placement (from the published manuals)
