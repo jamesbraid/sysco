@@ -146,3 +146,5 @@ Findings:
 2. PUTB's "does not return until done" is the note's reading of the driver's use (`snt_hw_puts_raw`), not a header statement; harmless.
 
 Cleared scope: all SAL numbers, argument lists, result conventions, the event record layout as the kernel parses it and the "what a model needs" list. Not cleared: the strict-grade question in finding 1. Not read here: SAL or controller firmware behaviour (not held).
+
+Disposition of finding 1: the evidence order now counts `drivers/char/snsc.c` and `snsc_event.c` as SGI Linux platform code (sgi-retools c50bfeb), so the event layout, the 127-byte chunking and the device naming from those two files are `established` as the note already grades them; no table changes. `drivers/tty/serial/sn_console.c` is SGI-written and SN-specific but is not among the files the rule names; its console-driver constants stay graded as the note has them until the owner says whether the rule covers it.
