@@ -191,7 +191,7 @@ The table is established; the mapping from table position to router port number 
 | 7 | `0xffe5aea4` | `0d 00 09 80` | `PORT G` |
 | 8 | `0xffe5aebc` | `0e 01 09 01` | `PORT H` |
 
-Positions 9 to 16 are `NI 0`, `XIO 0`, `NI 1`, `XIO 1`, `NI 2`, `XIO 2`, `NI 3`, `XIO 3`; the first byte of each is `0x15`, `0x15`, `0x21`, `0x21`, `0x2d`, `0x2d`, `0x39`, `0x39` (block 1's last record, `XIO 3`, starts `0x3e`). The name pointers of positions 1 to 8 are `0xffe5dec7`, `0xffe5dece`, `0xffe5ded5`, `0xffe5dedc`, `0xffe5dee3`, `0xffe5deea`, `0xffe5def1`, `0xffe5def8`.
+Positions 9 to 16 are `NI 0`, `XIO 0`, `NI 1`, `XIO 1`, `NI 2`, `XIO 2`, `NI 3`, `XIO 3`; in block 0 the first byte of each is `0x15`, `0x15`, `0x21`, `0x21`, `0x2d`, `0x2d`, `0x39`, `0x39`. Other blocks differ only at positions 10, 12, 14 and 16, whose first bytes are `0x1a`, `0x26`, `0x32` and `0x3e` (block 1's `XIO 3` starts `0x3e`). The name pointers of positions 1 to 8 are `0xffe5dec7`, `0xffe5dece`, `0xffe5ded5`, `0xffe5dedc`, `0xffe5dee3`, `0xffe5deea`, `0xffe5def1`, `0xffe5def8`.
 
 The expander indexes are shared in pairs with opposite halves: `INT N1` and `INT N0` (`0x0b`), `INT N2` and `INT N3` (`0x0c`), `PORT F` and `PORT G` (`0x0d`), `PORT A` and `PORT H` (`0x0e`). The masks are `1 << (k mod 8)` for position `k` (`0x02` to `0x80`, then `0x01` for position 8).
 
