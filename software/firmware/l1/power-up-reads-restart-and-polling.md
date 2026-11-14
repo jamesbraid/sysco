@@ -6,7 +6,7 @@ Read from L1 1.44.0 of the IRIX 6.5.30 `l1.bin`, package 0 (`Base 1MB`, the C-br
 
 ## 1. What a C-brick reads between enabling its supplies and releasing reset
 
-Answer: almost nothing, and nothing that it waits for. The power-up routine (`0xffe4cb4c`) never polls a power-good, VCC-OK or voltage reading for a `C` brick, has no timeout and no retry. Between the last supply enable and the reset release it makes two settings reads and one bus read per port. E.
+Answer: almost nothing, and nothing that it waits for. The power-up routine (`0xffe4cb4c`) never polls a power-good, VCC-OK or voltage reading for a `C` brick, has no timeout and no retry. Between the last supply enable and the reset release it makes two settings reads and, for each port, one enable write and one bus read. E.
 
 The walk for type `C` (it takes the generic arm at `0xffe4ce8c`; only type `4`, the Origin 300, takes the polling arm at `0xffe4ccce`, see [ip45-io-expanders.md](ip45-io-expanders.md)):
 
@@ -14,7 +14,7 @@ The walk for type `C` (it takes the generic arm at `0xffe4ce8c`; only type `4`, 
 2. A 100-tick wait (`0xffe4cf40`).
 3. The board hook at power-table offset `0x20` (`0xffe4cf4c`): the C-brick registration passes zero for it (`0xffe45448`, args 0, 0, 20, table), so it is skipped. E.
 4. Two persistent-setting reads, keys `0x3d` (61) and `0x0d` (13) (`0xffe4cf68`, `0xffe4cf76`). NVRAM, not a device. For `C` they only choose the generic port arm below: the per-port arm is for types `R D 6 @` with key `0x3d` equal to 0 or 2 and the system serial not starting with `M`.
-5. The port bring-up for all ports (`0xffe50b74(0xff, 3)`, call at `0xffe4d01c`). The C-brick registers two port records (`0xffe459f4`, 24 bytes each; registration `0xffe4f454`). At registration each port's state byte is set to 2 if its control expander (index 8, `PORT CONTROL`) and the second expander named in the record (index 6, `BEDROCK CNTL 1`) are enabled, else 0; both are enabled for the C-brick, so both ports are processed (the skip tests at `0xffe50c10` and `0xffe50c70` pass: port 0 has flag `0x40`, port 1 has a zero field at `+0x10`). Per port the helper `0xffe509a4` takes the port bus lock and makes one real read of `PORT CONTROL` (wire address `0x46`, bus segment 3, input mask `0x55`) through `0xffe65ffc`; port 1 uses the high nibble of the byte (shifted right by 4). It passes the result to the port state routine `0xffe504dc` and releases the lock. Another helper (`0xffe500fc`) writes the port enables (`0xffe50084`, `0xffe4feec`). E for the read and the lock; the port state routine was not followed past its first branches (U for what each bit value makes it do).
+5. The port bring-up for all ports (`0xffe50b74(0xff, 3)`, call at `0xffe4d01c`). The C-brick registers two port records (`0xffe459f4`, 24 bytes each; registration `0xffe4f454`). At registration each port's state byte is set to 2 if its control expander (index 8, `PORT CONTROL`) and the second expander named in the record (index 6, `BEDROCK CNTL 1`) are enabled, else 0; both are enabled for the C-brick, so both ports are processed (the skip tests at `0xffe50c10` and `0xffe50c70` pass: port 0 has flag `0x40`, port 1 has a zero field at `+0x10`). Per port, in this order. First the enable helper `0xffe500fc` (through `0xffe50084` and `0xffe4feec`) sets the port's enable output in `PORT CONTROL`: bit `0x02` for port 0, `0x20` for port 1, one byte write. Then the helper `0xffe509a4` takes the port bus lock and makes one real read of `PORT CONTROL` (wire address `0x46`, bus segment 3, input mask `0x55`) through `0xffe65ffc`; port 1 uses the high nibble of the byte (shifted right by 4). It passes the result to the port state routine `0xffe504dc` and releases the lock. E for the order, the read and the lock; the port state routine was not followed past its first branches (U for what each bit value makes it do).
 6. The environment monitor is told the power-up phase has ended (`0xffe2be6c`, which stamps the time and calls `0xffe2b8d4` with 4). It sets flags and returns; the monitor workers act later (I, from [environment.md](environment.md)).
 7. For type `C` a 50-tick wait, then the reset release.
 
@@ -96,8 +96,9 @@ Which expanders are polled, for the C-brick: indices 0 to 15 (all but the displa
 
 - [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md) calls `0xffe4b6cc(0xff)` a check on the first supply. It is the fan start: for each enabled fan record of type 1 it clears an enable bit, for type 2 it writes a fan-controller register. No read.
 - The same note says the sanity routine returns non-zero "at once when the RAM word at `0x301019ac` is clear" and that "no instruction stores to its absolute address". The word is `0x30101990 + 0x1c`, written through a pointer by the reset-cause routine (section 3), and it is the reset-status watchdog bit, not a retained marker.
-- [environment.md](environment.md) and [mbus-environment-task.md](mbus-environment-task.md) attribute the 1500-tick wait to a "management-link condition". The word that selects it is set by a RAM-word handler (section 4); the link condition was not found.
+- [environment.md](environment.md) attributes the 1500-tick wait to a "management-link condition". The word that selects it is set by a RAM-word handler (section 4); the link condition was not found.
 - [ip45-io-expanders.md](ip45-io-expanders.md) leaves open whether the application is skipped on an L1-only restart. Section 3 answers it.
+- [ip45-io-expanders.md](ip45-io-expanders.md) was wrong on the access form of the `Y`, `N` and `&` supply-enable descriptors: they are form 1 (register pair, wire `0x80`), not form 0. Section 2 has them.
 
 ## Open
 

@@ -28,23 +28,23 @@ There is no magic number and no CRC. Every check is a byte sum.
 
 - **Sum.** The check routine (`0xffe5b3a4`) adds the bytes of a region and the caller tests the low byte for zero. The routine that writes a checksum (`0xffe5b3cc`) adds the other bytes and stores the two's complement, so a region is valid when all its bytes, checksum byte included, add to 0 modulo 256.
 - **Header** (window `0x000`, 8 bytes): sum zero, the low nibble of byte 0 non-zero (the writer stores 1) and byte 1 non-zero. Byte 1 is the offset of record 1 in units of 8 bytes; the writer stores 1. Byte 7 is the checksum. Bytes 2 to 6 are zero. The firmware accepts another non-zero offset byte, but every number here assumes 1.
-- **Record 1** (`0x70` bytes): sum zero over all `0x70` bytes (checksum at `+0x6f`) and the low nibble of byte 0 non-zero. The current version nibble is `0xa`.
+- **Record 1** (`0x70` bytes): sum zero over all `0x70` bytes (checksum at `+0x6f`). The start-up path tests the sum only; the repair routine (step 4) also requires the low nibble of byte 0 to be non-zero. The current version nibble is `0xa`.
 - **Record 2** (`0x24` bytes at `+0xe0`, checksum at `+0x103`): sum zero and byte 0 non-zero. Byte 0 is its version, 1.
 - **Record 3** (`0xb4` bytes at `+0x128`, checksum at `+0x1db`): sum zero and byte 0 non-zero. Byte 0 is its version, 3.
 - **Mirrors** are byte copies of the primaries, placed `0x70`, `0x24` and `0xb4` bytes after them.
 
 ## What start-up does (E, entry `0xffe5a758`)
 
-1. Check the header. If its sum is non-zero, or its version nibble or its offset byte is zero, rebuild it (`0xffe5a6a8`): zero the 8 bytes, store version 1, offset 1 and the checksum, set the record base pointer in the state block to window `8 * offset`, then run the record initialiser (`0xffe5a188`) at once.
-2. Dispatch on the record 1 version nibble. Nibbles 0 and above 10 take the same path as `0xa`. Nibbles 1 to 9 run an upgrade chain (jump table at `0xffe5a858`) that rewrites older layouts in steps; it was not decoded and a writer should never produce those versions.
+1. Check the header. If its sum is non-zero, or its version nibble or its offset byte is zero, rebuild it (`0xffe5a6a8`): zero the 8 bytes, store version 1, offset 1 and the checksum, set the record base pointer in the state block to window `8 * offset`, then run the record initialiser (`0xffe5a188`) at once, as step 4 describes: a record valid at its usual position is kept, so only a record with no valid copy comes from defaults.
+2. Dispatch on the record 1 version nibble. Nibbles 0 and above 10 take the same path as `0xa`. A record 1 with nibble 0 and a good sum is accepted untouched when no repair runs; the repair routine rejects nibble 0, so a repair replaces such a record from its mirror or from defaults. Nibbles 1 to 9 run an upgrade chain (jump table at `0xffe5a858`) that rewrites older layouts in steps; it was not decoded and a writer should never produce those versions.
 3. On the current path, flag a repair when record 1 or record 3 fails its sum. If record 3's byte 0 is not 3 it is rebuilt in place (the long at `+0x12c` and the `0xa8` bytes from `+0x130` zeroed, `+0x68` to `+0x6e` of record 1 zeroed, byte 0 set to 3, both checksums recomputed). If record 2's byte 0 is not 1 it is set to 1 and re-summed; if record 2 fails its sum a repair is flagged.
-4. A flagged repair runs the record initialiser, which takes each record independently: a valid primary is kept; otherwise a valid mirror is copied over the primary; otherwise the record is rebuilt from defaults. With no repair flagged the primaries are copied over the mirrors. One valid copy of each record is therefore enough, but a writer should write both.
+4. A flagged repair runs the record initialiser, which takes each record independently: a valid primary is kept; otherwise a valid mirror is copied over the primary; otherwise the record is rebuilt from defaults. With no repair flagged the primaries are copied over the mirrors. One valid copy of each record is therefore enough, but a writer should write both. A record 1 that a repair keeps, whose nibble is not `0xa`, is rewritten with nibble 4 and its brick serial (`+0x68` to `+0x6e`) cleared.
 5. Fix-ups on the result: setting 17 (`+0x11`) below 2 becomes 2; setting 61 (`+0x17` bits 2:1) equal to 0 becomes 2.
 6. Record 2 pointers: the word at `+0xe4` must equal window `0x298` (the end of the record area), `+0xe8` must equal `0x200007f8`, and `+0xec` and `+0xf0` must each lie in `[+0xe4, +0xe8)`. Any failure rebuilds record 2 (`0xffe59e94`): zero it, byte 0 = 1, `+0xe4` = `0x20000298`, `+0xe8` = `0x200007f8`, `+0xec` and `+0xf0` = `0x20000298`, checksum, mirror.
 
 ## Blank, erased or garbage windows (E)
 
-A window of all zeros fails the header (offset byte 0), and all `0xff` fails it on the sum (eight bytes of `0xff` leave `0xf8`), so both are rebuilt: header first, then every record from defaults. Nothing stops the boot. A power-cycled battery-backed RAM with random contents does the same unless the sums happen to hold.
+A window of all zeros fails the header (offset byte 0), and all `0xff` fails it on the sum (eight bytes of `0xff` leave `0xf8`), so both are rebuilt. The header rebuild runs the record initialiser (step 4); a blank window has no valid copy of any record, so every record comes from defaults. Nothing stops the boot. Random contents behave the same way record by record: a record that passes the repair check at its usual position is kept.
 
 Default content of record 1 after a rebuild (every byte not listed is zero):
 
@@ -65,7 +65,7 @@ Default content of record 1 after a rebuild (every byte not listed is zero):
 
 Record 3 is all zero except byte 0 = 3 (and its checksum). Record 2 is as in the pointer rule above.
 
-**The clock decides three defaults.** The initialiser calls the clock reader (`0xffe5e32c`) once. The reader freezes the latch, decodes the BCD registers at window `0x7f8` to `0x7ff`, and returns -1 when every calendar field is zero or the year is outside 1930 to 2500. A blank window reads as -1.
+**The clock decides three defaults.** The initialiser calls the clock reader (`0xffe5e32c`) once. The reader sets the latch (bit 6 of the control byte at window `0x7f8`) for the duration of the read and clears it again, decodes the BCD registers at window `0x7f8` to `0x7ff`, and returns -1 when every calendar field is zero or the year is outside 1930 to 2500. The control byte holds the thousands digit of the year in bits 5:4 and the hundreds digit in bits 3:0. An all-`0xff` window reads as year 4665, outside the range, so it gets the blank-clock defaults. A blank window reads as -1.
 
 | Clock reader | `+0x17` | `+0x2e` |
 |---|---|---|
@@ -81,7 +81,7 @@ Because the firmware repairs whatever fails, a writer that wants given rack, bay
 1. Header `01 01 00 00 00 00 00 fe`.
 2. Record 1 at window `0x008` with the defaults above plus the chosen fields, and the checksum at `+0x6f` set so the 112 bytes sum to 0 modulo 256; its mirror at window `0x078`.
 3. Record 2 (36 bytes) at window `0x0e8`: byte 0 = 1; bytes `+0x04` to `+0x07` = `20 00 02 98`; `+0x08` to `+0x0b` = `20 00 07 f8`; `+0x0c` to `+0x0f` and `+0x10` to `+0x13` = `20 00 02 98`; checksum at `+0x23`. Mirror at window `0x10c`.
-4. Record 3 (180 bytes) at window `0x130`: byte 0 = 3, checksum at `+0xb3` (window `0x1e3`). Mirror at window `0x1e4`.
+4. Record 3 (180 bytes) at window `0x130`: byte 0 = 3, checksum at `+0xb3` (window `0x1e3`). Mirror at window `0x1e4`. A record 3 whose byte 0 is not 3 zeroes record 1's brick serial (`+0x68` to `+0x6e`), so write record 3 whenever record 1 holds a serial.
 5. A clock that reads a valid date at window `0x7f8` to `0x7ff`, if the valid-date defaults are wanted.
 
 The chosen fields, relative to record 1:

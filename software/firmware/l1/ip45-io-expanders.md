@@ -10,12 +10,12 @@ Each board registers an array of 16-byte descriptors at start-up; the Origin 300
 
 | Byte | Meaning | Where it was read |
 |---|---|---|
-| +0 | access form: 0 is one data byte sent to the address and read from it, 1 a register pair, 2 register 5 | the switch in the write routine (`0xffe65974-0xffe65b3a`) and the read routine (`0xffe65bf4-0xffe65cb0`); every descriptor of the Origin 300 and of package 0 has form 0 |
+| +0 | access form: 0 is one data byte sent to the address and read from it, 1 a register pair, 2 register 5 | the switch in the write routine (`0xffe65974-0xffe65b3a`) and the read routine (`0xffe65bf4-0xffe65cb0`); every descriptor in the Origin 300 table and in the package 0 arrays below has form 0; the `Y`, `N` and `&` supply-enable descriptors of package 0 are form 1 (see the power-up note, section 2) |
 | +1 | segment: which bus segment to select first (see below) | passed to the bus lock routine (`0xffe65b3c-0xffe65bac`) |
 | +2 | wire address in the 8-bit form (the seven-bit address shifted left by one); `0xff` marks the entry absent | sent as the first byte; the two-wire layer sets the read bit for reads |
-| +3 | register byte, used only by forms 1 and 2; 0 in every table here | the write routine |
+| +3 | register byte, used only by forms 1 and 2; 0 in every table listed below, and the `Y`, `N` and `&` enable descriptors use registers 0 and 2 | the write routine |
 | +4 | input bits: the bits the firmware only reads | below |
-| +5 | second mask, used only by form 1; 0 in every table here | the write routine |
+| +5 | second mask, used only by form 1; 0 in every table listed below, and not read for the `Y`, `N` and `&` enable descriptors | the write routine |
 | +6 | value applied to the outputs at board start-up | `0xffe66234-0xffe66300` |
 | +7 | input bits whose change is reported from start-up | `0xffe66234-0xffe66300` and `0xffe65e04-0xffe65f08` |
 | +8 | hook called as (index, changed bits, new value) when the polling worker sees an input change; 0 for none | the poll loop at `0xffe66100-0xffe66232` |
@@ -115,7 +115,7 @@ Index 16 (`DISPLAY CONTROL`, address `0x40`, segment 0, input bits `0x0f`, inter
 
 ## Package 0 tables (established)
 
-The same reading of package 0 (`Base 1MB image`, brick letters `CIPXYN&?RG`) finds eight descriptor arrays, all of form 0. Which brick letter each belongs to is not stated next to the arrays; the descriptions give the names in each and the identity EEPROM records registered beside it.
+The same reading of package 0 (`Base 1MB image`, brick letters `CIPXYN&?RG`) finds eight descriptor arrays, all of form 0. The `Y`, `N` and `&` supply-enable descriptors are not among them and are form 1 (a register pair on wire `0x80`). Which brick letter each belongs to is not stated next to the arrays; the descriptions give the names in each and the identity EEPROM records registered beside it.
 
 Array at `0xffe455dc` (17 entries, names `BEDROCK CNTL 1`, `PIMM0 POWER`, `PIMM1 VCC OK`, `FAN CONTROL`; identity records `NODE` at `0xa4`, `PIMM 0` and `PIMM 1` at `0xa8` on segments 4 and 5):
 
