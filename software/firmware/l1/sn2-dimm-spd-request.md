@@ -42,7 +42,7 @@ The record for a DIMM is a 256-byte buffer the L1 reads from the DIMM's EEPROM (
 Two checks decide whether the record is published, both in `0x12e5c0`:
 
 1. The EEPROM read must succeed. If not, the record gets error code 2, its buffer is freed, and requests for it reply -107.
-2. **Checksum** (established): the low byte of the sum of bytes 0 to 62 (63 bytes) must equal byte 63. If not, the record gets error code 3, the log line is `SPD checksum error`, the buffer is freed, and requests reply -107. This replaces the sentence in the earlier note that puts the compare at index 62: the loop runs the counter from 0 up to and including `0x3e` and then compares the byte after the 63 summed, which is byte 63.
+2. **Checksum** (established): the low byte of the sum of bytes 0 to 62 (63 bytes) must equal byte 63. If not, the record gets error code 3, the log line is `SPD checksum error`, the buffer is freed, and requests reply -107. This replaces the sentence in the earlier note that puts the compare at index 62: the loop runs the counter from 0 up to and including `0x3e` and then compares the byte after the 63 summed, which is byte 63. Micron's 512 MB PC3200 UDIMM datasheets follow the same rule: byte 63 is `0xC1` in MT8VDDT6464A Table 17 (Rev. E, p. 24) and `0xD3` in MT9VDDT6472A Table 21 (Rev. B, p. 26), each the low byte of the sum of bytes 0 to 62.
 
 An emulated L1 therefore needs a 256-byte image per DIMM with a valid checksum in byte 63. Bytes 64 to 255 are served only if the node asks for them; the node asks for 0 to 47.
 
