@@ -42,7 +42,7 @@ The node's builder writes the same fields without the first byte (word, code, co
 
 An argument starts with a type byte: **`0x00`**, then a 32-bit big-endian integer; **`0x01`**, then a NUL-terminated string; **`0x80 | n`**, then `n` raw bytes (`n` up to 127, "indirect"). This is the encoding the kernel's event parser expects ([sn2-controller-host-protocol.md](sn2-controller-host-protocol.md): types `0x00`, `0x01` and `0x80 | length`), so the event record the kernel sees is the node-to-L1 argument encoding with the code and count in front.
 
-A response carries the status as its first argument, an integer: 0 on success and a negative number on failure; the integer or string results follow. Status values read in `L1ReqIRouter`: `-100` (at entry, when a flag byte of the incoming packet at `+0x20` is zero; its meaning was not read), `-101` (unknown request code, after an optional extended-request hook), `-104` (no serial number; request `0x0008`, and other handlers too, for example `0x0004`) and `-106` (request `0x0013` when the blade state check fails). The response header was seen only as stores (class `0x20`, an echo of the request's address word and code, and the count); it is inferred to mirror the request header.
+A response carries the status first (bytes 1 to 4 of the frame, see below): 0 on success and a negative number on failure; the integer, raw-byte or string results follow. Status values read in `L1ReqIRouter`: `-100` (at entry, when a flag byte of the incoming packet at `+0x20` is zero; its meaning was not read), `-101` (unknown request code, after an optional extended-request hook), `-104` (no serial number; request `0x0008`, and other handlers too, for example `0x0004`) and `-106` (request `0x0013` when the blade state check fails). The response header is described under [What the ARM L1 sends back](#what-the-arm-l1-sends-back-for-the-nodes-early-requests-l1-1621-opus-tio-and-ip57-personality): byte 0 is `0x20` plus the subchannel and bytes 1 to 4 are the status, not an echo of the request.
 
 Messages longer than one frame use request codes `0x3001` (start), `0x3002` (next segment) and `0x3003` (continuation): `syscom_process_inbound_request` sends these three codes to a separate assembler (`0xc4ab0`). Their layout in this L1 was not read; the ColdFire L1 uses the same three codes with a segment count in byte 7 and a data length in bytes 8 and 9 ([chunked-request-frames.md](chunked-request-frames.md)); that the ARM L1 does the same is inferred from the shared codes.
 
@@ -124,7 +124,7 @@ The ColdFire L1's console requests `0x1002` (console subchannel) and `0x1003` (c
 | `sysctl_iobrick_pci_op` | `0x2004` | 4 | the I/O brick PCI operation (`SN_SAL_SYSCTL_IOBRICK_PCI_OP`) |
 | `sysctl_cmd_text_command` | task 3, code `0x0000` | 2 | text commands: `version`; `p %d fru capture` and `* fru capture`; `p %d display 2 %s` and `* display 2 %s` (per-node and all-node forms). The strings `p %d fru reset` and `* fru reset` exist with no reference found, so a FRU reset text command is not ruled out |
 
-The PROM version report `0x100b` is not among the request call sites of the SAL runtime read here; the L1 handles it (row above), so some other stage of the firmware sends it (unknown which). The three-integer layout is the ColdFire handler's (`general_req_prom_version_report`).
+The PROM version report `0x100b` is sent from `sysctl_init` (SAL_B `0xffa90f5c` and `0xffa9115c`, in the flash SAL_B rather than the runtime component read first): three ints, the first constant 1 and two bytes of the PROM's version data. The ARM L1 checks the count and sends no reply.
 
 The node firmware's own probe of the controller (`sysctl_probe`, 16 instructions in this build) compares `cpuid[2]` with the simulator signature `0xaeeeeeee8badbeef` and returns 0 or 1 without a call; it sends no request. An L1 therefore does not need to answer anything for the probe in this build.
 
@@ -145,12 +145,57 @@ What the L1 must do for the node firmware of this build, in dependency order. Th
 
 An emulated L1 for the Altix 350 therefore needs: the framed channel and the task-6 requests in steps 2 and 5 plus the clock (`0x200e`, `0x200d`) and the display (`0x1005`); it does not need the PROM-load, FRU, inventory or scan requests, and may answer them `-101`.
 
+## What the ARM L1 sends back for the node's early requests (L1 1.62.1, Opus TIO and IP57 personality)
+
+Read from the Linux L1 program (`/stand/sysco/bin/l1`, the addresses above; the program was carved from package 4 with this repository's CramFS reader and matches the SHA-256 in the first section). Grades: established where the whole routine named was read.
+
+**The reply frame on the wire (established, `syscom_process_outbound_response` `0xc3f64`, read in full; this replaces the earlier inference that the reply echoes the request's address word and code).** The PPP payload of a reply is:
+
+| Byte | Content |
+|---|---|
+| 0 | `0x20 | subchannel`: class 1 in bits 7:5, the subchannel index in bits 4:0. The index is `SysComGetSubc` of the tag the request left in the packet (`SysComSetTasknum`, `0xc132c`, called from `syscom_process_inbound_request` with the request's own byte 0 bits 4:0); the pair is inferred to return the request's subchannel index unchanged (the table behind them was not read) |
+| 1 to 4 | the status, big-endian 32-bit: argument 0 of the reply |
+| 5 | the argument count, counting the arguments after the status |
+| 6 on | the arguments: integer `0x00` + 4 bytes big-endian; raw bytes `0x80 | n` + n bytes; string `0x01` + NUL-terminated text. The whole payload is at most 127 bytes; a larger reply sets an overflow flag and the arguments after that point are dropped |
+
+There is no address word and no echoed request code in a reply. A reply whose packet carries a nonzero error code is sent as status `0xffffffff` followed by that code in four bytes, with no argument count (nine bytes). This is exactly the shape the node's reader wants: the node strips byte 0, then reads the status in bytes 0 to 3, the count in byte 4 and the arguments from byte 5 (`sysctl_cmd_interpret_resp`, the chips repository's SN2 boot-sequence page), so the two ends agree on byte positions (L1 end established; node end read in the same routine). In the L1's own request records the request code is argument 0, so the argument count the L1's handlers test is the request's argument count plus one.
+
+A handler that never calls `ARG__START` sends no reply at all (`IRouterResponse` is skipped when the reply's count word is zero, `0xcf198`). The PROM-version report `0x100b` is such a handler on its success path: it checks that the request carries three arguments (count 4 with the code), prints the PROM version, and returns without a reply; with a different count it replies -100. The node sends this request and waits for a reply it does not get; the node routine does not check the outcome (established for both ends).
+
+**Reply bodies (status 0 in every row; arguments after the status).**
+
+| Request | Reply arguments | Source of the values | Grade |
+|---|---|---|---|
+| `0x0001` | one int: the debug-switch word | non-volatile setting 3 (`nvramGet(3)`) | established, in full |
+| `0x0003` | two ints: `rack << 6 | bay`, then the brick type character | settings 1 and 2; `brickGetType()`; for `=` the character `#` unless a per-slot flag is set | established, in full |
+| `0x0013` | for brick types other than `,` `}` `.` `$` with one slot (the Opus TIO letter `F` with a single slot): two ints, 0 then the brick type character | `brickNumSlots`, `brickGetType()` | established for the branch, inferred that `F` has one slot |
+| `0x000e` | one int: the requester's slab | `SysComGetSlab` of the request's tag (single-slot brick types skip the blade workaround) | established for the code, inferred for the value (0 for the one node on the channel) |
+| `0x0009` | one int: the partition | non-volatile setting 14 | established, in full |
+| `0x0015` | one int: the sharing mode | non-volatile setting `0xcc`, masked to 7 bits (mask from the earlier reading) | inferred |
+| `0x0010` | two counts, then for each node its processor presence mask and enable mask (single-slot form; the multi-slot form differs) | `cpuCount`, `cpuPresent`, `cpuEnabled`; for IP57 the masks come from the two I/O expanders | inferred; the order of the two counts was not pinned |
+| `0x1005` | none | text to the display, `displayString`; -100 if the count is 1 or less | established for the shape |
+| `0x100b` | no reply on success | see above | established |
+| `0x0006` | one int, then raw bytes | see the next section | established, in full |
+
+**Module type (established for `F`, inferred for the Altix 350).** The type letter comes from `brickGetType`; the program's brick-family switch (`brickInitBrickOps` `0x214fc`, jump table at `0x21528`) maps `F` to `OpusTio_BrickOpsInit` (`0x3cc74`), and that routine installs the `IP57_CpuPresent`, `IP57_CpuEnable` and `IP57_CpuDisable` hooks and the name string `TIO`. Request `0x0003` returns that letter (0x46) as its second int and `0x0013` returns it as its second int; the first int of `0x0003` is `rack << 6 | bay` from settings 1 and 2. That a base Altix 350 compute module is the `F` brick is inferred (the IP57 configuration tables are carried by exactly the Opus TIO, Dorado, Gemini, IP67 and IP69 families, and Opus TIO carries a PCI-X bus and slot configuration); the ColdFire `O` alternative in the earlier note is not served by this ARM program.
+
+### Request `0x0006`, board and DIMM EEPROM read (`L1ReqIRouter` `0xc9658` to `0xc9dd8`, read in full)
+
+The request carries four ints: device id (argument 1), selector (2), byte offset (3) and length (4); it needs more than four arguments including the code or it replies -100. The reply is status, then one int and one raw-byte argument.
+
+1. **Device id to table index (`0xc7664`, read for `F`; indexes the slot's EEPROM table).** Id 0 gives index 0 (INTERFACE), id 1 gives 1 (NODE), ids 4 to 7 give 2 to 5 (CPU 0A, CPU 0C, CPU 0A S, CPU 0C S), ids 8 to 13 give 6 to 11 (DIMM0 to DIMM5 L), ids 16 to 21 give 12 to 17 (DIMM0 to DIMM5 R), id 98 gives 18 (RISER), id 99 gives 19 (IO10). Every other id gives -1 and fails as not present. The names and per-entry type codes (1 FRU record, 3 CPU, 0 CPU sensor, 2 DIMM, 4 power supply) are in `OpusTio_eepromCfg` (`0x16550c`, eleven rows of two 12-byte entries). The power supply entries (20, 21) have no device id. So the node's DIMM ids 8, 16, 9, 17, 10, 18, 11, 19, 12, 20, 13, 21 are present on an Opus TIO brick and ids 14, 22, 15, 23 (the fourth bank) are not: twelve DIMM slots (established for the mapping, inferred that every one of them holds a DIMM).
+2. **Checks, in order.** `eepromIsPresent` false: -104. Index at or above the slot's entry count: -105. Selector above 4: -105.
+3. **Selectors.** The L1 keeps one 120-byte record per table entry. Selector 0 (record type 1): the 8-byte common header, copied raw. Selector 1 (type 1): chassis information area. Selector 2 (type 1): board information area. Selector 3 (type 1): the fourth area slot (the multi-record area; the product area slot is never served). Selector 4 (type 2): the DIMM's raw serial-presence-detect bytes. A record whose type does not match the selector, or whose area slot is absent, gives -104; a record whose parse failed gives -107.
+4. **Record layout (established for the offsets read; sizes are in bytes, inferred).** Type 1 records are an IPMI FRU: the common header is read first (8 bytes) and checked with `ipmiCheckCSum` ("EEPROM header checksum error"), then the area offsets in header bytes 2 to 5 select four areas, each stored as (error, size, pointer) at record offsets `+0x10`, `+0x1c`, `+0x28`, `+0x34`. Type 2 records hold a 256-byte buffer read from the DIMM's EEPROM (`0x12e5c0`), checked against its own checksum byte (compare at index 62; "SPD checksum error" on failure), size at `+8`, pointer at `+0xc`.
+5. **Reply.** Status 0; then an int: the number of bytes of the area left after this chunk (area size minus offset minus length, floored at 0); then a raw-byte argument of `length` bytes from the area at `offset`, shortened if the area ends first (a length of zero sends no bytes). An offset at or above the area size gives -105. The node asks for at most 64 bytes per request.
+6. **What the node's parsers need in the bytes** (the chips repository's SN2 boot-sequence page): for a DIMM, SPD bytes 5, 9, 18, 23, 25, 29, 31 and 42 of the first 48; for the board and chassis areas, version, length in 8-byte units, a checksum that makes the whole area sum to 0, and `0xc1`-terminated type/length-coded fields in the IPMI order (chassis: type, part number, serial number; board: language, manufacture time, manufacturer, product name, serial number, part number, FRU file id, custom fields).
+
 ## Not settled
 
-- The order of the first node-to-L1 requests after the node firmware starts (needs the call chain of the SAL entry up to the first `sysctl_*` use, or a captured session).
+- The exact order of the first node-to-L1 requests: the chips repository's boot-sequence page lists each request with its arguments and gives the order as inferred from an interpreter run; two positions (`0x0013` against `0x000e`, and the first `0x1005`) are not settled.
 - The mode, device number and the remaining words of the Opus TIO, Dorado, Gemini, IP67 and IP69 channel entries, and whether those nodes use the JTAG-scanned UART or a wire.
 - How requests `0x3001` to `0x3003` reach their handlers in `L1ReqIRouter`. `syscom_process_inbound_request` sends those codes to the chunk assembler first, yet the compare chain has rows for them (`0x3001` to `0x3004`); the path from the assembler to those rows was not read.
-- The response header bytes, the chunk-frame layout of this L1, the console frame class and index bytes, and the `0x100b` sender.
+- The chunk-frame layout of this L1, the console frame class and index bytes, and whether the subchannel index of a reply always equals the request's (inferred).
 - The reply bodies of the rows graded inferred above: read the handler bodies in `L1ReqIRouter` at the addresses listed.
 
 ## Review
