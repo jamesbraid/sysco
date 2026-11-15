@@ -56,7 +56,7 @@ Messages longer than one frame use request codes `0x3001` (start), `0x3002` (nex
 
 | Code | Handler | Role in 1.62.1 | Grade |
 |---|---|---|---|
-| `0x0001` | `0xc8b74` | reply 0, the debug-switch word (non-volatile setting 3) | established, in full |
+| `0x0001` | `0xc8b74` | reply 0, the debug-switch word (non-volatile setting 3; 0 on a blank image, [settings note](sn2-l1-settings-defaults-1.62.1.md)) | established, in full |
 | `0x0002` | `0xc8bb8` | reply 0, rack and bay as `rack << 6 | bay` (settings 1 and 2) | established, in full |
 | `0x0003` | `0xc8bb8` | the same, then the brick type character; a brick of type `=` (IX) reports `#` (PX) when a per-slot flag is zero | established, in full |
 | `0x0004` | `0xc8ff8` | brick serial number text (`brickGetSerial`, `brickGetSerialSlab`) | inferred |
@@ -260,9 +260,9 @@ Independent review of sysco commit `16abc12` (the reply frame, the reply bodies,
 
 **Findings not fixed.**
 
-1. `0x0001` reply value. The reply is `nvramGet(3)`: the `3` is the selector of a 16-bit setting (bits 23:8 of the word at `+0x1c` of the settings record, read at `0x303b4`), not a value. The code does not say what the field holds and no default was read. The PROM tests bit 11 of the word it gets back. See the chips boot-sequence review section for the PROM side and the effect of returning the integer 3.
+1. `0x0001` reply value. The reply is `nvramGet(3)`: the `3` is the selector of a 16-bit setting (bits 23:8 of the word at `+0x1c` of the settings record, read at `0x303b4`), not a value. The code does not say what the field holds; its default (0) and the commands that change it are in [sn2-l1-settings-defaults-1.62.1.md](sn2-l1-settings-defaults-1.62.1.md), which settles the blank-image value. The PROM tests bit 11 of the word it gets back. See the chips boot-sequence review section for the PROM side and the effect of returning the integer 3.
 2. `0x0010` order is fixable from the code and the page says it was not pinned: the single-slot handler (`0xca5f4`; reply code at `0xcaa14`) replies status, node count (`[fp-0x2fc]`, the array size), CPU count (`[fp-0x304]`), then per node the presence word and the enable word; the node's reader at `0xffae83c0` takes the first integer as the node loop bound. Both ends read. The form for `,` `}` `.` `$` or multi-slot bricks is a different shape and was not read.
 3. `0x0003` and `0x0013` both return the type through the same `brickGetType` call; that `F` has exactly one slot (which `0x0013` needs for the two-integer form) rests on `brickNumSlots`, not read here.
 4. The `0x0010` row grade (inferred) and the `0x0015` row grade (inferred) are lower than what was read; leave until the author regrades.
 
-**Cleared scope.** The reply frame, the reply bodies for `0x0001`, `0x0003`, `0x0013`, `0x000e`, `0x0009`, `0x0015`, `0x100b`, `0x0006`, and module type `F` as read above. Not cleared: `0x0010` for other brick types, the subchannel index table, the ordering of requests, and the contents of the debug-switch field.
+**Cleared scope.** The reply frame, the reply bodies for `0x0001`, `0x0003`, `0x0013`, `0x000e`, `0x0009`, `0x0015`, `0x100b`, `0x0006`, and module type `F` as read above. Not cleared: `0x0010` for other brick types, the subchannel index table, the ordering of requests, and the contents of the debug-switch field on a deployed machine (the blank-image default is in the settings note).

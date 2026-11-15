@@ -100,6 +100,6 @@ Software-now list, in the order to take them:
 - **Route: software now.** What line rate and handshake does the ARM L1 give a wire SysCom channel, and which channel mode do the Opus TIO families use? Step: trace `uartSetConfig` and its callers from the `init` routine at `0xbfdfc`.
 - **Route: software now.** Which `0x0006` device ids does the IP35 PROM send, and what is the destination form of its `0x000b`? Step: trace the callers of `+0x500a8` and `+0x50244` for the id argument, and the open call at `+0x573d0`.
 - **Route: software now.** Does the SN2 node firmware filter received frames by class and index as the IP35 PROM does (class 0 below index 5, class 1 or 2 from 5 to `0x17`)? Step: read `l1sc_receive` in full.
-- **Route: software now.** What does a blank ARM L1 NVRAM hold for setting 3, and does the class byte count toward the 127-byte limit on the ARM L1 and the SAL? Step: read the blank-image branch of `nvramInit` (`0x2c5ac`) and the length checks of `syscom_process_outbound_response`.
+- **Route: software now.** Does the class byte count toward the 127-byte limit on the ARM L1 and the SAL? Step: read the length checks of `syscom_process_outbound_response`. (The blank-image value of setting 3 is settled: [l1/sn2-l1-settings-defaults-1.62.1.md](../software/firmware/l1/sn2-l1-settings-defaults-1.62.1.md).)
 - **Route: documents.** The identity record of the Altix 3000 C-brick (`5` or `C`) and which L1 CPU an Altix 350 module carries. Step: the C-brick board pages of SGI's Altix 3000 guide `007-4579-001` and the 350's `l1cmd` version output.
 
