@@ -31,7 +31,7 @@ The L1 handler replies -100 unless the request has more than four arguments coun
 | 20, 21 | 16, 17 | DIMM4 R, DIMM5 R | `0x43` | `0xac`, `0xae` |
 | 14, 15, 22, 23 | none | none | none | none |
 
-Ids 8 to 13 map to entry id minus 2, ids 16 to 21 to id minus 4. Every other id, including 14, 15, 22, 23 and anything above 99, maps to -1. Each DIMM entry is `select | address << 8 | 0x100 << 16`, type code 2 (the high halfword `0x100` is the size of the buffer, 256 bytes). The meaning of the select byte (an I2C multiplexer or bus choice) and of the address byte (`0xa8` is `0x54` in seven-bit form, the usual serial EEPROM base for a DIMM) is inferred from the values, not read from a bus routine.
+Ids 8 to 13 map to entry id minus 2, ids 16 to 21 to id minus 4. Ids 0, 1, 4 to 7, 98 and 99 map to other entries (not DIMMs); every other id, including 14, 15, 22, 23 and anything above 99, maps to -1. Each DIMM entry is `select | address << 8 | 0x100 << 16`, type code 2 (the high halfword `0x100` is the size of the buffer, 256 bytes). The meaning of the select byte (an I2C multiplexer or bus choice) and of the address byte (`0xa8` is `0x54` in seven-bit form, the usual serial EEPROM base for a DIMM) is inferred from the values, not read from a bus routine.
 
 The four DIMMs of the node's first bank are ids 8, 16, 9, 17, which are entries 6, 12, 7, 13.
 
@@ -71,7 +71,7 @@ Length handling, in the order the handler applies it:
 - offset at or above the record size (256): status -105, no data;
 - offset plus length above 256: length is cut to `256 - offset` and the "bytes left" integer is 0;
 - length 0: the raw argument is left out and the count is 1;
-- the frame writer drops an argument that would push the frame past 127 bytes (the check is on the running length before the raw tag, so the largest raw block after the status and the integer is 116 bytes, giving a 128-byte payload). The dropped argument is still counted in the count byte (inferred from the loop tail at `0xc4550`). A request of 48 bytes never reaches this.
+- the frame writer drops an argument that would push the frame past 127 bytes (the check is on the running length before the raw tag, so the largest raw block after the status and the integer is 116 bytes, giving a 128-byte payload). The dropped argument is still counted in the count byte (established: the loop tail at `0xc4550` increments the count after the overflow jump). A request of 48 bytes never reaches this.
 
 The handler adds no clamp of its own at 64; the 64-byte limit is the node's.
 
@@ -83,7 +83,7 @@ The handler adds no clamp of its own at 64; the 64-byte limit is the node's.
 |---|---|
 | -100 (`0xffffff9c`) | request has four or fewer arguments counting the code |
 | -104 (`0xffffff98`) | the table entry is not present: this covers every id that maps to -1 (the mapped index is then `0xff` as a byte, which is at or above the entry count), ids 14, 15, 22, 23, and a DIMM slot with its presence flag clear. Also: a selector other than 4 on a DIMM entry, because the record type is 2 |
-| -105 (`0xffffff97`) | selector above 4; offset at or above 256. A table index at or above the entry count would also give -105 but cannot occur after the presence test, which uses the same count (inferred from reading both) |
+| -105 (`0xffffff97`) | selector above 4; offset at or above 256. A table index at or above the entry count would also give -105 but cannot occur after the presence test, which uses the same count (established: `0x12c960` returns 0 for an index at or above it, and the handler masks the index to a byte first) |
 | -107 (`0xffffff95`) | the entry is present, selector 4, but the record failed to load: EEPROM read error or bad checksum |
 
 Separately, a request the L1 cannot route gets the nine-byte transport error (status `0xffffffff` then a four-byte code), described in [sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md).
@@ -96,3 +96,33 @@ On the node's side every nonzero status makes the DIMM read fail: `0xffa843f0` t
 - Whether the select byte in the table entry is an I2C multiplexer channel.
 - Whether a record that exists with a null buffer (never produced by the loader) would send no reply: the handler returns without a reply in that case (inferred from the count word test, not triggered by any input).
 - The same table for module types other than `F`.
+
+## Review
+
+Independent review of this page as committed in sysco `08df38c`. The reviewer wrote none of it. Method: package 4 of `l1-1.62.1.bin` was carved (container offset `0x7ecf04`, length `0x4b80f4`, sha256 `8c964136...`), its CramFS read with the repository's CramFS reader, and `/stand/sysco/bin/l1` (sha256 `22cb6287...`, matches) decoded with the retools ARM mode (Capstone), base `0x8000`. The routines read in full were `0xc9658` to `0xc9dd8`, `0xc7664` with its jump table, `0x12e5c0`, `0x12c908`, `0x12c960`, the frame helpers `0x9df34`, `0x9df94`, `0x9e03c` and the frame writer `0xc3f64`. The node side (`0xffa843f0`, `0xffa82270`, `0xffa84680`) was read in the 10.54 SAL_B image to check the reader. No firmware bytes or listings are kept.
+
+**Confirmed.**
+
+- Handler order: argument count at `+0x20` of 4 or fewer gives -100 (the slot count includes the code, so code plus four integers is 5); presence flag clear gives -104 (the index is masked to a byte there, so -1 reads as 255); index at or above the count gives -105; selector above 4 gives -105; selector 4 needs record type 2 (-104 otherwise), a nonzero error code gives -107, a null buffer sends the status already stored. Statuses `0xffffff9c`, `0xffffff98`, `0xffffff97`, `0xffffff95`.
+- Length rules: offset at or above the record size (unsigned) gives -105; offset plus length above it cuts the length to size minus offset and sets "left" to 0, otherwise left is size - offset - length (208 for the 48-byte read); length 0 omits the raw argument.
+- Frame (`0xc3f64`): byte 0 `0x20 | index`; bytes 1 to 4 the status; byte 5 the count, incremented for each argument including one dropped at overflow; integer is tag 0 and four bytes big-endian (guard: running length plus 5 must not exceed 127); raw is tag `0x80 | n` then n bytes (guard: running length plus n must not exceed 127, so 116 after the status and integer, a 128-byte payload). The 60-byte success frame and the 6-byte error frame are as the page lays out.
+- "Left" is 256 - offset - length, and the node needs it only because its parser demands an integer and a raw block (count exactly 2); for a single 48-byte request the node never uses the value.
+- Device id table: `OpusTio_eepromCfg` entries 6 to 17 match the select, address and size words and the names; the type-F jump table at `0xc7fe8` maps 8 to 13 to id minus 2 and 16 to 21 to id minus 4 (see the fix below).
+- Loader `0x12e5c0`: 256-byte buffer, error code 2 on a read failure and 3 on a checksum failure (both free the buffer), 4 if the allocation fails; the checksum loop runs the counter from 0 to `0x3e` and compares byte 63. The older text in the link page ("compare at index 62") was in item 4 of that page's section on the EEPROM request; `08df38c` corrects it and the correction is right. The ColdFire L1's SPD check (`mbus.md`) agrees with the byte 63 rule.
+- The example checksum in the chips page: its eight non-zero bytes sum to `0x250`, so byte 63 is `0x50` if all other bytes of 0 to 62 are 0.
+
+**Mechanical fixes made in this review (this page).**
+
+1. The id sentence said every other id, including anything above 99, maps to -1. Ids 0, 1, 4 to 7, 98 and 99 map to other table entries; they are not DIMMs.
+2. Two "inferred" grades are now established: the dropped argument is counted (loop tail `0xc4550`) and the -105 index case cannot follow the presence test (`0x12c960` returns 0 above the count).
+
+**Findings not fixed.**
+
+1. Byte 0 of the reply is `0x20 | c119c(...)`, where the helper maps the request's subchannel through a per-module-type table (`0xc10bc`, `0xc11d4`); the page's "the request's subchannel index" holds if that mapping is the identity, which was not shown (the link page grades it inferred).
+2. The link page still says the -100 test is on a count of zero; for this handler it is a count of 4 or fewer. That page is outside this review.
+3. The page's note that wire byte 7 of the request is 4 was not re-checked.
+4. The eeprom record trigger and the presence flag writers remain unread.
+
+**Not checked.** The EEPROM access routine `0x12c9dc` beyond its 32-byte piece size, the request receive path, other module types.
+
+**Cleared scope.** The request arguments, the id-to-entry map for type F, the handler checks and statuses, the reply frame byte by byte, the length cut and the 116-byte limit, the checksum rule and its correction of the link page. Not cleared: the subchannel mapping in byte 0, and whether the loader runs on request.
