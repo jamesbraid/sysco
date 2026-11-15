@@ -207,3 +207,5 @@ Independent review of sysco commits `a23cc0a` (this page) and `9c89371` (the lin
 4. The ColdFire device-id hook (`0x30000990`, types `0 7 8 9 E Q V` swap 0 and 4) was not located (a search of the listing for stores to that address finds only the call sites); the table in the page cites [ip53-eeprom-record-tables-1.44.0.md](ip53-eeprom-record-tables-1.44.0.md) and was not re-derived.
 
 **Cleared scope.** Sections 2 (framing, all four columns except the SAL column, which is quoted), 3 (header, arguments, tags), 4 (arguments, status codes), the request-code lists and the SN1 node request table in section 5, the transport row for the ColdFire and ARM channels, and the link edits of `9c89371`. Not cleared: the "maximum payload" row for the ColdFire L1 until finding 1 is answered, the SN2 node column wherever it is quoted, the `0x0006` device-id mapping, and every row graded unknown or inferred.
+
+**Resolved after review.** Finding 1 (reply length): resolved in af21ce0 (ColdFire and ARM L1 re-read, SN1 PROM receive side added). Findings 2 to 4 are not addressed.

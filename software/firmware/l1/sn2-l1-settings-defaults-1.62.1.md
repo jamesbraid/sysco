@@ -83,3 +83,5 @@ Independent review of sysco commit `6ee9e7e` (this page, the changes it made to 
 
 **Cleared scope.** The location, layout and integrity rules of the image, the blank-image path and its stores, the default of setting 3 (0, hence request `0x0001` answers status 0 and integer 0) for a blank, zeroed or erased image, the accessor and setter, the `debug` command and request `0x1001` as writers, the `nvram reset` finding. Not cleared: the sentence about the refresh script (finding 1), the claim that nothing else writes setting 3 (finding 2), and what a deployed L1's flash holds.
 
+
+**Resolved after review.** Finding 1 (refresh script) in 35048c9; finding 2 (other writers of setting 3) in 27aba2e. Findings 3 to 5 are not addressed.
