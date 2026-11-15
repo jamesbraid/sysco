@@ -33,7 +33,7 @@ On the node side (SHub 1 build), `sc_shub_dev_reg` forms the register address `0
 | Byte | Content |
 |---|---|
 | 0 | bits 7:5 the **class**, bits 4:0 an index. Class 0: request; class 2: event; any other class is not processed by the packet entry. The L1 writes a response with `0x20` in this byte (class 1). |
-| 1 to 4 | a 32-bit big-endian address word. The node firmware builds it from `0x0ffff000` (`sysctl_cmd_open` passes `0xffff000`) and the destination task number; every request it builds is to task 6. The L1 passes the word through `SysComSetTasknum` to derive the 7-bit tag it puts in bits 5 to 11 of the packet's source word (inferred for the L1 use). |
+| 1 to 4 | a 32-bit big-endian address word. The node firmware builds it from `0x0ffff000` (`sysctl_cmd_open` passes `0xffff000`) and the destination task number; every numbered request it builds is to task 6, and its text command goes to task 3 (see the request table below). The L1 passes the word through `SysComSetTasknum` to derive the 7-bit tag it puts in bits 5 to 11 of the packet's source word (inferred for the L1 use). |
 | 5, 6 | the 16-bit big-endian request code |
 | 7 | the argument count |
 | 8 on | the arguments, in order |
@@ -42,7 +42,7 @@ The node's builder writes the same fields without the first byte (word, code, co
 
 An argument starts with a type byte: **`0x00`**, then a 32-bit big-endian integer; **`0x01`**, then a NUL-terminated string; **`0x80 | n`**, then `n` raw bytes (`n` up to 127, "indirect"). This is the encoding the kernel's event parser expects ([sn2-controller-host-protocol.md](sn2-controller-host-protocol.md): types `0x00`, `0x01` and `0x80 | length`), so the event record the kernel sees is the node-to-L1 argument encoding with the code and count in front.
 
-A response carries the status as its first argument, an integer: 0 on success and a negative number on failure; the integer or string results follow. Status values read in `L1ReqIRouter`: `-100` (at entry, when a flag byte of the incoming packet at `+0x20` is zero; its meaning was not read), `-101` (unknown request code, after an optional extended-request hook), `-104` (no serial number, request `0x0008`) and `-106` (request `0x0013` when the blade state check fails). The response header was seen only as stores (class `0x20`, an echo of the request's address word and code, and the count); it is inferred to mirror the request header.
+A response carries the status as its first argument, an integer: 0 on success and a negative number on failure; the integer or string results follow. Status values read in `L1ReqIRouter`: `-100` (at entry, when a flag byte of the incoming packet at `+0x20` is zero; its meaning was not read), `-101` (unknown request code, after an optional extended-request hook), `-104` (no serial number; request `0x0008`, and other handlers too, for example `0x0004`) and `-106` (request `0x0013` when the blade state check fails). The response header was seen only as stores (class `0x20`, an echo of the request's address word and code, and the count); it is inferred to mirror the request header.
 
 Messages longer than one frame use request codes `0x3001` (start), `0x3002` (next segment) and `0x3003` (continuation): `syscom_process_inbound_request` sends these three codes to a separate assembler (`0xc4ab0`). Their layout in this L1 was not read; the ColdFire L1 uses the same three codes with a segment count in byte 7 and a data length in bytes 8 and 9 ([chunked-request-frames.md](chunked-request-frames.md)); that the ARM L1 does the same is inferred from the shared codes.
 
@@ -89,7 +89,7 @@ Messages longer than one frame use request codes `0x3001` (start), `0x3002` (nex
 | `0x200b`, `0x200c` | `0xcd42c`, `0xcd5f4` | I/O expander read and write | inferred |
 | `0x200d`, `0x200e` | `0xcdc64`, `0xce3d0` | set and get the clock (a `date -u ...; hwclock -u` line; year to second as integers) | established for the call text, inferred for the layout |
 | `0x200f` | `0xceb50` | TIO clock reset and cross-bar probe (`TIO_Issue_CX_Probe`; "No added CX checks, unknown brick type") | inferred |
-| `0x3001` to `0x3004` | `0xcd90c`, `0xcdb78`, `0xcdbb4`, `0xcdbe0` | hook and FRU requests (`0x3001` calls `sign`) | inferred |
+| `0x3001` to `0x3004` | `0xcd90c`, `0xcdb78`, `0xcdbb4`, `0xcdbe0` | hook and FRU requests (`0x3001` calls `sign`); how the chain reaches them while the chunk assembler takes `0x3001` to `0x3003` first is open (see Not settled) | inferred |
 | `0x4000`, `0x4004` | `0xcbc58`, `0xcc1e0` | inventory text: IPMI FRU records, JEDEC DIMM records | inferred |
 | `0x4001` | `0xcdc20` | reply 0 and the SHUB workaround flag (`SHUB_WarStatus`) | inferred |
 | `0x4002` | `0xcc7b0` | controller reboot: logs `L1REQ_REBOOT requested`, signals the program, `exceptionReset` | established |
@@ -101,12 +101,13 @@ The ColdFire L1's console requests `0x1002` (console subchannel) and `0x1003` (c
 
 ## What the node firmware sends
 
-**Established** (the call sites of `sysctl_cmd_construct_req` in the SAL runtime): every request below is addressed to task 6 and built as (code, argument count, arguments). The node firmware caches the answers per node (`sysctl_cache_check`, `sysctl_cache_store`) for the identity queries, so each is asked once per node.
+**Established** (the call sites of `sysctl_cmd_construct_req` in the SAL runtime): every numbered request below is addressed to task 6 and built as (code, argument count, arguments). The one exception is the text command, the last row, which goes to task 3. The node firmware caches the answers per node (`sysctl_cache_check`, `sysctl_cache_store`) for the identity queries, so each is asked once per node.
 
 | Node routine | Code | Arguments | What the kernel or PROM uses it for |
 |---|---|---|---|
 | `sysctl_debug_get` | `0x0001` | 0 | debug switches |
 | `sysctl_rack_bay_type_get` (cached) | `0x0003` | 0 | rack, bay and type: the module id (`SN_SAL_SYSCTL_MODID_GET`), the I/O brick id (`sysctl_iobrick_rack_bay_type_get`) |
+| shared routine behind `sysctl_eeprom_node`, `sysctl_eeprom_io_riser`, `sysctl_eeprom_dimm` and `sysctl_eeprom_iobrick` | `0x0006` | 8 | board EEPROM reads for the node, the I/O riser, a DIMM and the I/O brick |
 | `sysctl_sys_serial_get` | `0x0008` | 0 | the system serial number |
 | `sysctl_partition_get` | `0x0009` | 0 | `SN_SAL_SYSCTL_PARTITION_GET` |
 | `sysctl_io_portspeed_get` | `0x000a` | 0 | `SN_SAL_SYSCTL_IO_PORTSPEED_GET` |
@@ -121,7 +122,7 @@ The ColdFire L1's console requests `0x1002` (console subchannel) and `0x1003` (c
 | `sysctl_time_of_day_get`, `sysctl_time_of_day_set` | `0x200e`, `0x200d` | 0, 12 | the clock |
 | `sysctl_tio_clock_reset` | `0x200f` | 0 | the TIO clock reset (`SN_SAL_SYSCTL_OP` 2), with a long timeout (20,000,000 ticks) |
 | `sysctl_iobrick_pci_op` | `0x2004` | 4 | the I/O brick PCI operation (`SN_SAL_SYSCTL_IOBRICK_PCI_OP`) |
-| `sysctl_cmd_text_command` | not captured | one text argument | a text command; the call is built for task 3 (the code was not read) |
+| `sysctl_cmd_text_command` | task 3, code `0x0000` | 2 | text commands: `version`; `p %d fru capture` and `* fru capture`; `p %d display 2 %s` and `* display 2 %s` (per-node and all-node forms). The strings `p %d fru reset` and `* fru reset` exist with no reference found, so a FRU reset text command is not ruled out |
 
 The PROM version report `0x100b` is not among the request call sites of the SAL runtime read here; the L1 handles it (row above), so some other stage of the firmware sends it (unknown which). The three-integer layout is the ColdFire handler's (`general_req_prom_version_report`).
 
@@ -138,7 +139,7 @@ What the L1 must do for the node firmware of this build, in dependency order. Th
    - `0x0013`: the slot of the node (and `-106` if the blade is not in a state to answer).
    - `0x000e`: the slab number. `0x0012`: the node maximum. `0x0015`: the sharing mode (setting `0xcc & 0x7f`). `0x0009`: the partition (setting 14).
    - `0x0010`: processor presence and enable, per node.
-3. **Power and reset state.** There is no request for it in the table, and none from the node in the list above. The L1 holds the node in reset and releases it itself (the `IP57_ResetHold` and `IP57_ResetRelease` routines, [arm-ip57-configuration-control-1.40.5.md](arm-ip57-configuration-control-1.40.5.md)); the node firmware finds itself running after the release, so a model that starts the node firmware at all has already completed the L1's release sequence. Not asked and not answered: the last-reset reason (`0x000f` is absent from this L1).
+3. **Power and reset state.** There is no numbered request for it in the table, and none from the node in the list above. The text-command path is not closed (its `fru reset` strings have no reference found), so "no power or reset request" holds for numbered requests only. The strings "Reset request sent to system controller" and "Request for system reset failed" are LED display-code descriptions in the exported table `chipset_common_ledlist`, not requests. The L1 holds the node in reset and releases it itself (the `IP57_ResetHold` and `IP57_ResetRelease` routines, [arm-ip57-configuration-control-1.40.5.md](arm-ip57-configuration-control-1.40.5.md)); the node firmware finds itself running after the release, so a model that starts the node firmware at all has already completed the L1's release sequence. Not asked and not answered: the last-reset reason (`0x000f` is absent from this L1).
 4. **Console selection.** There is no console request in this L1. The L1 learns the console from the data: a class-2 frame from the node (`syscom_process_inbound_event`) makes the L1 call `SMPConsoleSubchannel` with the sender's slab and subchannel (which sets the system console and tells the configuration task through `L1CfgEventConsoleSubchannel`) and forwards the frame to the management task as an event (`IRouterEvent`); a raw-mode channel (`syscom_process_inbound_data`) forwards its bytes as one string argument of an event, on subchannel 4. The node firmware's `l1sc_send` passes the immediate `0x42` to the frame writer where the header byte goes, and `l1sc_receive` compares against `0x44`, so its console traffic is class 2 (index 2 out, index 4 in): inferred from the two immediates, the routines were not read in full. The console characters in a class-2 frame are the frame's payload (the L1 copies them as one string argument, `ARG__STRING`). The L1 side of the kernel's `SN_SAL_SYSCTL_EVENT` is `0x1007` above.
 5. **Event delivery.** After `0x1007` the L1 persists the subchannel (setting `0x13`) and pushes environmental events to the node as class-2 frames in the argument encoding the kernel parses ([sn2-controller-host-protocol.md](sn2-controller-host-protocol.md)).
 
@@ -148,6 +149,7 @@ An emulated L1 for the Altix 350 therefore needs: the framed channel and the tas
 
 - The order of the first node-to-L1 requests after the node firmware starts (needs the call chain of the SAL entry up to the first `sysctl_*` use, or a captured session).
 - The mode, device number and the remaining words of the Opus TIO, Dorado, Gemini, IP67 and IP69 channel entries, and whether those nodes use the JTAG-scanned UART or a wire.
+- How requests `0x3001` to `0x3003` reach their handlers in `L1ReqIRouter`. `syscom_process_inbound_request` sends those codes to the chunk assembler first, yet the compare chain has rows for them (`0x3001` to `0x3004`); the path from the assembler to those rows was not read.
 - The response header bytes, the chunk-frame layout of this L1, the console frame class and index bytes, and the `0x100b` sender.
 - The reply bodies of the rows graded inferred above: read the handler bodies in `L1ReqIRouter` at the addresses listed.
 
@@ -174,3 +176,5 @@ Independent review of commit `854d395` (this page and the "SN2 controller link" 
 6. Grades read: "established, in full" rows are consistent with the chain addresses; rows graded inferred were not checked further. The first-exchange contract (order unknown) is correctly left open. The questions section matches the page.
 
 **Cleared scope.** The framing facts at the L1 end, and at the node end as limited above; the header layout and the class byte; the 55-code request set and its three additions; the node-side request codes and argument counts in the table (not its completeness: see findings 1 and 2); the absence of console, PROM-version and numbered power or reset requests from the SAL runtime read; the grades of the rows checked. Not cleared: the claim that no power or reset request reaches the L1 by any path (text commands), the completeness of the node request list, and the rows graded inferred.
+
+Findings 1-6 addressed in the commit "software/firmware/l1: address the SN2 PROM-link review findings"; renewed review needed for the changed claims.
