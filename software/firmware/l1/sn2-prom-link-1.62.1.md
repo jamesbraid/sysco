@@ -22,7 +22,7 @@ On the node side (SHub 1 build), the UART driver (`sc_uart_*`, for example `sc_u
 **Established** at both ends (`PPPWrite` at `0x10df80`, `PPPRead`, `PPPDecode`; node side `l1sc_fill_sendbuf` at `0x52fe0`, `l1sc_receive` at `0x53b80`).
 
 1. A frame starts and ends with the flag byte `0x7e`.
-2. Between the flags go the payload bytes, then the 16-bit frame check sequence. Any payload or check byte equal to `0x7e` or `0x7d` is sent as `0x7d` followed by the byte xor `0x20`. The L1's writer also escapes `0x11` and `0x13` (XON, XOFF) when its flow-control option is on, and `0x0d` when a second option is on (both options are fields of the channel; their defaults were not read). The receiver undoes `0x7d` escapes.
+2. Between the flags go the payload bytes, then the 16-bit frame check sequence. Any payload or check byte equal to `0x7e` or `0x7d` is sent as `0x7d` followed by the byte xor `0x20`. The L1's writer also escapes `0x11` and `0x13` (XON, XOFF) when its flow-control option is on, and `0x0d` when a second option is on (both options are fields of the channel; the SysCom channels are created with both off, see [node-link-sn1-vs-sn2.md](node-link-sn1-vs-sn2.md)). The receiver undoes `0x7d` escapes.
 3. The check is the PPP FCS-16: initial value `0xffff`, reflected polynomial `0x8408` (the 256-entry table at `0x198134` in the Linux L1 program equals the generated table, entries `0x0000, 0x1189, 0x2312, 0x329b, ...`), the final value complemented and sent low byte first. The reader tests the residue `0xf0b8` (`PPPRead`, literal `0xf0b8`). There is no address and control prefix (`0xff 0x03`) and no protocol field: the payload begins directly with the frame header below.
 4. A payload is at most 127 bytes: the node firmware's frame writer clamps the length to 127 (`l1sc_fill_sendbuf`), which agrees with the 127-byte `CHUNKSIZE` of the kernel's subchannel driver. Larger messages are sent in chunks (request codes `0x3001` to `0x3003`, below).
 
@@ -101,7 +101,7 @@ The ColdFire L1's console requests `0x1002` (console subchannel) and `0x1003` (c
 
 ## What the node firmware sends
 
-**Established** (the call sites of `sysctl_cmd_construct_req` in the SAL runtime): every numbered request below is addressed to task 6 and built as (code, argument count, arguments). The one exception is the text command, the last row, which goes to task 3. The node firmware caches the answers per node (`sysctl_cache_check`, `sysctl_cache_store`) for the identity queries, so each is asked once per node.
+**Established** (the call sites of `sysctl_cmd_construct_req` in the SAL runtime): every numbered request below is addressed to task 6 and built as (code, argument count, arguments). The one exception is the text command, the last row, which goes to task 3. The "Arguments" column below counts words in the node's builder (an integer or string is 2, a raw block 3), not arguments: the SN1 PROM's builder does the same ([node-link-sn1-vs-sn2.md](node-link-sn1-vs-sn2.md)), and 8 for `0x0006` is the four integers the L1 handler reads (inferred for the SN2 builder). The node firmware caches the answers per node (`sysctl_cache_check`, `sysctl_cache_store`) for the identity queries, so each is asked once per node.
 
 | Node routine | Code | Arguments | What the kernel or PROM uses it for |
 |---|---|---|---|
