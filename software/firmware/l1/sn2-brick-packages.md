@@ -88,9 +88,12 @@ reach is by the routines and labels named in [arm-linux-packages.md](arm-linux-p
 
 1. The Altix 330 and the Prism: no tie. Needs the product name in some package's file list (the Linux packages' user
    space is only named by program, not read), or a board name from the machines' guides.
-2. The Altix 3000 C-brick's type letter.
-3. Whether the 1.62.1 images on the Altix support disc add Altix 450 and 4700 bricks beyond the 1.44.0 labels. The disc is
-   held (`evidence/irix-files.md`) but its container was only measured, not read for labels.
+2. The Altix 3000 C-brick's type letter: inferred `5` rather than `C`, because no package of the Altix container accepts
+   `C` ([sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)); the brick's own identity record is still unread.
+3. ~~Whether the 1.62.1 images on the Altix support disc add Altix 450 and 4700 bricks beyond the 1.44.0 labels.~~ Read:
+   the 1.62.1 ARM packages carry the same supported-brick strings as 1.44.0, and the Linux L1 program adds SHub 2, TIO,
+   PCI Express and Altix 4700 blade support (IP73, IP75, IP81) while its IP57 routines are unchanged
+   ([sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)).
 
 ## Review
 
