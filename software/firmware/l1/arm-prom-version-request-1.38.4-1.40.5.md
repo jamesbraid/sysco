@@ -44,7 +44,16 @@ Steps of the handler, in order:
 established for the handler body in both builds. This agrees with 1.44.0, 1.60.3 and 1.62.1, so no ARM L1 build read, from 1.38.4 to
 1.62.1, answers it.
 
-**Not read.** The other frame writers of these two builds (the request, event, response and chunked-response writers enumerated for
-1.62.1) were not re-enumerated; only the handler was. Build dates: the 1.40.5 package is stamped 2005-12-05, before the SN2 PROM
+**Not read.** The other frame writers of 1.40.5 were not re-enumerated. Review re-enumerated them for 1.38.4 only (section "Review"). Build dates: the 1.40.5 package is stamped 2005-12-05, before the SN2 PROM
 builds that carry the wait-then-park code (4.55, 2006-06). Which L1 build sat in a machine that ran those PROMs is not established;
 1.42.x and 1.46 to 1.58 are not held.
+
+## Review (second reading of the 0x100b wait)
+
+Independent review of sysco `1e9c304`, with chips `a1e9539` and the page [sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md). Examined: the 1.38.4 `l1` carved from the 6.5.28 overlay with this repository's CramFS code (size and SHA-256 match the table) and the 1.62.1 `l1`, both in Ghidra (retools `441b26c`). 1.40.5 was not opened.
+
+**Confirmed for 1.38.4.** The literal at `0x892e8` is `0x100b` (the `0x100a` literal at `0x892e4`, `0x1009` at `0x892d8`). The handler requires the argument count byte to be 4, otherwise `ARG__START` with `0xffffff9c`. The word is packed as `arg2 << 24 | (arg3 & 0xffff) << 8 | arg1 & 0xff`, so (1, 5, 4) gives `0x05000401`, stored with `vramSet(slot + 0x2a, word)`. The log string at file offset `0x10a18c` reads `N%d: PROM %x.%x (PR %d)`. `SysComEventDisable` runs when the word at `+0xc` of the block at `0x2b1720` is not -1 and `SysComSlab` of it equals the slot, and it stores -1 and calls `nvramSet(0x13, 0)`. `ARG__START` is called only in the count branch. `L1ReqInit` registers `L1ReqIRouter` (`0x882a0`) as a direct function for `0xffff006`; the router (`0xb5d98`) calls it and returns 0 with no reply.
+
+**Added by the review.** The same four routines call `PPPWrite` in 1.38.4 as in 1.62.1 (the response, chunked-response, event and request writers). One difference matters for the open question: the event word is not initialised to -1. No store of -1 into it was found, `SysComInit` clears the block (`memset` of `0x84` bytes at `0x2b1720`) and the word's address is in bss, so the event gate (`word != -1`) is open from the start; this is inferred from the code read, no run. An event sent with word 0 has header `0x40 | SysComSubchan(0)`, that is `0x40`. The PROM's receiver accepts a header of index below 5 only with class bits clear, so `0x40` is rejected and cannot complete slot 5 or above. No frame path that could end the PROM's wait was found in 1.38.4 or 1.62.1. Which L1 tasks send packets to the SysCom tasks (the console request sources `0x68308` and `0x68430`) was not traced.
+
+**Not checked.** 1.40.5, 1.44.0 and 1.60.3; the request and response writers' gates in 1.38.4 beyond the call graph; whether anything raises an event in 1.38.4 before the node's first request; the claims in the page about the 1.40.5 addresses.
