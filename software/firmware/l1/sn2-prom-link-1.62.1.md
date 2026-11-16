@@ -35,8 +35,10 @@ On the node side (SHub 1 build), the UART driver (`sc_uart_*`, for example `sc_u
 | 0 | bits 7:5 the **class**, bits 4:0 an index. Class 0: request; class 2: event; any other class is not processed by the packet entry. The L1 writes a response with `0x20` in this byte (class 1). |
 | 1 to 4 | a 32-bit big-endian address word. The node firmware builds it from `0x0ffff000` (`sysctl_cmd_open` passes `0xffff000`) and the destination task number; every numbered request it builds is to task 6, and its text command goes to task 3 (see the request table below). The L1 passes the word through `SysComSetTasknum` to derive the 7-bit tag it puts in bits 5 to 11 of the packet's source word (inferred for the L1 use). |
 | 5, 6 | the 16-bit big-endian request code |
-| 7 | the argument count |
+| 7 | the argument count; absent when the request has no arguments (the PROM's builder omits it, and the frame is then 7 bytes) |
 | 8 on | the arguments, in order |
+
+**A request with no arguments has no count byte (established, both ends).** The L1's `syscom_process_inbound_request` (`0xc2284`; `0x83ac4` in 1.38.4, same code) reads byte 7 only `if (7 < length)` (length excludes the check bytes) and otherwise takes the count as 0. It reads the code from bytes 5 and 6 without a length check, and nothing between the PPP reader (which needs more than 2 bytes with the check) and this routine enforces a minimum, so a 7-byte frame such as `7e 05 0f ff f0 06 00 03 69 27 7e` (request `0x0003`) is a valid request with no arguments. The code is stored as the request's argument 0, so the argument total the handlers see is the count plus one and the `-100` test at entry (total zero) cannot fire for a well-formed frame. Reply payloads (before the check bytes): `0x0002` is 11 bytes (`20|subchannel`, `00 00 00 00`, `01`, `00` + `rack << 6 | bay`); `0x000e` is 11 bytes (`01`, `00` + the slab; handler `0xca214`, slab is the source tag's `SysComGetSlab`, the blade workaround skipped for single-slot types). The 0x0003 reply is 16 bytes: `20|subchannel`, `00 00 00 00`, `02`, `00` + word, `00` + type (handler `0xc8bb8`, shared with `0x0002`).
 
 The node's builder writes the same fields without the first byte (word, code, count, arguments) into a buffer; the class and index byte is supplied by the frame writer (`l1sc_fill_sendbuf`'s fourth argument).
 
