@@ -73,7 +73,7 @@ Messages longer than one frame use request codes `0x3001` (start), `0x3002` (nex
 | `0x0010` | `0xca5f4` | processor presence and enable per node: `cpuCount`, `cpuPresent`, `cpuEnabled`; logs `SL REQ: slab%d %d CPUs, %d nodes` | inferred |
 | `0x0011` | `0xcab6c` | scan record (`scancmd_init`, `sn1sc_process_scancmd`) | inferred |
 | `0x0012` | `0xccbdc` | reply 0 and integers from settings `0x7e`, `0x50` and `0x80` (the node's "maximum nodes" query uses this code) | inferred |
-| `0x0013` | `0xca2f8` | the requesting blade's slot (`bladeSSHackSlot` or the stored slot) and its state (`bladeCheckState`, `bladeOps`); logs `L1REQ: s=%d id=0x%04x`; `-106` when the state check fails. The ColdFire L1 names this code the type character | inferred |
+| `0x0013` | `0xca2f8` | for brick types other than `,` `}` `.` `$` with `brickNumSlots` of 1 or less: status 0, integer 0, the stored type character unchanged; otherwise the requesting blade's slot (`bladeSSHackSlot` or the stored slot) and a halfword of its record, logging `L1REQ: s=%d id=0x%04x`, or `-106` and the state when `bladeCheckState` fails. The ColdFire L1 names this code the type character | established for the branch (case block read in Ghidra), inferred for which form an `F` brick takes |
 | `0x0015` | `0xccc80` | reply 0, setting `0xcc` masked with `0x7f` (the node's "sharing mode" query uses this code) | inferred |
 | `0x0016`, `0x0017` | `0xcccc4`, `0xcceac` | new in 1.62.1: log `APPWT_VAL` and `APPWT_LIMIT` for a slot, settings and `pow`; role unread | located |
 | `0x1001`, `0x1008` | `0xcae2c`, `0xcb00c` | write non-volatile settings (debug switches, the partition-database flag) | inferred |

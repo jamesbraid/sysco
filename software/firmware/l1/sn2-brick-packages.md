@@ -83,7 +83,7 @@ ioboard" and abandons the bridge (established; trace in the chips repository's P
   the `IP57_*` hooks and answers the IO10 as device id 99 ([sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md)), so the firmware family that looks like the 350 reports `F`.
   That is an unresolved conflict, not a settled letter: either the 350's L1 reports `O` (the ColdFire packages 3 and 5 carry `O` with the record name
   `IPF_2UINT`, above) or the ARM `F` family is not what ships on the 350 base compute module, or the PROM never attaches the 350's PIC through this path.
-  Inferred: `O` (Linux `L1_BRICKTYPE_OPUS`, `0x6f`), because it is the only accepted letter that names an Altix product.
+  Inferred: `O` (Linux `L1_BRICKTYPE_OPUS`, `0x6f`), because it is the accepted letter closest to an Altix 350 module (`#` and `=` are the IX and PX bricks, `M` is the C-brick IP67 in the table above, `V` is unnamed).
 - What settles it: a captured `0x0013` or `0x0003` reply from a 350's L1, or a `config` line from its L1 console (the L1 prints the letter in lower case, 007-3938-005 p.49).
 
 ## Packages that do not serve an SN2 brick
@@ -124,3 +124,7 @@ Checks:
 Findings: none that change a claim. Note the `l1.h` table in the note is graded established, which matches the evidence order (SGI's Linux platform headers rank first).
 
 Cleared scope: the IP57 claim, the type-letter mapping against Linux, and the package assignment table as reasoning. Not cleared: the firmware-side counts listed as not re-verified.
+
+### Review (type letter accepted by the SN2 PROM, commit badc55e)
+
+Independent re-read in Ghidra of the SHub 1 PROM (snprom 10.54) and of the 1.62.1 ARM `l1` program (sha256 `22cb6287...`, extracted from `l1-1.62.1.bin` package 4). At stops in the sof=2 leaf helpers, r34 and above are out of frame. Confirmed: the PROM sends `0x0013` (`0xffa7cbe0`), lower-cases `A` to `Z` and no more, falls back to `0x0003` only when the reply status is -101 and the caller wants a type, and `pic_attach2` accepts `0x23`, `0x3d`, `0x6d`, `0x6f`, `0x76` and aborts after the PIC, configuration and BAR writes. The ARM L1's `0x0013` case: for a type other than `,` `}` `.` `$` with `brickNumSlots` of 1 or less it replies status 0, integer 0, the stored letter unchanged (so `F` stays upper case on the wire); multi-slot bricks get the slot and a halfword, `-106` on a failed state check; an unknown request gets -101. Corrected: [sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md) described `0x0013` as slot and state only; and "O is the only accepted letter that names an Altix product" was too strong, since `M` is a C-brick letter and `#`, `=` are used by Altix 3000. Unchanged and open: whether an `F` brick has one slot, and which letter a 350 reports. A single-slot `F` answer would be refused by this PROM. Real hardware can pass the list with `O`, `#`, `=` or `M` (and an unnamed `V`).
