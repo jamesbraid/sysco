@@ -72,6 +72,20 @@ reach is by the routines and labels named in [arm-linux-packages.md](arm-linux-p
 | Prism (deskside and rack) | Silicon Graphics Prism | not tied | **Unknown.** The L1 guide adds the Prism at revision 004 (007-3938-005 record of revision) but no label in any package names it |
 | `TIO Test Card`, `Opus TIO` | TIO board support | the ColdFire display tables name `^` and `F`; the ARM packages name `TIO*` and `OpusTio_*` routines | Established as names. Their product is unknown |
 
+## Which letter the SN2 PROM accepts from the L1
+
+The SHub 1 PROM (snprom 10.54) asks the L1 for the brick type twice: request `0x0003` for the KLCONFIG builder and request `0x0013` for the PCI
+bridge attach. Both replies carry the single stored type character; the PROM lower-cases `A` to `Z` and does no other folding on the path to the bridge
+attach. The bridge attach (`pic_attach2`) accepts only the lower-cased letters `#`, `=`, `m`, `o` and `v`; any other letter, `f` and `c` included, prints "Unknown
+ioboard" and abandons the bridge (established; trace in the chips repository's PIC page, SAL runtime section). For the L1 side this means:
+
+- An Altix 350 module whose L1 answers `F` (the Opus TIO letter) would not get a PIC attached by this PROM. The ARM L1's `F` handler is the one that installs
+  the `IP57_*` hooks and answers the IO10 as device id 99 ([sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md)), so the firmware family that looks like the 350 reports `F`.
+  That is an unresolved conflict, not a settled letter: either the 350's L1 reports `O` (the ColdFire packages 3 and 5 carry `O` with the record name
+  `IPF_2UINT`, above) or the ARM `F` family is not what ships on the 350 base compute module, or the PROM never attaches the 350's PIC through this path.
+  Inferred: `O` (Linux `L1_BRICKTYPE_OPUS`, `0x6f`), because it is the only accepted letter that names an Altix product.
+- What settles it: a captured `0x0013` or `0x0003` reply from a 350's L1, or a `config` line from its L1 console (the L1 prints the letter in lower case, 007-3938-005 p.49).
+
 ## Packages that do not serve an SN2 brick
 
 **Established** by their strings and linked modules:
