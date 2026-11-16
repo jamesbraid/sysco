@@ -69,3 +69,7 @@ Ghidra export of the 1.38.4 `l1` (`f652c04c...`), with the routines below cross-
 - **Event sources.** Only events whose source task is 4 (the environment task, through `EnvEvent`, or a request to the event task through `EvtIRouter`) pass the writer; they follow fan, power-rail, link-error, power-down, power-bay and test conditions, and the writer sends nothing while the word is -1.
 - **Not read.** 1.40.5, and which L1 commands name task 5.
 
+
+## Review
+
+Independent check of the third-reading section, in Ghidra on the 1.38.4 `l1` (`f652c04c...`). `SysComInit` (`0x832e8`) does memset the block (`0x84` bytes) and, for the 13 cased brick types, falls through to `0x835d0`: store -1 at block `+0xc` (`0x83600`), `exceptionIsSoftReset` (`0x83604`), then `nvramGet(0x13)` stored at `+0xc` and set back to -1 unless the signed value is above 3 (`0x83628` bgt, `0x83638`). The table has 13 non-default entries, `+ 5 @ B D F J K L M Z ^ |`. The single outbound task is created at `0x836bc` and runs `0x85860`, which registers queues and loops on `IRouterGetPacket`. The event writer (`0x84994`) is gated by word != -1 and source task 4; the request writer (`0x84518`) has no `?` branch. All as stated above. 1.40.5 was not read. The description of the outbound task in the 1.62.1 page needed a correction (per-slab tasks in 1.62.1), which does not change any conclusion here.
