@@ -38,7 +38,7 @@ On the node side (SHub 1 build), the UART driver (`sc_uart_*`, for example `sc_u
 | 7 | the argument count; absent when the request has no arguments (the PROM's builder omits it, and the frame is then 7 bytes) |
 | 8 on | the arguments, in order |
 
-**A request with no arguments has no count byte (established, both ends).** The L1's `syscom_process_inbound_request` (`0xc2284`; `0x83ac4` in 1.38.4, same code) reads byte 7 only `if (7 < length)` (length excludes the check bytes) and otherwise takes the count as 0. It reads the code from bytes 5 and 6 without a length check, and nothing between the PPP reader (which needs more than 2 bytes with the check) and this routine enforces a minimum, so a 7-byte frame such as `7e 05 0f ff f0 06 00 03 69 27 7e` (request `0x0003`) is a valid request with no arguments. The code is stored as the request's argument 0, so the argument total the handlers see is the count plus one and the `-100` test at entry (total zero) cannot fire for a well-formed frame. Reply payloads (before the check bytes): `0x0002` is 11 bytes (`20|subchannel`, `00 00 00 00`, `01`, `00` + `rack << 6 | bay`); `0x000e` is 11 bytes (`01`, `00` + the slab; handler `0xca214`, slab is the source tag's `SysComGetSlab`, the blade workaround skipped for single-slot types). The 0x0003 reply is 16 bytes: `20|subchannel`, `00 00 00 00`, `02`, `00` + word, `00` + type (handler `0xc8bb8`, shared with `0x0002`).
+**A request with no arguments has no count byte (established, both ends).** The L1's `syscom_process_inbound_request` (`0xc2284`; `0x83ac4` in 1.38.4, same code) reads byte 7 only `if (7 < length)` (length excludes the check bytes) and otherwise takes the count as 0. It reads the code from bytes 5 and 6 without a length check, and nothing between the PPP reader (which needs more than 2 bytes with the check) and this routine enforces a minimum, so a 7-byte frame such as `7e 05 0f ff f0 06 00 03 69 27 7e` (request `0x0003`) is a valid request with no arguments. The code is stored as the request's argument 0, so the argument total the handlers see is the count plus one and the `-100` test at entry (total zero) cannot fire for a well-formed frame. Reply payloads (before the check bytes): `0x0002` is 11 bytes (`20|subchannel`, `00 00 00 00`, `01`, `00` + `rack << 6 | bay`); `0x000e` is 11 bytes (`01`, `00` + the slab; handler `0xca214`, slab is the source tag's `SysComGetSlab`; the blade workaround applies only to types `,`, `}`, `.` and `$` or a brick with more than one slot). The 0x0003 reply is 16 bytes: `20|subchannel`, `00 00 00 00`, `02`, `00` + word, `00` + type (handler `0xc8bb8`, shared with `0x0002`).
 
 The node's builder writes the same fields without the first byte (word, code, count, arguments) into a buffer; the class and index byte is supplied by the frame writer (`l1sc_fill_sendbuf`'s fourth argument).
 
@@ -171,7 +171,7 @@ A handler that never calls `ARG__START` sends no reply at all (`IRouterResponse`
 | `0x0001` | one int: the debug-switch word | non-volatile setting 3 (`nvramGet(3)`) | established, in full |
 | `0x0003` | two ints: `rack << 6 | bay`, then the brick type character | settings 1 and 2; `brickGetType()`; for `=` the character `#` unless a per-slot flag is set | established, in full |
 | `0x0013` | for brick types other than `,` `}` `.` `$` with one slot (the Opus TIO letter `F` with a single slot): two ints, 0 then the brick type character | `brickNumSlots`, `brickGetType()` | established for the branch, inferred that `F` has one slot |
-| `0x000e` | one int: the requester's slab | `SysComGetSlab` of the request's tag (single-slot brick types skip the blade workaround) | established for the code, inferred for the value (0 for the one node on the channel) |
+| `0x000e` | one int: the requester's slab | `SysComGetSlab` of the request's tag (the blade workaround applies only to types `,`, `}`, `.` and `$` or a multi-slot brick) | established for the code, inferred for the value (0 for the one node on the channel) |
 | `0x0009` | one int: the partition | non-volatile setting 14 | established, in full |
 | `0x0015` | one int: the sharing mode | non-volatile setting `0xcc`, masked to 7 bits (mask from the earlier reading) | inferred |
 | `0x0010` | two counts, then for each node its processor presence mask and enable mask (single-slot form; the multi-slot form differs) | `cpuCount`, `cpuPresent`, `cpuEnabled`; for IP57 the masks come from the two I/O expanders | inferred; the order of the two counts was not pinned |
@@ -387,3 +387,25 @@ Independent reading of the sender trace above, in Ghidra (ARM, no auto-analysis,
 - **Corrected.** The outbound task description above (one task, `FUN_000c4854`) was wrong for 1.62.1. Only the callers and destinations were right. The warm-restart test differs between builds: 1.62.1 keeps the stored word only if its subchannel (`SysComGetSubc` of the low half) is 4 or more; 1.38.4 compares the whole signed word with 3.
 - **Not checked.** The 1.40.5 build, the ColdFire builds, `EvtIRouter`'s source filter beyond the writer's own test, and the `0x1007` and port-down clears of the word. Brick types that take `SysComConfig`'s default case return before the -1 store and before registering; nothing there can send an event either.
 - **Sources.** Firmware images from the local IRIX 6.5.28 and 3.24 container sets only. No external URLs.
+
+## Review (request frame grammar and identity replies)
+
+Independent re-read of the count-byte rule and the `0x0002`, `0x0003` and `0x000e` replies, in Ghidra with Capstone as a cross-check, against 1.62.1 (`/stand/sysco/bin/l1`, sha256 `22cb6287...`) and 1.38.4 (6.5.28, package 4, sha256 `f652c04c...`). The node side was read in the chips repository's `l1-requests.md` review.
+
+- **Confirmed (established).**
+  - Both builds read byte 7 only when the length is above 7, with no other minimum. The argument loop runs count times, and the argument list starts at 1 with the code, so the entry `-100` test cannot fire for a frame with no arguments.
+  - `PPPRead` (read in 1.38.4) returns the length without the two check bytes and rejects frames of 2 bytes or less with the check. The `0x0003` request is 7 bytes and valid.
+  - `syscom_process_outbound_response` writes `0x20 | subchannel`, the status, the count and then the arguments, which gives 16 bytes for `0x0003` and 11 for `0x0002` and `0x000e`.
+  - `0xc8bb8` and `0xca214` are case blocks inside `L1ReqIRouter`, not separate functions. `0x0002` and `0x0003` share one block, and the block tests the code, not an argument count.
+  - The word is `nvramGet(1) << 6 | nvramGet(2)` with no masking. The PROM keeps bits 15:6 as the rack and bits 5:0 as the bay.
+- **Corrected.** The `0x000e` blade-workaround condition: 1.62.1 applies it only for types `,`, `}`, `.` and `$`, or when `brickNumSlots` is above 1. A single-slot `F` skips it only if `brickNumSlots` is 1, which rests on `bladeNumSlots` (not read; inferred).
+- **1.38.4 (new here).**
+  - The `0x0003` handler maps type `Z` and type `|` to `,` and logs it. It also maps `=` to `#` when the per-slot flag is zero. 1.62.1 has only the `=` rule.
+  - The `0x000e` handler replies with the slab, or `slab & 1` for type `Z`, and has no blade workaround.
+  - The parser, the reply layout and the tag arithmetic (`SysComSlab`, `SysComTasknum`) are the same as 1.62.1.
+- **Slab for a lone node.**
+  - For type `F` the helper is `tag >> 5` with `tag = (channel * 32 + (header & 0x1f)) & 0x7f` (`0xc10bc` and `0xc1370`; the types `.`, `6` and `@` use other divisors). The slab is the SysCom channel number mod 4 of the link the request arrived on.
+  - The PROM's header index is 5 plus the processor slice, so its tag is `channel * 32 + 5`.
+  - The channel number for an `F` brick's node link comes from the Opus TIO scan-chain configuration (`TIOSysComInt` looks up a table entry), which was not read. Slab 0 is inferred and holds if that channel is 0.
+- **Grades.** `F` for the Altix 350 and slab 0 for the lone node stay inferred.
+- **Not checked.** The copy of the source tag into the request structure through `IRouterRequest` (read only as far as the argument passing), the 1.38.4 `0x0013` handler, and the Opus TIO channel table.
