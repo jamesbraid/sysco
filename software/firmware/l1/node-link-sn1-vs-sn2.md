@@ -38,6 +38,8 @@ Sources, all disassembled, nothing run:
 
 So an L1 model for SN2 cannot reuse the SN1 transport; the two share the byte stream above it.
 
+**ARM line rate for the node console link (read 2026-11-17, inferred).** The ARM L1's UARTs are FPGA ports on a Samsung S3C2410 board (`/dev/l1io_jb0..5` junk-bus links, `l1io_ni0..31` node links, `l1io_ii0..3`). The brick set-up functions open port `0x29` (`l1io_jb0`, kind 3) at 750,000 baud (constant `0xb71b0`) and ports 5 and 6 (`l1io_ni0`, `ni1`, kind 5) at 3,000,000 (`0x2dc6c0`). Command aliases `syscom|junkbus|jb|bedrock` tie "jb" to the node's junk-bus UART, so the console link is probably 750,000 baud; which family set-up serves an IP57 was not traced, and the L1's data bits, parity and stop bits were not read. With the SHub UART's divisor 1 that implies a 12 MHz UART clock. The node side and the part question are in the chips repository, `software/firmware/snprom/l1-requests.md`, "Node console UART: part and link".
+
 ## 2. Framing
 
 Read at: ColdFire L1 frame writer `ppp_frame_send` (`0xffe623b4`) and context set-up (`0xffe62330`); ARM `PPPInit` (`0x10de48`), `PPPWrite` (`0x10df80`), `PPPRead`; SN1 PROM frame writer (`+0xec04`) and receive state machine (around `+0xe100` to `+0xe700`); SN2 SAL as quoted.
