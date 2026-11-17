@@ -45,7 +45,7 @@ Never reword an entry to change its grade. An entry not yet checked ends with "U
 
 `retools/tools/inventory.py` measures the host tools and checks `root/` against `tools/config/inventory-root.sha256`. `retools/tools/sysco/sysco_tables.py` measures the firmware: images, packages, functions, request codes, I/O registers and protocols. Both write to [generated/inventory/](generated/inventory/README.md); regenerate in the same commit as any note that explains an item.
 
-A function row is **understood** when a canonical routine entry in `software/firmware/l1/` or `evidence/routines/` gives it a grade, a role and a locator and its byte checks pass (format: "Routine role entries" in `retools/tools/README-analysis.md`). Request codes, I/O registers, protocols and packages are understood through curated entries in `software/firmware/l1/`. A row is **located** when a note cites its address, offset or hash. The repository is finished when every table reaches understood or has an unknown entry with its routes listed. Curated entries that name a package are checked against the bytes on every run: a handler outside the body, or a `check` cell that does not match, fails `sysco_tables.py`.
+A function row is **understood** when a canonical routine entry in `software/firmware/l1/` or a `readings/` page gives it a grade, a role and a locator and its byte checks pass (format: "Routine role entries" in `retools/tools/README-analysis.md`). Request codes, I/O registers, protocols and packages are understood through curated entries in `software/firmware/l1/`. A row is **located** when a note cites its address, offset or hash. The repository is finished when every table reaches understood or has an unknown entry with its routes listed. Curated entries that name a package are checked against the bytes on every run: a handler outside the body, or a `check` cell that does not match, fails `sysco_tables.py`.
 
 A reader takes a cluster of related rows from the lowest-status tables (a function family, a peripheral, a request group, a protocol) and takes each to understood. A reader of vendor binaries does not review an implementation of the same device, and an implementer works from the notes, not the listings.
 
@@ -64,3 +64,21 @@ The five `formats/l1_pkg<n>_console/format.toml` files are written by `tools/l1_
 ## 8. Commits
 
 Small and often, straight to `main`. Subjects are lowercase, component-prefixed imperatives (`software/firmware/l1: read the M-Bus start sequence`); bodies say why.
+
+## Where new work goes
+
+There is no `evidence/` directory. File each page by what it is about:
+
+- `devices/<chip>/`, `platforms/<board>/`, `formats/<name>/`, `software/<area>/`: a note about one device, platform,
+  format or software component.
+- `<subject>/readings/<binary>.md`: per-routine readings of one binary, filed under the subject it explains (a driver
+  object under its chip, a kernel object under `software/kernel/<platform>/`). `retools/tools/reading_round.py` files
+  its entries there; `tools/config/readings-subjects.json` says which subject a binary belongs to.
+- `references/`: what we hold and cite: binary, PROM and firmware lists with checksums, scope lists, source lists.
+  Code submodules stay under `references/code/`.
+- `generated/`: tool output that is regenerated and never hand-edited (`generated/inventory/`, diff tables, symbol
+  tables, register output). Hand-kept audit tables sit in `generated/inventory/audits.tsv` by exception.
+- `COVERAGE.md` at the root: progress tallies. The inventory block in it is rewritten by `retools/tools/inventory.py`.
+- `questions/`: open questions.
+
+`retools/tools/defs/ci-check` fails when an `evidence/` directory comes back.
