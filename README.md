@@ -106,7 +106,7 @@ If you spot a mistake or have a manual we don't, [open an issue](https://github.
 |---|---:|---:|---:|---:|---:|
 | [images](generated/inventory/images.tsv) | 219 | 28 | 44 | 12.8 | 32.9 |
 | [packages](generated/inventory/packages.tsv) | 70 | 4 | 66 | 5.7 | 100.0 |
-| [firmware-functions](generated/inventory/firmware-functions.tsv) | 191808 | 672 | 111814 | 0.4 | 58.6 |
+| [firmware-functions](generated/inventory/firmware-functions.tsv) | 191808 | 672 | 111850 | 0.4 | 58.7 |
 | [request-codes](generated/inventory/request-codes.tsv) | 201 | 198 | 3 | 98.5 | 100.0 |
 | [io-registers](generated/inventory/io-registers.tsv) | 44 | 44 | 0 | 100.0 | 100.0 |
 | [protocols](generated/inventory/protocols.tsv) | 39 | 39 | 0 | 100.0 | 100.0 |
