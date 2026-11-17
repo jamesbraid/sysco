@@ -2,6 +2,12 @@
 
 # software
 
+## firmware
+
+| Page | Title | Summary |
+|---|---|---|
+| [controllers.md](firmware/controllers.md) | System controllers beyond the L1 and L2 | SGI built five generations of system controller. |
+
 ## userland
 
 | Page | Title | Summary |
