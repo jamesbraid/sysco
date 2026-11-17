@@ -1,6 +1,6 @@
 # L1 helper routines
 
-Read from package 1 of IRIX 6.5.30 `usr/cpu/firmware/sysco/l1.bin` (L1 1.44.0). [controllers.md](../../../evidence/controllers.md) identifies the L1 CPU as the ColdFire MCF5206e; [personalities.md](personalities.md) records the 0xffe00000 load base and second code copy. Listings were made from this image with Capstone in big-endian 68040 mode.
+Read from package 1 of IRIX 6.5.30 `usr/cpu/firmware/sysco/l1.bin` (L1 1.44.0). [controllers.md](../controllers.md) identifies the L1 CPU as the ColdFire MCF5206e; [personalities.md](personalities.md) records the 0xffe00000 load base and second code copy. Listings were made from this image with Capstone in big-endian 68040 mode.
 
 - indexed_address_store_bank2 — 6.5.30/usr/cpu/firmware/sysco/l1.bin, 0xffe80ba6
   It forms an address as four times argument 0 from base zero, reads the old longword into d0, stores argument 1 there, and returns the old value in d0 (lsl.l at 0xffe80bb0, adda.l at 0xffe80bb2, move.l at 0xffe80bb4, move.l at 0xffe80bba, rts at 0xffe80bbc). The access target is not identified by this code.

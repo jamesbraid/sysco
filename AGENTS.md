@@ -1,12 +1,12 @@
 # sysco: working rules
 
-This repository reverse-engineers the SGI L1 and L2 system-controller firmware (Origin 300, Origin 3000 and Origin 350 era) from the images and host tools that IRIX ships. [README.md](README.md) has the scope and [evidence/irix-files.md](evidence/irix-files.md) the inputs. The layout and working style follow the sibling graphics and chip repositories; where this file is silent, do what they do.
+This repository reverse-engineers the SGI L1 and L2 system-controller firmware (Origin 300, Origin 3000 and Origin 350 era) from the images and host tools that IRIX ships. [README.md](README.md) has the scope and [references/irix-files.md](references/irix-files.md) the inputs. The layout and working style follow the sibling graphics and chip repositories; where this file is silent, do what they do.
 
 ## 1. Scope
 
 - **L1 first.** The Origin 300 L1 (ColdFire MCF5206e, the `Fuel/PE/O300 1MB` package, version 1.44.0) is the reference image. Then the other ColdFire packages in the container, then the two embedded-Linux ARM S3C2410 images and their cramfs userland.
 - **L2 second.** The PowerPC MPC860 image: boot loader, Linux 2.4.7 kernel and the big-endian cramfs with the L2 daemon and its libraries.
-- **Every version.** Findings name the version and package they were read from. A fact read in 1.44.0 is not assumed for another version until the same bytes are read there; [evidence/firmware-versions.md](evidence/firmware-versions.md) lists the sets.
+- **Every version.** Findings name the version and package they were read from. A fact read in 1.44.0 is not assumed for another version until the same bytes are read there; [references/firmware-versions.md](references/firmware-versions.md) lists the sets.
 - **The goal** is a description of the firmware's hardware interface complete enough that nothing it touches is guesswork: every memory-mapped peripheral and external device with address, width and expected reply; the packet, USB, RS-422 and node-UART protocols; the boot path and bank selection; the request catalogue.
 - Host tools (`flashsc`, `l1cmd`, `l2cmd`, `flashpbay`, `flashsvf`) are in scope as evidence of how the controllers are driven. SVF JTAG vector files (`.svf`) are inventoried; only their IDCODE reads are used.
 
@@ -43,7 +43,7 @@ Never reword an entry to change its grade. An entry not yet checked ends with "U
 
 ## 5. Tables and the finish line
 
-`retools/tools/inventory.py` measures the host tools and checks `root/` against `tools/config/inventory-root.sha256`. `retools/tools/sysco/sysco_tables.py` measures the firmware: images, packages, functions, request codes, I/O registers and protocols. Both write to [evidence/inventory/](evidence/inventory/README.md); regenerate in the same commit as any note that explains an item.
+`retools/tools/inventory.py` measures the host tools and checks `root/` against `tools/config/inventory-root.sha256`. `retools/tools/sysco/sysco_tables.py` measures the firmware: images, packages, functions, request codes, I/O registers and protocols. Both write to [generated/inventory/](generated/inventory/README.md); regenerate in the same commit as any note that explains an item.
 
 A function row is **understood** when a canonical routine entry in `software/firmware/l1/` or `evidence/routines/` gives it a grade, a role and a locator and its byte checks pass (format: "Routine role entries" in `retools/tools/README-analysis.md`). Request codes, I/O registers, protocols and packages are understood through curated entries in `software/firmware/l1/`. A row is **located** when a note cites its address, offset or hash. The repository is finished when every table reaches understood or has an unknown entry with its routes listed. Curated entries that name a package are checked against the bytes on every run: a handler outside the body, or a `check` cell that does not match, fails `sysco_tables.py`.
 

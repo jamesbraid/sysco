@@ -1,6 +1,6 @@
 # Package 0 (`Base 1MB image`) against package 1 (`Fuel/PE/O300 1MB image`), routine by routine
 
-Read from the IRIX 6.5.30 `l1.bin` (L1 1.44.0). The routine pairing is [personality-diffs/routines.tsv](../../../evidence/personality-diffs/routines.tsv); the layout and the dispatch that selects each board's code are in [personalities.md](personalities.md) and [personality-board-init.md](personality-board-init.md). Addresses are first-bank body addresses; "o300" means package 1. Grades follow [AGENTS.md](../../../AGENTS.md).
+Read from the IRIX 6.5.30 `l1.bin` (L1 1.44.0). The routine pairing is [personality-diffs/routines.tsv](../../../generated/personality-diffs/routines.tsv); the layout and the dispatch that selects each board's code are in [personalities.md](personalities.md) and [personality-board-init.md](personality-board-init.md). Addresses are first-bank body addresses; "o300" means package 1. Grades follow [AGENTS.md](../../../AGENTS.md).
 
 ## What the 41 "changed" pairs are
 

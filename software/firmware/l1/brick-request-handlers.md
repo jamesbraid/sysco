@@ -15,7 +15,7 @@ Established from the o300 dispatcher (`0xffe11e18`), the package 3 dispatcher (`
 
 ## Packages 0 and 2 against package 1
 
-Established for all 39 shared codes, from a byte comparison of every handler. Package 0 and package 2 run the same instruction stream as package 1 in every handler: every differing byte lies inside a 32-bit absolute operand. Each `jsr` target is the routine that the routine pairing ([personality-diffs/routines.tsv](../../../evidence/personality-diffs/routines.tsv)) matches to the o300 callee (a different routine never replaces a callee), and the other operands are RAM words that moved. The moved RAM words are:
+Established for all 39 shared codes, from a byte comparison of every handler. Package 0 and package 2 run the same instruction stream as package 1 in every handler: every differing byte lies inside a 32-bit absolute operand. Each `jsr` target is the routine that the routine pairing ([personality-diffs/routines.tsv](../../../generated/personality-diffs/routines.tsv)) matches to the o300 callee (a different routine never replaces a callee), and the other operands are RAM words that moved. The moved RAM words are:
 
 | o300 word | Package 0 | Package 2 | Used by |
 |---|---|---|---|

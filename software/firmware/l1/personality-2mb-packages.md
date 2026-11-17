@@ -1,6 +1,6 @@
 # The 2 MB packages (2, 3, 5) against the Origin 300 package, routine by routine
 
-Read from the IRIX 6.5.30 `l1.bin` (L1 1.44.0). Package numbers and labels follow [personalities.md](personalities.md): 2 `MIPS 2MB image`, 3 `Legacy 2MB image`, 5 `2MB image`; package 1 `Fuel/PE/O300 1MB image` is the reference, shortened to "o300". The routine pairing is [personality-diffs/routines.tsv](../../../evidence/personality-diffs/routines.tsv). The generic 1 MB package is in [personality-base-package.md](personality-base-package.md); how each package maps the brick type to board code is in [personality-board-init.md](personality-board-init.md). Addresses are first-bank body addresses. Grades follow [AGENTS.md](../../../AGENTS.md).
+Read from the IRIX 6.5.30 `l1.bin` (L1 1.44.0). Package numbers and labels follow [personalities.md](personalities.md): 2 `MIPS 2MB image`, 3 `Legacy 2MB image`, 5 `2MB image`; package 1 `Fuel/PE/O300 1MB image` is the reference, shortened to "o300". The routine pairing is [personality-diffs/routines.tsv](../../../generated/personality-diffs/routines.tsv). The generic 1 MB package is in [personality-base-package.md](personality-base-package.md); how each package maps the brick type to board code is in [personality-board-init.md](personality-board-init.md). Addresses are first-bank body addresses. Grades follow [AGENTS.md](../../../AGENTS.md).
 
 ## How the "changed" pairs split
 

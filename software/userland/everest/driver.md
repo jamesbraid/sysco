@@ -60,4 +60,4 @@ Return values 4, 6, 11 and 22 are numbers read from the code. The objects do not
 
 ## Which objects were not read function by function
 
-The 6.4 builds of the three objects (`root/6.4-origin/usr/cpu/sysgen/IP{19,21,25}boot/sysctlr.o`) have the same constants and strings and a different register allocation in `syscopen` (checked by dumping `syscopen`); the other routines were not compared. Their rows are located by hash in [../inventory/images.tsv](../../../evidence/inventory/images.tsv) only.
+The 6.4 builds of the three objects (`root/6.4-origin/usr/cpu/sysgen/IP{19,21,25}boot/sysctlr.o`) have the same constants and strings and a different register allocation in `syscopen` (checked by dumping `syscopen`); the other routines were not compared. Their rows are located by hash in [../inventory/images.tsv](../../../generated/inventory/images.tsv) only.

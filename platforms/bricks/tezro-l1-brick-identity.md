@@ -40,7 +40,7 @@ says nothing about which node boards a rack Tezro carries.
 ## Firmware revision
 
 - Established, from the image: patch SG0007149 carries an L1 whose version is
-  1.48.1 ([firmware-versions.md](../../evidence/firmware-versions.md)). Its release note
+  1.48.1 ([firmware-versions.md](../../references/firmware-versions.md)). Its release note
   (`README.patch.7149`) covers IRIX 6.5.24 to 6.5.30 and does not mention Tezro or assign
   that image to a product (re-read).
 - Inferred, from the Tezro captures this repository cites: none of them, in
@@ -49,7 +49,7 @@ says nothing about which node boards a rack Tezro carries.
 - Unknown: which L1 image a Tezro was shipped or fitted with. The 1.48.1 image
   is the newest L1 in the patch, not a measured Tezro value. The public forum
   thread that names L1 1.48.1 for Tezro flashing does so from a post, not an
-  image ([controllers.md](../../evidence/controllers.md)). Routes tried: the patch release
+  image ([controllers.md](../../software/firmware/controllers.md)). Routes tried: the patch release
   note, that thread, and the serial and part captures. What would settle it: an
   L1 version reply (general request `0x0005`, the firmware-revision request)
   from a Tezro with its board and firmware identity recorded, or a flash image

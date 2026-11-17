@@ -120,7 +120,7 @@ I/O board get.
 - On the console node, one event subchannel that can deliver the record above.
 - The bytes behind the pipe, the IRouter packet format, are the controller's own protocol: user-space tools build it
   (the `sgil1` USB driver and `l2cmd` of the Altix support disc, whose source is held as a file set in
-  `evidence/irix-files.md`), and its grammar is **unknown** in this repository. Route: read the IRouter framing in
+  `references/irix-files.md`), and its grammar is **unknown** in this repository. Route: read the IRouter framing in
   the `l2cmd` and `libsnxsc` binaries of that disc and compare it with the firmware's chunked request frames
   ([chunked-request-frames.md](chunked-request-frames.md)).
 

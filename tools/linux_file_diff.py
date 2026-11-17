@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """File-level diff of the Linux L1 cramfs roots between two sets.
 
-Usage: retools/tools/re-run python3 tools/linux_file_diff.py [--out evidence/version-diffs]
+Usage: retools/tools/re-run python3 tools/linux_file_diff.py [--out generated/version-diffs]
 
-Reads the generated table evidence/inventory/arm-linux-files.tsv (one row per CramFS entry of each
+Reads the generated table generated/inventory/arm-linux-files.tsv (one row per CramFS entry of each
 Linux L1 package, with type, mode, size, sha256 and symlink target). Each pair below is compared
 by path. The output lists the paths that are added, removed or changed, not the unchanged ones.
 The kernels inside the packages are compared byte by byte, run by run of differing bytes; each run
 is marked printable when both sides are printable ASCII, and binary otherwise. The bytes of runs
 of 32 or more are not written.
 
-Writes evidence/version-diffs/cd-ist-3.24-linux-files.tsv and cd-ist-3.24-linux-kernels.tsv.
+Writes generated/version-diffs/cd-ist-3.24-linux-files.tsv and cd-ist-3.24-linux-kernels.tsv.
 """
 import collections
 import os

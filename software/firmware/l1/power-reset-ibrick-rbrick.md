@@ -75,6 +75,6 @@ Supply enables in `POWER CONTROL`: `0x01` (type 8, 48 V) and `0x04` (type `0x0f`
 
 ## Corrections and gaps
 
-- [../l2/userspace.md](../l2/userspace.md) and [../coverage.md](../../../evidence/coverage.md) place the R-brick personality in package 3 or 5. Packages 3 and 5 do not list `R`; it is in packages 0 and 2.
+- [../l2/userspace.md](../l2/userspace.md) and [../coverage.md](../../../COVERAGE.md) place the R-brick personality in package 3 or 5. Packages 3 and 5 do not list `R`; it is in packages 0 and 2.
 - Not read: which XBridge input each of the three `XBRIDGE CONTROL` reset bits reaches (the image gives only the group and its release order); the module-record handshake that fills the records `*` uses; the meaning in time of a tick; which of an I-brick's two slots faces which C slot; the pin-level meaning of the reset bits; the I-brick and R-brick in L1 versions other than 1.44.0.
 - Published manuals were not used as corroboration in this pass (the Library PDF text extractor was not available).

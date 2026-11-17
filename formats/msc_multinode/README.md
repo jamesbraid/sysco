@@ -1,7 +1,7 @@
 # Multi-node console and master election
 
 On a machine with more than one module, each module has its own module
-system controller (MSC, also called ELSC; see [controllers.md](../../evidence/controllers.md)).
+system controller (MSC, also called ELSC; see [controllers.md](../../software/firmware/controllers.md)).
 A four-node Origin 2000 module has one MSC for its four nodes (SGI 108-0164-002, Figure B-1; see
 [module management](../../platforms/ip27/module-management.md)), so the earlier wording "each node has its
 own module and MSC" was wrong for that product. The console

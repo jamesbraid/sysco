@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Routine and request-code diff of paired L1 packages in two shipped sets.
 
-Usage: retools/tools/re-run python3 tools/package_diff.py [--out evidence/version-diffs]
+Usage: retools/tools/re-run python3 tools/package_diff.py [--out generated/version-diffs]
 
 Pairs are chosen by package label, not by position: a package in the newer set is compared with
 the package of the older set that carries the same product label. The pairs are listed in PAIRS;
 each one is marked as label-matched or as a guess.
 
-Writes under evidence/version-diffs/:
+Writes under generated/version-diffs/:
 
   cd-ist-3.24-routines.tsv   routines added, removed or changed between each pair (same method as
                              version_diff.py: link.w a6 prologues, jsr and bsr targets, vector handlers)

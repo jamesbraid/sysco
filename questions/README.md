@@ -43,7 +43,7 @@ Software-now list, in the order to take them:
 
 ## Other versions
 
-- **Route: version diff.** Which request codes does each non-Origin-300 ColdFire package add or drop? Partly answered: the general task's add and drop lists for packages 3 and 5 are in [l1/personalities.md](../software/firmware/l1/personalities.md#request-catalogue-of-the-general-task), and packages 0 and 2 have the same 39 codes as package 1. From 1.44.0 to 1.48.x the bodies of packages 0 to 3 differ only in strings, the bank record and its table, so their dispatchers do not change ([version-diffs.md](../evidence/version-diffs.md)). Still open: the other dispatchers (command loop, flash, peer forwarding) and codes above `0x7fff` across the older sets and package 5, which [version-diffs.md](../evidence/version-diffs.md) does not compare. Step: run the same table-shape search on those dispatchers in packages 0, 2, 3 and 5 of 1.24.8, 1.32.15 and 1.44.0.
+- **Route: version diff.** Which request codes does each non-Origin-300 ColdFire package add or drop? Partly answered: the general task's add and drop lists for packages 3 and 5 are in [l1/personalities.md](../software/firmware/l1/personalities.md#request-catalogue-of-the-general-task), and packages 0 and 2 have the same 39 codes as package 1. From 1.44.0 to 1.48.x the bodies of packages 0 to 3 differ only in strings, the bank record and its table, so their dispatchers do not change ([version-diffs.md](../COVERAGE.md)). Still open: the other dispatchers (command loop, flash, peer forwarding) and codes above `0x7fff` across the older sets and package 5, which [version-diffs.md](../COVERAGE.md) does not compare. Step: run the same table-shape search on those dispatchers in packages 0, 2, 3 and 5 of 1.24.8, 1.32.15 and 1.44.0.
 
 ## L1 hardware seen by the code
 
@@ -73,7 +73,7 @@ Software-now list, in the order to take them:
 
 ## Media
 
-- **Route: missing binary or release.** Other IRIX releases may carry L1 and L2 versions between 1.24 and 1.44. Premise stale: the overlay discs of 6.5.20 to 6.5.29 are already scanned, and their controllers carry 1.20 to 1.40 ([firmware-versions.md](../evidence/firmware-versions.md), [evidence/irix-files.md](../evidence/irix-files.md)). Still open: the overlay discs of 6.5.19 and earlier, the customer diagnostics discs, and any patch newer than SG0007149. Step: obtain those media and list `field_diags_sysco` on each, per [evidence/irix-files.md](../evidence/irix-files.md).
+- **Route: missing binary or release.** Other IRIX releases may carry L1 and L2 versions between 1.24 and 1.44. Premise stale: the overlay discs of 6.5.20 to 6.5.29 are already scanned, and their controllers carry 1.20 to 1.40 ([firmware-versions.md](../references/firmware-versions.md), [references/irix-files.md](../references/irix-files.md)). Still open: the overlay discs of 6.5.19 and earlier, the customer diagnostics discs, and any patch newer than SG0007149. Step: obtain those media and list `field_diags_sysco` on each, per [references/irix-files.md](../references/irix-files.md).
 
 ## Everest host side
 

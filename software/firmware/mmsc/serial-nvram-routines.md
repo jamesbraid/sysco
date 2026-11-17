@@ -1,6 +1,6 @@
 # MMSC BSP serial and NVRAM routines
 
-Read from IRIX 6.5.30 MMSC 2.3 at 6.5.30/usr/cpu/firmware/mmscfw.bin. evidence/controllers.md identifies the image as x86 486-class; its text load base is 0x108000. The symbol names below come from the image’s nlist table. The listings use Capstone x86 32-bit mode.
+Read from IRIX 6.5.30 MMSC 2.3 at 6.5.30/usr/cpu/firmware/mmscfw.bin. software/firmware/controllers.md identifies the image as x86 486-class; its text load base is 0x108000. The symbol names below come from the image’s nlist table. The listings use Capstone x86 32-bit mode.
 
 - _sysNvRamGet — 6.5.30/usr/cpu/firmware/mmscfw.bin, 0x1087c8
   This symbol’s body returns -1: it loads 0xffffffff into eax and returns (mov at 0x1087cb; ret at 0x1087d3). The body does not read NVRAM.

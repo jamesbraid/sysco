@@ -1,8 +1,8 @@
 # Rack identity election and the inter-MMSC link
 
-What the MMSC (the multi-module system controller of an Origin 2000 or Onyx2 rack, also called the full-feature system controller) does to find the other MMSCs on its Ethernet, to agree on one master, to give every rack an ID and an IP address that no other rack uses, and to carry a command to a peer rack. Lane 6 of [controllers.md](../../../evidence/controllers.md).
+What the MMSC (the multi-module system controller of an Origin 2000 or Onyx2 rack, also called the full-feature system controller) does to find the other MMSCs on its Ethernet, to agree on one master, to give every rack an ID and an IP address that no other rack uses, and to carry a command to a peer rack. Lane 6 of [controllers.md](../controllers.md).
 
-All of it is read from `mmscfw.bin` in IRIX 6.5.30 (MMSC 2.3), sha256 `6c3db7ffd7fb4cc43ed02146f0c5bea0e85338def2530689c9990f877f2ddedc`, the a.out image described in [controllers.md](../../../evidence/controllers.md). The same bytes ship in 6.5.7 to 6.5.30; the other builds are compared with this one in [the same election in the other builds](#the-same-election-in-the-other-builds).
+All of it is read from `mmscfw.bin` in IRIX 6.5.30 (MMSC 2.3), sha256 `6c3db7ffd7fb4cc43ed02146f0c5bea0e85338def2530689c9990f877f2ddedc`, the a.out image described in [controllers.md](../controllers.md). The same bytes ship in 6.5.7 to 6.5.30; the other builds are compared with this one in [the same election in the other builds](#the-same-election-in-the-other-builds).
 
 ## Reading the image
 

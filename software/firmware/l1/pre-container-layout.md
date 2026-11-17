@@ -1,6 +1,6 @@
 # Pre-container L1 images (6.5.9 to 6.5.15)
 
-The L1 images of IRIX 6.5.9 to 6.5.15 are not containers. Each file is one ColdFire package, and the package starts with the same 32-byte header as the later packages. This note records what the six early images share, where each one's vector table starts, and what was not settled. The sets are in [firmware-versions.md](../../../evidence/firmware-versions.md) and [controllers.md](../../../evidence/controllers.md). The reader that parses them is `retools/tools/sysco/sysco_tables.py` (`pre_container_package`).
+The L1 images of IRIX 6.5.9 to 6.5.15 are not containers. Each file is one ColdFire package, and the package starts with the same 32-byte header as the later packages. This note records what the six early images share, where each one's vector table starts, and what was not settled. The sets are in [firmware-versions.md](../../../references/firmware-versions.md) and [controllers.md](../controllers.md). The reader that parses them is `retools/tools/sysco/sysco_tables.py` (`pre_container_package`).
 
 Everything below was measured from the shipped images. Grades follow [AGENTS.md](../../../AGENTS.md).
 
@@ -31,11 +31,11 @@ Established: there is no build-stamp label and no product label such as `Fuel/PE
 
 ## What this changes
 
-The earlier note in [controllers.md](../../../evidence/controllers.md) described 6.5.12 to 6.5.15 as having a "package table at 0x2c" that the reader could not parse. That is wrong for these six: the word at 0x2c is the reset vector in 6.5.12 and 6.5.13, and the stack pointer in 6.5.14 and 6.5.15, and no table is present. The reader now takes each of these images as one package (`pre_container_package`), with the vector table at the offset above and no product label.
+The earlier note in [controllers.md](../controllers.md) described 6.5.12 to 6.5.15 as having a "package table at 0x2c" that the reader could not parse. That is wrong for these six: the word at 0x2c is the reset vector in 6.5.12 and 6.5.13, and the stack pointer in 6.5.14 and 6.5.15, and no table is present. The reader now takes each of these images as one package (`pre_container_package`), with the vector table at the offset above and no product label.
 
 ## The 6.5.16 to 6.5.19 containers
 
-These four files are containers with two ColdFire packages (labels `1MB image` and `2MB image`), parsed by the existing reader. The package table at 0x30 holds two offset and length pairs, `(0x0, 0xedf24)` and `(0xedf24, 0x1842e4)` in 6.5.16, and the first package's vector table starts at 0x40, just after the table. The 1 MB image of each container is the one the early version diff uses. Which product package it is was not settled (see [version-diffs.md](../../../evidence/version-diffs.md#early-series-102-to-1183)).
+These four files are containers with two ColdFire packages (labels `1MB image` and `2MB image`), parsed by the existing reader. The package table at 0x30 holds two offset and length pairs, `(0x0, 0xedf24)` and `(0xedf24, 0x1842e4)` in 6.5.16, and the first package's vector table starts at 0x40, just after the table. The 1 MB image of each container is the one the early version diff uses. Which product package it is was not settled (see [version-diffs.md](../../../COVERAGE.md#early-series-102-to-1183)).
 
 ## Request dispatch in the early sets
 
@@ -45,7 +45,7 @@ The general request dispatch of each early set is a compare chain of the same sh
 - 6.5.14 to 6.5.19 read a word table with `move.w (d8,pc,d0.l),d0`, sign-extend it and jump with `jmp (d8,pc,d0.l)`.
 - 6.5.15 opens its chain with `#$1002`. The other nine sets open with `#$1001`.
 
-The table in each set and the codes it accepts are in [version-diffs/l1-early-request-catalogue.tsv](../../../evidence/version-diffs/l1-early-request-catalogue.tsv).
+The table in each set and the codes it accepts are in [version-diffs/l1-early-request-catalogue.tsv](../../../generated/version-diffs/l1-early-request-catalogue.tsv).
 # Pre-container L1 images (IRIX 6.5.9 to 6.5.15)
 
 Six L1 images come before the container layout of [package-container.md](package-container.md): 1.0.2 (6.5.9), 1.1.6 (6.5.10), 1.4.1 (6.5.12), 1.6.0 (6.5.13), 1.8.0 (6.5.14) and 1.10.0 (6.5.15). Each file is one ColdFire MCF5206e package with no package table, no label and no ARM Linux package: none of the six holds a gzip stream or a CramFS image (established, by scanning each file for both signatures). The 6.5.9 and 6.5.10 images are in the base product (`usr/cpu/firmware/l1.bin`); the other four are in the sysco product. The layout below is the same in both places.

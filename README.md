@@ -52,7 +52,7 @@ flowchart LR
 Origin 2000, Onyx2 and Origin 200. No MSC firmware is held, so the MSC side comes from the IRIX driver and the
 MMSC's client for it.
 
-<!-- Question: which older-generation controller talks to which, over what link? Evidence: evidence/controllers.md (families MSC and ELSC, MMSC: Ethernet between MMSCs, one serial cable to each module's MSC bays; Origin 200 has two MSCs in a dual-chassis setup with only the master active), formats/elsc_host/README.md (kernel driver elsc.o reaches the MSC over I2C: request mailbox at slave 8, NVRAM at 0x50, established; same driver object serves Origin 200, 2000 and Onyx2), platforms/ip27/module-management.md (one MSC per four-node module on one shared management I2C bus with NVRAM; one RS-232 alternate-console port, a deskside terminal or, in a rack module, the multimodule controller; all hint grade from the diagnostic roadmap figure), software/firmware/mmsc/msc-client.md (MMSC firmware talks to up to two MSCs over two serial lines, bays U and L, read from the image), rack-election.md (MMSCs on one Ethernet segment), flash-nvram-download.md (flashmmsc flashes the MMSC over the serial line). Dotted edge: the deskside terminal on the alternate-console port, hint grade only. Not drawn: any link between the two Origin 200 MSCs, any MSC CPU or firmware path (none is stated), mmscd's link to the MMSC (not read), the Hub-side I2C interface per node (hint, not tied to a connector). -->
+<!-- Question: which older-generation controller talks to which, over what link? Evidence: software/firmware/controllers.md (families MSC and ELSC, MMSC: Ethernet between MMSCs, one serial cable to each module's MSC bays; Origin 200 has two MSCs in a dual-chassis setup with only the master active), formats/elsc_host/README.md (kernel driver elsc.o reaches the MSC over I2C: request mailbox at slave 8, NVRAM at 0x50, established; same driver object serves Origin 200, 2000 and Onyx2), platforms/ip27/module-management.md (one MSC per four-node module on one shared management I2C bus with NVRAM; one RS-232 alternate-console port, a deskside terminal or, in a rack module, the multimodule controller; all hint grade from the diagnostic roadmap figure), software/firmware/mmsc/msc-client.md (MMSC firmware talks to up to two MSCs over two serial lines, bays U and L, read from the image), rack-election.md (MMSCs on one Ethernet segment), flash-nvram-download.md (flashmmsc flashes the MMSC over the serial line). Dotted edge: the deskside terminal on the alternate-console port, hint grade only. Not drawn: any link between the two Origin 200 MSCs, any MSC CPU or firmware path (none is stated), mmscd's link to the MMSC (not read), the Hub-side I2C interface per node (hint, not tied to a connector). -->
 ```mermaid
 flowchart LR
   subgraph module["Origin 2000 or Onyx2 module"]
@@ -92,7 +92,7 @@ tools/setup-clone.sh --root /path/to/your/irix/files
 retools/tools/re-run retools/tools/defs/ci-check
 ```
 
-You'll need Podman, git, python3 and your own IRIX files. [evidence/irix-files.md](evidence/irix-files.md) lists
+You'll need Podman, git, python3 and your own IRIX files. [references/irix-files.md](references/irix-files.md) lists
 which ones.
 
 ## How far along
@@ -101,15 +101,15 @@ The Origin 300 L1's requests, registers and protocols are done. The firmware fun
 If you spot a mistake or have a manual we don't, [open an issue](https://github.com/jamesbraid/sysco/issues).
 
 <!-- coverage:begin -->
-<!-- Generated from the firmware block of evidence/coverage.md; do not edit. Regenerate: retools/tools/re-run python3 retools/tools/sysco/sysco_tables.py -->
+<!-- Generated from the firmware block of COVERAGE.md; do not edit. Regenerate: retools/tools/re-run python3 retools/tools/sysco/sysco_tables.py -->
 | Table | Rows | Understood | Located | % understood | % located or better |
 |---|---:|---:|---:|---:|---:|
-| [images](evidence/inventory/images.tsv) | 219 | 28 | 44 | 12.8 | 32.9 |
-| [packages](evidence/inventory/packages.tsv) | 70 | 4 | 66 | 5.7 | 100.0 |
-| [firmware-functions](evidence/inventory/firmware-functions.tsv) | 191808 | 672 | 111814 | 0.4 | 58.6 |
-| [request-codes](evidence/inventory/request-codes.tsv) | 201 | 198 | 3 | 98.5 | 100.0 |
-| [io-registers](evidence/inventory/io-registers.tsv) | 44 | 44 | 0 | 100.0 | 100.0 |
-| [protocols](evidence/inventory/protocols.tsv) | 39 | 39 | 0 | 100.0 | 100.0 |
+| [images](generated/inventory/images.tsv) | 219 | 28 | 44 | 12.8 | 32.9 |
+| [packages](generated/inventory/packages.tsv) | 70 | 4 | 66 | 5.7 | 100.0 |
+| [firmware-functions](generated/inventory/firmware-functions.tsv) | 191808 | 672 | 111814 | 0.4 | 58.6 |
+| [request-codes](generated/inventory/request-codes.tsv) | 201 | 198 | 3 | 98.5 | 100.0 |
+| [io-registers](generated/inventory/io-registers.tsv) | 44 | 44 | 0 | 100.0 | 100.0 |
+| [protocols](generated/inventory/protocols.tsv) | 39 | 39 | 0 | 100.0 | 100.0 |
 <!-- coverage:end -->
 
 ## License
