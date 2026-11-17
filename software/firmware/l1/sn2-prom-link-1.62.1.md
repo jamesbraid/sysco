@@ -536,3 +536,12 @@ Independent review of sysco commit `1f31e26`. The reviewer did not write it. Met
 - On restore the word is the stored low 5 bits only: the port tag half is not kept across a soft reset (a lone port has tag 0, so no difference for a one-port node).
 
 **Not checked.** The decompiler's account of `0xffe3cdf8`'s two results (the tag is the second); what `0x301019ac` is; ARM `0xc132c` (the ARM tag routine); package 1; the ARM `L1ReqIRouter` code table's other entries.
+
+## The identity word the L1 writes into the SHub (`SH_SCRATCH2`)
+
+The node firmware's geoid code reads a 64-bit "pushed data" register of the SHub (`0x1_101d_0100` on the node side) and accepts it only when the low byte is `0x6c` (chips repository, `devices/shub/prom-reset.md`). The L1 is the writer. **Established** (Ghidra decompiles; no code run):
+
+- ARM `l1` of 1.62.1 (SHA-256 `22cb6287...bfc5`): `SHUB_ScanSetRackSlot` at `0x6cda4`, called by `SHUB_Reset_PostRelease` (`0x71d70`), which `IP57_ResetRelease` (`0x89cb0`) calls after it releases the SHub from reset. The ColdFire `2MB image` (package 3, load address `0xffe00000`) has the same routine at `0xffe5b3dc` (it logs the name `SHUB_ScanSetRackSlot` and source lines 0x1cd and 0x1d8, as the ARM one does), called from the release routine `0xffe5e04c` ("SHUB %d release done"), itself called at `0xffe575d8`.
+- The routine reads the brick configuration with `L1CfgGetCfg(0)` (ColdFire `0xffe45d00`) and builds `data = cfg[8] << 26 | (cfg[0xc] & 0x3f) << 20 | (shub & 0xf) << 16 | (cfg[0x3c] & 0xff) << 8 | 0x6c`, with `shub` the SHub index, then writes register `0x101d0100` with `datahi = (cfg[8] >> 6) & 0xf` as the upper word and `data` as the lower, through `SHUB_MMR_Write` -> `JChip_MMR_Write` (the scan chain, as for the UART above; ColdFire `0xffe5af98`). It retries up to 50 times and logs `SH %d SetRackSlot MMR fail` after that (ColdFire message; ARM status `0xfffff88e`).
+- **Inferred:** `cfg[8]`, `cfg[0xc]` and `cfg[0x3c]` are the rack, bay and partition that `0x0003` (settings 1 and 2) and `0x0009` report; the field widths (10, 6 and 8 bits) and the PROM's decode of the word agree, but the configuration structure was not read field by field.
+- For rack 1, bay 1, SHub 0, partition 0 the word is `0x0000_0000_0410_006c`.
