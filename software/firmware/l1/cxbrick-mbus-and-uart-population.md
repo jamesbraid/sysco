@@ -10,7 +10,7 @@ Grades follow [../../../AGENTS.md](../../../AGENTS.md): **established** (the who
 
 - Entry: the module init `0xffe50a94` (guard byte `0x300005e2`, log text `Twister_Init() called twice`, source literal `Twister.c` at `0xffe5d6f6`), and the board setup `0xffe50d18`.
 - The board setup stores two bus-select hooks (`0xffe645a0` into `0x30000c88`, `0xffe64704` into `0x30000c98`), registers nine bus-switch records from the array at `0xffe518f4` (registration routine `0xffe8c014`), reads a variant code from `0xffe62e20`, and jumps through a 16-way table (`0xffe50d82`) to one of sixteen register arrays. Each case logs a string `Twister mix NNNN` (strings from `0xffe5df2b`): NNNN is four digits, each `3` or `9`, in the order 3333, 3339, 3393, 3399, 3933, ... 9999.
-- Reading of the digits (inferred): digit *i* is the board type of node *i*, and `3` and `9` are the two node boards the IP35 PROM also lists (`IP53_*` and `IP59_*`). The arrays that differ from variant 3333 differ only in the records of the nodes whose digit is `9` (established for variants 0 to 13, see section 3; variants 14 and 15 were not decoded). What produces the variant code at `0xffe62e20` was not read (unknown).
+- Reading of the digits (inferred): digit *i* is the board type of node *i*, and `3` and `9` are the two node boards the IP35 PROM also lists (`IP53_*` and `IP59_*`). The arrays that differ from variant 3333 differ only in the records of the nodes whose digit is `9` (established for variants 0 to 13, see section 3; variants 14 and 15 were not decoded). What produces the variant code at `0xffe62e20` is read in section 5.
 
 ## 2. Bus switches (established)
 
@@ -88,12 +88,30 @@ The board setup opens these ports for letter `6` (jump tables at `0xffe755bc`, `
 
 **What flow mode 1 means on the eight-channel part is not established.** The setting block passed to its open routine carries the same fields as the four-channel one (rate, class, parity, flow mode); the routine that programs the part (`0xffe848b0`, `0xffe85de4`) was not read. For the 16C654-class `CS5` part the mode is not used on the peer links (they use software flow).
 
+## 5. Where the variant code comes from (established)
+
+`0xffe62e20` is the node-type discovery routine. It takes the brick letter from the byte at `0x300008cc` (the type chosen by the identity routine), and for letter `6` reads the identity record of four node boards: four iterations of the identity reader `0xffe8da88(route, buffer)` on routes 2, 11, 20 and 29 (start 2, step 9). For other letters (`0`, `7`, `8`, `9`, `Q`) it reads one record on route 4; any other letter stores `0xf` at `0x3000061a` and logs "Unknown Brick Type for Node Type Discovery". For each record it checks that the product name starts with `IP5` (`0xffe6481b`); a name that does not logs "Error: NODE %d invalid Product Name: %s" (source literal `IP5359.c`) and leaves that node's bit alone. Otherwise the fourth character decides the bit for node *n*: `3` clears bit `8 >> n` of the byte at `0x30000619` and `9` sets it. The routine returns that byte, which is the variant index of the 16-way table: node 0 is bit 3 and node 3 is bit 0, so variant 0 is 3333, variant 1 is 3339 and variant 15 is 9999, as the log strings are ordered. So the variant is the set of node boards, as their identity EEPROMs name them (`IP53` or `IP59`), not a setting. The initial value of the byte at `0x30000619`, which a node with an invalid name keeps, was not read (U). E for the routine; I that the routes name the four node boards' identity EEPROMs (the route table behind `0xffe8da88` was not read).
+
+## 6. The supply enable bits (variant 3333, established)
+
+The supply table the Cx board setup registers (32 records of 24 bytes at `0xffe56674` through `0xffe6be58`; the variant arrays other than 3333 were not compared) names these enables. Polarity is the L1's usual one (clear is on; the applied values `0xff`, `0xe8` and `0xc3` have the enable bits set, and no record has supply type `0x17`). Expander indexes are the positions in the array of section 3.
+
+| Supply (type name) | Enable expander (index) | Mask |
+|---|---|---|
+| 48 V | `POWER ENABLE` (0) | `0x02` |
+| 12 V, node 0 / 1 / 2 / 3 | `POWER ENABLE` (0) | `0x08` / `0x10` / `0x20` / `0x40` |
+| VCPU, node 0 / 1 / 2 / 3 | `NODEn VCPU` (`0x10`, `0x1c`, `0x28`, `0x34`) | `0x80` |
+| SRAM, node n | `NODEn CPU CTRL` (`0x14`, `0x20`, `0x2c`, `0x38`) | `0x02` |
+| 1.5 V, node n | `NODEn CPU CTRL` | `0x01` |
+
+`POWER ENABLE` bits `0x04` and `0x80` enable nothing here (`0x80` and `0x01` are input bits). The 3.3 V and 5 V auxiliary supplies, the node auxiliaries and the router's 12 V and 5 V records have no enable and are only monitored. The power-up order is the table order; the table's order and delays for the Cx-brick were not read (U). E for the table, I for the names of the enable expanders.
+
 ## Not settled
 
 | Item | Why open |
 |---|---|
 | Part behind the form-1 register devices and the identity of the monitors | no image names it; the routines that consume the monitor table were not read |
-| Source of the variant code `0xffe62e20`; variants 14 and 15 | not traced or not decoded |
+| Variants 14 and 15 and the supply table of the other variants; the power-up order and delays for type `6`; the initial value of `0x30000619` | not decoded |
 | The fifth node-link channel; port 14 | see section 4 |
 | Flow control and register programming of the eight-channel UART | `0xffe848b0` and `0xffe85de4` not read |
 | Second-level switch contents (the DIMM identification routes) | only the switch bytes were read |
