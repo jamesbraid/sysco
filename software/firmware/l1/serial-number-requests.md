@@ -54,6 +54,61 @@ the poster masking digits (e.g. `MYE999` against `MYE900`).
 
 Width of the brick serial (established for the decoder's code, L1 1.44.0, package 2). The board-area decoder `0xffe8d18c` skips the manufacturer field (its length byte is at area offset 6), then copies each following text field into a heap block of (type and length byte & `0x3f`) + 1 bytes and terminates it: the second field is stored at record `+0x4c` (`0xffe8d1f8` to `0xffe8d224`) and the third, the serial that the brick-serial routine returns, at `+0x50` (`0xffe8d23e` to `0xffe8d246`, copied by the same steps). The width is the field's own six-bit length, 0 to 63 characters, with no fixed buffer and no truncation in the decoder; the instructions read do not test the two type bits. Whether the type bits are tested before the decoder runs was not read here.
 
+## Where the serials live, what "assigned" means, and what the `serial` command writes (packages 0 and 1)
+
+Read in the 6.5.30 `l1.bin` (L1 1.44.0), package 0 (`Base 1MB`, C-brick) and package 1 (`Fuel/PE/O300 1MB`). The pre-power check (package 1 `0xffe52d18`, package 0 `0xffe530c8`) and the `serial` handler (`0xffe16110` in both) are instruction-identical between the two packages with addresses masked (300 and 900 instructions compared). Grades: E established, S a published manual, I inferred, U unknown.
+
+**Storage (E).** Both serials are plain ASCII strings in settings record 1 ([settings-record.md](settings-record.md); window layout in [settings-window-blank-image.md](settings-window-blank-image.md)):
+
+| Serial | Setting | Where | Width |
+|---|---|---|---|
+| system serial number (SSN) | 13 (`0xd`) | record 1 `+0x08`, window `0x010` | 8 characters and a terminator (`+0x08` to `+0x10`; the setter clears nine bytes and keeps at most eight) |
+| brick serial number (BSN) | 15 (`0xf`) | record 1 `+0x68`, window `0x070` | 6 characters and a terminator; the compare uses six characters, and the upgrade and record 3 rebuild zero seven bytes |
+
+Both lie inside record 1, so they are covered by its byte-sum checksum (`+0x6f`) and by the mirror at `+0x70`; the setter recomputes the checksum and copies the mirror after every write. There is no separate checksum, prefix byte or length byte: the SSN is the eight ASCII characters, a letter, then `0` to `3`, then six digits (`L0000010`, `M2100629`), and the BSN is the board serial text (three letters and three digits). A record 3 whose byte 0 is not 3 is rebuilt at start-up and zeroes the BSN field, so a window that carries a BSN must carry a valid record 3.
+
+**Where the values come from at start (E).** The module-record initialiser (`0xffe313a6` onward in package 0) copies the board EEPROM's brick serial into setting 15 (skipped for brick types `1` and `2`), and copies the stored SSN into the reference-SSN string at `0x30004d04`. The reference is later replaced by the SSN of attached bricks or an L2 (the learn rules are above). So on a lone brick the reference starts equal to the stored SSN.
+
+**The start-up sanitiser (E, `0xffe537a8`, called from the boot task at `0xffe105c6` and from `serial set` on type `A`).** For brick types that do not enforce serial security (every type except `R D 6 5 @ O F H B L`; `C` and `4` are not in the list), it:
+
+1. replaces the first character of the SSN with the brick family's required letter when it differs (`L` for the C-brick, `M` for the Origin 300 node board, from the profile byte at `0x30001e30 + 0xc`), writing the template `L0000000` with that letter;
+2. rewrites an SSN that fails the format test (letter between `L` and `R`, second character `0` to `3`, six digits) to `L0000000`, printing "** fixing invalid SSN value";
+3. rewrites a stored BSN that differs from the board EEPROM's (six characters) with the board's, printing "** fixing BSN mismatch".
+
+A window whose SSN field is zero therefore comes up as `L0000000` (or `M0000000`), which is what a stock launch shows in `serial all` (observed by the requester, and the reading predicts it).
+
+**What "assigned" means (E, the pre-power check, run at the start of `power up`).** It is skipped when the brick type is `A` or when setting 80 (`0x50`, record 1 `+0x17` bit 3) is nonzero. A blank window with a valid clock rebuilds `+0x17` as `0xf4`, so setting 80 is zero and the check runs; a blank window with no valid clock gets `0xfa` and skips it. When it runs, in this order:
+
+1. the board EEPROM must carry a brick serial; if it does not, the check logs "Brick Serial Number not set in EEPROM!" and **passes**;
+2. the first six characters of setting 15 must equal the board's, else -2100 (brick serial number mismatch);
+3. characters 2 to 8 of the SSN must not be `9999999` or `3999999`, else -2102 (brick disabled);
+4. format: with a required letter the first character must equal it, otherwise it must be `L` to `R`; the second character `0` to `3`; characters 3 to 8 digits; else -2103;
+5. the SSN must equal the reference SSN, else -2101 (mismatch, printing "Local SSN" and "Reference SSN" with the source: attached I/O, C or L2);
+6. if the SSN and the reference are equal and characters 2 to 8 are `0000000`, -2104, "No system serial number assigned".
+
+So the unassigned value is any SSN whose seven characters after the first are zero, equal to the reference. Any other value that passes steps 3 and 4 counts as assigned: the check has no list of issued serials and no checksum. The error the requester saw is step 6, which a first-boot SSN of `L0000000` always reaches. E.
+
+**The `serial` command and the key (E for the code, S for the manual).** The handler dispatches on the table entry's sub-command word (`command-table.tsv`, entries 177 to 189):
+
+| Command | Hidden | What it does | Key or security check |
+|---|---|---|---|
+| `serial` | no | prints the secure serial summary (BSN, SSN, time, security state) | none |
+| `serial all`, `serial dimm`, `serial verify` | no | display and readiness test | none |
+| `serial set <word>` | yes | validates the word with the same format rule as step 4 (length exactly 8, the required letter, characters 2 to 8 not `9999999` or `3999999`, second character `0` to `3`, six digits), stores it in setting 13 and prints `system serial number set "<value>"` and "Reboot L1 to take effect." | **none for the types outside the list above.** On `R D 6 5 @ O F H B L` it is refused ("cannot be explicitly set with security enabled") unless setting 80 is nonzero |
+| `serial clear` | no | stores `L0000000` in setting 13 | none outside the list. On the listed types with security on it prints "command not supported on bricks that enforce security" |
+| `serial <word> <word> <word> <word>` | no | four words are passed to the authenticator checker (`0xffe535c8`); on success the SSN is erased and reassigned (stored as `L0000000`) | **the key check.** Without a passing key nothing is written |
+| `serial security off <word> x4` | yes | the same checker; on success sets setting 80 | **the key check**, and it is the only way to turn security off |
+| `serial security on` | no | sets setting 80 to 0 | none |
+| `serial brick disable`, `... confirm` | yes | prints a warning, then stores `L3999999` (the disabled marker) | none |
+
+The manual documents `serial`, `serial verify`, `serial all`, `serial dimm`, `serial clear`, `serial <str> <str> <str> <str>` and `serial security on` (007-3938-004, printed pp. 90 and 91), and says the four-word form takes "a security key that is provided only to SGI employees". It does not document `serial set <word>`, which the firmware hides. The key is checked in one routine and gates only the two four-word forms; this note does not describe how a key is formed.
+
+**Paths that assign a serial without the key (E).** On a C-brick or Origin 300 brick: the hidden console command `serial set <word>`, or a settings window whose record 1 holds the SSN at `+0x08` (with the checksum and mirror rewritten); the sanitiser keeps any value that passes the format test and carries the required letter. Alternatively a window with setting 80 nonzero skips the pre-power check altogether (record 1 `+0x17` bit 3), which is what a window with no valid clock yields. On the security-enforcing types the only assignment path is the keyed form.
+
+**Values a model can use (S and I).** The user guide's own example is `L0000010` (007-3938-006, L2 `serial`; see Real values below). Origin 350 and Onyx 350 systems print `M` plus seven digits (`M2100629`, `M1234567`); a rack Onyx with an IP57 node prints `R2003602`. For a C-brick the required letter is `L`, so `L0000010` or `L1234567` passes; for the Origin 300 node board it is `M`, so `M2100629` passes. Second character `0` to `3`, never `9999999` or `3999999` as the last seven, never all zero after the letter. The BSN needs no value: the L1 copies the board EEPROM's.
+
+**Other settings a first `power up` reads (E for direct reads, scope stated).** Besides rack, bay, partition and brick type: setting 80 (the check skip), setting 13 and 15 (the serial check), setting 61 (the series, which picks the R-brick port arm), settings 40, 41 and 42 (`0x28`, `0x29`, `0x2a`: the strap bits written at the C-brick release), settings 86 and 87 (`0x56`, `0x57`: the stored PIMM codes, compared with the PSC probe at hold; a mismatch only logs "PIMM type changed, setting the default voltage margins") and setting 45 (`0x2d`, PIMM code 8 handling). A literal-key scan of the C-brick power-up, release, hold and board routines found no others; callees of those routines were not scanned.
+
 ## Formats
 
 ### System serial number (SSN)

@@ -118,6 +118,8 @@ The chosen fields, relative to record 1:
 | brick type | byte `+0x22` | 1 character | read as setting 9 by the identity routine only when the board identification records name no brick; see [personalities.md](personalities.md) and [cbrick-mbus-registration.md](cbrick-mbus-registration.md). The accepted characters include `C` (`0x43`). E for the location and the fall-back role |
 | brick sub-type | byte `+0x47` | 1 character | setting 16, kept as the pseudo-type only when it is one of the 31 accepted letters. E |
 | auto power-up | byte `+0x04` bit 7 | 1 bit | setting `0x32`; the automatic power-up task is created only for the listed brick types and only when this is non-zero (`0xffe30044`). Blank: 0. E |
+| system serial | `+0x08`, 8 ASCII characters and a NUL | setting 13. Blank, or failing the format test, it is rewritten to `L0000000` (letter replaced by the family's required letter) at every boot, and `power up` then stops with "No system serial number assigned". Write a value such as `L0000010` (C-brick) or `M2100629` (Origin 300) to pass; see [serial-number-requests.md](serial-number-requests.md). E |
+| brick serial | `+0x68`, 6 characters and a NUL | setting 15. Refreshed from the board EEPROM at start, so a window need not carry it; zeroed by a record 3 rebuild. E |
 
 Rack, bay and partition have no range check at start beyond the field widths and the partition rule above. The brick and system serial numbers are settings 15 (`+0x68`, seven bytes) and 13 (`+8`); both are blank after a rebuild.
 
