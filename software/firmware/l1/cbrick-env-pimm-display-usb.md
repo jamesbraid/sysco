@@ -168,14 +168,58 @@ Register names from the public Agere USS-820D USB Device Controller data sheet, 
 
 Later writes to the same offsets (address assignment at `0x10`, endpoint configuration, interrupt service) are in [usb-controller-registers.md](usb-controller-registers.md).
 
+## 5. The power-state predicate for the unmask (established, package 0)
+
+The last write of a supply or fan item (the interrupt-mask register with the input's bit cleared, by `0xffe69834`, which calls `0xffe695f4(monitor, input, 1)`) happens only when the item's state byte is 1. The supply routine (`0xffe282bc`) and the fan routine (`0xffe28ad4`) set that byte from three things; the temperature routine (`0xffe28ff8`) starts the same way (it tests the same global word first), but its tail was not compared. Two other callers of the unmask, the loop at `0xffe29f98` and the standalone wrapper `0xffe5e560`, were not examined for gating (U).
+
+1. the environment state word at `0x300045a8` must be 1 (it is set to 1 by the restart routine `0xffe2b798` when setting 6 is nonzero, and to 0 otherwise);
+2. the caller's second argument must be nonzero (state 1) rather than zero (state 2, which configures but does not unmask); the config loop `0xffe291d8` passes the predicate below, `0xffe29130` for supply items and `0xffe29160` for fan and temperature items (two copies of the same code);
+3. the record is not disabled (the cases of section 1).
+
+**The predicate (`0xffe29130`, `0xffe29160`).** It returns 1 when the two environment words at `0x300045ac` and `0x300045b0` are both zero and the supply-state routine `0xffe4c6ac` returns nonzero; otherwise 0. The two words are, by their behaviour, a power-up-in-progress flag and a power-down-in-progress flag (the names are I): the power-phase notice routine `0xffe2b8d4` sets the first to 1 and the second to 0 for notice 2, the first to 0 and the second to 1 for notice 3, and clears both (restarting the monitors first) for notice 4, which the power-up routine sends when its sequence ends (`0xffe2be6c`, section 1 of [power-up-reads-restart-and-polling.md](power-up-reads-restart-and-polling.md)). The supply-state routine is the one of [origin300-hold-release-sequence.md](origin300-hold-release-sequence.md) section 3a: nonzero when at least one switched supply reads on in the shadow. So the unmask happens when monitoring is enabled and running, no power transition is under way, and some supply is on. A brick with every supply off configures its monitors with the inputs left masked. E.
+
+**The restart word.** The word at `0x300009c4`, whose zero value makes the environment restart do nothing, is zero in the image's initialised-data block (the copy source is `0xffe7f114`, body offset `0x7f114`, `0xc38` bytes to `0x30000000`) and has no absolute store in package 0. The restart (`0xffe2b798`) therefore returns at once at start-up unless something writes the word through a pointer (not found), and the state and error words stay at their start values. E for the value and the absent absolute store; the absence of an indirect writer is not excluded.
+
+## 6. The display part (identity unknown)
+
+**What a published manual says.** The Origin 3000 Series Owner's Guide `007-4240-002`, chapter 4 (C-brick), says the L1 controller "interfaces with its own 2-line x 12-character liquid crystal display (LCD) at the front of the brick" and that the L1 "consists of the display, logic components, and internal display cable", with the logic on the IP35 motherboard. It gives no part number. Read through a public mirror of the book's HTML. S for the geometry, which agrees with the firmware's 12-character width.
+
+**What the bytes fit.** A plain write of one command byte (`'1'`, `'2'`, `'3'`, `'4'`, `'6'`) and ASCII data to seven-bit `0x78`, a reset line on bit 7 of `DISPLAY CONTROL` and a one-byte read after reset are the interface of a display module with its own controller behind a two-wire port, not of a bare character LCD controller (which has no two-wire address and no ASCII line commands). Inferred. No data sheet for such a module with these commands was found in the published SGI manuals or by a public web search for the geometry and interface. The part is unknown.
+
+## 7. The PIMM PSC code (retail value unknown)
+
+The firmware accepts nibble values 0 to 8, 10 and 15 (section 2) and never names one: no string or table in the image gives a processor type, speed or cache size for a code. The Owner's Guide C-brick chapter gives no processor model names or clock speeds either (two processors per PIMM, 8 MB secondary cache per processor). The published SGI manuals, the public Linux and BSD trees and the IRIX release-note extracts searched for the encoding hold no table that maps the four-bit PIMM PSC code to a product. The firmware does separate the codes by behaviour: 1, 3, 4, 5, 6, 7 and 10 run the module power step, 3, 4, 5, 7 and 10 allow `cpu d`, and a pair of present modules must be two of 1 or 6 or equal. Those groupings are consistent with different processor-module families but do not identify one. Which code a retail C-brick PIMM reports: unknown. The route is the IP35 PROM or the IRIX kernel's PSC table, which are outside the L1 image.
+
+## 8. The USB controller's register bits (inferred from the public driver)
+
+Bit names are those of the FreeBSD `uss820dci.h` (Hans Petter Selasky, BSD-2-Clause), a public driver for the same register map; they agree with the Agere USS-820D bit names used in the register summary of this repository. The driver was read from its public repository. Inferred, because the firmware's own labels name none of them.
+
+| Offset | Register | Value written | Bits set |
+|---|---|---|---|
+| `0x11` | SCR (system control) | `0x08` | SRESET (software reset), pulsed with a 2-tick wait, then `0x00` |
+| `0x11` | SCR | `0x12` | T_IRQ (global interrupt enable, `0x02`) and IE_RESET (reset interrupt enable, `0x10`); IRQLVL, IRQPOL, RWUPE and IE_SUSP clear |
+| `0x12` | SSR (system status) | `0x00` | clears the RESET, SUSPEND and RESUME status and the SUSPDIS and SUSPPO controls |
+| `0x0f` | SOFH | `0x08` then `0x00` | SOFDIS (SOF pin output disable) set, then cleared |
+| `0x10` | FADDR | `0x00` | function address 0 |
+| `0x0a` | EPINDEX | 0 to 7 | endpoint select |
+| `0x0b` | EPCON | `0x3f` (endpoint 0), `0x00` (others) | endpoint 0: TXEPEN, TXOE, RXEPEN, RXIE, RXSPM, CTLEP (a control endpoint, both directions, single-packet receive); endpoints 1 to 7 disabled |
+| `0x03` | TXCON | `0xa4` | TXCLR (flush), FFSZ field `01`, ATM (automatic transmit management); the data sheet gives 64 bytes for the `01` setting when MCSR.FEAT is clear |
+| `0x08` | RXCON | `0xa4` | RXCLR, FFSZ `01`, ARM (automatic receive management) |
+| `0x14`, `0x15` | SBI, SBI1 | `0x00` | clear the endpoint done flags |
+| `0x16` | SBIE | `0x03` | FTXIE0 and FRXIE0: endpoint 0 transmit-done and receive-done interrupts enabled |
+| `0x17` | SBIE1 | `0x00` | endpoints 4 to 7 disabled |
+| `0x1a` | PEND | `0x01` first, `0x00` last | hold the shared-bit updates while the registers are written, then release them |
+| `0x1c` | MCSR | `0x00` then `0x01` (connect path only) | DPEN: the D+ pull-up enable, off, then on (the device attaches) |
+| `0x1b` | SCRATCH | `0xb5` at probe | bit 7 is the resume-interrupt enable, bits 6:0 free; the probe only tests that even values read back |
+
+Offset `0x1c` bit 0 is the only status the firmware reads back; it holds what was written (a latched DPEN). The enable-only value `0x12` leaves suspend interrupts disabled, so a USB suspend is never reported to the firmware.
+
 ## Unknown
 
 | Question | Route |
 |---|---|
-| Which PSC code a retail C-brick PIMM reports | a PROM or kernel table naming the PSC encoding, or a module guide |
-| Whether the reads of `0x300009c4` ever see non-zero (the environment restart skips the configure step when it is zero) | read the data initialiser that fills the data segment |
+| Which PSC code a retail C-brick PIMM reports (section 7) | the IP35 PROM or IRIX kernel table naming the PSC encoding, or a processor-module guide |
 | Whether error 1 or 3 can be reached from another environment path | the console `env` and the start-up callers were read; no store found |
-| The display part and its command semantics | a public data sheet for a two-wire display module with ASCII line commands at address `0x78` |
-| Bit meanings of the USB controller's `0x11`, `0x0f`, `0x03`, `0x08` and `0x12` writes | read the register chapter of the public data sheet |
-| The two RAM words and the rail comparison that gate the last unmask write | decode the power-state predicate in the configure path |
-| What persistent settings 40 and 41 control, and what setting 45 does | read the settings' consumers in the environment and power code |
+| The display part and its command semantics (section 6) | a data sheet for a two-wire display module with ASCII line commands at address `0x78`; a front-panel FRU photograph or service guide |
+| What persistent setting 45 does; settings 40 and 41 feed the `BEDROCK CNTL 2` strap bits 5 and 4 at release ([../../../platforms/bricks/l1-bedrock-handoffs.md](../../../platforms/bricks/l1-bedrock-handoffs.md), section 12), and code 8 stores 0 for them unless setting 45 is nonzero | read the consumers of setting 45 |
+| An indirect writer of the word `0x300009c4` (section 5) | search for stores through a pointer into `0x300009xx` |
