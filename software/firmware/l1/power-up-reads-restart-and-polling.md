@@ -14,7 +14,7 @@ The walk for type `C` (it takes the generic arm at `0xffe4ce8c`; only type `4`, 
 2. A 100-tick wait (`0xffe4cf40`).
 3. The board hook at power-table offset `0x20` (`0xffe4cf4c`): the C-brick registration passes zero for it (`0xffe45448`, args 0, 0, 20, table), so it is skipped. E.
 4. Two persistent-setting reads, keys `0x3d` (61) and `0x0d` (13) (`0xffe4cf68`, `0xffe4cf76`). NVRAM, not a device. For `C` they only choose the generic port arm below: the per-port arm is for types `R D 6 @` with key `0x3d` equal to 0 or 2 and the system serial not starting with `M`.
-5. The port bring-up for all ports (`0xffe50b74(0xff, 3)`, call at `0xffe4d01c`). The C-brick registers two port records (`0xffe459f4`, 24 bytes each; registration `0xffe4f454`). At registration each port's state byte is set to 2 if its control expander (index 8, `PORT CONTROL`) and the second expander named in the record (index 6, `BEDROCK CNTL 1`) are enabled, else 0; both are enabled for the C-brick, so both ports are processed (the skip tests at `0xffe50c10` and `0xffe50c70` pass: port 0 has flag `0x40`, port 1 has a zero field at `+0x10`). Per port, in this order. First the enable helper `0xffe500fc` (through `0xffe50084` and `0xffe4feec`) sets the port's enable output in `PORT CONTROL`: bit `0x02` for port 0, `0x20` for port 1, one byte write. Then the helper `0xffe509a4` takes the port bus lock and makes one real read of `PORT CONTROL` (wire address `0x46`, bus segment 3, input mask `0x55`) through `0xffe65ffc`; port 1 uses the high nibble of the byte (shifted right by 4). It passes the result to the port state routine `0xffe504dc` and releases the lock. E for the order, the read and the lock; the port state routine was not followed past its first branches (U for what each bit value makes it do).
+5. The port bring-up for all ports (`0xffe50b74(0xff, 3)`, call at `0xffe4d01c`). The C-brick registers two port records (`0xffe459f4`, 24 bytes each; registration `0xffe4f454`). At registration each port's state byte is set to 2 if its control expander (index 8, `PORT CONTROL`) and the second expander named in the record (index 6, `BEDROCK CNTL 1`) are enabled, else 0; both are enabled for the C-brick, so both ports are processed (the skip tests at `0xffe50c10` and `0xffe50c70` pass: port 0 has flag `0x40`, port 1 has a zero field at `+0x10`). Per port, in this order. First the enable helper `0xffe500fc` (through `0xffe50084` and `0xffe4feec`) sets the port's enable output in `PORT CONTROL`: bit `0x02` for port 0, `0x20` for port 1, one byte write. Then the helper `0xffe509a4` takes the port bus lock and makes one real read of `PORT CONTROL` (wire address `0x46`, bus segment 3, input mask `0x55`) through `0xffe65ffc`; port 1 uses the high nibble of the byte (shifted right by 4). It passes the result to the port state routine `0xffe504dc` and releases the lock. E for the order, the read and the lock; the port state routine is read in full in section 5 (E).
 6. The environment monitor is told the power-up phase has ended (`0xffe2be6c`, which stamps the time and calls `0xffe2b8d4` with 4). It sets flags and returns; the monitor workers act later (I, from [environment.md](environment.md)).
 7. For type `C` a 50-tick wait, then the reset release.
 
@@ -92,6 +92,35 @@ Detail (E unless marked):
 
 Which expanders are polled, for the C-brick: indices 0 to 15 (all but the display); the descriptors with hooks and non-zero interrupt-enabled bits, whose changes are reported, are `POWER CONTROL` (9, `0xde`), `FAN CONTROL` (11, `0x40`), `PIMM0 POWER` (12, `0x36`), `PIMM1 POWER` (14, `0x36`) and `PORT CONTROL` (8, `0x11`). `COM CONTROL` (5) and the two `VCC OK` expanders (13, 15) have a hook but no report bits. The display expander has its own handler (`0xffe51b3c`) outside this poll. E for the table, I for the summary.
 
+## 5. The port step: what each `PORT CONTROL` bit does (package 0, `Base 1MB`)
+
+Read in package 0 of the 6.5.30 `l1.bin` (L1 1.44.0) through a linear listing, as above. Routines: the per-port read `0xffe509a4`, the state routine `0xffe504dc`, the enable routine `0xffe500fc`, the disable routine `0xffe50288`, the two output helpers `0xffe4fe58` (clear) and `0xffe4feec` (set), the second-expander helpers `0xffe50084` and `0xffe50210`, and the change hook `0xffe507c8` (registered for `PORT CONTROL`, so the poll of section 4 calls it with index, changed bits and new value). Grades: the code is E; the published names of the bits are S (a manual, not an image); the rest is marked.
+
+**Port record** (24 bytes, two for the C-brick at `0xffe459f4`): byte 0 expander index (8, `PORT CONTROL`), byte 1 which nibble (0 low, 1 high), bytes 2 and 3 a second expander and its mask (6, `BEDROCK CNTL 1`, mask `0x04` for port 0 and `0x08` for port 1), halfword `+4` flags (port 0 `0x0040`, port 1 `0`; the code here tests bits 0, 1, 2, 4 and 5, all clear), name pointer at `+8`. The state array at `0x30000134` holds one state byte per port (stride two): 0 or 1 not in use, 2 enabled but local power not on, 3 local power on, 4 remote power seen, 5 link up.
+
+**Bits of the port nibble.** Port 0 is bits 3:0 of `PORT CONTROL` (wire `0x46`, segment 3), port 1 bits 7:4. The firmware's use and the published names agree:
+
+| Nibble bit | At the L1 | What the firmware does | Published name |
+|---:|---|---|---|
+| 0 | input, change-reported | decides everything below | "remote power OK" |
+| 1 | output | the enable routine sets it (port 0 mask `0x02`, port 1 `0x20`) and takes the state to 3; the disable routine clears it and takes the state down to 2 | "local power OK" |
+| 2 | input, not change-reported | looked at only when the changed-bits argument includes it: set moves the state from 4 to 5, clear moves 5 back to 4; otherwise only logged | "link LED" |
+| 3 | output | set when remote power is seen (state 3 becomes 4), cleared when it is lost | "software LED" |
+
+The names are from the L1 and L2 Controller Software User's Guide 007-3938-004, `port` command, printed pp. 81 and 82: bit 0 "remote power OK", bit 1 "local power OK", bit 2 "link LED", bit 3 "software LED", with sample status bytes `0x02` (local power only), `0x0b` and `0x0f`. Input mask `0x55` and report mask `0x11` are the descriptor values. A change of bit 2 or 6 alone is never reported, so the link bit is evaluated only when a remote-power change delivers it in the same event (I, from the masks).
+
+**What the step does with the value it reads.** The power-up port step (section 1, item 5) calls the enable routine, then `0xffe509a4` reads `PORT CONTROL` once, shifts it down by four for port 1 and calls `0xffe504dc` with the changed mask set to bit 0, the nibble as the new value and flag 0 (the "polling" log text):
+
+- **Remote power OK set and state 3:** the state becomes 4; nibble bit 3 is set (`0xffe4ffc8`; the record's flag bit 1 being clear selects set); the second-expander mask is set (`0xffe50084`, flag bit 0 clear selects set), that is `BEDROCK CNTL 1` bit 2 for port 0 or bit 3 for port 1; then the board's port-update hook (a pointer at `0x30001ef4`) is called with the record's link fields and 1. The C-brick installs no such hook, so the call is skipped. In any other state the routine logs "ignoring RPOK assert, local pwr not on" (state below 3) or "already in link ready state" (above 3) and changes nothing.
+- **Remote power OK clear:** the hook call (with 0) is skipped on the C-brick; nibble bit 3 is cleared (`0xffe4ff80`); the second-expander mask is cleared (`0xffe50210`); a state above 3 falls back to 3.
+- Neither branch waits, polls or times out. A bus error in these writes is returned and latched by the caller as in section 1.
+
+So an empty C-brick leaves the enable bit set, the software-LED bit clear, `BEDROCK CNTL 1` bits 2 and 3 clear and state 3. A powered peer on a port (bit 0 high at the read) gets the software-LED bit and `BEDROCK CNTL 1` bit 2 or 3 driven high and state 4. The firmware never reads the link bit during power-up, so its value cannot stop the step. `BEDROCK CNTL 1` bits 2 and 3 are clear in the cold-start byte `0x72`, and the only writes to expander 6 in this package are these two bits and the reset-hook bits 0, 1, 6 and 7.
+
+**The R-brick port step.** The R-brick registers eight records at `0xffe4a510`: ports A to H on `PORT HA`, `BC`, `BC`, `DE`, `DE`, `FG`, `FG`, `HA` (expander indices 3 to 6, low or high nibble), each with the second expander index 1 (`WIDGET PRESENT`, wire `0x44`, input mask `0x00`, so all eight bits are outputs) and masks `0x02`, `0x04`, `0x08`, `0x10`, `0x20`, `0x40`, `0x80`, `0x01` for A to H. The same routines drive them. None of the eight records names `ROUTER CONTROL`, so the router-port console commands cannot reach the role nibble (bits 7:4 of `ROUTER CONTROL`) through the port step (E).
+
+That `BEDROCK CNTL 1` bits 2 and 3 are the Bedrock-side image of a port's remote power, and that the `WIDGET PRESENT` bits are the R-brick's, is I: the firmware writes them together with the manual's software-LED bit and nothing else writes them. Which Bedrock or router input they reach is U.
+
 ## Corrections to the earlier notes
 
 - [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md) calls `0xffe4b6cc(0xff)` a check on the first supply. It is the fan start: for each enabled fan record of type 1 it clears an enable bit, for type 2 it writes a fan-controller register. No read.
@@ -102,7 +131,5 @@ Which expanders are polled, for the C-brick: indices 0 to 15 (all but the displa
 
 ## Open
 
-- What the port state routine does with the `PORT CONTROL` bits (section 1, item 5).
-- Whether the `X`, `Y`, `N`, `&` and `P` reset-release arms differ from `I` in a way that matters for the supply order.
 - The system clock frequency, hence the seconds.
 - What sets the RAM word at `0x30000b00`.
