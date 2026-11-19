@@ -98,6 +98,10 @@ The other end of the pins (E for the header position, I for the link). The route
 2. [l2/l1-conversation.md](../../software/firmware/l2/l1-conversation.md) section 12 finding 11: packages 0, 2, 3 are established, not inferred, and package 5 has no pin writer for its levels.
 3. The L1 board note's statement that the partition clear applies "for `R` and `D` only" holds for packages 0 to 3 only.
 
+## 7a. The series field (setting `0x3d`)
+
+Besides the role nibble, the R-brick's `router` command family uses a two-bit series value in the same byte (`+0x17` bits 2:1, setting 61): 0 `NEW`, 1 `UNDECIDED`, 2 `3400 Series`, 3 `3800 Series`. The version 1 settings upgrade stores 2 and start-up replaces 0 with 2, so an unconfigured router reads as a 3400 series ordinary router. The series does not reach an expander pin in the release (the release reads only the role, section 3), and it gates the R-brick's per-port power-up arm (series 0 or 2) and the `router 8 port` change (only `UNDECIDED` becomes 3800 without a key). Evidence and addresses: [../../software/firmware/l1/settings-record.md](../../software/firmware/l1/settings-record.md). E for the strings and branches.
+
 ## 8. Open items and the static route for each
 
 | # | Item | Why open | Route |

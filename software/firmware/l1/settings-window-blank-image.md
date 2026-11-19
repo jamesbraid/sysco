@@ -36,11 +36,35 @@ There is no magic number and no CRC. Every check is a byte sum.
 ## What start-up does (E, entry `0xffe5a758`)
 
 1. Check the header. If its sum is non-zero, or its version nibble or its offset byte is zero, rebuild it (`0xffe5a6a8`): zero the 8 bytes, store version 1, offset 1 and the checksum, set the record base pointer in the state block to window `8 * offset`, then run the record initialiser (`0xffe5a188`) at once, as step 4 describes: a record valid at its usual position is kept, so only a record with no valid copy comes from defaults.
-2. Dispatch on the record 1 version nibble. Nibbles 0 and above 10 take the same path as `0xa`. A record 1 with nibble 0 and a good sum is accepted untouched when no repair runs; the repair routine rejects nibble 0, so a repair replaces such a record from its mirror or from defaults. Nibbles 1 to 9 run an upgrade chain (jump table at `0xffe5a858`) that rewrites older layouts in steps; it was not decoded and a writer should never produce those versions.
+2. Dispatch on the record 1 version nibble. Nibbles 0 and above 10 take the same path as `0xa`. A record 1 with nibble 0 and a good sum is accepted untouched when no repair runs; the repair routine rejects nibble 0, so a repair replaces such a record from its mirror or from defaults. Nibbles 1 to 9 run an upgrade chain (jump table at `0xffe5a858`, package 0 `0xffe5b284`) that rewrites older layouts in steps; it is decoded below, and a writer should still never produce those versions.
 3. On the current path, flag a repair when record 1 or record 3 fails its sum. If record 3's byte 0 is not 3 it is rebuilt in place (the long at `+0x12c` and the `0xa8` bytes from `+0x130` zeroed, `+0x68` to `+0x6e` of record 1 zeroed, byte 0 set to 3, both checksums recomputed). If record 2's byte 0 is not 1 it is set to 1 and re-summed; if record 2 fails its sum a repair is flagged.
 4. A flagged repair runs the record initialiser, which takes each record independently: a valid primary is kept; otherwise a valid mirror is copied over the primary; otherwise the record is rebuilt from defaults. With no repair flagged the primaries are copied over the mirrors. One valid copy of each record is therefore enough, but a writer should write both. A record 1 that a repair keeps, whose nibble is not `0xa`, is rewritten with nibble 4 and its brick serial (`+0x68` to `+0x6e`) cleared.
 5. Fix-ups on the result: setting 17 (`+0x11`) below 2 becomes 2; setting 61 (`+0x17` bits 2:1) equal to 0 becomes 2.
 6. Record 2 pointers: the word at `+0xe4` must equal window `0x298` (the end of the record area), `+0xe8` must equal `0x200007f8`, and `+0xec` and `+0xf0` must each lie in `[+0xe4, +0xe8)`. Any failure rebuilds record 2 (`0xffe59e94`): zero it, byte 0 = 1, `+0xe4` = `0x20000298`, `+0xe8` = `0x200007f8`, `+0xec` and `+0xf0` = `0x20000298`, checksum, mirror.
+
+## The record 1 upgrade chain (package 0, E; package 1 has the same entry routine and its table at `0xffe5a858` was not re-read)
+
+The table is eleven signed halfword offsets at `0xffe5b284` indexed by the version nibble (bits 27:24 of the first word of record 1): nibble 0 and nibble 10 go to the final check at `0xffe5b68c`, nibble *n* from 1 to 9 goes to arm *n*. Each arm checks, edits, writes version *n* + 1 and recomputes the checksum over `0x70` bytes into `+0x6f`, then falls through to the next arm, so a version 1 record runs all nine. The checked lengths are two words of the state block at `0x30000380`, loaded from the initialised data (copy source `0xffe7f114`): `+0x0c` = `0x70` (the current record) and `+0x18` = `0x54` (the length of versions 1 to 3). Arm 1 accepts a record whose byte sum over `0x54` bytes is zero; arms 2 and 3 accept zero over `0x54` or, failing that, over `0x70`; arms 4 to 9 accept only `0x70`. A failed check sets the repair flag and ends the chain at once (to `0xffe5b6a0`), so the repair of step 4 then runs. Offsets are from the start of record 1; setting numbers are those of [settings-record.md](settings-record.md).
+
+| Arm (from version) | Entry | Edit | Settings touched |
+|---:|---|---|---|
+| 1 | `0xffe5b29a` | zero `+0x48` to `+0x67` (eight words); `+0x17` bits 7:4 := `0xf`; `+0x17` bits 2:1 := 2 | 70 to 77 zeroed; 60 (router role) := `0xf` (ordinary); 61 := 2 (the 3400 series, see below) |
+| 2 | `0xffe5b364` | `+0x46` bits 5 and 4 cleared | the low bits of settings 42 and 43 |
+| 3 | `0xffe5b3d6` | zero `+0x68` to `+0x6e` | the brick serial number (setting 15) |
+| 4 | `0xffe5b444` | `+0x04` bit 4 set | 53 := 1 |
+| 5 | `0xffe5b49e` | `+0x12` := 0 | 84 := 0 |
+| 6 | `0xffe5b4ea` | `+0x11` := 0 | 17 := 0 |
+| 7 | `0xffe5b536` | when setting 17 is 0 or 1, zero `+0x68` to `+0x6e`; then `+0x12` := 1 | 15 cleared; 84 := 1 |
+| 8 | `0xffe5b5a8` | `+0x2e` bit 0 and `+0x2f` bits 7, 6, 5 cleared | the high bits of settings 42, 43, 46, 47 |
+| 9 | `0xffe5b61a` | `+0x2e` bits 2:1 := 2 and bits 6:3 := `0xf` | 123 := 2; 124 := `0xf` |
+
+Because arm 6 sets setting 17 to 0 and arm 7 clears the serial when it is below 2, every record that enters below version 7 loses its brick serial; only a version 7 or 8 record that already holds a setting 17 of 2 or more keeps it. Arm 1 also repairs the router role and series for old records, so an upgraded R-brick comes out as an ordinary router of the 3400 series. After arm 9 and for nibbles 0 and 10 the common tail checks the sum over `0x70` bytes (failure sets the repair flag), then record 3 and record 2 as in steps 3 and 6.
+
+## Record 3 (E for the layout and the rebuild, I for what the entries mean)
+
+Record 3 is `0xb4` bytes at window `0x130`: byte 0 the version (3), bytes `+1` to `+3` three bytes read as settings 170 to 175 (six nibbles), byte `+4` a slot index (setting 81, 0 to 23), bytes `+5` to `+7` a 24-bit slot flag word (setting 82), then 24 entries of 7 bytes at `+8` (the setting 83 address), `+0xb3` the checksum. An entry is three fields from a three-word argument: the low 16 bits of word 1, the low 16 bits of word 2 and the low 24 bits of word 3. The routines are in package 0: add `0xffe53424`, find `0xffe53514` and the checker that wraps them `0xffe535c8`. The log texts around them (`0xffe53f03` onward) name a public key in the board EEPROM, an authenticator printed as three eight-digit hex words, "Authenticator is invalid", "Authenticator has expired" and "Key has been disable by clock setting change". So the table is the history of authenticators the L1 has accepted, in a ring of 24, with a flag per slot; the checker rejects a repeat whose slot flag is set, rejects an authenticator whose date value, compared with a value derived from the L1 clock, is negative ("CLOCK ERROR") or above 2000 (`0x7d0`, "expired"; the unit was not worked out), and otherwise records it in the slot at the index, clears that slot's flag and advances the index modulo 24. The date test and the use of the flag words were read only as far as the branches; the settings 170 to 175 were not traced. I.
+
+**Rebuild rule (E).** At start-up a record 3 whose byte 0 is not 3 is rebuilt in place without the repair routine: its first word is zeroed except the version, the `0xa8` entry bytes are zeroed, record 1's brick serial (`+0x68` to `+0x6e`) is zeroed, byte 0 becomes 3 and both checksums are recomputed (`0xffe5b6d0` to `0xffe5b752`). A record 3 whose byte 0 is 3 is only sum-checked. This is the "record 3 clears the serial" rule of the writing recipe below, and the serial is the only thing outside record 3 that the rebuild touches.
 
 ## Blank, erased or garbage windows (E)
 
@@ -99,6 +123,7 @@ Rack, bay and partition have no range check at start beyond the field widths and
 
 ## What is not settled
 
-- The upgrade chain for version nibbles 1 to 9, and the readers of settings 123 and 124.
+- The readers of settings 123 and 124 (the chain sets them to 2 and `0xf`), the meaning of settings 170 to 175 and the date arithmetic of the record 3 checker.
+- Package 1's table at `0xffe5a858` (the chain was read in package 0).
 - Whether the setter in package 0 matches package 1's (the getter and the start-up code do).
 - No case was found where the firmware compares a primary with its mirror when both pass: the primary wins at the repair step and the mirror is overwritten (E from the copy direction).
