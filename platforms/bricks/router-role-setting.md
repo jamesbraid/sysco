@@ -75,6 +75,8 @@ There are no other immediate-key sites in any package (E). The five sites of pac
 
 Only the R-brick release drives pins from the role: `ROUTER CONTROL` bits 7:4 receive the accepted nibble in packages 0 and 2. Cold start applies `0xf1`, so a never-written router starts as ordinary. The nibble bits: `0xf` `1111` ordinary, `0xe` `1110` meta, `0xc` `1100` repeater; bits 7:6 are set in all three, bit 5 is clear only for repeater, bit 4 is clear for meta and repeater. Which chip input each bit reaches, and polarity, is not in the image (U1). Package 5 has no hook that writes the nibble anywhere, although it accepts six values (I: from the five call sites and the absence of an R-brick release in its table; its other router personalities, `-` and `.`, were not read for pin writes).
 
+The other end of the pins (E for the header position, I for the link). The router's register `0x50` has a four-bit field at bits 23:20 that the public SGI ia64 kernel patch (`linux-2.4.18-ia64-020722`, `include/asm-ia64/sn/router.h`) calls "router position bits"; the IP35 PROM 6.210 reads bits 21:20 of it, inverts them and treats them as the MetaRouter and repeat-router flags (the interconnect repository's `platforms/ip35/metarouter-route-and-roles.md` has the addresses and the replays). The nibble written here and that field are both four bits wide, which is the only support for the nibble reaching it; whether bit n lands on register bit 20 + n, and whether a repeater `0xc` also reads as meta, stays U1.
+
 ## 6. Ledger of earlier claims
 
 | Claim (source) | Status |
