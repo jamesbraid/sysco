@@ -57,7 +57,7 @@ Release hook `0xffe4552c`, called from the release wrapper `0xffe4ed94`:
 
 | # | Step | Detail |
 |---:|---|---|
-| a | the predicate `0xffe4c2fc()` (a test over the supply records, not read in full: unknown) picks the path | when it returns zero the strap rule and step b are skipped (branch `0xffe45552` to `0xffe45604`) and the working values `d7` and `d6` stay 0 |
+| a | the predicate `0xffe4c2fc()`, the supply-state routine (read in full, below) picks the path | when it returns zero the strap rule and step b are skipped (branch `0xffe45552` to `0xffe45604`) and the working values `d7` and `d6` stay 0 |
 | b | strap rule, then 10 ticks, `XBRIDGE CONTROL` mask `0x0b` := `0x0a`, 10 ticks, mask `0x0b` := `0x0b` | only when the predicate is nonzero. The strap rule sets `d7` = `0x80` and `d6` = 0 when the global word `0x3000015c` is set and setting `0x2a` is nonzero, or when it is clear and module record 1 is valid with a nonzero `+0x30` word; otherwise (valid record, zero word) `d7` = 0 and `d6` = 4; with no valid record settings `0x2a` and `0x2b` are cleared first and `d7` = 0, `d6` = 4 |
 | c | `d7 |= 0x08`; `|= 0x20` when setting `0x28` is nonzero; `|= 0x10` when setting `0x29` is nonzero | |
 | d | `ASIC CTRL 2` mask `0xf8` := `d7` | wire `0x44` |
@@ -73,6 +73,12 @@ Steps c to j always run. Step e writes its mask `0x24` whatever the predicate ga
 Byte values from a hold state (`ASIC CTRL 1` `0x70`, `ASIC CTRL 2` `0x8a`, `XBRIDGE CONTROL` `0xd4`, `POWER CONTROL` `0xff`) with no stored strap settings and the predicate false: `ASIC CTRL 2` `0x0a`; `XBRIDGE CONTROL` `0xd0`; `ASIC CTRL 2` `0x02`; `POWER CONTROL` `0xef`, then `0xcf`; `ASIC CTRL 1` `0x71`; `ASIC CTRL 2` `0x03`; `ASIC CTRL 1` `0x73`. The final pair `0x73` and `0x03` is the C-brick's released state. With the predicate true, two more `XBRIDGE CONTROL` writes (`0xde`, then `0xdf`) come first and step e writes `0xdf` when `d6` is 4. The strap rule is the only thing that sets `d6` to 4, so the value 4 occurs only on the predicate-true path.
 
 Delays are counts of firmware ticks passed to `0xffe40e54`. A tick is one count of the timer-1 interrupt; its length is the 100 Hz inferred in [board-boot-contract.md](board-boot-contract.md) (inferred), so 10 ticks is 0.1 s. The release spends 10 + 10 + 3 + 10 = 33 ticks with the predicate false and a processor-module code outside 1 to 4, 43 ticks with a code of 1 to 4, and 20 ticks more in either case when the predicate is true. The hold spends 10 ticks only for codes 1 to 4.
+
+## 3a. The release predicate `0xffe4c2fc` (established)
+
+It is the supply-state routine, and it is the same code as package 0's `0xffe4c6ac` (110 instructions compared with address operands masked, no difference). It walks the supply table (header at `0x30000128`, 24-byte records) and counts the records that have an enabled byte set, an expander index other than `0xff` and, when their monitor field names an input, a monitor that answers (`0xffe4c270`); for each it reads the expander's shadow byte (`0xffe6592c`), tests the record's enable mask, and compares with the state that means "on" for that supply type (`0xffe4c10c`: for every type but `0x17` a clear bit is on). It returns 1 when every counted supply is on, -1 (`0xff`) when some but not all are, and 0 when none is or none was counted. On the Origin 300 the counted supplies are the four with an enable bit (records 0, 7, 8 and 9 of the supply table above).
+
+So the release predicate is "at least one of the four switched supplies is currently on in the shadow". After `power up` (all four enables cleared) it is 1 and steps b's two extra `XBRIDGE CONTROL` writes run; a `reset` on a brick whose supplies are all off gets only steps c to j. The routine reads the shadow, not the bus, so a model that answers the bus has no effect on it; it follows the supply-enable writes.
 
 ## 4. Which commands run which sequence (established)
 
@@ -91,6 +97,6 @@ The argument of the power-up routine is nonzero for `power up` and zero for `pow
 | Item | Why open |
 |---|---|
 | Polarity and destination of `ASIC CTRL 1` bits 7 and 6, and of the group bits | the image names expanders, not chip pins; the polarity at the Bedrock input is not in any image |
-| The predicate `0xffe4c2fc` and the margin routines `0xffe4e148`, `0xffe4e0a0` | not read through; the margin step is inferred to move the supply record 8 margin to 14 for hold and to restore it at release |
+| The margin routines `0xffe4e148`, `0xffe4e0a0` | not read through; the margin step is inferred to move the supply record 8 margin to 14 for hold and to restore it at release |
 | The trigger of the NMI call at `0xffe48e44` | the enclosing routine's caller was not followed |
 | Wall-clock length of a tick | the processor clock is not measured |

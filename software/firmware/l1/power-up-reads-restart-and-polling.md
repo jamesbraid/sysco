@@ -47,12 +47,12 @@ The bits not listed belong to records with no enable (monitored only: the 3.3 V 
 Sequence and delays, identical for all of these letters (E, the same routine as section 1, `0xffe4cb4c`):
 
 1. Serial-number check, skipped for type `A` and when setting `0x50` is non-zero; errors `-0x834` to `-0x838`.
-2. Reset hold (`0xffe4f2f0`). `I`: `XBRIDGE CONTROL` (index 5, wire `0x48`) bits `0x0b` driven low. `R`: `ROUTER CONTROL` (index 2, wire `0x46`) bits `0x0d` := `0x01` and `POWER CONTROL` bit `0x08` cleared. The hold arms of `P`, `X`, `Y`, `N` and `&` were not re-read (U); `N` and `&` register per-port `XBRIDGE CNTL` expanders instead of index 5.
+2. Reset hold (`0xffe4f2f0`). `I`: `XBRIDGE CONTROL` (index 5, wire `0x48`) bits `0x0b` driven low. `R`: `ROUTER CONTROL` (index 2, wire `0x46`) bits `0x0d` := `0x01` and `POWER CONTROL` bit `0x08` cleared. The hold arms of `P`, `X`, `Y`, `N` and `&` are the `I` arm (one shared hook, [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md)); `N` and `&` register per-port `XBRIDGE CNTL` expanders instead of index 5.
 3. For the first enabled supply, while none is on: the fan start (writes only), then 50 ticks (0.5 s I).
 4. Each enable bit cleared in the order of the table above, 25 ticks (0.25 s I) after each. Types `A` and `6` have different first delays; none of these letters is one.
 5. 100 ticks (1 s I).
 6. Port bring-up (`0xffe50b74`). `I`, `P`, `X`, `Y`, `N`, `&`: the generic arm for all ports. `R`: ports 0 to 5 one at a time when setting `0x3d` is 0 or 2 and the system serial does not start with `M`, else the generic arm (E for the code; which ports an R-brick registers is the `PORT HA/BC/DE/FG CONTROL` set of [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md)).
-7. No 50-tick wait for any of these letters (the jump table at `0xffe4d10a` sends `I`, `P` and `N` straight on and `X`, `Y`, `&` and `R` fall outside it), then `reset` (`0xffe4f324`): hold, 10 ticks, release. Release values are in [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md) for `I` and `R` (the `X`, `Y`, `N`, `&` and `P` release arms were not re-read, U).
+7. No 50-tick wait for any of these letters (the jump table at `0xffe4d10a` sends `I`, `P` and `N` straight on and `X`, `Y`, `&` and `R` fall outside it), then `reset` (`0xffe4f324`): hold, 10 ticks, release. Release values are in [power-reset-ibrick-rbrick.md](power-reset-ibrick-rbrick.md) for `I`, `R` and the letters that share the `I` hooks.
 8. Record-0 power state := 1 and `Powered Up`.
 
 `power down` clears nothing and sets the enable bits again in reverse table order with no delay between them, after holding reset; it does not run the fan start in reverse (`0xffe4c904`, E).

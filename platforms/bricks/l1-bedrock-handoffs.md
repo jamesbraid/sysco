@@ -145,7 +145,7 @@ The notice carries no information about NMI, soft reset or Bedrock state; the pe
 | Initial value of the debug word `0x30000040` | only gates debug text in the pulse and scan routines | read its initial-data image at the copy source |
 | What the hold wrapper's port-down and the release wrapper's port-up do on the wire | the C-brick and R-brick port records and the bit-level effect are in [power-up-reads-restart-and-polling.md](../../software/firmware/l1/power-up-reads-restart-and-polling.md) section 5 (the Origin 300 records were not tabulated) | tabulate the port records of the C-brick and Origin 300 registration tables (`port.c` literals) and the `PORT CONTROL` expander bits (`0x55`/`0xdd` masks), then replay `0xffe50288`, `0xffe500fc` and `0xffe509a4` |
 | What `0xffe36a04` (ports 2 to 9) and `0xffe52a30` put on a link | not followed | read `0xffe54a84`'s jump table (50 cases) and `0xffe3681c`; list UART writes |
-| Meaning of the Origin 300 predicate `0xffe4c2fc` | iterates supply records and compares bits | read `0xffe4c270`, `0xffe4c10c` and the supply record fields |
+| Meaning of the Origin 300 predicate `0xffe4c2fc` | answered: it is the supply-state routine, nonzero when at least one switched supply is on ([origin300-hold-release-sequence.md](../../software/firmware/l1/origin300-hold-release-sequence.md), section 3a) | none |
 | Whether an L2 sees the power-state notice | the USB-side event path was not traced | read the USB write queue consumer for task-14 events and the L2 daemon's handler for event code 4 (`sub_1000e664` neighbours in [l2/config-request-reply.md](../../software/firmware/l2/config-request-reply.md)) |
 
 ## 9. What this note changes in earlier notes
