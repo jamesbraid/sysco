@@ -147,6 +147,37 @@ Established only where a routine or table gives a literal; the labels are the fi
 - **PIMMn POWER** (outputs bits 0, 3, 6, 7; inputs `0x36`): the supply records enable `PIMMn VCPU` with mask `0x01` and `PIMMn SRAM` with mask `0x08`. **PIMMn VCC OK** (inputs `0x3c`) is read; the bits are unnamed. Inferred.
 - **DISPLAY CONTROL**: bits 0 to 3 inputs (events on bits 0 to 2), bits 4, 5, 6 the three LED outputs (LED 1 mask `0x10`, LED 2 `0x20`, LED 0 `0x40`; routines `0xffe51778`, `0xffe51830`, `0xffe518e4`), bit 7 unnamed. The state query reports 1 when the shadow bit is clear (a clear bit is the lit state, inferred). Established for the masks; the front-panel power button is bit 0 by analogy with package 1.
 
+### Pin meanings, completed (package 0; E for the code, S for a manual, I as marked)
+
+This extends the list above with the readers and the published names found since. A manual here is the L1 and L2 Controller Software User's Guide `007-3938-004` or the Origin 3000 Series Owner's Guide `007-4240-002` (page numbers in [../../../platforms/bricks/l1-bedrock-handoffs.md](../../../platforms/bricks/l1-bedrock-handoffs.md), section 12). "Set" and "clear" are the value of the bit in the byte the L1 writes.
+
+| Expander (index, wire, segment) | Bit | Meaning | Grade |
+|---|---|---|---|
+| `LED0 LOW`, `LED0 HIGH`, `LED1 LOW`, `LED1 HIGH` (1 to 4, `0x42` to `0x48`, segment 2) | all | inputs: the processor status LEDs, read by the `leds` command as CPU A (`0x42`, group 0 LEDs 0 to 7), CPU B (`0x44`, 8 to 15), CPU C (`0x46`, group 1 LEDs 0 to 7), CPU D (`0x48`, 8 to 15); a set bit is an LED on (007-4240-002 p. 251) | S |
+| `BEDROCK CNTL 1` (6, `0x42`, 3) | 0, 1 | hold group with `CNTL 2` bit 0: clear is held, set is released | E for the writes, I for the meaning |
+| | 2, 3 | set when remote power is seen on port 0 or port 1, clear when lost | E for the writes, I for the meaning |
+| | 6 | NMI: idles set, cleared then set | E; the manual puts the NMI signal in this expander (`B_0100001x`) |
+| | 7 | soft reset: idles clear, set for 10 ticks, cleared | E; the manual puts the soft-reset signal in this expander |
+| | 4, 5 | set at cold start, never written | E for not written, U for use |
+| `BEDROCK CNTL 2` (7, `0x44`, 3) | 0 | hold group, as above | E, I |
+| | 3 to 7 | written as one group at release (mask `0xf8`): bit 3 set then cleared 10 ticks later, bit 4 from setting `0x29`, bit 5 from setting `0x28`, bit 7 from setting `0x2a` or the module-record rule; bits 1 and 2 never written | E for the writes, U for the meaning |
+| `PORT CONTROL` (8, `0x46`, 3) | per nibble, port 0 low and port 1 high | bit 0 remote power OK (input, change-reported), bit 1 local power OK (output, set by the port enable), bit 2 link LED (input), bit 3 software LED (output) | S for the names (007-3938-004 pp. 81 and 82); E for the code, see [power-up-reads-restart-and-polling.md](power-up-reads-restart-and-polling.md) section 5 |
+| `POWER CONTROL` (9, `0x48`, 3) | outputs 0 and 5 | enables of supply records 4 (mask `0x01`, name by type `2.5V`) and 3 (`DIMM`, mask `0x20`) of the supply table; clear is on | E for the masks |
+| | inputs 1 to 4, 6, 7 | VRM status, three pairs: bits 1 and 2 (VRM 1) and bits 3 and 4 (VRM 2), both belonging to supply record 4, and bits 6 and 7 (VRM 3), belonging to the `DIMM` supply record. In each pair the first bit set means "VRM not present" and the second set means "VRM not OK"; the change hook (`0xffe58690`, shared with `FAN CONTROL` and `PIMMn POWER`) logs `VRM not present: type %s, number %d` or `VRM not OK: type %s, number %d`, with the supply record's name as the type | E for the table and messages; I that a set bit is the fault (the table's invert flags are clear) |
+| `PIMM PSC` (10, `0x4a`, 3) | low and high nibble | PIMM 0 and PIMM 1 code; `0xf` absent | E |
+| `FAN CONTROL` (11, `0x4c`, 3) | 7 | enable of the first supply record (48 V): clear is on | E |
+| | 6 | input, change-reported: a fall logs `48V power fail warning` (event `0x3500`); the hook takes that branch because the supply record's nominal voltage equals 48.0, so high is power OK | E |
+| `PIMM0 POWER`, `PIMM1 POWER` (12, 14; `0x44`; segments 4, 5) | 0 | enable of the PIMM's processor supply (`PIMMn VCPU`), clear is on | E |
+| | 3 | enable of the PIMM's SRAM supply, clear is on | E |
+| | 6, 7 | processor disable bits driven by `cpu d` (set is disabled) | E for the writes ([../../../platforms/bricks/l1-bedrock-handoffs.md](../../../platforms/bricks/l1-bedrock-handoffs.md), section 11.4), I for the sense |
+| | 1, 2 and 4, 5 | VRM status pairs: bits 1 and 2 belong to the PIMM's `VCPU` supply (VRM 5, or VRM 7 for PIMM 1), bits 4 and 5 to its `SRAM` supply (VRM 4, or VRM 6); each pair is `not present` then `not OK` | E, I as above |
+| `PIMM0 VCC OK`, `PIMM1 VCC OK` (13, 15; `0x42`) | 2 to 5 | inputs read by the poll; the hook only logs; no use found | U |
+| `DISPLAY CONTROL` (16, `0x40`, 0) | 0 to 3 | inputs, events on 0 to 2; bit 0 is the front-panel power button by analogy with the Origin 300 | E for the hook, I for the button |
+| | 4, 5, 6 | LED outputs (clear is lit): `0x40` POWER, `0x20` FAULT, `0x10` the third; the restart-consistency check wants POWER lit and FAULT off | E for the masks, I for the names |
+| | 7 | the display part's reset line (cleared first, then set) | I |
+
+The VRM table is eight six-byte records at `0xffe45a24`, registered by `0xffe58070`: `{expander, supply-record index, VRM number, not-present mask, not-OK mask, flags}`. The supply-record index selects the name the message prints (through `0xffe4bbcc`, from the 20-record supply table at `0xffe457c4`): VRM 1 and 2 supply record 4 (`POWER CONTROL` `0x02`/`0x04` and `0x08`/`0x10`), VRM 3 supply record 3 `DIMM` (`0x40`/`0x80`), VRM 4 `PIMM0 SRAM` (`PIMM0 POWER` `0x10`/`0x20`), VRM 5 `PIMM0 VCPU` (`0x02`/`0x04`), VRM 6 `PIMM1 SRAM` and VRM 7 `PIMM1 VCPU` on `PIMM1 POWER` the same way, and an eighth record on `FAN CONTROL` (`0x40`, supply record 0, the 48 V supply). All flag bytes are zero. The hook tests the not-present mask first; for the not-OK mask it also tests the sense with the record flags (bit 0 set would invert it), so with flags zero a set bit is the fault (I, from the helpers `0xffe583ac` and `0xffe5836c`).
+
 ### Parts implied by the traffic (inferred)
 
 - **Expanders:** a byte-wide quasi-bidirectional expander (the PCF8574 family): one data byte per access, no register select, input bits written as ones, wire addresses `0x40` to `0x4e` (seven-bit `0x20` to `0x27`, the PCF8574 range; the PCF8574A range `0x38` to `0x3f` is not used). A PCA9555 is excluded by the access form (no command byte). No image names the part.
