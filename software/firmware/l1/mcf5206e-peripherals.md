@@ -9,7 +9,7 @@ Read from L1 1.44.0, package 1, first-bank copy. Offsets are from the peripheral
 | Chip selects | `+0x64` to `+0xc6` | `0xffe549d8`: select 0 maps the flash (1 MB or 2 MB by a mirror test), select 1 `0x20000000`, select 2 the RAM at `0x30000000` (128 KB or 512 KB by an alias test), selects 3 to 7 cleared |
 | DRAM controller | `+0x46`, `+0x4a`, `+0x4c`, `+0x50`, `+0x57`, `+0x58`, `+0x5c`, `+0x63` | cleared by `0xffe54b0c`; the offsets match the manual's DRAM controller registers (hint) |
 | UART 1 and UART 2 | blocks at `+0x140` and `+0x180`, mask byte at block `+0x14` | `0xffe62de8` fills a state record per port (`0x30002818`, `0x30002824`); service entries `0xffe635f8` and `0xffe6360c` |
-| Parallel port | `+0x1c5` written `0xfe`, `+0x1c9` read and written, word `+0xca` | the scan chain interface: `0xffe71d90` sets it up, `0xffe7204c` drives the TAP reset pattern, `0xffe722f8` and `0xffe72454` shift data |
+| Parallel port | `+0x1c5` written `0xfe`, `+0x1c9` read and written, word `+0xca` | the scan chain interface: `0xffe71d90` sets it up, `0xffe7204c` drives the TAP reset pattern, `0xffe722f8` and `0xffe72454` shift data; bit roles, compares and the expected chain are in [scan-interface.md](scan-interface.md) |
 
 Pin roles on the data byte `+0x1c9`, from the firmware's own pin print routine at `0xffe72254`: bit 0 TDO (input), bit 3 PSI, bit 4 TRST, bit 5 TMS, bit 6 TCK, bit 7 TDI.
 
