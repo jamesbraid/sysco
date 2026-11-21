@@ -13,17 +13,19 @@ Each entry starts with its route, one of:
 - **MAME ColdFire core**: needs MAME's MCF5206E core or a public reset-state description, neither in hand.
 - **missing binary or release**: the file is not in `root/`; the entry names what to obtain.
 
-## Triage (2026-11-10)
+## Triage (2026-11-21)
 
-20 entries after five were answered and moved into their notes (the EEPROM retry question, the USB guard word, the IO8 record refresh, the brick-type setting writers and the M-Bus clock). The L2 bullet that held eight questions is split into eight entries, one per question.
+43 entries after five were answered and moved into their notes (the EEPROM retry question, the USB guard word, the IO8 record refresh, the brick-type setting writers and the M-Bus clock). The L2 bullet that held eight questions is split into eight entries, one per question.
 
 | Route | Entries |
 |---|---:|
-| software now | 13 |
+| software now | 23 |
 | version diff | 2 |
 | other firmware versions | 1 |
 | IRIX host objects | 1 |
-| missing binary or release | 3 |
+| missing binary or release | 14 |
+| documents | 1 |
+| unknown | 1 |
 | MAME ColdFire core (as primary route) | 0 |
 
 Answered since: the monitor-register reads of `0x3e` and `0x3f` are settled in [l1/ip45-monitor-registers.md](../software/firmware/l1/ip45-monitor-registers.md#register-sweep-that-reads-0x3e-and-0x3f-established-0xffe69a84), and word 7 of the bank records is read only inside the zero-sum loops ([l1/flash-nvram-and-image-records.md](../software/firmware/l1/flash-nvram-and-image-records.md#boot-flash-layout-and-image-records)). A fresh L1 reports rack 0 and bay 0 ([l2/config-request-reply.md](../software/firmware/l2/config-request-reply.md)). A package 2 component number is the hook result of `0xffe13be4` ([l1/ip53-eeprom-record-tables-1.44.0.md](../software/firmware/l1/ip53-eeprom-record-tables-1.44.0.md#3-the-component-number-a-request-uses)). The package 2 brick serial width and validators are in [l1/serial-number-requests.md](../software/firmware/l1/serial-number-requests.md).
@@ -43,7 +45,7 @@ Software-now list, in the order to take them:
 
 ## Other versions
 
-- **Route: version diff.** Which request codes does each non-Origin-300 ColdFire package add or drop? Partly answered: the general task's add and drop lists for packages 3 and 5 are in [l1/personalities.md](../software/firmware/l1/personalities.md#request-catalogue-of-the-general-task), and packages 0 and 2 have the same 39 codes as package 1. From 1.44.0 to 1.48.x the bodies of packages 0 to 3 differ only in strings, the bank record and its table, so their dispatchers do not change ([version-diffs.md](../COVERAGE.md)). Still open: the other dispatchers (command loop, flash, peer forwarding) and codes above `0x7fff` across the older sets and package 5, which [version-diffs.md](../COVERAGE.md) does not compare. Step: run the same table-shape search on those dispatchers in packages 0, 2, 3 and 5 of 1.24.8, 1.32.15 and 1.44.0.
+- **Route: version diff.** Which request codes does each non-Origin-300 ColdFire package add or drop? Partly answered: the general task's add and drop lists for packages 3 and 5 are in [l1/personalities.md](../software/firmware/l1/personalities.md#request-catalogue-of-the-general-task), and packages 0 and 2 have the same 39 codes as package 1. From 1.44.0 to 1.48.x the bodies of packages 0 to 3 differ only in strings, the bank record and its table, so their dispatchers do not change ([COVERAGE.md](../COVERAGE.md)). Still open: the other dispatchers (command loop, flash, peer forwarding) and codes above `0x7fff` across the older sets and package 5, which [COVERAGE.md](../COVERAGE.md) does not compare. Step: run the same table-shape search on those dispatchers in packages 0, 2, 3 and 5 of 1.24.8, 1.32.15 and 1.44.0.
 
 ## L1 hardware seen by the code
 
