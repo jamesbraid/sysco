@@ -13,6 +13,8 @@ Read from L1 1.44.0, package 1, first-bank copy. Offsets are from the peripheral
 
 Pin roles on the data byte `+0x1c9`, from the firmware's own pin print routine at `0xffe72254`: bit 0 TDO (input), bit 3 PSI, bit 4 TRST, bit 5 TMS, bit 6 TCK, bit 7 TDI.
 
+**Per-port UART initialiser `0xffe62de8` (established from the code, read in full to its `rts`).** Argument 1 selects the port: 1 uses record `0x30002818` and block `+0x140`, 2 uses `0x30002824` and `+0x180`, other values print an error. The routine stores the record (a pointer returned by `0xffe645a4`, the block base, the argument byte at `+8`), calls `0xffe42550` with that byte and the service entry (`0xffe635f8` or `0xffe6360c`), then clears the port's bit in the mask word `+0x36` (`0x1000` for port 1, `0x2000` for port 2). That clear is inferred to unmask the interrupt, since the mask is one to mask. Its two callers are both in the opener `0xffe54be0` (`0xffe54c3c`, `0xffe55184`). The divisor code at `0xffe62fd4` is in the next routine, `0xffe62f44`.
+
 Off-chip: a four-channel UART block with registers at a stride of 8 per channel is initialised by `0xffe636b0` at `0x50000000` (external interrupt line 4) and `0x60000000` (line 3), with the value `0xb71b00` as its third argument. The USB device controller windows at `0x40000000` and `0x60000000` are in [usb-controller-registers.md](usb-controller-registers.md). The flash is erased and polled by code the loader copies to RAM at `0x30000000`: `0xffe7f810` (RAM `0x3000072c`) polls the toggle bit and `0xffe7f8b0` (RAM `0x300007cc`) writes `0x30` to a sector address.
 
 ## Timer routine and UART 2 output port (established values, meanings from the manual)
