@@ -431,8 +431,8 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb441
 - `eepromRead`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xb466c to 0xb4848.
-  Established. The first `bls` takes the path past 0x1eed0 for `([sp-20]:2 + [sp-26]:2) <=
-  [ret(0xb4944)+2]:2` unsigned (`bls` at 0xb46c8, `bl` at 0xb470c). A later `bls` takes the path
+  Established. The first `bls` takes the path past 0x1eed0 for `([sp-20]:2 + [sp-26]:2)
+  <= [ret(0xb4944)+2]:2` unsigned (`bls` at 0xb46c8, `bl` at 0xb470c). A later `bls` takes the path
   past the halfword store of 0x20 at sp -0x28 when `[sp-40]:2 <= 0x20` unsigned (`bls` at 0xb4780,
   `strh` at 0xb4788). The call to 0xaba40 has first candidate unknown, followed by `[sp-38]:1`,
   `[sp-24]` and `[sp-40]:2` (`bl` at 0xb47e8). The same path then calls 0xab788 (`bl` at 0xb47f4).
@@ -662,8 +662,8 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xb496
 - `eepromWrite`, `6.5.27/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.27:l1#3`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xb5ef4 to 0xb6090.
-  Established. The first `bls` takes the path past 0x1eed0 for `([sp-20]:2 + [sp-26]:2) <=
-  [ret(0xb4944)+2]:2` unsigned (`bls` at 0xb5f50, `bl` at 0xb5f94). The later outgoing word store at
+  Established. The first `bls` takes the path past 0x1eed0 for `([sp-20]:2 + [sp-26]:2)
+  <= [ret(0xb4944)+2]:2` unsigned (`bls` at 0xb5f50, `bl` at 0xb5f94). The later outgoing word store at
   sp -0x40 contains `[sp-40]:2` (`str` at 0xb6024). The call to 0xb6090 has candidates
   `[[sp-32]]:1`, unknown, `[sp-38]:1` and `[sp-24]` (`bl` at 0xb6038). Subsequent stores include
   `(([sp-20]:2 + [sp-40]:2) & 0xffff)` at sp -0x14 and `([sp-24] + [sp-40]:2)` at sp -0x18 (`strh`

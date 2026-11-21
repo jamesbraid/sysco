@@ -545,8 +545,8 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xd1c3
 - `eepromRead`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.28:l1#4`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xd1ec8 to 0xd20c0.
-  Established. The unsigned range branch takes the continuation for `([sp-24]:2 + [sp-30]:2) <=
-  [ret(0xd2384)+2]:2` and falls through for greater (`bls` at 0xd1f30). A later unsigned bound takes
+  Established. The unsigned range branch takes the continuation for `([sp-24]:2 + [sp-30]:2)
+  <= [ret(0xd2384)+2]:2` and falls through for greater (`bls` at 0xd1f30). A later unsigned bound takes
   its bypass for `[sp-44]:2 <= 0x20` and falls through above it to store halfword `0x20` at `sp
   -0x2c` (`bls` at 0xd1fe8, `strh` at 0xd1ff0). The call to `0xc7e94` has unknown, `[sp-42]:1`,
   `[sp-28]`, `[sp-44]:2` (`bl` at 0xd2064). Bank/address encoding, transaction extent and the joined
@@ -652,8 +652,8 @@ Coverage excludes unresolved edges from the computed transfer (`ldrls` at 0xd1c3
 - `eepromWrite`, `6.5.28/usr/cpu/firmware/sysco/l1.bin`:
   Package `6.5.28:l1#4`, inner executable `/stand/sysco/bin/l1`.
   Analysed span 0xd20c0 to 0xd2280.
-  Established. The unsigned bound takes its continuation for `([sp-24]:2 + [sp-30]:2) <=
-  [ret(0xd2384)+2]:2` and falls through for greater (`bls` at 0xd2128). The later call to `0xd43d0`
+  Established. The unsigned bound takes its continuation for `([sp-24]:2 + [sp-30]:2)
+  <= [ret(0xd2384)+2]:2` and falls through for greater (`bls` at 0xd2128). The later call to `0xd43d0`
   carries unknown, unknown, `[sp-42]:1`, `[sp-28]` (`bl` at 0xd2224). Before that call, a word store
   saves `[sp-44]:2` at `sp -0x44` (`str` at 0xd2210). Persistence guarantees, physical addressing
   and the merged return are unproven (`ldmdb` at 0xd2270).
