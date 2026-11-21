@@ -17,6 +17,23 @@ The addresses of the L1 routines are in the Linux L1 `l1` program's load image (
 
 On the node side (SHub 1 build), the UART driver (`sc_uart_*`, for example `sc_uart_rxintr` and `sc_uart_txintr`) addresses the UART at the literal `0x8000000ffed40000 | nasid << 38` plus eight bytes per register, the same eight-byte stride as the PROM's own UART accesses (established: the immediates `+0x00` to `+0x38`). The chipset table also holds two accessors for the same window: `sc_shub_dev_reg` forms `0x8000000ffed40000 | nasid << 38` plus the register index shifted left by 6 (a 64-byte spacing), and `sc_shub_dev_reg_offset` forms `0x7fed40000` plus the index shifted left by 3. No call from the `sc_uart_*` routines to either was found; the callers of the table slots that were found are in the scan-chain, TIO and router code. So 8 is the register spacing of the UART as the UART driver uses it; what the `<< 6` accessor serves is not settled (unknown). `sc_shub_uart_divisor` returns 1; an `sc_tio_*` set drives the TIO's UART and an `sc_nl4r_*` set the router's. The register layout belongs to the SHub reading, not to this note. The L1 and node ends were read independently and agree on the framing below.
 
+### The node end for an NL4 router: eight bytes per word (SHub 1 build, read 2026-11-21)
+
+**Established** (SAL_B of `shub1snprom.bin`, SAL 5.04, Ghidra and objdump; the chips repository page
+`software/firmware/snprom/numalink-neighbours.md`, section "The router's L1 mailbox", has the table). When the node's PROM asks a
+router's system controller for its module id, slot and slab it does not use the node's UART: the same PPP-style frames travel
+through four registers of the router chip, reached with vector requests. The PROM writes eight frame bytes at a time to
+`ASIC_TO_L1_DATA` (`0x38`, first byte in bits 7:0, `0x7e` fill at the end), only when bit 0 of `ASIC_TO_L1_STATUS` (`0x30`) is
+clear; it polls `L1_TO_ASIC_STATUS` (`0x40`), takes eight reply bytes from `L1_TO_ASIC_DATA` (`0x48`) while bit 0 is set, and writes
+0 to `0x40` after each word. The first frame of an emulator run of that PROM, `7e 05 0f ff f0 06 00 03 69 27 7e` (request `0x0003`),
+is the example in [the request grammar below](#frame-header-and-argument-encoding), sent as two words. The PROM waits 3 s for a
+complete reply and parks the boot processor if none comes.
+
+**Inferred** for the L1's side: the router's `ASIC_TO_L1_*` and `L1_TO_ASIC_*` registers are what `RD_SYSCOM` and `WR_SYSCOM`
+reach through the scan chain (`NL4R_SysComInt`, `JTAG_UART_read`, `JTAG_UART_write`, above), by name; the L1's handshake on the
+two status registers was not read, and the bit reversal of the scan-chain packing is not visible in the node's words. Unknown: the
+meaning of the other status bits, and whether the router queues a second word.
+
 ## Framing: HDLC-style byte stuffing with the PPP FCS-16
 
 **Established** at both ends (`PPPWrite` at `0x10df80`, `PPPRead`, `PPPDecode`; node side `l1sc_fill_sendbuf` at `0x52fe0`, `l1sc_receive` at `0x53b80`).
