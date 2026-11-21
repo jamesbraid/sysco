@@ -564,3 +564,7 @@ The node firmware's geoid code reads a 64-bit "pushed data" register of the SHub
 - For rack 1, bay 1, SHub 0, partition 0 the word is `0x0000_0000_0410_006c`.
 
 Review of the `SH_SCRATCH2` section (2026-11-16, Ghidra): ARM `0x6cda4` and ColdFire `0xffe5b3dc` both read, formula, retry count (50) and register `0x101d0100` confirmed; the caller chain `0xffe5e04c` / `0xffe575d8` and ARM `0x71d70` / `0x89cb0` were not re-read; the value `0x0410006c` re-derived by hand; the PROM writer `0xffa8cea0` has one caller whose messages all name TIO (see the chips klconfig review).
+
+### Review of the node end of the NL4 router mailbox (sysco d194410)
+
+Independent review, 2026-11-21, by a reviewer who did not write it. The paragraph restates `software/firmware/snprom/numalink-neighbours.md` of the chips repository, which was re-read in `shub1snprom.bin` (see its Review): the register roles, eight bytes per word with the first byte in bits 7:0 and `0x7e` fill, the `0x30` gate, the `0x40` poll, the write of 0 after each word and the 3 s wait with the park on silence all hold. The pairing with `RD_SYSCOM` and `WR_SYSCOM` stays inferred, as written.
