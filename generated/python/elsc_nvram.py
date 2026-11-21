@@ -1,4 +1,6 @@
 """generated from devices/elsc_nvram/registers.toml by defs-gen - do not edit, change the source
+defs-gen 2
+input sha256 9eea679da2138a14697e010459e66848c8775566a569bec5e3df22ecb457dd2b
 configuration block of the module controller's non-volatile store"""
 
 UNIT = 'elsc_nvram'

@@ -1,4 +1,6 @@
 """generated from formats/l2_partition_requests/format.toml by defs-gen - do not edit, change the source
+defs-gen 2
+input sha256 2c3cebd99e2301e7ea1e89245fa96a003e52f6f6254b5544d5c35983e66285ee
 request codes of the L2 partition task image"""
 
 UNIT = 'l2_partition_requests'

@@ -1,4 +1,6 @@
 // generated from devices/mpc8xx/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 2
+// input sha256 ae308f69e1ebe58401efce7d831bc1c6bc5196adc46fd7082f7a71575f008914
 // start-up values of the PowerPC communications controller on the L2 board
 #![allow(dead_code)]
 

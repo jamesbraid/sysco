@@ -1,4 +1,6 @@
 /* generated from formats/l1_pkg0_console/format.toml by defs-gen - do not edit, change the source */
+/* defs-gen 2 */
+/* input sha256 733d2f37feb013c28b8f82692061fc7e7b247fafc8e950c1b8ef6bec1eb4e373 */
 /* console command tables of ColdFire L1 firmware package 0 */
 #ifndef L1P0C_GEN_H
 #define L1P0C_GEN_H

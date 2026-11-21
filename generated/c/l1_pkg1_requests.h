@@ -1,4 +1,6 @@
 /* generated from formats/l1_pkg1_requests/format.toml by defs-gen - do not edit, change the source */
+/* defs-gen 2 */
+/* input sha256 8fe9033fdfd95cfd7f663aba399465a110b64b1940854c62cdf673edf4f366aa */
 /* console request codes of ColdFire L1 package 1 */
 #ifndef L1P1_GEN_H
 #define L1P1_GEN_H

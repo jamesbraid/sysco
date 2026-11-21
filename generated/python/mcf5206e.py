@@ -1,4 +1,6 @@
 """generated from devices/mcf5206e/registers.toml by defs-gen - do not edit, change the source
+defs-gen 2
+input sha256 321cbadc9140be0bf917d201b71d223ced86f8e5cb1ca1972b4c6558235f96f7
 on-chip registers of the ColdFire MCF5206e as the L1 firmware uses them"""
 
 UNIT = 'mcf5206e'

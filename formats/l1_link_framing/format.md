@@ -1,4 +1,6 @@
 <!-- generated from formats/l1_link_framing/format.toml by defs-gen - do not edit, change the source -->
+<!-- defs-gen 2 -->
+<!-- input sha256 8b0103c5a64b9a8b795c5f658d886fefa0545a0eedb8fc1a054643b74cc774a5 -->
 
 # frame bytes and link context constants of the ColdFire L1 node and peer links
 

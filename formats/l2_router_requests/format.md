@@ -1,4 +1,6 @@
 <!-- generated from formats/l2_router_requests/format.toml by defs-gen - do not edit, change the source -->
+<!-- defs-gen 2 -->
+<!-- input sha256 877400033358bc5733bdc0424e204b91d1981956aabae6bedaaa0326b17f4e08 -->
 
 # request codes of the L2 router library
 

@@ -1,4 +1,6 @@
 /* generated from devices/l1_board/registers.toml by defs-gen - do not edit, change the source */
+/* defs-gen 2 */
+/* input sha256 5dbe67c379cb9002dba72a6291188c80e88f666c974b685b1902752e920a6468 */
 /* board-level bit layouts and constants of the ColdFire L1 firmware */
 #ifndef L1B_GEN_H
 #define L1B_GEN_H

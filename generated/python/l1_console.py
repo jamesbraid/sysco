@@ -1,4 +1,6 @@
 """generated from formats/l1_console/format.toml by defs-gen - do not edit, change the source
+defs-gen 2
+input sha256 cf5d01efc28dac97a3b896fcc61217b9072b84fead22d7ed21e518071d196ee0
 entry layout and argument kinds of the L1 console command tables"""
 
 UNIT = 'l1_console'
