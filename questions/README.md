@@ -40,7 +40,7 @@ Software-now list, in the order to take them:
 14. L2 display and touch protocol in `l2gui`.
 16. Memory-window controller behind ports `0x540`, `0x548`, `0x760`.
 17. Consumer of CMOS byte `0x7e` bit 7.
-18. Meaning of the `FLASH` reply `STATE` fields and the serial-port flag bits.
+18. Meaning of the console flag bits behind `BS` and the serial-port flag bits.
 
 ## Other versions
 
@@ -69,7 +69,7 @@ Software-now list, in the order to take them:
 - **Route: missing release or binary.** What is the memory-window controller behind ports `0x540`, `0x548` and `0x760` in the MMSC image? Routes tried: every MMSC image held, for immediates, start-up writes and read-backs ([mmsc/flash-nvram-download.md](../software/firmware/mmsc/flash-nvram-download.md)); the three ports are written by the flash and battery-backed-store routines only and never read. Step: a board schematic or the chip's datasheet; no scanned medium has one.
 - **Route: missing release or binary.** What reads CMOS byte `0x7e` bit 7 (the downloader flag the `DOWNLOADER` command and the flash console state set and clear)? Searched in every distinct MMSC image (eight): only the two read-modify-write routines select that index, and the entry path reads no CMOS port, so the consumer is not in any shipped image ([mmsc/flash-nvram-download.md](../software/firmware/mmsc/flash-nvram-download.md)). Step: obtain the MMSC boot ROM or a published description of its boot sequence; nothing else can settle it.
 - **Route: missing release or binary.** What did NVRAM layout versions 1, 3 and 4 store (object count and total)? Versions 2 (6.4 builds), 5 (6.5, 6.5.2) and 6 are read and share one thirteen-object table ([mmsc/flash-nvram-download.md](../software/firmware/mmsc/flash-nvram-download.md)). No held image writes version 1, 3 or 4. Step: an MMSC image older than 6.4 or built between 6.4 and 6.5.
-- **Route: software now.** What do the console `STATE BS FS FP M` fields of the `FLASH` reply and the flag bits of the serial-port records (object 4) mean? Tried: both are read as values ([mmsc/flash-nvram-download.md](../software/firmware/mmsc/flash-nvram-download.md)); their use by `flashmmsc` and by the console task is not traced. Step: follow the reply fields through the console routine and the host tool's parsing of the reply.
+- **Route: software now.** What do the console flag bits behind `BS` (`0x20`, `0x40`, `0x60`, `0x10c0` of the flag word at console record `+0x3c`) and the flag bits of the serial-port records (object 4) mean? The `STATE` fields of the `FLASH` reply are answered ([mmsc/flash-nvram-download.md](../software/firmware/mmsc/flash-nvram-download.md)): they are tokens of the router's own `STATE` command (`BS` sets flag bits, `FS` and `FP` are descriptors, `M` is the console mode). Step: list the tests of the flag word `+0x3c` in the console task and the router and read what each bit gates.
 
 ## MSC and ELSC host side
 
