@@ -15,11 +15,11 @@ Each entry starts with its route, one of:
 
 ## Triage (2026-11-21)
 
-43 entries after five were answered and moved into their notes (the EEPROM retry question, the USB guard word, the IO8 record refresh, the brick-type setting writers and the M-Bus clock). The L2 bullet that held eight questions is split into eight entries, one per question.
+42 entries after six were answered and moved into their notes (the EEPROM retry question, the USB guard word, the IO8 record refresh, the brick-type setting writers, the M-Bus clock and the on-chip UART opener's callers). The L2 bullet that held eight questions is split into eight entries, one per question.
 
 | Route | Entries |
 |---|---:|
-| software now | 23 |
+| software now | 22 |
 | version diff | 2 |
 | other firmware versions | 1 |
 | IRIX host objects | 1 |
@@ -60,7 +60,7 @@ Software-now list, in the order to take them:
 
 - **Route: version diff.** L1 packages 0, 2, 3 and 5: [l1/personalities.md](../software/firmware/l1/personalities.md) compares the 1.44.0 ones with the Origin 300 package (layout, personality selection, request codes, module list). Not read: the board devices each module drives (I/O addresses, expected replies), the other sets' versions of these packages, and the added request handlers other than 0x0012. Step: run the register scan used for package 1 over each module's device accesses.
 - **Route: missing release or binary.** The L2 PROM's partition fetch. The PROM that sends task 10 requests is not in any L2 image read ([l2/partition-task.md](../software/firmware/l2/partition-task.md)), and the IP35 PROM image that would reach this tree is not in `root/`. Narrowed: the request shape and the published reply checks fit task-10 code 1 (brick in, partition out) and nothing else, and the reply is one 36-byte segment ([l2/partition-record.md](../software/firmware/l2/partition-record.md)); the code halfword the PROM actually sends is still unknown. The L1 side can be read now: the requests that forward to task 10 (task 5, in [l1/rs422-router.md](../software/firmware/l1/rs422-router.md)).
-- **Route: software now.** Two-partition operation: which link an I/O brick adopts its partition from, whether the other ColdFire packages keep the same partition and console rules, what the L2's access-point warning and default-console text test, and whether the boot firmware reads the partition-database flag first. Steps and tests are U12 to U16 in [l2-l1-conversation.md](../software/firmware/l2/l1-conversation.md) section 13.
+- **Route: software now.** Two-partition operation: whether the other ColdFire packages keep the same partition and console rules, what the L2's access-point warning and default-console text test, and whether the boot firmware reads the partition-database flag first. Answered: an I/O brick adopts its partition from the compute brick on the peer port (ports 9 to 12) whose record was applied last ([l2/two-partition-nvram-and-console.md](../software/firmware/l2/two-partition-nvram-and-console.md)). Steps and tests are U13 to U16 in [l2-l1-conversation.md](../software/firmware/l2/l1-conversation.md) section 13.
 - **Route: software now.** The router library beyond the chunk frame and the packet builder, writer and free routines ([l2/router-packet.md](../software/firmware/l2/router-packet.md)). Open: the connection, event and request-queue code. Step: read those routines in `libRouter` and `libIRouter` from the L2 tree.
 - **Route: software now.** Which devices sit at `0xfa210000` and `0x10000000` in the L2 kernel, and what does the stage-2 memory-controller program contain? The L2 board-information block is answered ([l2/image-layout.md](../software/firmware/l2/image-layout.md)): stage 2 builds it from fixed constants and the Ethernet address in an I2C VPD EEPROM. Step: read the Ethernet, USB-host and display drivers' register bases in the kernel, and the stage-2 memory-controller table at `0xfe044240`.
 - **Route: software now.** The L2 daemon's request handlers outside the partition task ([l2/daemon.md](../software/firmware/l2/daemon.md); task 10 is in [l2/partition-task.md](../software/firmware/l2/partition-task.md)). Step: list the handlers from the daemon ELF in the L2 tree and read them.
