@@ -283,3 +283,7 @@ The page table, write-bit table, delay record, object table and CRC table are by
 ## 8. Not settled
 
 See [../open-questions.md](../../../questions/README.md): the controller behind ports `0x540`, `0x548`, `0x760`; the purpose of CMOS byte `0x7e` bit 7 on the boot side; the meaning of the console flag bits behind `BS` and of the port-record flag bits.
+
+## Review (sysco 3b69567: the FLASH reply STATE fields)
+
+Independent review, 2026-11-21, by a reviewer who did not write it. Method: `mmscfw.bin` 6.5.30 (sha256 `6c3db7ff...`) disassembled from `_cmdFLASH` `0x118d58` with the capstone listing of `mmsc_aout.py`. The four reply shapes were read off the pushed arguments of the formatted print (arguments right to left): local SYSTEM `BS 0x20`, `FS rec+0x4c`, `FP rec+0x50`, `M 6`; local CONSOLE `BS 0x40`, `FS rec+0x50`, `M 6`; remote SYSTEM `BS 0x60`, `FS` the result of `0x12b568`, `FP rec+0x50`, `M 5`; remote CONSOLE `BS 0x10c0`, `FS` the same result, `M 4`, where `rec` is `+0xa0` of the console record. All four match the table, and the flag word `0x1f6960` is set on the two CONSOLE paths read. Not checked: the token parser `0x11ec18` to `0x11f5a0` and its use of the values (including `+0x3c`, `+0x60`, `+0x64`, `+0x50`), the mode table, and `_ceEnterFlashMode`; those statements stand as written, with the page's own grades.
