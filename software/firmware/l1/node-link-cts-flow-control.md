@@ -29,7 +29,7 @@ CTS on a 16C654-class part is an active-low input: the modem-status CTS bit read
 
 ## 5. Other letters
 
-- Letter `6` (Cx-brick) opens its node links on ports 7 to 11 of the eight-channel UART with the same settings block (flow mode 1) through function pointers (`0xffe84e14`); how that driver programs flow control was not read (unknown), see [cxbrick-mbus-and-uart-population.md](cxbrick-mbus-and-uart-population.md).
+- Letter `6` (Cx-brick) opens its five node links on ports 7 to 11 of the eight-channel UART with the same settings block through function pointers (`0xffe84e14`). Its programmer (`0xffe845e0`, reached through `0xffe85de4`) writes the enhanced-feature register as `0xd0` for flow mode 1, the same value as the four-channel part, so the node links run automatic RTS/CTS there too (established as register writes; part meaning inferred). The node-link class (3) is not gated on the modem-status inputs. See [cxbrick-mbus-and-uart-population.md](cxbrick-mbus-and-uart-population.md) section 4.
 - Letters outside the node-link arm (`& N # % = ? 3 5 ...`) have no node link on port 6.
 
 ## Not settled
@@ -37,5 +37,4 @@ CTS on a 16C654-class part is an active-low input: the modem-status CTS bit read
 | Item | Why open |
 |---|---|
 | The fitted UART part | no image names it |
-| Whether flow mode 1 of the eight-channel driver means a hardware CTS gate | the programming routine was not read |
 | The CTS and RTS nets on the board | not visible to the image |
