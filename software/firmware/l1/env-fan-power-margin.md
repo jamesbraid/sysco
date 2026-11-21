@@ -68,7 +68,40 @@ All of these are format strings in the image, E; the text below is paraphrase ex
 | 14 | 1.85V | 1.85 | | 29 | DIMM | 2.5 |
 
   Which type a board's supply record carries is not decoded (see the record-layout note below), so the mapping from a named supply to a row here is I, by the name.
-- **Fan and temperature limits** are per-entry fields in the board tables (below), not constants in the code that prints them; they were not decoded (U). `env altitude high|low` selects between two sets of temperature limits (E for the existence: help texts `set high altitude > 5000'/1500m temperature limits` and `set low altitude <= 5000'/1500m temperature limits.`; the two sets' values U). `env faultsonly`-style event filtering, `env warning`, `env fault` and the temperature test commands exist (E, help strings).
+- **Fan warning speeds and temperature limits are computed, not stored in the board tables (E, read 2026-11-21).** The tachometer table entries (12 bytes) and the temperature table entries (8 bytes) carry only the monitor index, channel, bias byte and name; the limits are filled in at run time from the brick type and two state words, as read in the next two subsections (1.44.0 package 2, container index 2 of 6.5.30 `field_diags_sysco`, body sha256 `ac81f501…`; the same routines are called by the console `fan` and `env` rows and by the two monitor tasks).
+
+### Fan warning speed (E for the arithmetic and the table, I for what the level word means)
+
+The fan configuration routine `0xffe2e2ac(fan, enable)` stores the warning speed (record word at `+8` of the fan's 12-byte runtime record at `0x300051ac`, which the `fan` row prints in the Warning RPM column) as the nominal speed below times 0.9, or times 0.8 for type `A` (double constants `0x3feccccccccccccd` and `0x3fe999999999999a`; the conversion back to an integer is the runtime's own routine, rounding not checked). The nominal comes from the type character, the fan index and a level word at `0x30005198` (0 at start and after `env reset`; set to 1 after a temperature advisory or critical event, and to 2 after a fan fault; the three values are the low, raised-for-heat and raised-for-fan-trouble speed levels, I). Nominal speeds in RPM, level 0 / level 1 / level 2 where they differ (a single number holds at every level):
+
+| Type | Nominal RPM |
+|---|---|
+| `A` | by fan index 0 to 5: 1150, 1950, 1400, 2000, 2000, 1687 |
+| `4` | 2400 |
+| `G` | 1200 |
+| `9`, `L` | fans 3 and 4 1500, fan 5 1800, fans 6 and 7 1445, all others 2000 |
+| `8`, `Q` | level 0: fan 1 3556, fan 4 1866, others 2200; levels 1 and 2: fan 1 6422, others 3200 |
+| `7 B E F H O` | the byte returned by `0xffe76014` decides (value 3 or not). Value 3: level 0 fan 2 3556 else 2100; levels 1 and 2 fan 2 6422 else 3000. Any other value: level 0 fan 2 3556 else 2200; levels 1 and 2 fan 2 6422 else 3700 |
+| `V` | level 0: fan 0 1500, fan 1 3556, others 2200; levels 1 and 2: fan 0 3400, fan 1 6422, others 3700 |
+| `0` | level 0: fan 1 3556, others 2200; levels 1 and 2: fan 1 6422, others 3700 |
+| `6` | fans 0 to 2: 2400 / 3400 / 4100; fans 3 and up: 4000 / 5334 / 7889 |
+| `@` | level 0 2666; levels 1 and 2 4100 |
+| `5` | when the hook at `0x300028f4` returns nonzero: 2700 / 3600 / 4100; otherwise the default row |
+| every other letter (including `C`, `I`, `P`, `X`, `Y`, `N`, `R`, `&`, `%`, `#`) | 2400 / 3400 / 4100 |
+
+The fan task `0xffe2f4c4` has one threshold, not two: it averages five tachometer reads 200 ms apart, and a fan whose average is at or below the warning speed raises the event `FAN %d warning limit reached` (not on type `G`). Types `G` and `A` then go straight to the fault event. Other types raise the level word to 2 for all fans on the first miss and re-check; a fan still at or below the same warning speed, or any miss once redundancy is already lost, raises `FAN %d fault limit reached` and starts the 30-second automatic power-down countdown (`0xffe2d950`, 5-second steps with the text `brick auto power down in %d seconds`). So "fault" is the same speed after escalation, not a lower speed (E for the read paths; the roles of the state words are I).
+
+### Temperature limits (E)
+
+The environment reset routine `0xffe2d60c` fills five limits per sensor, all in degrees Celsius and each offset by the sensor's bias word (`0x30002848`, four bytes per sensor): advisory (`0x3000528c`), critical (`0x300052b4`), fault (`0x300052dc`), maximum (`0x30005304`) and okay (`0x3000532c`). The names are the five arguments of the console command `set temperature limits: advisory, critical, fault, maximum, okay`. The rows are chosen by the type of the monitor part behind the sensor (the first byte of its 12-byte monitor record, read by `0xffe7f144`):
+
+| Monitor type | Advisory | Critical | Fault | Maximum | Okay |
+|---|---:|---:|---:|---:|---:|
+| 3 | 90 | 100 | 105 | 105 | 75 |
+| 4 or 5, on any brick but `7`, `8` or `Q` | 70 | 75 | 80 | 85 | 65 |
+| any other (1, 2, 6; and 4, 5 on `7`, `8`, `Q`), no brick override | 30 | 35 | 40 | 45 | 27 |
+
+For the last row a board override replaces the five numbers when its first word (`0x30002870`) is nonzero: types `0`, `8` and `Q` store 70, 71, 72, 75, 70 (`Q` runs into the `8` code); types `E` and `V` store 50, 54, 58, 60, 40 (all in the per-brick set-up routine at `0xffe5e6xx`, jump table at `0xffe5e73c`); type `7` stores 34 into the first word on the path where `0xffe64584(0)` returns 0 and no other limit word on the paths read (the remaining four words of that type were not decoded, U). The command `set temperature limits` (selector 9 of the `env` handler `0xffe1ad00`) stores five values in RAM (`0x30001058` to `0x30001068`) and sets the flag `0x30001050`; after it the sensors of the last row use those five values instead of the board override or the defaults; the type-3 and type-4/5 rows are unaffected. `env altitude high` and `env altitude low` write persistent setting 12 (byte `+0x21` bit 4 of the settings record, [settings-record.md](settings-record.md)) as 1 or 0; when it is 1 the last row's values and the override are lowered by 3, 4, 5, 5 and 2 (the type-3 and type-4/5 rows are not adjusted). The sensor reading shown is the monitor reading minus the signed bias byte of the temperature record, and `0xffe2e7d0` programs two of the limits into the monitor chip, the advisory (the maximum while automatic fan control is on) and the okay value, which read as a high limit and its hysteresis (I, from the arguments). The temperature task `0xffe2f7ac` averages five reads and compares: at or above fault (maximum while automatic fan control is on) it raises the fault event and the power-down countdown; with automatic fan control off, at or above critical it raises the critical event and at or above advisory the advisory event, and each of those two also raises the fan level word to 1 except on type `A`. The monitor types are named only by their read paths: type 1 reads register `0x27` of channel 4, type 2 reads channels 4, 5 and 6 as registers `0x25`, `0x26` and `0x27`, type 3 reads its channel 1 or 2 through `0xffe8ed80`, and types 4 and 5 share `0xffe8b418` (U for the part names).
 - **Event codes.** Supply, fan and temperature transitions send events with code bases `0x1000`, `0x2000` and `0x3000` (ranges and the countdown codes are in [mbus-environment-task.md](mbus-environment-task.md)); the fan log lines are `FAN %d warning limit reached @ %d RPM.`, `FAN %d fault limit reached @ %d RPM.` and `FAN %d stabilized @ %d RPM.` (E).
 
 ## Sensor tables by personality
@@ -124,7 +157,7 @@ The field layout of a supply record (24 bytes: a name pointer, a type-like byte,
 
 | Unknown | Route |
 |---|---|
-| Fan warning RPM, temperature advisory, critical and fault values for each entry | decode the fan, tachometer and temperature record layouts from the registration routines `0xffe6ae18`, `0xffe6aec4`, `0xffe7f080` and the printing code at `0xffe3064c` and `0xffe307d8` |
+| Type 7's remaining four temperature limits, the supply type each board record carries, and the packages other than 2 | the limits are computed in package 2 only as read; repeat the three routines in the other packages |
 | What the two unnamed tables are | read `0xffe784d4` and `0xffe6f8b8` |
 | Twister, Chimera, PE and A counts | read the three blocks at `0xffe50d5c`, `0xffe5efa6`, `0xffe616f8` and `0xffe4dddc`; their call shapes differ |
 | Package 0, 1, 3 and 5 | repeat with those packages; routine addresses differ, so the roles table needs a per-package address map |
