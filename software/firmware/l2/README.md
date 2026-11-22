@@ -18,6 +18,7 @@ Reading notes for the L2 system controller, the PowerPC MPC8xx board that runs a
 | [scale-limits.md](scale-limits.md) | the fixed limits beyond [capacity-limits.md](capacity-limits.md): NVRAM log and write cost, the batch reply deadline, reply matching, descriptor and console-table sizes, L1 transport limits and the boot firmware's message set, judged against a 512-processor system |
 | [partition-task.md](partition-task.md) | task 10 (`l2part`): codes 1 to 8, the database record, flash location, and the chunked frame with codes `0x3001` to `0x3003` |
 | [partition-record.md](partition-record.md) | the partition record end to end: the code-1 reply byte by byte, how it meets the boot firmware's reply checks, the database producer in `partmgr`, test vectors |
+| [altix-l2-model.md](altix-l2-model.md) | what a model of the L2 needs for an Altix 3700, 3700 Bx2, 4700 or 450: role and links by product, transports, what the PROM and Linux send and what comes back, console routing, no-L2 behaviour, a graded ready-to-model list |
 | [power-queue.md](power-queue.md) | the `power` command: the send queue and its runner, the sender's class order, and the order and spacing of `fast` and `slow` power-up and of power-down |
 | [router-packet.md](router-packet.md) | the router packet in memory: segment record, the builder, writer and free routines of `libIRouter` |
 
