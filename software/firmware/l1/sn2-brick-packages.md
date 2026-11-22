@@ -65,7 +65,8 @@ reach is by the routines and labels named in [arm-linux-packages.md](arm-linux-p
 |---|---|---|---|
 | Altix 350 compute, CPU expansion and CMPX modules (IP57) | Altix 350 | ARM, both: `IP57_*` routines. ColdFire 3 and 5 carry type `O` and the record name `IPF_2UINT` | The IP57 routines and the board name are established. Inferred that `O` (Opus) is this module: `IPF_2UINT` reads as an Itanium 2U unit, and the 350 modules are 2U (007-4660-001 pp.69, 100). **Unknown** which CPU the 350's L1 has, so whether the ColdFire or ARM package ships on it. Route: the 350's `l1cmd cfg` version output or an L1 flash dump |
 | Altix 330 module | Altix 330 | not tied | **Unknown.** No label, routine or string names the 330; its guide (007-4790-001) names no board. Route: read the 330 guide's internal-components pages for a board code |
-| C-brick (Altix 3000), R-brick | Altix 3300, 3700 | ColdFire 0 and 2 carry `C` and `R`; ColdFire 3 and 5 carry neither. The C-brick of the Altix may identify as `C` (IP35, shared with Origin 3000) or as `5` (IP41, ColdFire 3 and 5, ARM) | **Unknown** which. Route: the Altix 3000 C-brick board name in 007-4579-001 (not read for it) or a captured `config` or `hinv` line |
+| C-brick (Altix 3000) | Altix 3300, 3700 | ColdFire `Legacy 2MB` and `2MB` only (`5` is in their string; no ARM package lists `5` or `C`) | Established: the brick is `IP41`, type `5` (0x35), chosen from the product name in board record `0xfe`, and replies `0x35` to the node's rack, bay and type request; read in the 1.62.1 `2MB image` ([sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)). The captured `config` or `hinv` line was not seen |
+| R-brick | Altix 3700 | ColdFire 0 and 2 carry `C` and `R`; ColdFire 3 and 5 carry neither `R` nor `C`; in 1.62.1 `NL3R 1MB image` carries `R` | Inferred that it is the Origin 3000 R-brick (same letter and enclosure) |
 | IX-brick, PX-brick | Origin 3000 and Altix 3000, 3700 Bx2 | ColdFire 3 and 5 (string `5O#=?`, `O5#=?`) | Established for the strings. These bricks are shared with Origin 3900, so the strings do not separate the families. The Origin 3000 `PXBRICK` name in record `0xfe` is tested by packages 0 to 2 too, but their strings lack `#` and `=` |
 | CR-brick | Altix 3700 Bx2 | probably ColdFire 3 and 5: a board module for four SHUB nodes is linked into both | Inferred: the guide gives the CR-brick up to four SHub nodes (007-4377-002 p.49), the firmware module names `SHUB N0` to `N3`. Unproven which type letter it reports |
 | Compute, memory, I/O and RASC blades, IRU, dense router | Altix 4700, Altix 450 | ARM Linux 2.6 package (label `Linux L1 image`), both versions | Inferred. Only the 2.6 package labels the IP69 chassis, IP71, the `191010` and `1955` chassis and the Quad Dense Router; the 4700's optional dense router module is named alike (007-4823-001 contents, Chapter 5); the 2.6 images are built 9 June 2006, after the 4700 guide of March 2006 |
@@ -76,7 +77,7 @@ reach is by the routines and labels named in [arm-linux-packages.md](arm-linux-p
 
 The SHub 1 PROM (snprom 10.54) asks the L1 for the brick type twice: request `0x0003` for the KLCONFIG builder and request `0x0013` for the PCI
 bridge attach. Both replies carry the single stored type character; the PROM lower-cases `A` to `Z` and does no other folding on the path to the bridge
-attach. The bridge attach (`pic_attach2`) accepts only the lower-cased letters `#`, `=`, `m`, `o` and `v`; any other letter, `f` and `c` included, prints "Unknown
+attach (the module word it builds from request `0x0003` is a separate path: it folds `5`, `o`, `m` and `@` to `c`, see [sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)). The bridge attach (`pic_attach2`) accepts only the lower-cased letters `#`, `=`, `m`, `o` and `v`; any other letter, `f` and `c` included, prints "Unknown
 ioboard" and abandons the bridge (established; trace in the chips repository's PIC page, SAL runtime section). For the L1 side this means:
 
 - An Altix 350 module whose L1 answers `F` (the Opus TIO letter) would not get a PIC attached by this PROM. The ARM L1's `F` handler is the one that installs
@@ -102,8 +103,9 @@ ioboard" and abandons the bridge (established; trace in the chips repository's P
 
 1. The Altix 330 and the Prism: no tie. Needs the product name in some package's file list (the Linux packages' user
    space is only named by program, not read), or a board name from the machines' guides.
-2. The Altix 3000 C-brick's type letter: inferred `5` rather than `C`, because no package of the Altix container accepts
-   `C` ([sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)); the brick's own identity record is still unread.
+2. ~~The Altix 3000 C-brick's type letter.~~ Read: `5` (`IP41`), from the product name of board record `0xfe`
+   ([sn2-l1-1.62.1-packages.md](sn2-l1-1.62.1-packages.md)). Still open: the contents of a real brick's record `0xfe`
+   and a captured `config` line.
 3. ~~Whether the 1.62.1 images on the Altix support disc add Altix 450 and 4700 bricks beyond the 1.44.0 labels.~~ Read:
    the 1.62.1 ARM packages carry the same supported-brick strings as 1.44.0, and the Linux L1 program adds SHub 2, TIO,
    PCI Express and Altix 4700 blade support (IP73, IP75, IP81) while its IP57 routines are unchanged
