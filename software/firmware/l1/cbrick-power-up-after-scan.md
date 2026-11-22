@@ -23,7 +23,7 @@ A failing step returns a negative code. The caller prints it as `ERROR: <class>:
 | 8 | Release wrapper tail: the L1's own port service calls, the release hook, port bring-up mode 5 | None. The L1-internal port calls (`0xffe36a04`, `0xffe52a30`) touch only the L1's own UART ports. The release hook writes `BEDROCK CNTL 2` bits 7:3 (straps), clears bit 3, sets `BEDROCK CNTL 1` bit 0, runs the module step for each present PIMM, then sets `BEDROCK CNTL 2` bit 0 and `BEDROCK CNTL 1` bit 1 ([power-reset-cbrick.md](power-reset-cbrick.md) section 6). Mode 5 of the port bring-up skips both C-brick ports (port 0 has the skip flag, port 1 has no link field) | 10 + 10 + 10 ticks in the hook, 3 + 10 per present PIMM of a listed type | an expander write error is returned and the power state stays 0 |
 | 9 | Finish | Sets record-0 power state to 1, which publishes the power-state notice to a peer; shows `Powered Up` | | |
 
-With no PIMM fitted (a model that leaves `PIMM PSC` at `0xff`) steps 3 and 8 skip the PIMM writes and module steps. Total time with the three C-brick supply enables and no PIMM is about 275 ticks (2.75 s) before the release, plus the release tail. The module steps for a present PIMM (the margin routines `0xffe4e4f8`, `0xffe4e450`) compute and write voltage margins; the device they write was not read (U), so a model with PIMMs present should be run once with the bus logging on.
+With no PIMM fitted (a model that leaves `PIMM PSC` at `0xff`) steps 3 and 8 skip the PIMM writes and module steps. Total time with the three C-brick supply enables and no PIMM is about 275 ticks (2.75 s) before the release, plus the release tail. The module steps for a present PIMM (the margin routines `0xffe4e4f8`, `0xffe4e450`) write register `0x19` of the PIMM's `A` monitor (`0x5c` on segment 4 or 5): 0 at hold, then the per-PSC margin byte at release ([cbrick-pimm-psc-codes.md](cbrick-pimm-psc-codes.md) section 4), only for PSC codes 1, 3, 4, 5, 6, 7 and 10.
 
 ## What it does not read
 
@@ -35,6 +35,5 @@ With no PIMM fitted (a model that leaves `PIMM PSC` at `0xff`) steps 3 and 8 ski
 ## Not answerable from the retained sources
 
 - What the PROM expects the L1 to have done or to do in its first seconds beyond answering requests (no capture of a real C-brick console or node link is retained).
-- The device written by the PIMM margin steps and the values.
 - A real C-brick's `PPDAT` TDO samples or its IDCODEs; the scan chain is derived from the firmware's compares only.
 - Whether a node-silence timer exists in a task not read.

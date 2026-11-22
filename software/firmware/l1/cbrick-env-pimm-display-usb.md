@@ -83,7 +83,7 @@ The PIMM probe (`0xffe4482c`) reads PIMM PSC (expander index 10, wire `0x4a`/`0x
 - **Absent** is exactly code `0xf` for that PIMM. Nothing else (no EEPROM read, no monitor read) decides presence.
 - **Present with a processor module** (the module hook `0xffe44b48`, jump table at `0xffe44b66`): codes 1, 3, 4, 5, 6, 7 and 10 run the module power-step routine around reset hold and release. Every code except 15 then gets `0xc0` written into the PIMM expander, so codes 0, 2, 8, 9 and 11 to 14 get that write alone; only code 15 gets nothing. Codes 3, 4, 5, 7 and 10 are the only ones for which "cpu disable" is allowed (`0xffe449e4`). Established.
 - **Two PIMMs**: if both are present and different, each must be 1 or 6 (`0xffe44750`); any other pair logs `PIMM types are incompatible (A, B), disabling PIMM 1` and sets PIMM 1 to `0xf`. Code 8 stores 0, not 1, in persistent settings 40 and 41, unless setting 45 is non-zero (`0xffe447b8`). What those settings control is not read here (unknown).
-- **Typical code**: the image does not say which code a retail C-brick PIMM reports. The pair rule makes 1 and 6 the only codes that may be mixed, and 1 is the lowest code that gets the full module treatment. Inferred that 1 is a valid choice; which code real hardware reports is unknown (route: a PROM or kernel reading that names the PSC encoding, or a published module guide).
+- **Typical code**: the L1 does not say which code a retail C-brick PIMM reports. The IP35 PROM maps each code to a CPU clock, cache size and Config value, and the L1 gives each a VCPU voltage; the joined table is in [cbrick-pimm-psc-codes.md](cbrick-pimm-psc-codes.md). A model picks the code with the clock it wants; which of the duplicate codes real parts used is unknown.
 
 ### What the probe does for an absent PIMM, and why PIMM 0's monitors stay (established)
 
@@ -188,7 +188,7 @@ The last write of a supply or fan item (the interrupt-mask register with the inp
 
 ## 7. The PIMM PSC code (retail value unknown)
 
-The firmware accepts nibble values 0 to 8, 10 and 15 (section 2) and never names one: no string or table in the image gives a processor type, speed or cache size for a code. The Owner's Guide C-brick chapter gives no processor model names or clock speeds either (two processors per PIMM, 8 MB secondary cache per processor). The published SGI manuals, the public Linux and BSD trees and the IRIX release-note extracts searched for the encoding hold no table that maps the four-bit PIMM PSC code to a product. The firmware does separate the codes by behaviour: 1, 3, 4, 5, 6, 7 and 10 run the module power step, 3, 4, 5, 7 and 10 allow `cpu d`, and a pair of present modules must be two of 1 or 6 or equal. Those groupings are consistent with different processor-module families but do not identify one. Which code a retail C-brick PIMM reports: unknown. The route is the IP35 PROM or the IRIX kernel's PSC table, which are outside the L1 image.
+The firmware accepts nibble values 0 to 8, 10 and 15 (section 2) and the L1 image names no processor for any of them. The table that does is in the IP35 PROM (SGI Version 6.210): it maps codes 0 to 8, 10 and 14 to a CPU clock (360 to 800 MHz), a secondary cache size and an R10000-family Config register value, and the L1's per-code VCPU nominal voltage (1.2 to 1.9 V) and margin bytes line up with it (codes 1 and 6, the only mixable pair, are the same 500 MHz row). Joined table, decode and the PROM routines: [cbrick-pimm-psc-codes.md](cbrick-pimm-psc-codes.md). The PROM names no processor model; which code each retail part reported beyond that table is unknown.
 
 ## 8. The USB controller's register bits (inferred from the public driver)
 
@@ -218,7 +218,7 @@ Offset `0x1c` bit 0 is the only status the firmware reads back; it holds what wa
 
 | Question | Route |
 |---|---|
-| Which PSC code a retail C-brick PIMM reports (section 7) | the IP35 PROM or IRIX kernel table naming the PSC encoding, or a processor-module guide |
+| Which retail processor each PSC code is (section 7; the PROM's clock and cache table is in [cbrick-pimm-psc-codes.md](cbrick-pimm-psc-codes.md)) | a processor-module parts list; no image names a model |
 | Whether error 1 or 3 can be reached from another environment path | the console `env` and the start-up callers were read; no store found |
 | The display part and its command semantics (section 6) | a data sheet for a two-wire display module with ASCII line commands at address `0x78`; a front-panel FRU photograph or service guide |
 | What persistent setting 45 does; settings 40 and 41 feed the `BEDROCK CNTL 2` strap bits 5 and 4 at release ([../../../platforms/bricks/l1-bedrock-handoffs.md](../../../platforms/bricks/l1-bedrock-handoffs.md), section 12), and code 8 stores 0 for them unless setting 45 is nonzero | read the consumers of setting 45 |

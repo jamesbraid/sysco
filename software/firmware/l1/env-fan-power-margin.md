@@ -31,6 +31,8 @@ A command refused by this test prints a short error and returns -1 (E, `0xffe199
 
 From the identity routine ([personalities.md](personalities.md)): `C` IP35 C-brick; `R` router; `I` I-brick; `P` P-brick; `X` X-brick; `Y` X2 (XY); `#` PX; `=` IX; `%` PE; `N` N-brick; `&` a power-board name `NIPWR`; `G` the board named `KCARL1` (G-brick); `V` CG Voyager (the host kernel names this type CGbrick, the Onyx 4 graphics brick; it is not shown to be the Onyx 3000 InfinitePerformance V-brick, whose L1 identity is unknown); `0` CGN Voyager; `A` IP34 board; `6` Twister; `7` and `9` Chimera server and workstation; `4` Origin 300 node board (IP45). The mapping `R`, `D`, `-` router class and the others is also used by the L2 (see [../l2/power-queue.md](../l2/power-queue.md)).
 
+The register-to-number conversions for the C-brick and I-brick (temperature offset, tachometer RPM, rail volts-per-count, the `-12V` map and the programmed limit counts) are in [cbrick-ibrick-env-readings.md](cbrick-ibrick-env-readings.md).
+
 ## Output formats
 
 All of these are format strings in the image, E; the text below is paraphrase except short column heads.
