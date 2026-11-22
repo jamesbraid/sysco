@@ -17,6 +17,14 @@ slab and subchannel taken from the request's own tag (`SysComGetSlab`, `SysComGe
 codes with the same arguments as its own node would, so the replies are those of the local case. The one input that changes is the slab
 (`0x000e`): the L1 returns the requester's slab from the tag, and what tag a request sent for another node carries was not traced (unknown).
 
+## Which requests matter for a node with no DIMM
+
+The node asks every row below of a remote node's L1, not only the DIMM reads. After it has built its record for a memory-less node it
+re-asks `0x0003`, `0x000e` and `0x0013` (its cache for the new record is empty) and sends the board-area read (`0x0006`, id 1), `0x0010`
+and, when it sets up the I/O side, a second `0x100b`, all through its request slot 9, so these frames carry header byte 9 and want `0x20 | 9`
+back (chips `numalink-neighbours.md`). The L1 end sees the same codes whichever slot they use; the `0x0006` id 1 reply and the `0x0010`
+layout below are therefore needed even when the node has no DIMM.
+
 ## Handlers and replies
 
 **Established** for the dispatch: an instruction-level run of the compare chain of `L1ReqIRouter` (`0xc8388`, chain `0xc8798` to `0xc8b74`)
@@ -29,14 +37,14 @@ Below, `n` stands for that byte; for the boot processor of a node it is 5.
 | Request | Handler | Reply payload | What the node does with it | Grade |
 |---|---|---|---|---|
 | `0x100b` PROM version (three ints) | `0xcb474` | none on success; with an argument count other than four counting the code, `n ff ff ff 9c 00` | waits 3 s, then fails the request (remote node: no park) | established (see [the `0x100b` section](sn2-prom-link-1.62.1.md#the-0x100b-reply)) |
-| `0x0003` | `0xc8bb8` | `n 00 00 00 00 02 00 <rack<<6\|bay, 4 bytes> 00 <type character, 4 bytes>` | type letters are lowered; `o` triggers a board-area read; `f` does not | established, in full |
+| `0x0003` | `0xc8bb8` | `n 00 00 00 00 02 00 <rack<<6\|bay, 4 bytes> 00 <type character, 4 bytes>` | type letters are lowered; `o` triggers a board-area read; `f` does not. A brick of type `=` reports `#` when the per-slot flag the handler tests is 0 | established, in full |
 | `0x000e` slab | `0xca214` | `n 00 00 00 00 01 00 <slab, 4 bytes>` | the node reads 255 as failure; for the type letters `l b { f` a slab of 0 or -1 folds the type to `c` | established (the code `0xca214` to `0xca2f4`: the slab comes from the request's tag, or `bladeSSHackSlab` for the types `,` `}` `.` `$` and a brick with more than one slot); the value for a PROM-originated request: unknown |
 | `0x0013` slot | `0xca2f8` | for a single-slot brick: `n 00 00 00 00 02 00 00 00 00 00 00 <type character, 4 bytes>` | the node keeps both ints | established for the branch, inferred that type `F` takes it (as the link note) |
 | `0x0006` DIMM, device id 8 to 13, 16 to 21 | `0xc9658` | present: 60 bytes, `n 00 00 00 00 02 00 00 00 00 d0 b0 <48 SPD bytes>`; not present: `n ff ff ff 98 00` | the node's parser needs count 2 and int then raw; any error status leaves the slot empty | established, in full ([sn2-dimm-spd-request.md](sn2-dimm-spd-request.md)) |
 | `0x0006` device id 14, 15, 22, 23 or any DIMM slot with its presence flag clear | `0xc9658` | `n ff ff ff 98 00` (status -104) | slot empty | established |
 | `0x0006` device id 1, selector 2, offset 0, length 64 | `0xc9658` | board information area as in [sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md) (status 0, bytes left, raw block) or status -104 | any negative status prints a message and goes on | established for the handler; the record contents depend on the EEPROM |
 | `0x0010` processor presence | `0xca5f4` | see below | read by the node's board builder | node parser established; L1 builder inferred |
-| `0x1005` display text | `0xcaeb4` | no payload beyond status 0 (`n 00 00 00 00 00`); -100 if the count is 1 or less | the node ignores errors | established for the shape |
+| `0x1005` display text | `0xcaeb4` | status 0 only (`n 00 00 00 00 00`); -100 if the count is 1 or less, -102 (`ff ff ff 9a`) if the first argument is not a string (argument type field at record `+0x2c`, `0xcaee0` to `0xcaf08`) | the node ignores errors; the node sends it from its failure routine and from the memory-bank check | established (handler, read in full) |
 
 For the 16 DIMM reads of a node with no DIMM in any slot, every reply is `n ff ff ff 98 00`, whatever the device id. That makes the node's
 bank mask zero in all four banks, and the node reports itself memory-less. A node with DIMMs needs the 256-byte records of the
