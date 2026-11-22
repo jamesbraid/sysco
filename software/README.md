@@ -7,6 +7,7 @@
 | Page | Title | Summary |
 |---|---|---|
 | [controllers.md](firmware/controllers.md) | System controllers beyond the L1 and L2 | SGI built five generations of system controller. |
+| [ix-px-brick-topology.md](firmware/ix-px-brick-topology.md) | IX-brick and PX-brick topology: PIC widgets, IO9 device numbers, XIO ports and brick type codes | Reconciles the published manuals, one real Altix 3300 boot capture, the Linux IA-64 SN code and the shipped PROM... |
 
 ## userland
 
