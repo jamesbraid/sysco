@@ -70,6 +70,12 @@ For type low bits equal to zero, the direct path reads the signed integer word. 
 
 This is the Origin 300 package (range 1) only: its 44-byte package header precedes the body mapped at `0xffe00000`. No other package was disassembled.
 
+**Where a ColdFire body starts (established, 2026-11-27).** Packages 1 and 2 (3 and 5 were not checked) have the 44-byte header and then the body at
+`0xffe00000`. Package 0 starts at the container's own start, so the container's count and seven offset and length pairs
+(container offsets `0x2c` to `0x68`) sit between its header and its body, and its body starts at container offset `0x68`. Read
+with a 44-byte header, every package 0 address is off by `0x3c` and the `router` handler pointers in the command table land
+mid-instruction. With `0x68` they land on a `link` prologue (`0xffe1a0e4`).
+
 The task handler at `0xffe3c124` reads command `+0x22` and dispatches `0x0072` at `0xffe3c150–0xffe3c154` to `0xffe3c166`. It obtains the identity accessor result at `0xffe3c134`, retains it in a register and writes it into descriptor 7 at `0xffe3c392`. The reply schema is:
 
 | Zero-based argument | Selected producer's value |
