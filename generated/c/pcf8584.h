@@ -1,5 +1,6 @@
-/* generated from devices/pcf8584/registers.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from devices/pcf8584/registers.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 26d3da7fa19f4c7dc8f9862789b781ef6985e363caad44774a9252704a5c1eaa */
 /* control bits and clock-control fields of the PCF8584 I2C-bus controller */
 #ifndef PCF8584_GEN_H

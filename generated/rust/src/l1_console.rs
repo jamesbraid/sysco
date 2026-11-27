@@ -1,8 +1,10 @@
-// generated from formats/l1_console/format.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from formats/l1_console/format.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 cf5d01efc28dac97a3b896fcc61217b9072b84fead22d7ed21e518071d196ee0
 // entry layout and argument kinds of the L1 console command tables
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// Up to ten pattern words, the handler, four selector words, the help text and the hidden flag; 68 bytes in all. (established)
 pub mod pattern {

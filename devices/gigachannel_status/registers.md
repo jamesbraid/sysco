@@ -1,5 +1,5 @@
 <!-- generated from devices/gigachannel_status/registers.toml by defs-gen - do not edit, change the source -->
-<!-- defs-gen 2 -->
+<!-- defs-gen 4 -->
 <!-- input sha256 06e11e4ad875431e68642ff526b9a62587f7178aa44dd234a7444e5160042043 -->
 
 # GIGAchannel cabinet system-controller status word, as IRIX and the BASEIO PROM read it

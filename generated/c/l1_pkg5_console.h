@@ -1,5 +1,6 @@
-/* generated from formats/l1_pkg5_console/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l1_pkg5_console/format.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 3543aebed7002b9fe664cfa071259fbf050c4a8033a040a35b88544eb237d912 */
 /* console command tables of ColdFire L1 firmware package 5 */
 #ifndef L1P5C_GEN_H
@@ -12,7 +13,7 @@
 #define L1P5C_CMD0_WIDTH                             32 /* established */
 #define L1P5C_CMD0_INDEX_SHIFT                       0 /* established */
 #define L1P5C_CMD0_INDEX_MASK                        0x1ffu
-#define L1P5C_CMD0_INDEX_INPLACE                     (L1P5C_CMD0_INDEX_MASK << L1P5C_CMD0_INDEX_SHIFT)
+#define L1P5C_CMD0_INDEX_INPLACE (L1P5C_CMD0_INDEX_MASK << L1P5C_CMD0_INDEX_SHIFT)
 #define L1P5C_CMD0_INDEX_ALL_COMMAND                 0 /* established */
 #define L1P5C_CMD0_INDEX_RACK_SLOT_COMMAND           1 /* established */
 #define L1P5C_CMD0_INDEX_AUTOPOWER                   2 /* established */
@@ -82,7 +83,8 @@
 #define L1P5C_CMD0_INDEX_ENV_TEST_FAULT              66 /* established */
 #define L1P5C_CMD0_INDEX_ENV_TEST_TMPADV             67 /* established */
 #define L1P5C_CMD0_INDEX_ENV_TEST_TMPCRIT            68 /* established */
-#define L1P5C_CMD0_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 69 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 69
 #define L1P5C_CMD0_INDEX_ENV_TEST_PWRDN              70 /* established */
 #define L1P5C_CMD0_INDEX_ENV_MESSAGES                71 /* established */
 #define L1P5C_CMD0_INDEX_ENV_MESSAGES_FAULTSONLY     72 /* established */
@@ -174,7 +176,8 @@
 #define L1P5C_CMD0_INDEX_SOFTRESET                   158 /* established */
 #define L1P5C_CMD0_INDEX_SOFTRESET_NUMBER            159 /* established */
 #define L1P5C_CMD0_INDEX_SELECT                      160 /* established */
-#define L1P5C_CMD0_INDEX_SELECT_NUMBER_NUMBER_NUMBER_NUMBER 161 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_SELECT_NUMBER_NUMBER_NUMBER_NUMBER 161
 #define L1P5C_CMD0_INDEX_SELECT_SUBCHANNEL_CONSOLE   162 /* established */
 #define L1P5C_CMD0_INDEX_SELECT_SUBCHANNEL_A         163 /* established */
 #define L1P5C_CMD0_INDEX_SELECT_SUBCHANNEL_NUMBER    164 /* established */
@@ -198,14 +201,16 @@
 #define L1P5C_CMD0_INDEX_SERIAL_CLEAR                182 /* established */
 #define L1P5C_CMD0_INDEX_SERIAL_SET_WORD             183 /* established */
 #define L1P5C_CMD0_INDEX_SERIAL_WORD_WORD_WORD_WORD  184 /* established */
-#define L1P5C_CMD0_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 185 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 185
 #define L1P5C_CMD0_INDEX_SERIAL_SECURITY_ON          186 /* established */
 #define L1P5C_CMD0_INDEX_SERIAL_BRICK_DISABLE        187 /* established */
 #define L1P5C_CMD0_INDEX_SERIAL_BRICK_DISABLE_CONFIRM 188 /* established */
 #define L1P5C_CMD0_INDEX_SYSSTATE                    189 /* established */
 #define L1P5C_CMD0_INDEX_EEPROM                      190 /* established */
 #define L1P5C_CMD0_INDEX_EEPROM_NUMBER_NUMBER_NUMBER 191 /* established */
-#define L1P5C_CMD0_INDEX_EEPROM_FILL_NUMBER_NUMBER_NUMBER_NUMBER 192 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_EEPROM_FILL_NUMBER_NUMBER_NUMBER_NUMBER 192
 #define L1P5C_CMD0_INDEX_UART                        193 /* established */
 #define L1P5C_CMD0_INDEX_UART_SYS_LINK_RESET         194 /* established */
 #define L1P5C_CMD0_INDEX_USB                         195 /* established */
@@ -218,7 +223,8 @@
 #define L1P5C_CMD0_INDEX_ROUTER_6_PORT_CONFIRM       202 /* established */
 #define L1P5C_CMD0_INDEX_ROUTER_8_PORT               203 /* established */
 #define L1P5C_CMD0_INDEX_ROUTER_8_PORT_WORD_WORD_WORD_WORD 204 /* established */
-#define L1P5C_CMD0_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 205 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 205
 #define L1P5C_CMD0_INDEX_ROUTER_SERVICE_OFF          206 /* established */
 #define L1P5C_CMD0_INDEX_ROUTER_SPARE                207 /* established */
 #define L1P5C_CMD0_INDEX_SERVICE_WORD_WORD_WORD_WORD 208 /* established */
@@ -288,7 +294,8 @@
 #define L1P5C_CMD0_INDEX_SCAN_RESET_BOTH             272 /* established */
 #define L1P5C_CMD0_INDEX_SCAN_SEL_NUMBER_NUMBER      273 /* established */
 #define L1P5C_CMD0_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER 274 /* established */
-#define L1P5C_CMD0_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 275 /* established */
+/* established */
+#define L1P5C_CMD0_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 275
 #define L1P5C_CMD0_INDEX_SCAN_IDS_NUMBER             276 /* established */
 #define L1P5C_CMD0_INDEX_SCAN_SET_TRST_0             277 /* established */
 #define L1P5C_CMD0_INDEX_SCAN_SET_TRST_1             278 /* established */
@@ -315,7 +322,7 @@
 #define L1P5C_CMD1_WIDTH                             32 /* established */
 #define L1P5C_CMD1_INDEX_SHIFT                       0 /* established */
 #define L1P5C_CMD1_INDEX_MASK                        0xffu
-#define L1P5C_CMD1_INDEX_INPLACE                     (L1P5C_CMD1_INDEX_MASK << L1P5C_CMD1_INDEX_SHIFT)
+#define L1P5C_CMD1_INDEX_INPLACE (L1P5C_CMD1_INDEX_MASK << L1P5C_CMD1_INDEX_SHIFT)
 #define L1P5C_CMD1_INDEX_CHECK_POWER_ON              0 /* established */
 #define L1P5C_CMD1_INDEX_CHECK_MARGIN_HIGH           1 /* established */
 #define L1P5C_CMD1_INDEX_CHECK_SCRAMBLE_ENABLED      2 /* established */
@@ -336,7 +343,8 @@
 #define L1P5C_CMD1_INDEX_SHCFG                       17 /* established */
 #define L1P5C_CMD1_INDEX_SHCFG_FSB_RESET             18 /* established */
 #define L1P5C_CMD1_INDEX_SHCFG_FSB                   19 /* established */
-#define L1P5C_CMD1_INDEX_SHCFG_FSB_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 20 /* established */
+/* established */
+#define L1P5C_CMD1_INDEX_SHCFG_FSB_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 20
 #define L1P5C_CMD1_INDEX_SHCFG_WRT90_RESET           21 /* established */
 #define L1P5C_CMD1_INDEX_SHCFG_WRT90                 22 /* established */
 #define L1P5C_CMD1_INDEX_SHCFG_WRT90_NUMBER_NUMBER_NUMBER 23 /* established */
@@ -360,17 +368,23 @@
 #define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER            41 /* established */
 #define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER     42 /* established */
 #define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER_NUMBER 43 /* established */
-#define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER_NUMBER_NUMBER 44 /* established */
-#define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 45 /* established */
+/* established */
+#define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER_NUMBER_NUMBER 44
+/* established */
+#define L1P5C_CMD1_INDEX_NICFG_NI0_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 45
 #define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER     46 /* established */
 #define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER 47 /* established */
-#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER 48 /* established */
-#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER_NUMBER 49 /* established */
-#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 50 /* established */
+/* established */
+#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER 48
+/* established */
+#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER_NUMBER 49
+/* established */
+#define L1P5C_CMD1_INDEX_NICFG_NUMBER_NI0_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 50
 #define L1P5C_CMD1_INDEX_RMMR_WORD_NUMBER            51 /* established */
 #define L1P5C_CMD1_INDEX_WMMR_WORD_NUMBER_NUMBER_NUMBER 52 /* established */
 #define L1P5C_CMD1_INDEX_PKTGEN_READ_WORD_NUMBER     53 /* established */
-#define L1P5C_CMD1_INDEX_PKTGEN_WRITE_WORD_NUMBER_NUMBER_NUMBER 54 /* established */
+/* established */
+#define L1P5C_CMD1_INDEX_PKTGEN_WRITE_WORD_NUMBER_NUMBER_NUMBER 54
 #define L1P5C_CMD1_INDEX_PKTGEN_DEBUG_NUMBER         55 /* established */
 #define L1P5C_CMD1_INDEX_TUNE_GET                    56 /* established */
 #define L1P5C_CMD1_INDEX_PROMICE                     57 /* established */
@@ -425,7 +439,7 @@
 #define L1P5C_CMD2_WIDTH                             32 /* established */
 #define L1P5C_CMD2_INDEX_SHIFT                       0 /* established */
 #define L1P5C_CMD2_INDEX_MASK                        0xffu
-#define L1P5C_CMD2_INDEX_INPLACE                     (L1P5C_CMD2_INDEX_MASK << L1P5C_CMD2_INDEX_SHIFT)
+#define L1P5C_CMD2_INDEX_INPLACE (L1P5C_CMD2_INDEX_MASK << L1P5C_CMD2_INDEX_SHIFT)
 #define L1P5C_CMD2_INDEX_PCI                         0 /* established */
 #define L1P5C_CMD2_INDEX_PCI_U                       1 /* established */
 #define L1P5C_CMD2_INDEX_PCI_D                       2 /* established */

@@ -1,8 +1,10 @@
-// generated from devices/l1_board/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/l1_board/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 5dbe67c379cb9002dba72a6291188c80e88f666c974b685b1902752e920a6468
 // board-level bit layouts and constants of the ColdFire L1 firmware
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// Control-register codes of the MOVEC extension word and the values the firmware writes at start-up. The register names are the manual's. Instruction ca (inferred)
 pub mod cacr {

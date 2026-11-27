@@ -1,5 +1,6 @@
-/* generated from formats/mmsc_commands/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/mmsc_commands/format.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 40fd622ba603ff30fe09920574e559de1c72ccef13eafcfefe4ace054601dc4e */
 /* typed command table of the multi-module system */
 #ifndef MMSC_GEN_H
@@ -12,7 +13,7 @@
 #define MMSC_AUTH_WIDTH                              32 /* established */
 #define MMSC_AUTH_LEVEL_SHIFT                        0 /* established */
 #define MMSC_AUTH_LEVEL_MASK                         0xffffu
-#define MMSC_AUTH_LEVEL_INPLACE                      (MMSC_AUTH_LEVEL_MASK << MMSC_AUTH_LEVEL_SHIFT)
+#define MMSC_AUTH_LEVEL_INPLACE (MMSC_AUTH_LEVEL_MASK << MMSC_AUTH_LEVEL_SHIFT)
 #define MMSC_AUTH_LEVEL_BASIC                        100 /* established */
 #define MMSC_AUTH_LEVEL_SUPERVISOR                   500 /* established */
 #define MMSC_AUTH_LEVEL_SERVICE                      1000 /* established */
@@ -21,7 +22,7 @@
 #define MMSC_CMD_WIDTH                               32 /* established */
 #define MMSC_CMD_INDEX_SHIFT                         0 /* established */
 #define MMSC_CMD_INDEX_MASK                          0xffu
-#define MMSC_CMD_INDEX_INPLACE                       (MMSC_CMD_INDEX_MASK << MMSC_CMD_INDEX_SHIFT)
+#define MMSC_CMD_INDEX_INPLACE (MMSC_CMD_INDEX_MASK << MMSC_CMD_INDEX_SHIFT)
 #define MMSC_CMD_INDEX_AUTH                          0 /* established */
 #define MMSC_CMD_INDEX_AUTHORITY                     1 /* established */
 #define MMSC_CMD_INDEX_BS                            2 /* established */
@@ -86,7 +87,7 @@
 #define MMSC_GATE_WIDTH                              32 /* established */
 #define MMSC_GATE_LEVEL_SHIFT                        0 /* established */
 #define MMSC_GATE_LEVEL_MASK                         0xffffu
-#define MMSC_GATE_LEVEL_INPLACE                      (MMSC_GATE_LEVEL_MASK << MMSC_GATE_LEVEL_SHIFT)
+#define MMSC_GATE_LEVEL_INPLACE (MMSC_GATE_LEVEL_MASK << MMSC_GATE_LEVEL_SHIFT)
 #define MMSC_GATE_LEVEL_ABOVE_499                    499 /* established */
 #define MMSC_GATE_LEVEL_ABOVE_999                    999 /* established */
 

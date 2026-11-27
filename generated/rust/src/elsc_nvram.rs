@@ -1,8 +1,10 @@
-// generated from devices/elsc_nvram/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/elsc_nvram/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 9eea679da2138a14697e010459e66848c8775566a569bec5e3df22ecb457dd2b
 // configuration block of the module controller's non-volatile store
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 pub const CFG_CELL: u32 = 0x70d; // inferred
 pub const CFG_CLUSTER: u32 = 0x70c; // inferred

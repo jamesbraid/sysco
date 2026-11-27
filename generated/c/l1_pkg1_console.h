@@ -1,5 +1,6 @@
-/* generated from formats/l1_pkg1_console/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l1_pkg1_console/format.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 c657e0fd65dad605a66a377da0d3b5be3065e9303792577b54906b77f1fc602f */
 /* console command tables of ColdFire L1 firmware package 1 */
 #ifndef L1P1C_GEN_H
@@ -12,7 +13,7 @@
 #define L1P1C_CMD0_WIDTH                             32 /* established */
 #define L1P1C_CMD0_INDEX_SHIFT                       0 /* established */
 #define L1P1C_CMD0_INDEX_MASK                        0xffu
-#define L1P1C_CMD0_INDEX_INPLACE                     (L1P1C_CMD0_INDEX_MASK << L1P1C_CMD0_INDEX_SHIFT)
+#define L1P1C_CMD0_INDEX_INPLACE (L1P1C_CMD0_INDEX_MASK << L1P1C_CMD0_INDEX_SHIFT)
 #define L1P1C_CMD0_INDEX_PCI                         0 /* established */
 #define L1P1C_CMD0_INDEX_PCI_U                       1 /* established */
 #define L1P1C_CMD0_INDEX_PCI_D                       2 /* established */
@@ -31,7 +32,7 @@
 #define L1P1C_CMD1_WIDTH                             32 /* established */
 #define L1P1C_CMD1_INDEX_SHIFT                       0 /* established */
 #define L1P1C_CMD1_INDEX_MASK                        0x1ffu
-#define L1P1C_CMD1_INDEX_INPLACE                     (L1P1C_CMD1_INDEX_MASK << L1P1C_CMD1_INDEX_SHIFT)
+#define L1P1C_CMD1_INDEX_INPLACE (L1P1C_CMD1_INDEX_MASK << L1P1C_CMD1_INDEX_SHIFT)
 #define L1P1C_CMD1_INDEX_ALL_COMMAND                 0 /* established */
 #define L1P1C_CMD1_INDEX_RACK_SLOT_COMMAND           1 /* established */
 #define L1P1C_CMD1_INDEX_AUTOPOWER                   2 /* established */
@@ -109,7 +110,8 @@
 #define L1P1C_CMD1_INDEX_ENV_TEST_FAULT              74 /* established */
 #define L1P1C_CMD1_INDEX_ENV_TEST_TMPADV             75 /* established */
 #define L1P1C_CMD1_INDEX_ENV_TEST_TMPCRIT            76 /* established */
-#define L1P1C_CMD1_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 77 /* established */
+/* established */
+#define L1P1C_CMD1_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 77
 #define L1P1C_CMD1_INDEX_ENV_TEST_PWRDN              78 /* established */
 #define L1P1C_CMD1_INDEX_ENV_MESSAGES                79 /* established */
 #define L1P1C_CMD1_INDEX_ENV_MESSAGES_FAULTSONLY     80 /* established */
@@ -218,7 +220,8 @@
 #define L1P1C_CMD1_INDEX_SERIAL_CLEAR                183 /* established */
 #define L1P1C_CMD1_INDEX_SERIAL_SET_WORD             184 /* established */
 #define L1P1C_CMD1_INDEX_SERIAL_WORD_WORD_WORD_WORD  185 /* established */
-#define L1P1C_CMD1_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 186 /* established */
+/* established */
+#define L1P1C_CMD1_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 186
 #define L1P1C_CMD1_INDEX_SERIAL_SECURITY_ON          187 /* established */
 #define L1P1C_CMD1_INDEX_SERIAL_BRICK_DISABLE        188 /* established */
 #define L1P1C_CMD1_INDEX_SERIAL_BRICK_DISABLE_CONFIRM 189 /* established */
@@ -238,7 +241,8 @@
 #define L1P1C_CMD1_INDEX_ROUTER_6_PORT_CONFIRM       203 /* established */
 #define L1P1C_CMD1_INDEX_ROUTER_8_PORT               204 /* established */
 #define L1P1C_CMD1_INDEX_ROUTER_8_PORT_WORD_WORD_WORD_WORD 205 /* established */
-#define L1P1C_CMD1_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 206 /* established */
+/* established */
+#define L1P1C_CMD1_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 206
 #define L1P1C_CMD1_INDEX_ROUTER_SERVICE_OFF          207 /* established */
 #define L1P1C_CMD1_INDEX_ROUTER_SPARE                208 /* established */
 #define L1P1C_CMD1_INDEX_SERVICE_WORD_WORD_WORD_WORD 209 /* established */
@@ -306,7 +310,8 @@
 #define L1P1C_CMD1_INDEX_SCAN_RESET_BOTH             271 /* established */
 #define L1P1C_CMD1_INDEX_SCAN_SEL_NUMBER_NUMBER      272 /* established */
 #define L1P1C_CMD1_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER 273 /* established */
-#define L1P1C_CMD1_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 274 /* established */
+/* established */
+#define L1P1C_CMD1_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 274
 #define L1P1C_CMD1_INDEX_SCAN_IDS_NUMBER             275 /* established */
 #define L1P1C_CMD1_INDEX_SCAN_SET_TRST_0             276 /* established */
 #define L1P1C_CMD1_INDEX_SCAN_SET_TRST_1             277 /* established */

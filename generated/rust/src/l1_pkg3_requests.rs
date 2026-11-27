@@ -1,8 +1,10 @@
-// generated from formats/l1_pkg3_requests/format.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from formats/l1_pkg3_requests/format.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 2d9036a6f3a0386b48082c89ea094b114f676ed02a8b402e50e01a11618d2772
 // console request codes of ColdFire L1 package 3
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// (established)
 pub mod cmd {

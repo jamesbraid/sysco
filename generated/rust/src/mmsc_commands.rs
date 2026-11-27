@@ -1,8 +1,10 @@
-// generated from formats/mmsc_commands/format.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from formats/mmsc_commands/format.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 40fd622ba603ff30fe09920574e559de1c72ccef13eafcfefe4ace054601dc4e
 // typed command table of the multi-module system
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// (established)
 pub mod auth {

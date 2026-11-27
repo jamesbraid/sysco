@@ -1,8 +1,10 @@
-// generated from formats/l1_pkg1_console/format.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from formats/l1_pkg1_console/format.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 c657e0fd65dad605a66a377da0d3b5be3065e9303792577b54906b77f1fc602f
 // console command tables of ColdFire L1 firmware package 1
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// (established)
 pub mod cmd0 {

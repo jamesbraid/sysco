@@ -1,5 +1,6 @@
-/* generated from formats/l1_pkg2_console/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l1_pkg2_console/format.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 b0d21e005ed0597573e9f5682bd8fdd7b6e659cfe92e813db1f9163dc95eeaf6 */
 /* console command tables of ColdFire L1 firmware package 2 */
 #ifndef L1P2C_GEN_H
@@ -12,7 +13,7 @@
 #define L1P2C_CMD0_WIDTH                             32 /* established */
 #define L1P2C_CMD0_INDEX_SHIFT                       0 /* established */
 #define L1P2C_CMD0_INDEX_MASK                        0xffu
-#define L1P2C_CMD0_INDEX_INPLACE                     (L1P2C_CMD0_INDEX_MASK << L1P2C_CMD0_INDEX_SHIFT)
+#define L1P2C_CMD0_INDEX_INPLACE (L1P2C_CMD0_INDEX_MASK << L1P2C_CMD0_INDEX_SHIFT)
 #define L1P2C_CMD0_INDEX_PCI                         0 /* established */
 #define L1P2C_CMD0_INDEX_PCI_U                       1 /* established */
 #define L1P2C_CMD0_INDEX_PCI_D                       2 /* established */
@@ -31,7 +32,7 @@
 #define L1P2C_CMD1_WIDTH                             32 /* established */
 #define L1P2C_CMD1_INDEX_SHIFT                       0 /* established */
 #define L1P2C_CMD1_INDEX_MASK                        0xffu
-#define L1P2C_CMD1_INDEX_INPLACE                     (L1P2C_CMD1_INDEX_MASK << L1P2C_CMD1_INDEX_SHIFT)
+#define L1P2C_CMD1_INDEX_INPLACE (L1P2C_CMD1_INDEX_MASK << L1P2C_CMD1_INDEX_SHIFT)
 #define L1P2C_CMD1_INDEX_PCI                         0 /* established */
 #define L1P2C_CMD1_INDEX_PCI_U                       1 /* established */
 #define L1P2C_CMD1_INDEX_PCI_D                       2 /* established */
@@ -62,7 +63,7 @@
 #define L1P2C_CMD2_WIDTH                             32 /* established */
 #define L1P2C_CMD2_INDEX_SHIFT                       0 /* established */
 #define L1P2C_CMD2_INDEX_MASK                        0xffu
-#define L1P2C_CMD2_INDEX_INPLACE                     (L1P2C_CMD2_INDEX_MASK << L1P2C_CMD2_INDEX_SHIFT)
+#define L1P2C_CMD2_INDEX_INPLACE (L1P2C_CMD2_INDEX_MASK << L1P2C_CMD2_INDEX_SHIFT)
 #define L1P2C_CMD2_INDEX_CHECK_POWER_ON              0 /* established */
 #define L1P2C_CMD2_INDEX_CHECK_MARGIN_HIGH           1 /* established */
 #define L1P2C_CMD2_INDEX_CHECK_LINKS                 2 /* established */
@@ -109,7 +110,7 @@
 #define L1P2C_CMD3_WIDTH                             32 /* established */
 #define L1P2C_CMD3_INDEX_SHIFT                       0 /* established */
 #define L1P2C_CMD3_INDEX_MASK                        0x1ffu
-#define L1P2C_CMD3_INDEX_INPLACE                     (L1P2C_CMD3_INDEX_MASK << L1P2C_CMD3_INDEX_SHIFT)
+#define L1P2C_CMD3_INDEX_INPLACE (L1P2C_CMD3_INDEX_MASK << L1P2C_CMD3_INDEX_SHIFT)
 #define L1P2C_CMD3_INDEX_ALL_COMMAND                 0 /* established */
 #define L1P2C_CMD3_INDEX_RACK_SLOT_COMMAND           1 /* established */
 #define L1P2C_CMD3_INDEX_AUTOPOWER                   2 /* established */
@@ -187,7 +188,8 @@
 #define L1P2C_CMD3_INDEX_ENV_TEST_FAULT              74 /* established */
 #define L1P2C_CMD3_INDEX_ENV_TEST_TMPADV             75 /* established */
 #define L1P2C_CMD3_INDEX_ENV_TEST_TMPCRIT            76 /* established */
-#define L1P2C_CMD3_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 77 /* established */
+/* established */
+#define L1P2C_CMD3_INDEX_ENV_TEST_NUMBER_NUMBER_NUMBER_NUMBER_NUMBER 77
 #define L1P2C_CMD3_INDEX_ENV_TEST_PWRDN              78 /* established */
 #define L1P2C_CMD3_INDEX_ENV_MESSAGES                79 /* established */
 #define L1P2C_CMD3_INDEX_ENV_MESSAGES_FAULTSONLY     80 /* established */
@@ -296,7 +298,8 @@
 #define L1P2C_CMD3_INDEX_SERIAL_CLEAR                183 /* established */
 #define L1P2C_CMD3_INDEX_SERIAL_SET_WORD             184 /* established */
 #define L1P2C_CMD3_INDEX_SERIAL_WORD_WORD_WORD_WORD  185 /* established */
-#define L1P2C_CMD3_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 186 /* established */
+/* established */
+#define L1P2C_CMD3_INDEX_SERIAL_SECURITY_OFF_WORD_WORD_WORD_WORD 186
 #define L1P2C_CMD3_INDEX_SERIAL_SECURITY_ON          187 /* established */
 #define L1P2C_CMD3_INDEX_SERIAL_BRICK_DISABLE        188 /* established */
 #define L1P2C_CMD3_INDEX_SERIAL_BRICK_DISABLE_CONFIRM 189 /* established */
@@ -316,7 +319,8 @@
 #define L1P2C_CMD3_INDEX_ROUTER_6_PORT_CONFIRM       203 /* established */
 #define L1P2C_CMD3_INDEX_ROUTER_8_PORT               204 /* established */
 #define L1P2C_CMD3_INDEX_ROUTER_8_PORT_WORD_WORD_WORD_WORD 205 /* established */
-#define L1P2C_CMD3_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 206 /* established */
+/* established */
+#define L1P2C_CMD3_INDEX_ROUTER_SERVICE_WORD_WORD_WORD_WORD 206
 #define L1P2C_CMD3_INDEX_ROUTER_SERVICE_OFF          207 /* established */
 #define L1P2C_CMD3_INDEX_ROUTER_SPARE                208 /* established */
 #define L1P2C_CMD3_INDEX_SERVICE_WORD_WORD_WORD_WORD 209 /* established */
@@ -384,7 +388,8 @@
 #define L1P2C_CMD3_INDEX_SCAN_RESET_BOTH             271 /* established */
 #define L1P2C_CMD3_INDEX_SCAN_SEL_NUMBER_NUMBER      272 /* established */
 #define L1P2C_CMD3_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER 273 /* established */
-#define L1P2C_CMD3_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 274 /* established */
+/* established */
+#define L1P2C_CMD3_INDEX_SCAN_SEL_NUMBER_NUMBER_NUMBER_NUMBER 274
 #define L1P2C_CMD3_INDEX_SCAN_IDS_NUMBER             275 /* established */
 #define L1P2C_CMD3_INDEX_SCAN_SET_TRST_0             276 /* established */
 #define L1P2C_CMD3_INDEX_SCAN_SET_TRST_1             277 /* established */

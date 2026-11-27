@@ -1,7 +1,8 @@
-// generated from devices/ and formats/ by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/ and formats/ by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 17309e35c20bd1dbc1fc4c7757932de3d77e24c24de07b21063f1113097d5385
 #![no_std]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 pub mod elsc_host;
 pub mod elsc_nvram;
 pub mod gigachannel_status;

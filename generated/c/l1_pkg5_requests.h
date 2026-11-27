@@ -1,5 +1,6 @@
-/* generated from formats/l1_pkg5_requests/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l1_pkg5_requests/format.toml by defs-gen - do not
+ * edit, change the source */
+/* defs-gen 4 */
 /* input sha256 e90feae079b5ff71ecb4fe82f6f5955d801680a5e51d78b2f5cc2016a2056e18 */
 /* console request codes of ColdFire L1 package 5 */
 #ifndef L1P5_GEN_H
@@ -12,7 +13,7 @@
 #define L1P5_CMD_WIDTH                               32 /* established */
 #define L1P5_CMD_CODE_SHIFT                          0 /* established */
 #define L1P5_CMD_CODE_MASK                           0xffffu
-#define L1P5_CMD_CODE_INPLACE                        (L1P5_CMD_CODE_MASK << L1P5_CMD_CODE_SHIFT)
+#define L1P5_CMD_CODE_INPLACE (L1P5_CMD_CODE_MASK << L1P5_CMD_CODE_SHIFT)
 #define L1P5_CMD_CODE_GENERAL_REQ_RACK_BAY           2 /* established */
 #define L1P5_CMD_CODE_GENERAL_REQ_RACK_BAY_TYPE      3 /* established */
 #define L1P5_CMD_CODE_GENERAL_REQ_BRICK_SERIAL       4 /* established */

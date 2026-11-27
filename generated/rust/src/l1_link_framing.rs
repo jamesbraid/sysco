@@ -1,8 +1,10 @@
-// generated from formats/l1_link_framing/format.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from formats/l1_link_framing/format.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 8b0103c5a64b9a8b795c5f658d886fefa0545a0eedb8fc1a054643b74cc774a5
 // frame bytes and link context constants of the ColdFire L1 node and peer links
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 pub const FRAME_CHECK_RECEIVE: u32 = 0xf0b8; // established
 pub const FRAME_CHECK_SEED: u32 = 0xffff; // established

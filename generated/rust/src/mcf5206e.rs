@@ -1,8 +1,10 @@
-// generated from devices/mcf5206e/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/mcf5206e/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 321cbadc9140be0bf917d201b71d223ced86f8e5cb1ca1972b4c6558235f96f7
 // on-chip registers of the ColdFire MCF5206e as the L1 firmware uses them
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// The firmware sizes the CS0 flash by writing the mask for 2 MB, then rewrites it for 1 MB when the two halves of the window read back the same. (established)
 pub mod csmr0 {

@@ -1,8 +1,10 @@
-// generated from devices/pcf8584/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/pcf8584/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 26d3da7fa19f4c7dc8f9862789b781ef6985e363caad44774a9252704a5c1eaa
 // control bits and clock-control fields of the PCF8584 I2C-bus controller
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 pub const CLOCK_OSC_12MHZ: u32 = 0x1c; // inferred
 pub const CLOCK_OSC_3MHZ: u32 = 0x0; // inferred

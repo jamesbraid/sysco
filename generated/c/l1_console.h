@@ -1,5 +1,6 @@
-/* generated from formats/l1_console/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l1_console/format.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 cf5d01efc28dac97a3b896fcc61217b9072b84fead22d7ed21e518071d196ee0 */
 /* entry layout and argument kinds of the L1 console command tables */
 #ifndef L1C_GEN_H
@@ -9,7 +10,8 @@
 
 
 /*
- * Up to ten pattern words, the handler, four selector words, the help text and the hidden flag; 68 bytes in all.
+ * Up to ten pattern words, the handler, four selector words, the help text and
+ * the hidden flag; 68 bytes in all.
  */
 /* pattern: r32, reset unknown */
 #define ENTRY_PATTERN_OFFSET                         0x0u /* established */
@@ -34,7 +36,7 @@
 #define L1C_TOKEN_WIDTH                              32 /* established */
 #define L1C_TOKEN_KIND_SHIFT                         0 /* established */
 #define L1C_TOKEN_KIND_MASK                          0xfu
-#define L1C_TOKEN_KIND_INPLACE                       (L1C_TOKEN_KIND_MASK << L1C_TOKEN_KIND_SHIFT)
+#define L1C_TOKEN_KIND_INPLACE (L1C_TOKEN_KIND_MASK << L1C_TOKEN_KIND_SHIFT)
 #define L1C_TOKEN_KIND_END                           0 /* established */
 #define L1C_TOKEN_KIND_NUMBER                        1 /* established */
 #define L1C_TOKEN_KIND_DECIMAL                       2 /* established */

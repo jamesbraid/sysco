@@ -1,5 +1,6 @@
-/* generated from formats/l2_partition_requests/format.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from formats/l2_partition_requests/format.toml by defs-gen - do not
+ * edit, change the source */
+/* defs-gen 4 */
 /* input sha256 2c3cebd99e2301e7ea1e89245fa96a003e52f6f6254b5544d5c35983e66285ee */
 /* request codes of the L2 partition task image */
 #ifndef L2P_GEN_H
@@ -12,7 +13,7 @@
 #define L2P_CMD_WIDTH                                32 /* established */
 #define L2P_CMD_CODE_SHIFT                           0 /* established */
 #define L2P_CMD_CODE_MASK                            0xffffu
-#define L2P_CMD_CODE_INPLACE                         (L2P_CMD_CODE_MASK << L2P_CMD_CODE_SHIFT)
+#define L2P_CMD_CODE_INPLACE (L2P_CMD_CODE_MASK << L2P_CMD_CODE_SHIFT)
 #define L2P_CMD_CODE_PARTITION_FOR_BRICK             1 /* established */
 #define L2P_CMD_CODE_PARTITION_ENVIRONMENT           2 /* established */
 #define L2P_CMD_CODE_DATABASE_GET                    3 /* established */

@@ -1,5 +1,6 @@
-/* generated from devices/mcf5206e/registers.toml by defs-gen - do not edit, change the source */
-/* defs-gen 2 */
+/* generated from devices/mcf5206e/registers.toml by defs-gen - do not edit,
+ * change the source */
+/* defs-gen 4 */
 /* input sha256 321cbadc9140be0bf917d201b71d223ced86f8e5cb1ca1972b4c6558235f96f7 */
 /* on-chip registers of the ColdFire MCF5206e as the L1 firmware uses them */
 #ifndef SIM_GEN_H
@@ -9,120 +10,136 @@
 
 
 /*
- * The firmware sizes the CS0 flash by writing the mask for 2 MB, then rewrites it
+ * The firmware sizes the CS0 flash by writing the mask for 2 MB, then rewrites
+ * it
  * for 1 MB when the two halves of the window read back the same.
  */
 /* word CSMR0: 32 bits */
 #define SIM_CSMR0_WIDTH                              32 /* established */
 #define SIM_CSMR0_BAM_SHIFT                          16 /* established */
 #define SIM_CSMR0_BAM_MASK                           0xffffu
-#define SIM_CSMR0_BAM_INPLACE                        (SIM_CSMR0_BAM_MASK << SIM_CSMR0_BAM_SHIFT)
+#define SIM_CSMR0_BAM_INPLACE (SIM_CSMR0_BAM_MASK << SIM_CSMR0_BAM_SHIFT)
 #define SIM_CSMR0_BAM_SIZE_1MB                       15 /* established */
 #define SIM_CSMR0_BAM_SIZE_2MB                       31 /* established */
 
 /*
- * Chip-select 1 (battery-backed RAM and clock, 8-bit) and chip-select 2 (external RAM,
- * 16-bit) values the board set-up writes. The RAM mask is cut from 512 KB to 128 KB when
- * the firmware's alias probe fails. The port-size decode of each control value is the
+ * Chip-select 1 (battery-backed RAM and clock, 8-bit) and chip-select 2
+ * (external RAM,
+ * 16-bit) values the board set-up writes. The RAM mask is cut from 512 KB to
+ * 128 KB when
+ * the firmware's alias probe fails. The port-size decode of each control value
+ * is the
  * manual's and was not re-read in an image.
  */
 /* word CSMR2: 32 bits */
 #define SIM_CSMR2_WIDTH                              32 /* established */
 #define SIM_CSMR2_BAM_SHIFT                          16 /* established */
 #define SIM_CSMR2_BAM_MASK                           0xffffu
-#define SIM_CSMR2_BAM_INPLACE                        (SIM_CSMR2_BAM_MASK << SIM_CSMR2_BAM_SHIFT)
+#define SIM_CSMR2_BAM_INPLACE (SIM_CSMR2_BAM_MASK << SIM_CSMR2_BAM_SHIFT)
 #define SIM_CSMR2_BAM_SIZE_128KB                     1 /* established */
 #define SIM_CSMR2_BAM_SIZE_512KB                     7 /* established */
 
 /*
- * M-Bus address register: the module's own seven-bit slave address, in bits 7 to 1. Bit 0 is
- * reserved. Reset value 0x00. Not the calling byte a master sends. Layout from the manual; the
+ * M-Bus address register: the module's own seven-bit slave address, in bits 7
+ * to 1. Bit 0 is
+ * reserved. Reset value 0x00. Not the calling byte a master sends. Layout from
+ * the manual; the
  * firmware's own use is not re-read here.
  */
 /* word MADR: 8 bits */
 #define SIM_MADR_WIDTH                               8 /* inferred */
 #define SIM_MADR_ADR_SHIFT                           1 /* inferred */
 #define SIM_MADR_ADR_MASK                            0x7fu
-#define SIM_MADR_ADR_INPLACE                         (SIM_MADR_ADR_MASK << SIM_MADR_ADR_SHIFT)
+#define SIM_MADR_ADR_INPLACE (SIM_MADR_ADR_MASK << SIM_MADR_ADR_SHIFT)
 
 /*
- * M-Bus control register, reset value 0x00. MEN holds the module in reset while clear.
- * RSTA is write-one and always reads zero. Bits 1 and 0 are reserved. Other control bits have no
+ * M-Bus control register, reset value 0x00. MEN holds the module in reset while
+ * clear.
+ * RSTA is write-one and always reads zero. Bits 1 and 0 are reserved. Other
+ * control bits have no
  * effect while MEN is clear.
  */
 /* word MBCR: 8 bits */
 #define SIM_MBCR_WIDTH                               8 /* inferred */
 #define SIM_MBCR_MEN_SHIFT                           7 /* inferred */
 #define SIM_MBCR_MEN_MASK                            0x1u
-#define SIM_MBCR_MEN_INPLACE                         (SIM_MBCR_MEN_MASK << SIM_MBCR_MEN_SHIFT)
+#define SIM_MBCR_MEN_INPLACE (SIM_MBCR_MEN_MASK << SIM_MBCR_MEN_SHIFT)
 #define SIM_MBCR_MIEN_SHIFT                          6 /* inferred */
 #define SIM_MBCR_MIEN_MASK                           0x1u
-#define SIM_MBCR_MIEN_INPLACE                        (SIM_MBCR_MIEN_MASK << SIM_MBCR_MIEN_SHIFT)
+#define SIM_MBCR_MIEN_INPLACE (SIM_MBCR_MIEN_MASK << SIM_MBCR_MIEN_SHIFT)
 #define SIM_MBCR_MSTA_SHIFT                          5 /* inferred */
 #define SIM_MBCR_MSTA_MASK                           0x1u
-#define SIM_MBCR_MSTA_INPLACE                        (SIM_MBCR_MSTA_MASK << SIM_MBCR_MSTA_SHIFT)
+#define SIM_MBCR_MSTA_INPLACE (SIM_MBCR_MSTA_MASK << SIM_MBCR_MSTA_SHIFT)
 #define SIM_MBCR_MTX_SHIFT                           4 /* inferred */
 #define SIM_MBCR_MTX_MASK                            0x1u
-#define SIM_MBCR_MTX_INPLACE                         (SIM_MBCR_MTX_MASK << SIM_MBCR_MTX_SHIFT)
+#define SIM_MBCR_MTX_INPLACE (SIM_MBCR_MTX_MASK << SIM_MBCR_MTX_SHIFT)
 #define SIM_MBCR_TXAK_SHIFT                          3 /* inferred */
 #define SIM_MBCR_TXAK_MASK                           0x1u
-#define SIM_MBCR_TXAK_INPLACE                        (SIM_MBCR_TXAK_MASK << SIM_MBCR_TXAK_SHIFT)
+#define SIM_MBCR_TXAK_INPLACE (SIM_MBCR_TXAK_MASK << SIM_MBCR_TXAK_SHIFT)
 #define SIM_MBCR_RSTA_SHIFT                          2 /* inferred */
 #define SIM_MBCR_RSTA_MASK                           0x1u
-#define SIM_MBCR_RSTA_INPLACE                        (SIM_MBCR_RSTA_MASK << SIM_MBCR_RSTA_SHIFT)
+#define SIM_MBCR_RSTA_INPLACE (SIM_MBCR_RSTA_MASK << SIM_MBCR_RSTA_SHIFT)
 
 /*
- * M-Bus data register, reset value 0x00. A write starts the next transmit byte, most
- * significant bit first. A read in receive mode returns the received byte and starts receipt of the
+ * M-Bus data register, reset value 0x00. A write starts the next transmit byte,
+ * most
+ * significant bit first. A read in receive mode returns the received byte and
+ * starts receipt of the
  * next one.
  */
 /* word MBDR: 8 bits */
 #define SIM_MBDR_WIDTH                               8 /* inferred */
 #define SIM_MBDR_DATA_SHIFT                          0 /* inferred */
 #define SIM_MBDR_DATA_MASK                           0xffu
-#define SIM_MBDR_DATA_INPLACE                        (SIM_MBDR_DATA_MASK << SIM_MBDR_DATA_SHIFT)
+#define SIM_MBDR_DATA_INPLACE (SIM_MBDR_DATA_MASK << SIM_MBDR_DATA_SHIFT)
 
 /*
- * M-Bus module. The offsets are the manual's, as the firmware adds them to the module base.
- * Reset value 0x81 (MCF and RXAK set). Software writes clear only MAL and MIF, by writing zero;
+ * M-Bus module. The offsets are the manual's, as the firmware adds them to the
+ * module base.
+ * Reset value 0x81 (MCF and RXAK set). Software writes clear only MAL and MIF,
+ * by writing zero;
  * the other bits report hardware state.
  */
 /* word MBSR: 32 bits */
 #define SIM_MBSR_WIDTH                               32 /* established */
 #define SIM_MBSR_MCF_SHIFT                           7 /* inferred */
 #define SIM_MBSR_MCF_MASK                            0x1u
-#define SIM_MBSR_MCF_INPLACE                         (SIM_MBSR_MCF_MASK << SIM_MBSR_MCF_SHIFT)
+#define SIM_MBSR_MCF_INPLACE (SIM_MBSR_MCF_MASK << SIM_MBSR_MCF_SHIFT)
 #define SIM_MBSR_MAAS_SHIFT                          6 /* inferred */
 #define SIM_MBSR_MAAS_MASK                           0x1u
-#define SIM_MBSR_MAAS_INPLACE                        (SIM_MBSR_MAAS_MASK << SIM_MBSR_MAAS_SHIFT)
+#define SIM_MBSR_MAAS_INPLACE (SIM_MBSR_MAAS_MASK << SIM_MBSR_MAAS_SHIFT)
 #define SIM_MBSR_BUS_BUSY_SHIFT                      5 /* established */
 #define SIM_MBSR_BUS_BUSY_MASK                       0x1u
-#define SIM_MBSR_BUS_BUSY_INPLACE                    (SIM_MBSR_BUS_BUSY_MASK << SIM_MBSR_BUS_BUSY_SHIFT)
+#define SIM_MBSR_BUS_BUSY_INPLACE (SIM_MBSR_BUS_BUSY_MASK << SIM_MBSR_BUS_BUSY_SHIFT)
 #define SIM_MBSR_MAL_SHIFT                           4 /* inferred */
 #define SIM_MBSR_MAL_MASK                            0x1u
-#define SIM_MBSR_MAL_INPLACE                         (SIM_MBSR_MAL_MASK << SIM_MBSR_MAL_SHIFT)
+#define SIM_MBSR_MAL_INPLACE (SIM_MBSR_MAL_MASK << SIM_MBSR_MAL_SHIFT)
 #define SIM_MBSR_SRW_SHIFT                           2 /* inferred */
 #define SIM_MBSR_SRW_MASK                            0x1u
-#define SIM_MBSR_SRW_INPLACE                         (SIM_MBSR_SRW_MASK << SIM_MBSR_SRW_SHIFT)
+#define SIM_MBSR_SRW_INPLACE (SIM_MBSR_SRW_MASK << SIM_MBSR_SRW_SHIFT)
 #define SIM_MBSR_MIF_SHIFT                           1 /* inferred */
 #define SIM_MBSR_MIF_MASK                            0x1u
-#define SIM_MBSR_MIF_INPLACE                         (SIM_MBSR_MIF_MASK << SIM_MBSR_MIF_SHIFT)
+#define SIM_MBSR_MIF_INPLACE (SIM_MBSR_MIF_MASK << SIM_MBSR_MIF_SHIFT)
 #define SIM_MBSR_RXAK_SHIFT                          0 /* inferred */
 #define SIM_MBSR_RXAK_MASK                           0x1u
-#define SIM_MBSR_RXAK_INPLACE                        (SIM_MBSR_RXAK_MASK << SIM_MBSR_RXAK_SHIFT)
+#define SIM_MBSR_RXAK_INPLACE (SIM_MBSR_RXAK_MASK << SIM_MBSR_RXAK_SHIFT)
 
 /*
- * M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a divider
- * from the manual's table 13-2. The table value is a divider, not a bit rate. The errata says the
- * SCL frequency is the CPU frequency divided by the selected divider, and that the selection must
- * keep the M-Bus below 100 kHz. The rate in hertz is unknown until the controller clock is known.
+ * M-Bus frequency divider register, reset value 0x00. MBC5 to MBC0 select a
+ * divider
+ * from the manual's table 13-2. The table value is a divider, not a bit rate.
+ * The errata says the
+ * SCL frequency is the CPU frequency divided by the selected divider, and that
+ * the selection must
+ * keep the M-Bus below 100 kHz. The rate in hertz is unknown until the
+ * controller clock is known.
  * Bits 7 and 6 are reserved; their readback is unknown.
  */
 /* word MFDR: 8 bits */
 #define SIM_MFDR_WIDTH                               8 /* inferred */
 #define SIM_MFDR_MBC_SHIFT                           0 /* inferred */
 #define SIM_MFDR_MBC_MASK                            0x3fu
-#define SIM_MFDR_MBC_INPLACE                         (SIM_MFDR_MBC_MASK << SIM_MFDR_MBC_SHIFT)
+#define SIM_MFDR_MBC_INPLACE (SIM_MFDR_MBC_MASK << SIM_MFDR_MBC_SHIFT)
 #define SIM_MFDR_MBC_DIVIDE_28                       0 /* inferred */
 #define SIM_MFDR_MBC_DIVIDE_68                       7 /* inferred */
 #define SIM_MFDR_MBC_DIVIDE_480                      19 /* inferred */
@@ -136,34 +153,35 @@
 #define SIM_PADAT_WIDTH                              32 /* established */
 #define SIM_PADAT_TDI_SHIFT                          7 /* established */
 #define SIM_PADAT_TDI_MASK                           0x1u
-#define SIM_PADAT_TDI_INPLACE                        (SIM_PADAT_TDI_MASK << SIM_PADAT_TDI_SHIFT)
+#define SIM_PADAT_TDI_INPLACE (SIM_PADAT_TDI_MASK << SIM_PADAT_TDI_SHIFT)
 #define SIM_PADAT_TCK_SHIFT                          6 /* established */
 #define SIM_PADAT_TCK_MASK                           0x1u
-#define SIM_PADAT_TCK_INPLACE                        (SIM_PADAT_TCK_MASK << SIM_PADAT_TCK_SHIFT)
+#define SIM_PADAT_TCK_INPLACE (SIM_PADAT_TCK_MASK << SIM_PADAT_TCK_SHIFT)
 #define SIM_PADAT_TMS_SHIFT                          5 /* established */
 #define SIM_PADAT_TMS_MASK                           0x1u
-#define SIM_PADAT_TMS_INPLACE                        (SIM_PADAT_TMS_MASK << SIM_PADAT_TMS_SHIFT)
+#define SIM_PADAT_TMS_INPLACE (SIM_PADAT_TMS_MASK << SIM_PADAT_TMS_SHIFT)
 #define SIM_PADAT_TRST_SHIFT                         4 /* established */
 #define SIM_PADAT_TRST_MASK                          0x1u
-#define SIM_PADAT_TRST_INPLACE                       (SIM_PADAT_TRST_MASK << SIM_PADAT_TRST_SHIFT)
+#define SIM_PADAT_TRST_INPLACE (SIM_PADAT_TRST_MASK << SIM_PADAT_TRST_SHIFT)
 #define SIM_PADAT_PSI_SHIFT                          3 /* established */
 #define SIM_PADAT_PSI_MASK                           0x1u
-#define SIM_PADAT_PSI_INPLACE                        (SIM_PADAT_PSI_MASK << SIM_PADAT_PSI_SHIFT)
+#define SIM_PADAT_PSI_INPLACE (SIM_PADAT_PSI_MASK << SIM_PADAT_PSI_SHIFT)
 #define SIM_PADAT_TDO_SHIFT                          0 /* established */
 #define SIM_PADAT_TDO_MASK                           0x1u
-#define SIM_PADAT_TDO_INPLACE                        (SIM_PADAT_TDO_MASK << SIM_PADAT_TDO_SHIFT)
+#define SIM_PADAT_TDO_INPLACE (SIM_PADAT_TDO_MASK << SIM_PADAT_TDO_SHIFT)
 
 /*
- * Pin assignment: bit 7 is pulsed by the timer set-up, bits 5:4 are cleared by the scan set-up.
+ * Pin assignment: bit 7 is pulsed by the timer set-up, bits 5:4 are cleared by
+ * the scan set-up.
  */
 /* word PAR: 32 bits */
 #define SIM_PAR_WIDTH                                32 /* established */
 #define SIM_PAR_TIMER_PULSE_SHIFT                    7 /* established */
 #define SIM_PAR_TIMER_PULSE_MASK                     0x1u
-#define SIM_PAR_TIMER_PULSE_INPLACE                  (SIM_PAR_TIMER_PULSE_MASK << SIM_PAR_TIMER_PULSE_SHIFT)
+#define SIM_PAR_TIMER_PULSE_INPLACE (SIM_PAR_TIMER_PULSE_MASK << SIM_PAR_TIMER_PULSE_SHIFT)
 #define SIM_PAR_SCAN_SEL_SHIFT                       4 /* established */
 #define SIM_PAR_SCAN_SEL_MASK                        0x3u
-#define SIM_PAR_SCAN_SEL_INPLACE                     (SIM_PAR_SCAN_SEL_MASK << SIM_PAR_SCAN_SEL_SHIFT)
+#define SIM_PAR_SCAN_SEL_INPLACE (SIM_PAR_SCAN_SEL_MASK << SIM_PAR_SCAN_SEL_SHIFT)
 
 /*
  * Reset status: one bit is tested at start-up to record the reset cause.
@@ -172,7 +190,7 @@
 #define SIM_RSR_WIDTH                                32 /* established */
 #define SIM_RSR_CAUSE5_SHIFT                         5 /* established */
 #define SIM_RSR_CAUSE5_MASK                          0x1u
-#define SIM_RSR_CAUSE5_INPLACE                       (SIM_RSR_CAUSE5_MASK << SIM_RSR_CAUSE5_SHIFT)
+#define SIM_RSR_CAUSE5_INPLACE (SIM_RSR_CAUSE5_MASK << SIM_RSR_CAUSE5_SHIFT)
 
 /*
  * Software watchdog control: write-once, armed once by the firmware.
@@ -181,7 +199,7 @@
 #define SIM_SYPCR_WIDTH                              32 /* established */
 #define SIM_SYPCR_SWE_SHIFT                          7 /* established */
 #define SIM_SYPCR_SWE_MASK                           0x1u
-#define SIM_SYPCR_SWE_INPLACE                        (SIM_SYPCR_SWE_MASK << SIM_SYPCR_SWE_SHIFT)
+#define SIM_SYPCR_SWE_INPLACE (SIM_SYPCR_SWE_MASK << SIM_SYPCR_SWE_SHIFT)
 
 #define SIM_CS0_START_CSAR                           0xffe0u /* established */
 #define SIM_CS0_START_CSCR                           0x1183u /* established */

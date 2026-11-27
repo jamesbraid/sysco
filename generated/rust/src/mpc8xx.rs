@@ -1,8 +1,10 @@
-// generated from devices/mpc8xx/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 2
+// @generated from devices/mpc8xx/registers.toml by defs-gen - do not edit, change the source
+// defs-gen 4
 // input sha256 ae308f69e1ebe58401efce7d831bc1c6bc5196adc46fd7082f7a71575f008914
 // start-up values of the PowerPC communications controller on the L2 board
 #![allow(dead_code)]
+#![allow(clippy::doc_markdown)]
+#![cfg_attr(rustfmt, rustfmt_skip)]
 
 /// Byte-wide peripheral on the fourth chip select. Established: the window decode above, the 8-bit port, and that the boot code only writes it, in the or (established)
 pub mod reg0 {

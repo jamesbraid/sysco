@@ -1,5 +1,5 @@
 <!-- generated from formats/l1_pkg3_console/format.toml by defs-gen - do not edit, change the source -->
-<!-- defs-gen 2 -->
+<!-- defs-gen 4 -->
 <!-- input sha256 8e9b27c79d002f151267558909ad199ff9e794d313d5434513c30635e510e77d -->
 
 # console command tables of ColdFire L1 firmware package 3
