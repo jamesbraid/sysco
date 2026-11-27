@@ -50,6 +50,23 @@ For the 16 DIMM reads of a node with no DIMM in any slot, every reply is `n ff f
 bank mask zero in all four banks, and the node reports itself memory-less. A node with DIMMs needs the 256-byte records of the
 twelve slots of an Opus TIO brick (ids 8, 16, 9, 17, 10, 18, 11, 19, 12, 20, 13, 21) with a valid checksum in byte 63, and -104 for ids 14, 15, 22 and 23.
 
+## The ColdFire `2MB image` for the same requests
+
+The Altix 3000 C-brick and, inferred, the Altix 350's `O` module are served by the ColdFire `2MB image` (package 3), not the ARM program. Its dispatcher `0xffe3f9d4` was read in full; the rest of its request set is in [the ColdFire general request set](sn2-prom-link-1.62.1.md#the-general-request-set-of-the-coldfire-2-mb-l1-2mb-image-1621-package-3). Reply bytes follow the same convention as above (status, count, integers as `00` plus four bytes). Established unless a row says otherwise.
+
+| Request | Block | Reply arguments | Differences from the ARM L1 |
+|---|---|---|---|
+| `0x0003` | `0xffe3fda4` | integer `rack << 6 \| bay`, integer type character | `=` becomes `#` unless the low byte of the PROM-version word that `0x100b` stored for this slab is nonzero; no slot test |
+| `0x0009` | `0xffe4069a` | integer setting 14 (partition) | none |
+| `0x000e` | `0xffe40858` | integer slab from the frame source word | the type test for `,` `}` `.` `$` changes nothing |
+| `0x0013` | `0xffe408bc` | integer 0, integer type character | always this form; the ARM program branches on the brick type and slot count |
+| `0x0006` | `0xffe402c8` | as in [sn2-prom-link-1.62.1.md](sn2-prom-link-1.62.1.md#request-0x0006-in-the-coldfire-l1-type-o-1621-package-3): DIMM entries are kind 2, selector 4 | the table has 22 entries and ids 98 and 99 for the riser and IO9 |
+| `0x0010` | `0xffe408fe` | for types other than `,` `}` `.` `$`: nodes, CPUs, then a presence and an enable mask per node word; for those four types: 1, CPUs per node, then one presence and one enable mask for this slab | both forms read; the node reads count at byte 6 to 10 and 11 to 15 as above. Status `-108` when the CPU count is 0. Inferred which form a type `5` or `O` brick takes: neither is in the four-letter list, so the first |
+| `0x100b` | `0xffe41134` | none (status 0, no arguments) | the dispatcher answers; the ARM handler does not |
+| `0x1005` | `0xffe40de0` | none | needs a text first argument, else `-102`; passes it to the display routine; status 0 |
+
+Each CPU of the node count sets one bit in its node's mask: node word `cpu / (4 >> shift)`, bit `(cpu % (4 >> shift)) << shift`, where `shift` is the byte at `+0x6c` of the configuration block at `0x30003420`; the presence mask comes from the node-valid test and the enable mask from the node-selection check (the remainder form of the divide is the part the decoder cannot settle, so the bit layout is inferred). The scan, partition and inventory requests (`0x0011`, `0x1006`, `0x4000`, `0x4004`) are in the general table.
+
 ## The `0x0010` reply as the node reads it
 
 **Established** for the reader, the node's routine `0xffae8250` (SAL_B, 10.54). The payload bytes, counting the header byte as byte 0: bytes 1 to 4 the status
