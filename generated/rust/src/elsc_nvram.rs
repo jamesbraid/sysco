@@ -1,5 +1,6 @@
 // @generated from devices/elsc_nvram/registers.toml by defs-gen - do not edit, change the source
-// defs-gen 4
+// SPDX-License-Identifier: BSD-3-Clause
+// defs-gen 5
 // input sha256 9eea679da2138a14697e010459e66848c8775566a569bec5e3df22ecb457dd2b
 // configuration block of the module controller's non-volatile store
 #![allow(dead_code)]

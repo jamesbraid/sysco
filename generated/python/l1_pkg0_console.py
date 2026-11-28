@@ -1,5 +1,6 @@
 """generated from formats/l1_pkg0_console/format.toml by defs-gen - do not edit, change the source
-defs-gen 4
+SPDX-License-Identifier: BSD-3-Clause
+defs-gen 5
 input sha256 733d2f37feb013c28b8f82692061fc7e7b247fafc8e950c1b8ef6bec1eb4e373
 console command tables of ColdFire L1 firmware package 0"""
 

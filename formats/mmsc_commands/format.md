@@ -1,5 +1,6 @@
 <!-- generated from formats/mmsc_commands/format.toml by defs-gen - do not edit, change the source -->
-<!-- defs-gen 4 -->
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- defs-gen 5 -->
 <!-- input sha256 40fd622ba603ff30fe09920574e559de1c72ccef13eafcfefe4ace054601dc4e -->
 
 # typed command table of the multi-module system

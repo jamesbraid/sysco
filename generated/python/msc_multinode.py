@@ -1,5 +1,6 @@
 """generated from formats/msc_multinode/format.toml by defs-gen - do not edit, change the source
-defs-gen 4
+SPDX-License-Identifier: BSD-3-Clause
+defs-gen 5
 input sha256 45f9536b504c2c4252e00828815e5889f9b9a3ee0c4dbf4cf0161590924130b0
 constants of the multi-node console and master election"""
 

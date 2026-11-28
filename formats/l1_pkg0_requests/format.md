@@ -1,5 +1,6 @@
 <!-- generated from formats/l1_pkg0_requests/format.toml by defs-gen - do not edit, change the source -->
-<!-- defs-gen 4 -->
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- defs-gen 5 -->
 <!-- input sha256 0dd98f703cebb0c73b34463e1342cc86c14186c00f6789e4e9c575b0ce2caed8 -->
 
 # console request codes of ColdFire L1 package 0

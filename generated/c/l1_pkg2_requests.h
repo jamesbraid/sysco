@@ -1,6 +1,7 @@
 /* generated from formats/l1_pkg2_requests/format.toml by defs-gen - do not
  * edit, change the source */
-/* defs-gen 4 */
+/* SPDX-License-Identifier: BSD-3-Clause */
+/* defs-gen 5 */
 /* input sha256 220424abbce835bf1746927a26de98803ca901a111bbf1d2e4e1319157470c83 */
 /* console request codes of ColdFire L1 package 2 */
 #ifndef L1P2_GEN_H

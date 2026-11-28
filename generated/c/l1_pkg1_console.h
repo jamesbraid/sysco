@@ -1,6 +1,7 @@
 /* generated from formats/l1_pkg1_console/format.toml by defs-gen - do not edit,
  * change the source */
-/* defs-gen 4 */
+/* SPDX-License-Identifier: BSD-3-Clause */
+/* defs-gen 5 */
 /* input sha256 c657e0fd65dad605a66a377da0d3b5be3065e9303792577b54906b77f1fc602f */
 /* console command tables of ColdFire L1 firmware package 1 */
 #ifndef L1P1C_GEN_H

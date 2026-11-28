@@ -1,5 +1,6 @@
 <!-- generated from formats/l1_pkg3_console/format.toml by defs-gen - do not edit, change the source -->
-<!-- defs-gen 4 -->
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<!-- defs-gen 5 -->
 <!-- input sha256 8e9b27c79d002f151267558909ad199ff9e794d313d5434513c30635e510e77d -->
 
 # console command tables of ColdFire L1 firmware package 3
